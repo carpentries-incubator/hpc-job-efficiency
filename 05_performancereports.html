@@ -253,9 +253,8 @@
 
     <div id="flush-collapsecurrent" class="accordion-collapse collapse show" aria-labelledby="flush-headingcurrent" data-bs-parent="#accordionFlushcurrent">
       <div class="accordion-body">
-        <ul><li><a href="#workflow">Workflow</a></li>
-<li><a href="#general-report">General report</a></li>
-<li><a href="#how-does-performance-relate-to-hardware">How Does Performance Relate to Hardware?</a></li>
+        <ul><li><a href="#measurement-workflows">Measurement Workflows</a></li>
+<li><a href="#general-report">General Report</a></li>
 <li><a href="#summary">Summary</a></li>
         </ul></div><!--/div.accordion-body-->
     </div><!--/div.accordion-collapse-->
@@ -357,7 +356,7 @@
       </div>
       <hr></nav><main id="main-content" class="main-content"><div class="container lesson-content">
         <h1>Performance Overview</h1>
-        <p>Last updated on 2025-11-11 |
+        <p>Last updated on 2026-02-24 |
 
         <a href="https://github.com/stderr-enst/jobefficiency/edit/main/episodes/05_performancereports.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 
@@ -376,9 +375,8 @@
 <div class="card-body">
 <div class="inner">
 <h3 class="card-title">Questions</h3>
-<ul><li>Is it enough to look at a jobs walltime?</li>
-<li>What steps can I take to evaluate a jobs performance?</li>
-<li>What popular types of reports exist?</li>
+<ul><li>Is job walltime the only way to study job performance?</li>
+<li>What are common metrics and perspectives on job performance?</li>
 </ul></div>
 </div>
 </div>
@@ -387,15 +385,16 @@
 <div class="inner bordered">
 <h3 class="card-title">Objectives</h3>
 <p>After completing this episode, participants should be able to …</p>
-<ul><li>Explain different approaches to performance measurements.</li>
+<ul><li>Get a comprehensive performance overview through a third-party
+tool.</li>
 <li>Understand common terms and concepts in performance analyses.</li>
-<li>Create a performance report through a third-party tool.</li>
-<li>Describe what a performance report is meant for (establish baseline,
-documentation of issues and improvements through optimization,
-publication of results, finding the next thread to pull in a quest for
-optimization)</li>
-<li>Measure the performance of central components of underlying hardware
-(CPU, Memory, I/O, …) (split episode?)</li>
+<li>Explain different approaches to performance measurements.</li>
+<li>Describe how the performance overview can inform further decisions
+(establish baseline, documentation of issues and improvements through
+optimization, publication of results, finding the next thread to pull in
+a quest for optimization)</li>
+<li>Measure the performance of central components of the underlying
+hardware (CPU, Memory, I/O, …) (split episode?)</li>
 <li>Identify which general areas of computer hardware may affect
 performance.</li>
 </ul></div>
@@ -404,57 +403,101 @@ performance.</li>
 </div>
 </div>
 
-<section><h2 class="section-heading" id="workflow">Workflow<a class="anchor" aria-label="anchor" href="#workflow"></a></h2>
-<hr class="half-width"><ul><li>Previously checked scaling behavior by looking at walltime</li>
-<li>what if we would count other things while our job is running? Could
-be
-<ul><li>CPU utilization</li>
-<li>FLOPS</li>
-<li>Memory uitilization</li>
-<li>…</li>
-</ul></li>
-<li>Two possible ways to look at this data with respect to time:
-<ol style="list-style-type: decimal"><li>
-<em>tracing</em>: over time</li>
+
+<p>Wall-time measurements with <code>time</code> do not tell us why
+exactly an application is slower than expected. To learn more about the
+<em>why</em>, we have to measure our applications behavior with in more
+detail and capture their utilization of the underlying hardware.</p>
+<ul><li>
+<strong>CPU utilization</strong> may depend on how quickly
+instructions can be send to the processor, how quickly and how much data
+can be read from memory, and the raw calculation capabilities of the
+CPU.</li>
 <li>
-<em>sampling</em>: accumulated results at the end</li>
-</ol></li>
-<li>Third-party tools to measure these things - you can use them with
-your jobs</li>
-</ul><div id="callout1" class="callout">
+<strong>Memory utilization</strong> may vary in terms of how much
+data is stored in memory, how often data in memory is written or read,
+and how quickly the data can be read and written to.</li>
+<li>
+<strong>Disk input and output</strong> affects processes that work
+with amounts of data that exceed available memory.</li>
+<li>
+<strong>Network input and output</strong> affects applications that
+rely on remote data, e.g. MPI applications that regularly share results
+between processes on multiple worker nodes.</li>
+</ul><p>The underlying hardware frames any performance study. Data moves
+through the data hierarchy to the CPU cores, where calculations are
+performed in multiple cores, potentially multiple threads per core, and
+even in vectorized instructions, acting with a single operation on
+multiple sets of data at the same time. Each level “closer” to the CPU
+has a smaller storage capacity, but larger bandwidth and smaller
+latencies, improving accesses.</p>
+<figure><img src="fig/JobEfficiency.drawio.png" alt="Hardware" class="figure mx-auto d-block"><div class="figcaption">Hardware</div>
+</figure><section><h2 class="section-heading" id="measurement-workflows">Measurement Workflows<a class="anchor" aria-label="anchor" href="#measurement-workflows"></a></h2>
+<hr class="half-width"><p>To learn how an application utilizes the underlying hardware, we
+employ third party tools that read usage metrics from <em>performance
+counters</em>, often implemented either in the operating system kernels
+(software) or the CPUs directly (hardware).</p>
+<p>These third party tools often rely on similar sources for the
+information, but focus on different issues and therefore choose
+different data processing and visualization methods.</p>
+<p>In general there are two different approaches to performance
+measurements:</p>
+<ol style="list-style-type: decimal"><li>
+<strong>Sampling</strong>: Read out performance counters and the
+application state at regular intervals</li>
+<li>
+<strong>Tracing</strong>: Record every event and operation</li>
+</ol><p><em>Tracing</em> is more exact and allows for very detailed analysis
+of specific situations and issues of an application. On the other hand,
+it results in very large amounts of measurement data that even affects
+the applications performance and may be impractical in some situations.
+<em>Sampling</em> on the other hand is less exact and results in a
+statistical description of the applications behavior. Sampling has a
+smaller <em>measurement overhead</em>, but may suffer from slight
+mis-attributions of the measurements to wrong sections of the code and
+fluctuating results between multiple measurements.</p>
+<p>Results are often either stored and analysed over time in a
+<em>timeline</em>, or aggregated into a final measurement, often called
+a <em>profile</em>.</p>
+
+<div id="pick-your-tool-1" class="callout">
 <div class="callout-square">
 <i class="callout-icon" data-feather="bell"></i>
 </div>
 <span class="callout-header">Callout</span>
-<div class="callout-inner">
+<div id="pick-your-tool-1" class="callout-inner">
+<h3 class="callout-title">Pick your tool!</h3>
 <div class="callout-content">
-<p>Here you can choose between three alternative perspectives on our
-job:</p>
+<p>For the following episodes, you can choose between three alternative
+perspectives on our jobs. Choose one tool and stick to it for the rest
+of the course. The alternatives are:</p>
 <ol style="list-style-type: decimal"><li>
 <a href="https://clustercockpit.org/" class="external-link"><em>ClusterCockpit</em></a>: A
-job monitoring service available on many of our clusters. Needs to be
-centrally maintained by your HPC administration team.</li>
+job monitoring service available on many clusters in NRW. Sampled
+measurements of the application are stored and visualized in a timeline
+for each job. It needs to be centrally provided by your HPC
+administration team.</li>
 <li>
 <a href="https://docs.linaroforge.com/25.0.4/html/forge/performance_reports/index.html" class="external-link"><em>Linaro
-Forge Performance Reports</em></a>: A commercial application providing a
-single page performance overview of your job. Your cluster may have
-licenses available.</li>
+Forge Performance Reports</em></a>: A commercial sampling-based profiler
+providing a single page performance overview of your job. Access to
+licenses required.</li>
 <li>
 <em>TBD</em>: A free, open source tool/set of tools, to get a
 general performance overview of your job.</li>
-</ol><p>Performance counters and permissions, may require
-<code>--exclusive</code>, depends on system! Look at documentation /
-talk to your administrators / support.</p>
-<pre><code>cap_perfmon,cap_sys_ptrace,cap_syslog=ep
-kernel.perf_event_paranoid</code></pre>
+</ol><p>These tools may require access to performance counters, sometimes
+granted by requesting <code>--exclusive</code>, but it really depends on
+the system. Look at your cluster documentation or talk to your HPC
+support staff.</p>
 </div>
 </div>
 </div>
-<p>Live coding:</p>
-<ul><li>Set up the main tool. How do I access it? How can I use it with my
-job?</li>
-<li>Run snowman with 8 cores</li>
-</ul><div class="tabs">
+
+<p>Let us set up our performance measurement tool by running an example
+job with 8 cores. To give the job enough work to be worth measuring,
+let’s go with <span class="math inline">\(2263 \times 2263\)</span>
+pixels and <code>-spp=512</code>.</p>
+<div class="tabs">
 <nav><div id="nav-tab-1" class="nav nav-tabs" role="tablist">
 <button class="nav-link active" id="nav-tab-1-ClusterCockpit" name="ClusterCockpit" data-bs-toggle="tab" data-bs-target="#nav-tabpanel-1-ClusterCockpit" type="button" role="tab" aria-controls="nav-tabpanel-1-ClusterCockpit" aria-selected="true">
   <h3 class="tab-header" id="nav-tab-heading-1-ClusterCockpit">
@@ -474,24 +517,63 @@ job?</li>
 </div>
 </nav><div id="nav-tabContent-1" class="tab-content">
 <div id="nav-tabpanel-1-ClusterCockpit" class="tab-pane show active" role="tabpanel" aria-labelledby="nav-tab-1-ClusterCockpit">
-<ol style="list-style-type: decimal"><li>Setup: webpage &amp; login. An conditions on when it is enabled in
-your particular cluster?</li>
-<li>If always enabled: figure out jobid of previous 8-core job from
-Episode 4</li>
-</ol></div>
+<ol style="list-style-type: decimal"><li>Submit a job running long enough, i.e. at least <span class="math inline">\(5\)</span> minutes, such that it is picked up by
+cluster cockpit:</li>
+</ol><div class="codewrapper sourceCode" id="cb2">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="co">#!/usr/bin/bash</span></span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a><span class="co">#SBATCH --time=01:00:00</span></span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a><span class="co">#SBATCH --ntasks=8</span></span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a><span class="co">#SBATCH --nodes=1</span></span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a><span class="co">#SBATCH --mem-per-cpu=1000MB</span></span>
+<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a><span class="ex">module</span> load 2025 GCC/13.2.0 OpenMPI/4.1.6 buildenv/default Boost/1.83.0 CMake/3.27.6 libpng/1.6.40</span>
+<span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a></span>
+<span id="cb2-9"><a href="#cb2-9" tabindex="-1"></a><span class="ex">mpirun</span> <span class="at">--</span> ./build/raytracer <span class="at">-width</span><span class="op">=</span>2263 <span class="at">-height</span><span class="op">=</span>2263 <span class="at">-spp</span><span class="op">=</span>512 <span class="at">-threads</span><span class="op">=</span>1 <span class="at">-png</span> <span class="st">"</span><span class="va">$(</span><span class="fu">date</span> +%Y-%m-%d_%H%M%S<span class="va">)</span><span class="st">.png"</span></span></code></pre>
+</div>
+<ol start="2" style="list-style-type: decimal"><li>Log in the ClusterCockpit web interface of your HPC system</li>
+<li>Go to <code>My Jobs</code> and click on the job with the same Slurm
+job id, once it is available</li>
+</ol><figure><img src="fig/cc/cc_bar.png" alt='"My Jobs" tab in the Cluster Cockpit web UI' class="figure mx-auto d-block"></figure></div>
 <div id="nav-tabpanel-1-PerformanceReports" class="tab-pane" role="tabpanel" aria-labelledby="nav-tab-1-PerformanceReports">
-<ol style="list-style-type: decimal"><li>(Check for licenses?)</li>
-<li>Setup: load software modules</li>
-<li>Submit job with <code>perf-report</code>
-</li>
-</ol></div>
+<ol style="list-style-type: decimal"><li>Check your cluster documentation and/or module system if licenses
+and the software are available</li>
+<li>Submit a job loading the Linaro Forge module and starting
+<code>mpirun</code> with the <code>perf-report</code> application:</li>
+</ol><div class="codewrapper sourceCode" id="cb3">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="co">#!/usr/bin/bash</span></span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="co">#SBATCH --time=01:00:00</span></span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a><span class="co">#SBATCH --ntasks=8</span></span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a><span class="co">#SBATCH --nodes=1</span></span>
+<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a><span class="co">#SBATCH --mem-per-cpu=1000MB</span></span>
+<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a></span>
+<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a><span class="ex">module</span> load 2025 LinaroForge/25.1.1 GCC/13.2.0 OpenMPI/4.1.6 buildenv/default Boost/1.83.0 CMake/3.27.6 libpng/1.6.40</span>
+<span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a></span>
+<span id="cb3-9"><a href="#cb3-9" tabindex="-1"></a><span class="ex">perf-report</span> mpirun <span class="at">--</span> ./build/raytracer <span class="at">-width</span><span class="op">=</span>2263 <span class="at">-height</span><span class="op">=</span>2263 <span class="at">-spp</span><span class="op">=</span>512 <span class="at">-threads</span><span class="op">=</span>1 <span class="at">-png</span> <span class="st">"</span><span class="va">$(</span><span class="fu">date</span> +%Y-%m-%d_%H%M%S<span class="va">)</span><span class="st">.png"</span></span></code></pre>
+</div>
+<p>Performance report results are created as a <code>.html</code> and
+<code>.txt</code> file alongside the jobs regular Slurm logs.</p>
+</div>
 <div id="nav-tabpanel-1-TBD" class="tab-pane" role="tabpanel" aria-labelledby="nav-tab-1-TBD">
 <p>N/A</p>
 </div>
 </div>
 </div>
-</section><section><h2 class="section-heading" id="general-report">General report<a class="anchor" aria-label="anchor" href="#general-report"></a></h2>
-<hr class="half-width"><div class="tabs">
+</section><section><h2 class="section-heading" id="general-report">General Report<a class="anchor" aria-label="anchor" href="#general-report"></a></h2>
+<hr class="half-width"><p>To step beyond a basic wall-time analysis, we employ the measurement
+tool to get a general overview of our applications behavior. Here, we
+typically try to answer questions like</p>
+<ul><li>are available CPU, memory, disk, and network capabilities utilized
+well?</li>
+<li>does the jobs performance depend on a particular hardware
+component?</li>
+<li>is there an obvious contention point that should be eliminated?</li>
+</ul><div class="section level3">
+<h3 id="first-overview">First Overview<a class="anchor" aria-label="anchor" href="#first-overview"></a></h3>
+<div class="tabs">
 <nav><div id="nav-tab-2" class="nav nav-tabs" role="tablist">
 <button class="nav-link active" id="nav-tab-2-ClusterCockpit" name="ClusterCockpit" data-bs-toggle="tab" data-bs-target="#nav-tabpanel-2-ClusterCockpit" type="button" role="tab" aria-controls="nav-tabpanel-2-ClusterCockpit" aria-selected="true">
   <h3 class="tab-header" id="nav-tab-heading-2-ClusterCockpit">
@@ -511,73 +593,308 @@ Episode 4</li>
 </div>
 </nav><div id="nav-tabContent-2" class="tab-content">
 <div id="nav-tabpanel-2-ClusterCockpit" class="tab-pane show active" role="tabpanel" aria-labelledby="nav-tab-2-ClusterCockpit">
-<ul><li>Job meta data</li>
-<li>Footprint</li>
-<li>Roofline plot</li>
-<li>Detailed plots</li>
-<li>Tabled statistics</li>
-</ul><ol style="list-style-type: decimal"><li>Go to webpage</li>
-<li>Navigate to the job</li>
-<li>Discuss overall info on a broad level
-<ul><li>Job meta data</li>
-<li>Footprint</li>
-<li>Roofline plot</li>
-<li>Detailed plots</li>
-<li>Tabled statistics</li>
-</ul></li>
-</ol></div>
+<p>The job view of a particular job in ClusterCockpit begins with three
+panels to summarize the job.</p>
+<figure><img src="fig/cc/job_metadata.png" alt="ClusterCockpit Job Info panel" class="figure mx-auto d-block"></figure><p>The <em>Job Info</em> panel summarizes Slurm metadata about the job,
+e.g. job ID, accounts, start time, duration, etc.</p>
+<figure><img src="fig/cc/job_footprint.png" alt="Cluster Cockpit Footprint panel summarizing central job characteristics" class="figure mx-auto d-block"></figure><p>The <em>Footprint</em> panel summarizes selected performance
+characteristics of the job. It categorizes values in a traffic-light
+system, so yellow and red indicators motivates further investigation.
+The exact list and type of metrics depends on the ClusterCockpit
+configuration, which is prepared by the administrator of the
+service.</p>
+<p>Here, all three values are in an acceptable range:</p>
+<ul><li>
+<code>cpu_load_core (avg)</code> is the average load per core.
+Across all <span class="math inline">\(8\)</span> cores of the job, each
+one was on average utilized at 86% (<span class="math inline">\(0.86\)</span>). The perfect value would be <span class="math inline">\(1\)</span>
+</li>
+<li>
+<code>cpu_user (avg)</code> is the average CPU utilization by user
+processes, i.e. the application, opposed to system processes or even
+idle cycles</li>
+<li>
+<code>job_mem_used (max)</code> shows the maximum value that has
+been measured across the jobs duration. With <span class="math inline">\(3.75\)</span> GB per core, the job could have used
+up to <span class="math inline">\(30\)</span> GB of memory. Any value
+below that is acceptable, but we could consider lower <code>--mem</code>
+settings in our Slurm job configuration.</li>
+</ul><figure><img src="fig/cc/job_roofline.png" alt="Cluster Cockpit Roofline plot of a job" class="figure mx-auto d-block"></figure><p>In jobs performing floating point operations, i.e. any numeric
+operation, which are very common in HPC, a <strong>Roofline
+plot</strong> is a common visualization of the jobs performance.</p>
+<p>On the x-axis, <em>computational intensity</em> shows the ratio of
+floating point operations compared to the loaded data from memory. Many
+calculations on fewer data result in a large computational intensity
+(<em>compute bound</em>). Few calculations on more data results in less
+computational density (<em>memory bound</em>).</p>
+<p>The diagonal visualizes the maximum possible performance, limited by
+the memory bandwidth.</p>
+<p>The horizontal lines represent the maximum possible performance,
+limited by the number of possible scalar operations (lower line) and
+vectorized instructions (upper line).</p>
+<p>Color-coded dots show how close the application came to the physical
+performance limits over the job duration.</p>
+<p>There is no data visible for jobs that employ no floating point
+operations, which unfortunately is the case here.</p>
+<figure><img src="fig/cc/job_select_metrics.png" alt="" class="figure mx-auto d-block"></figure><p>More detailed plots for each individual metric are available and can
+be configured through the <em>Select Metrics</em> button:</p>
+</div>
 <div id="nav-tabpanel-2-PerformanceReports" class="tab-pane" role="tabpanel" aria-labelledby="nav-tab-2-PerformanceReports">
-<ul><li>Computing</li>
-<li>Memory</li>
-<li>Communication</li>
-<li>…</li>
-</ul><ol style="list-style-type: decimal"><li>Identify result files (txt, html)</li>
-<li>Look at txt with editor</li>
-<li>Copy html to local computer &amp; open it with browser</li>
-<li>Discuss report on a broad level
-<ul><li>Computing</li>
-<li>Memory</li>
-<li>Communication</li>
-<li>…</li>
-</ul></li>
-</ol></div>
+<p>Linaro Forge <code>perf-report</code> results are stored in a HTML or
+<code>.txt</code> format, for example:</p>
+<ul><li><a href="data/raytracer_8p_1n_2025-12-16_09-53.html">Linaro
+<code>perf-report</code> (HTML version)</a></li>
+<li><a href="data/raytracer_8p_1n_2025-12-16_09-53.txt">Linaro
+<code>perf-report</code> (txt version)</a></li>
+</ul><p>The text file is readable from the command line, the HTML version,
+however, provides better rendered visualizations and formatting.</p>
+<figure><img src="fig/linaro/linaro_1.png" alt="Linaro perf-report overview 1" class="figure mx-auto d-block"></figure><p>At the top, the Performance Report states metadata about the
+underlying computer hardware and the application execution. The
+application is summarized in terms of computational intensity, time
+spent in MPI calls, and impact of disk I/O operations.</p>
+<p>The application is automatically classified in these dimensions and
+accompanied with suggestions of further investigation.</p>
+<p>Here, our application spends 99.5% in computations, so any
+performance optimization has to focus on improving calculations in the
+CPU.</p>
+</div>
 <div id="nav-tabpanel-2-TBD" class="tab-pane" role="tabpanel" aria-labelledby="nav-tab-2-TBD">
 <p>N/A</p>
 </div>
 </div>
 </div>
-</section><section><h2 class="section-heading" id="how-does-performance-relate-to-hardware">How Does Performance Relate to Hardware?<a class="anchor" aria-label="anchor" href="#how-does-performance-relate-to-hardware"></a></h2>
-<hr class="half-width"><p>(Following this structure throughout the course, trying to understand
-the performance in these terms)</p>
-<p>Broad dimensions of performance:</p>
-<ul><li>CPU (Front- and Backend, FLOPS)
-<ul><li>Frontend: decoding instructions, branch prediction, pipeline</li>
-<li>Backend: getting data from memory, cache hierarchy &amp;
-alignment</li>
-<li>Raw calculations</li>
-<li>Vectorization</li>
-<li>Out-of-order execution</li>
-</ul></li>
-<li>Accelerators (e.g. GPUs)
-<ul><li>More calculations</li>
-<li>Offloading</li>
-<li>Memory &amp; communication models</li>
-</ul></li>
-<li>Memory (data hierarchy)
-<ul><li>Working memory, reading data from/to disk</li>
-<li>Bandwidth of data</li>
-</ul></li>
-<li>I/O (broader data hierarchy: disk, network)
-<ul><li>Stored data</li>
-<li>Local disk (caching)</li>
-<li>Parallel fs (cluster-wide)</li>
-<li>MPI-Communiction</li>
-</ul></li>
-<li>Parallel timeline (synchronization, etc.)
-<ul><li>Application logic</li>
-</ul></li>
-</ul><figure><img src="fig/JobEfficiency.drawio.png" alt="Hardware" class="figure mx-auto d-block"><div class="figcaption">Hardware</div>
-</figure><div id="exercise-match-application-behavior-to-hardware" class="callout challenge">
+</div>
+<div class="section level3">
+<h3 id="cpu">CPU<a class="anchor" aria-label="anchor" href="#cpu"></a></h3>
+<p>CPU performance can be categorized in three terms</p>
+<ol style="list-style-type: decimal"><li>Front-end utilization: preparation and scheduling of instructions of
+program code provided through the cache hierarchy</li>
+<li>Computation: Arithmetic and logical operations with various data
+types, including the utilization of vectorized instructions, etc.</li>
+<li>Back-end utilization: loading and storing of data in the cache
+hierarchy</li>
+</ol><p>Front- and backend infrastructure is often duplicated to provide
+simultaneous multithreading to the arithmetic logical unit, since
+providing data and instructions in a sufficient amount is often the
+limiting factor in everyday calculations. On HPC systems, it is very
+much application dependent if SMT is beneficial or not. SMT is often
+disabled, since code is often optimized to maximize computational
+intensity.</p>
+<div class="tabs">
+<nav><div id="nav-tab-3" class="nav nav-tabs" role="tablist">
+<button class="nav-link active" id="nav-tab-3-ClusterCockpit" name="ClusterCockpit" data-bs-toggle="tab" data-bs-target="#nav-tabpanel-3-ClusterCockpit" type="button" role="tab" aria-controls="nav-tabpanel-3-ClusterCockpit" aria-selected="true">
+  <h3 class="tab-header" id="nav-tab-heading-3-ClusterCockpit">
+  ClusterCockpit
+  </h3>
+</button>
+<button class="nav-link" id="nav-tab-3-PerformanceReports" name="PerformanceReports" data-bs-toggle="tab" data-bs-target="#nav-tabpanel-3-PerformanceReports" type="button" role="tab" aria-controls="nav-tabpanel-3-PerformanceReports" aria-selected="false">
+  <h3 class="tab-header" id="nav-tab-heading-3-PerformanceReports">
+  Performance Reports
+  </h3>
+</button>
+<button class="nav-link" id="nav-tab-3-TBD" name="TBD" data-bs-toggle="tab" data-bs-target="#nav-tabpanel-3-TBD" type="button" role="tab" aria-controls="nav-tabpanel-3-TBD" aria-selected="false">
+  <h3 class="tab-header" id="nav-tab-heading-3-TBD">
+  TBD
+  </h3>
+</button>
+</div>
+</nav><div id="nav-tabContent-3" class="tab-content">
+<div id="nav-tabpanel-3-ClusterCockpit" class="tab-pane show active" role="tabpanel" aria-labelledby="nav-tab-3-ClusterCockpit">
+<p>ClusterCockpit captures man dedicated CPU metrics and provides a
+timeline visualization for each.</p>
+<figure><img src="fig/cc/job_cpu_load_core.png" alt="ClusterCockpit cpu load per core" class="figure mx-auto d-block"></figure><p>The <code>cpu_load_core</code> shows the load of each individual core
+of the job. The <code>core</code> value of the drop down menu indicates
+a per-core metric. Other metrics are only available per socket or even
+per whole node. These coarser metrics may be affected by multiple jobs
+on shared nodes, so check the context of each metric you study.</p>
+<p>Here, the <code>cpu_load_core</code> reaches 1 after an initial ramp
+up phase. A value of significantly larger than 1 indicates an
+over-subscription where more processes/threads share the same CPU core.
+This can sometimes happen in an erroneous mismatch between OpenMP
+threads or MPI processes and Slurm tasks or threads per Slurm task.</p>
+<figure><img src="fig/cc/job_flops.png" alt="ClusterCockpit flops_any metric" class="figure mx-auto d-block"></figure><p><code>flops_any</code> shows any floating point operation on AMD
+CPUs, i.e. single and double precision operations are combined in a
+single metric. A few FLOPs occur, but the example raytracer application
+does rely on many other operations. Therefore, a low
+<code>flops_any</code> is not necessarily critical in this case.</p>
+<figure><img src="fig/cc/job_ipc.png" alt="" class="figure mx-auto d-block"></figure><p><code>ipc</code> (Instructions per Clock cycle) measures the number
+of operations the CPU is performing on average for each tick of its
+clock. CPUs are capable of executing more than one instruction per clock
+tick, so a value of about <span class="math inline">\(2.25\)</span>
+indicates that the CPU is “busy enough”.</p>
+</div>
+<div id="nav-tabpanel-3-PerformanceReports" class="tab-pane" role="tabpanel" aria-labelledby="nav-tab-3-PerformanceReports">
+<p>Performance Reports summarizes multiple CPU-related measurements.</p>
+<figure><img src="fig/linaro/linaro_cpu.png" alt="" class="figure mx-auto d-block"></figure><p>The raytracer spends 99.5% of its time in CPU-related operations.
+This breaks down into scalar numeric operations (25.2%) and memory
+access (63.2%). It recommends to study the memory access patterns and
+utilization of vectorized instructions as optimization approaches.</p>
+<figure><img src="fig/linaro/linaro_thread.png" alt="" class="figure mx-auto d-block"></figure><p>The Threads section summarizes threading behavior for multithreaded
+applications. A third of the time is spend in thread synchronization
+operations.</p>
+<figure><img src="fig/linaro/linaro_thread_affinity.png" alt="" class="figure mx-auto d-block"></figure><p>In the “Thread Affinity” section, the applications association
+between individual threads and processes to specific CPU cores is
+visualized. The 8 MPI processes of the example job should be explicitly
+mapped (pinned) to 8 cores of the job. Here, the thread affinity is not
+measured correctly, due to a bug in the underlying software.</p>
+</div>
+<div id="nav-tabpanel-3-TBD" class="tab-pane" role="tabpanel" aria-labelledby="nav-tab-3-TBD">
+<p>N/A</p>
+</div>
+</div>
+</div>
+</div>
+<div class="section level3">
+<h3 id="memory">Memory<a class="anchor" aria-label="anchor" href="#memory"></a></h3>
+<p>Memory utilization is characterized in terms of used capacity,
+bandwidth and access latencies.</p>
+<div class="tabs">
+<nav><div id="nav-tab-4" class="nav nav-tabs" role="tablist">
+<button class="nav-link active" id="nav-tab-4-ClusterCockpit" name="ClusterCockpit" data-bs-toggle="tab" data-bs-target="#nav-tabpanel-4-ClusterCockpit" type="button" role="tab" aria-controls="nav-tabpanel-4-ClusterCockpit" aria-selected="true">
+  <h3 class="tab-header" id="nav-tab-heading-4-ClusterCockpit">
+  ClusterCockpit
+  </h3>
+</button>
+<button class="nav-link" id="nav-tab-4-PerformanceReports" name="PerformanceReports" data-bs-toggle="tab" data-bs-target="#nav-tabpanel-4-PerformanceReports" type="button" role="tab" aria-controls="nav-tabpanel-4-PerformanceReports" aria-selected="false">
+  <h3 class="tab-header" id="nav-tab-heading-4-PerformanceReports">
+  Performance Reports
+  </h3>
+</button>
+<button class="nav-link" id="nav-tab-4-TBD" name="TBD" data-bs-toggle="tab" data-bs-target="#nav-tabpanel-4-TBD" type="button" role="tab" aria-controls="nav-tabpanel-4-TBD" aria-selected="false">
+  <h3 class="tab-header" id="nav-tab-heading-4-TBD">
+  TBD
+  </h3>
+</button>
+</div>
+</nav><div id="nav-tabContent-4" class="tab-content">
+<div id="nav-tabpanel-4-ClusterCockpit" class="tab-pane show active" role="tabpanel" aria-labelledby="nav-tab-4-ClusterCockpit">
+<figure><img src="fig/cc/job_mem_used.png" alt="" class="figure mx-auto d-block"></figure><p>The <code>job_mem_used</code> metric measures the memory capacity of
+a given job at sampled intervals as reported by the Slurm system. A job
+is limited to the maximum requested amount of memory and this limit
+should never be exceeded. If the application has very short-lived
+allocations, sharp peaks could fall in between the measured samples and
+not be captured in this metric.</p>
+<figure><img src="fig/cc/job_mem_bw.png" alt="" class="figure mx-auto d-block"></figure><p>The <code>mem_bw</code> metric represents the memory bandwidth at the
+socket-level of the CPU. Together with <code>flops_any</code>, this
+information is used to create the roofline plot from the job overview
+panels.</p>
+<p>Since this measurement is only available on the socket-level, submit
+critical measurement jobs with <code>--exclusive</code> to not be
+affected by other jobs on shared worker nodes.</p>
+</div>
+<div id="nav-tabpanel-4-PerformanceReports" class="tab-pane" role="tabpanel" aria-labelledby="nav-tab-4-PerformanceReports">
+<figure><img src="fig/linaro/linaro_mem.png" alt="" class="figure mx-auto d-block"></figure><p>Performance Reports summarizes the memory utilization as a peak and
+mean measurement for all MPI processes. Here, the results suggest a
+possible imbalance between MPI processes, since some have significantly
+more memory demand than others (<span class="math inline">\(447\)</span>
+vs. <span class="math inline">\(212\)</span> MiB on average)</p>
+<p>If calculations depend directly on the amount of data in memory, then
+this correlates with unevenly busy MPI processes.</p>
+<p>The memory usage over all is very small, so we may be committing too
+many resources to the amount of calculations in the job.</p>
+</div>
+<div id="nav-tabpanel-4-TBD" class="tab-pane" role="tabpanel" aria-labelledby="nav-tab-4-TBD">
+<p>N/A</p>
+</div>
+</div>
+</div>
+</div>
+<div class="section level3">
+<h3 id="energy">Energy<a class="anchor" aria-label="anchor" href="#energy"></a></h3>
+<div class="tabs">
+<nav><div id="nav-tab-5" class="nav nav-tabs" role="tablist">
+<button class="nav-link active" id="nav-tab-5-ClusterCockpit" name="ClusterCockpit" data-bs-toggle="tab" data-bs-target="#nav-tabpanel-5-ClusterCockpit" type="button" role="tab" aria-controls="nav-tabpanel-5-ClusterCockpit" aria-selected="true">
+  <h3 class="tab-header" id="nav-tab-heading-5-ClusterCockpit">
+  ClusterCockpit
+  </h3>
+</button>
+<button class="nav-link" id="nav-tab-5-PerformanceReports" name="PerformanceReports" data-bs-toggle="tab" data-bs-target="#nav-tabpanel-5-PerformanceReports" type="button" role="tab" aria-controls="nav-tabpanel-5-PerformanceReports" aria-selected="false">
+  <h3 class="tab-header" id="nav-tab-heading-5-PerformanceReports">
+  Performance Reports
+  </h3>
+</button>
+<button class="nav-link" id="nav-tab-5-TBD" name="TBD" data-bs-toggle="tab" data-bs-target="#nav-tabpanel-5-TBD" type="button" role="tab" aria-controls="nav-tabpanel-5-TBD" aria-selected="false">
+  <h3 class="tab-header" id="nav-tab-heading-5-TBD">
+  TBD
+  </h3>
+</button>
+</div>
+</nav><div id="nav-tabContent-5" class="tab-content">
+<div id="nav-tabpanel-5-ClusterCockpit" class="tab-pane show active" role="tabpanel" aria-labelledby="nav-tab-5-ClusterCockpit">
+<figure><img src="fig/cc/job_energy.png" alt="" class="figure mx-auto d-block"></figure><p>Depending on the ClusterCockpit configuration, an energy demand is
+displayed below the job info panels. This measurement is highly
+dependent on hardware configurations of your HPC systems, so the
+estimates may vary. They are often based on CPU packe power
+measurements, which are unlikely to cover the whole energy demand of the
+node, e.g. omitting disks, fans, etc. In other cases, the energy may be
+estimated from power supply measurements and scaled to CPU activity to
+get a more accurate estimate.</p>
+<p>These estimates often still not include network, parallel filesystem
+components and cooling of the clusters. Nevertheless, the estimate is a
+great tool to identify the scale of the jobs energy demand.</p>
+</div>
+<div id="nav-tabpanel-5-PerformanceReports" class="tab-pane" role="tabpanel" aria-labelledby="nav-tab-5-PerformanceReports">
+<figure><img src="fig/linaro/linaro_energy.png" alt="" class="figure mx-auto d-block"></figure><p>In cases where Performance Reports has user access to energy counters
+of the operating system, it can also summarize the CPUs and systems
+energy expenditure. Here, we are unfortunately missing the required
+access to the systems “RAPL” interface.</p>
+<p>Your HPC system may have a way to enable access to energy counters,
+e.g. for exclusive jobs. Consult your clusters documentation or support
+for more information.</p>
+</div>
+<div id="nav-tabpanel-5-TBD" class="tab-pane" role="tabpanel" aria-labelledby="nav-tab-5-TBD">
+<p>N/A</p>
+</div>
+</div>
+</div>
+</div>
+<div class="section level3">
+<h3 id="miscellaneous">Miscellaneous<a class="anchor" aria-label="anchor" href="#miscellaneous"></a></h3>
+<p>Typically, many more measurements and perspectives on the data are
+available for each tool.</p>
+<div class="tabs">
+<nav><div id="nav-tab-6" class="nav nav-tabs" role="tablist">
+<button class="nav-link active" id="nav-tab-6-ClusterCockpit" name="ClusterCockpit" data-bs-toggle="tab" data-bs-target="#nav-tabpanel-6-ClusterCockpit" type="button" role="tab" aria-controls="nav-tabpanel-6-ClusterCockpit" aria-selected="true">
+  <h3 class="tab-header" id="nav-tab-heading-6-ClusterCockpit">
+  ClusterCockpit
+  </h3>
+</button>
+<button class="nav-link" id="nav-tab-6-PerformanceReports" name="PerformanceReports" data-bs-toggle="tab" data-bs-target="#nav-tabpanel-6-PerformanceReports" type="button" role="tab" aria-controls="nav-tabpanel-6-PerformanceReports" aria-selected="false">
+  <h3 class="tab-header" id="nav-tab-heading-6-PerformanceReports">
+  Performance Reports
+  </h3>
+</button>
+<button class="nav-link" id="nav-tab-6-TBD" name="TBD" data-bs-toggle="tab" data-bs-target="#nav-tabpanel-6-TBD" type="button" role="tab" aria-controls="nav-tabpanel-6-TBD" aria-selected="false">
+  <h3 class="tab-header" id="nav-tab-heading-6-TBD">
+  TBD
+  </h3>
+</button>
+</div>
+</nav><div id="nav-tabContent-6" class="tab-content">
+<div id="nav-tabpanel-6-ClusterCockpit" class="tab-pane show active" role="tabpanel" aria-labelledby="nav-tab-6-ClusterCockpit">
+<figure><img src="fig/cc/job_table.png" alt="" class="figure mx-auto d-block"></figure><p>ClusterCockpit provides a detailed statistics table to all
+measurements involved with a job.</p>
+</div>
+<div id="nav-tabpanel-6-PerformanceReports" class="tab-pane" role="tabpanel" aria-labelledby="nav-tab-6-PerformanceReports">
+<p><img src="fig/linaro/linaro_mpi.png" alt="" class="figure"> Performance Reports
+also summarizes the applications behavior in terms of MPI calls,
+e.g. time spent in collective calls involving all processors, or
+point-to-point communications.</p>
+<p>In larger MPI applications, this can be of great help identify issues
+in MPI programming. The example application has mostly independent MPI
+processes, where only initial data is scattered, and final results are
+gathered between processes.</p>
+<p><img src="fig/linaro/linaro_io.png" alt="" class="figure"> The I/O block
+summarizes measurements of interactions with the local file systems.
+Here, no I/O operations are affecting the applications performance at
+all.</p>
+</div>
+<div id="nav-tabpanel-6-TBD" class="tab-pane" role="tabpanel" aria-labelledby="nav-tab-6-TBD">
+<p>N/A</p>
+</div>
+</div>
+</div>
+<div id="exercise-match-application-behavior-to-hardware" class="callout challenge">
 <div class="callout-square">
 <i class="callout-icon" data-feather="zap"></i>
 </div>
@@ -616,6 +933,7 @@ accelerators.</p>
 <li>Memory (size)</li>
 <li>I/O (disk)</li>
 </ol></div>
+</div>
 </div>
 </div>
 </div>
@@ -706,7 +1024,7 @@ any links that you are not going to use.
   "url": "https://stderr-enst.github.io/jobefficiency/05_performancereports.html",
   "identifier": "https://stderr-enst.github.io/jobefficiency/05_performancereports.html",
   "dateCreated": "2025-03-28",
-  "dateModified": "2025-11-11",
+  "dateModified": "2026-02-24",
   "datePublished": "2026-02-24"
 }
 

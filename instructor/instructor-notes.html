@@ -692,41 +692,35 @@ understand better how it behaves</li>
 <p>What we’re doing here:</p>
 <ul>
 <li>Get a complete picture</li>
-<li>Introduce missing metrics / definitions, and popular representations
-of data, e.g. Roofline</li>
+<li>Introduce additional metrics / definitions, and popular
+representations of data, e.g. Roofline</li>
 <li>Relate to hardware on the same level of detail</li>
 </ul>
 <hr>
 <br><h3 id="05_performancereports-headingInstructor2">
-<a href="05_performancereports.html#headingInstructor2">Pick a main tool</a><a class="anchor" aria-label="anchor" href="#05_performancereports-headingInstructor2"></a>
+<a href="05_performancereports.html#headingInstructor2">TODO: Reduce scope a bit</a><a class="anchor" aria-label="anchor" href="#05_performancereports-headingInstructor2"></a>
 </h3>
-<p>We go with three alternatives here, pick one an stick to it
-throughout your course, but highlight that there are alternatives and
-learners may not have access to certain tools on any cluster.</p>
+<ul>
+<li>Performance of all central components may be too much. Maybe split
+it into another episode?</li>
+<li>General areas of computer hardware may be too much to ask as
+well</li>
+</ul>
 <hr>
 <br><h3 id="05_performancereports-headingInstructor3">
-<a href="05_performancereports.html#headingInstructor3">ToDo: Connect Hardware to Performance Measurements</a><a class="anchor" aria-label="anchor" href="#05_performancereports-headingInstructor3"></a>
+<a href="05_performancereports.html#headingInstructor3">Pick your tool!</a><a class="anchor" aria-label="anchor" href="#05_performancereports-headingInstructor3"></a>
 </h3>
-<p>Introduce hardware on the same level of detail and with the same
-terms as the performance reports by ClusterCockpit, LinaroForge, etc.,
-as soon as they appear. Only introduce what we need, to avoid info dump.
-But point to additional information that gives a complete overview -&gt;
-hpc-wiki!</p>
+<p>We move on with three alternatives here. Pick one an stick to it
+throughout the rest of the course.</p>
+<p>Consider mentioning alternatives and that learners may not have
+access to certain tools on every cluster, e.g. missing licenses for
+Linaro Forge.</p>
 <hr>
 <br><h3 id="05_performancereports-headingInstructor4">
-<a href="05_performancereports.html#headingInstructor4">ToDo: Clarify relation to hardware in this course</a><a class="anchor" aria-label="anchor" href="#05_performancereports-headingInstructor4"></a>
+<a href="05_performancereports.html#headingInstructor4">TODO: Discuss requirements in more detail?</a><a class="anchor" aria-label="anchor" href="#05_performancereports-headingInstructor4"></a>
 </h3>
-<p>Maybe we should either focus on components (CPUs, memory, disk,
-accelerators, network cards) or functional entities (compute, data
-hierarchy, bandwidth, latency, parallel timelines)</p>
-<p>We shouldn’t go into too much detail here. Define broad categories
-where performance can be good or bad. (calculations, data transfers,
-application logic, research objective (is the calculation
-meaningful?))</p>
-<p>Reuse categories in the same order and fashion throughout the course,
-i.e. point out in what area a discovered inefficiency occurs.</p>
-<p>Introduce detail about hardware later where it is needed, e.g. NUMA
-for pinning and hints.</p>
+<pre><code>cap_perfmon,cap_sys_ptrace,cap_syslog=ep
+kernel.perf_event_paranoid</code></pre>
 <hr>
 <br></section><section id="06_pinning"><h2 class="section-heading"><a href="06_pinning.html">Pinning</a></h2>
 <hr class="half-width">
