@@ -636,7 +636,7 @@ make mpi-mem-report.so
 cd ..
 ```
 
-::: warning
+::: caution
 
 Make sure you have a working MPI C Compiler (check with `which mpicc`). It is part of the same modules that you need to run the example raytracer application.
 

@@ -1,0 +1,77 @@
+Command:        mpirun -- ../build/raytracer -width=2263 -height=2263 -spp=512 -threads=1 -png 2025-12-16_095255.png
+Resources:      1 node (64 physical, 64 logical cores per node)
+Memory:         251 GiB per node
+Tasks:          8 processes
+Machine:        wn21266.pleiades.uni-wuppertal.de
+Architecture:   x86_64
+CPU Family:     amdzen1
+Start time:     Tue Dec 16 09:53:59 2025
+Total time:     480 seconds (about 8 minutes)
+Full path:      /beegfs/errenst/jobeff_coursematerial/build
+
+Summary: raytracer is Compute-bound in this configuration
+Compute:                                     99.5%   (477.3s) |=========|
+MPI:                                          0.6%     (2.6s) ||
+I/O:                                          0.0%     (0.0s) |
+This application run was Compute-bound (based on main thread activity). A breakdown of this time and advice for investigating further is in the CPU section below.
+As very little time is spent in MPI calls, this code may also benefit from running at larger scales.
+
+CPU:
+A breakdown of the 99.5% (477.3s) CPU time:
+Scalar numeric ops:                          25.2%   (120.4s) |==|
+Vector numeric ops:                           0.3%     (1.2s) ||
+Memory accesses:                             63.2%   (301.7s) |=====|
+The per-core performance is memory-bound. Use a profiler to identify time-consuming loops and check their cache performance.
+Little time is spent in vectorized instructions. Check the compiler's vectorization advice to see why key loops could not be vectorized.
+
+MPI:
+A breakdown of the 0.6% (2.6s) MPI time:
+Time in collective calls:                   100.0%     (2.6s) |=========|
+Time in point-to-point calls:                 0.0%     (0.0s) |
+Effective process collective rate:            37.9 MB/s
+Effective process point-to-point rate:        0.00 bytes/s
+
+I/O:
+A breakdown of the 0.0% (0.0s) I/O time:
+Time in reads:                                0.0%     (0.0s) |
+Time in writes:                               0.0%     (0.0s) |
+Effective process read rate:                  0.00 bytes/s
+Effective process write rate:                 0.00 bytes/s
+No time is spent in I/O operations. There's nothing to optimize here!
+
+Threads:
+A breakdown of how multiple threads were used:
+Computation:                                 66.7% (31998.1s) |======|
+Synchronization:                             33.3% (15995.1s) |==|
+Physical core utilization:                   24.9%            |=|
+System load:                                 14.1%            ||
+Significant time is spent synchronizing threads. Check which locks cause the most overhead with a profiler.
+This may be a sign of overly fine-grained parallelism or of workload imbalance between threads.
+
+Memory:
+Per-process memory usage may also affect scaling:
+Mean process memory usage:                     212 MiB
+Peak process memory usage:                     447 MiB
+Peak node memory usage:                       4.0%            ||
+There is significant variation between peak and mean memory usage. This may be a sign of workload imbalance or a memory leak.
+The peak node memory usage is very low. Running with fewer MPI processes and more data on each process may be more efficient.
+
+Energy:
+A breakdown of how energy was used:
+CPU:                                      not supported
+System:                                   not supported
+Mean node power:                          not supported
+Peak node power:                              0.00 W
+Energy metrics are not available on this system.
+CPU metrics: Error reading /sys/class/powercap/intel-rapl:0/energy_uj: Permission denied
+
+Thread Affinity:
+A breakdown of how software threads have been pinned to logical cores (1 per physical core).
+Mean utilization:                           100.0%            |=========|
+Max load:                                     3.00 
+Migration opportunity:                        1.00 
+[ERROR] detected compute threads with overlapping affinity masks
+[ERROR] cores are oversubscribed
+[INFORMATION] consider improving node utilization by running 8 threads per node (1 thread per core).
+Consult Linaro MAP's Thread Affinity Advisor dialog for more details.
+
