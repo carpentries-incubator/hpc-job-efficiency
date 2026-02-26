@@ -478,13 +478,20 @@ if larger workloads can meaningfully contribute to project results</li>
 </ul></section><section id="05_performancereports"><h2 class="section-heading"><a href="05_performancereports.html">Performance Overview</a></h2>
 <hr class="half-width">
 <ul>
-<li>First things first, second things second, …</li>
-<li>Profiling, tracing</li>
-<li>Sampling, summation</li>
-<li>Different HPC centers may provide different approaches to this
-workflow</li>
-<li>Performance reports offer more insight into the job and application
-behavior</li>
+<li>Performance tools measure data as regular samples or by tracing
+every event</li>
+<li>The data is either processed and visualized in a timeline or
+aggregated in a final profile</li>
+<li>Job performance relates closely to contention points in physical
+hardware
+<ul>
+<li>CPU utilization (front-end, ALU, back-end), multithreading,
+vectorization</li>
+<li>Memory utilization (capacity, bandwidth, latency)</li>
+<li>Disk I/O</li>
+<li>Network I/O</li>
+</ul>
+</li>
 </ul></section><section id="06_pinning"><h2 class="section-heading"><a href="06_pinning.html">Pinning</a></h2>
 <hr class="half-width">
 <ul>
@@ -586,8 +593,8 @@ vendor-related, …</li>
   "url": "https://stderr-enst.github.io/jobefficiency/instructor/key-points.html",
   "identifier": "https://stderr-enst.github.io/jobefficiency/instructor/key-points.html",
   "dateCreated": "2025-03-28",
-  "dateModified": "2026-02-24",
-  "datePublished": "2026-02-24"
+  "dateModified": "2026-02-26",
+  "datePublished": "2026-02-26"
 }
 
   </script><script>

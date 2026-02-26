@@ -698,26 +698,32 @@ representations of data, e.g. Roofline</li>
 </ul>
 <hr>
 <br><h3 id="05_performancereports-headingInstructor2">
-<a href="05_performancereports.html#headingInstructor2">TODO: Reduce scope a bit</a><a class="anchor" aria-label="anchor" href="#05_performancereports-headingInstructor2"></a>
+<a href="05_performancereports.html#headingInstructor2">Pick and prepare your tool!</a><a class="anchor" aria-label="anchor" href="#05_performancereports-headingInstructor2"></a>
 </h3>
-<ul>
-<li>Performance of all central components may be too much. Maybe split
-it into another episode?</li>
-<li>General areas of computer hardware may be too much to ask as
-well</li>
-</ul>
+<p>We move on with three alternatives here.</p>
+<ol style="list-style-type: decimal">
+<li>
+<em>ClusterCockpit</em> is a job monitoring systems that can be
+configured to capture many performance metrics. It is easy to use, but
+has to be deployed by the cluster administration team.</li>
+<li>
+<em>Linaro Forge Performance Reports</em> provides a good first
+performance overview, but is a commercial application that requires
+access to valid licenses.</li>
+<li>
+<em>TBD</em> is a set of open source tools to create a performance
+overview independent of centralized services and licenses.</li>
+</ol>
+<p>Pick one tool and stick to it throughout the rest of the course.
+Consider mentioning alternatives and that learners may not have access
+to certain tools on every cluster, e.g. missing licenses for Linaro
+Forge.</p>
+<p>Be aware of site-specific setups, e.g. limiting access to performance
+counters, offering non-standard Slurm options during <code>sbatch</code>
+submission, and how licenses are handled.</p>
 <hr>
 <br><h3 id="05_performancereports-headingInstructor3">
-<a href="05_performancereports.html#headingInstructor3">Pick your tool!</a><a class="anchor" aria-label="anchor" href="#05_performancereports-headingInstructor3"></a>
-</h3>
-<p>We move on with three alternatives here. Pick one an stick to it
-throughout the rest of the course.</p>
-<p>Consider mentioning alternatives and that learners may not have
-access to certain tools on every cluster, e.g. missing licenses for
-Linaro Forge.</p>
-<hr>
-<br><h3 id="05_performancereports-headingInstructor4">
-<a href="05_performancereports.html#headingInstructor4">TODO: Discuss requirements in more detail?</a><a class="anchor" aria-label="anchor" href="#05_performancereports-headingInstructor4"></a>
+<a href="05_performancereports.html#headingInstructor3">TODO: Discuss requirements in more detail?</a><a class="anchor" aria-label="anchor" href="#05_performancereports-headingInstructor3"></a>
 </h3>
 <pre><code>cap_perfmon,cap_sys_ptrace,cap_syslog=ep
 kernel.perf_event_paranoid</code></pre>
@@ -928,8 +934,8 @@ many levels)</li>
   "url": "https://stderr-enst.github.io/jobefficiency/instructor/instructor-notes.html",
   "identifier": "https://stderr-enst.github.io/jobefficiency/instructor/instructor-notes.html",
   "dateCreated": "2025-03-28",
-  "dateModified": "2026-02-24",
-  "datePublished": "2026-02-24"
+  "dateModified": "2026-02-26",
+  "datePublished": "2026-02-26"
 }
 
   </script><script>

@@ -434,12 +434,21 @@ example</div>
 </figure><hr></section><section id="05_performancereports"><h2 class="section-heading"><a href="05_performancereports.html">Performance Overview</a></h2>
 <hr class="half-width">
 <h3 id="05_performancereports-figure-1">Figure 1</h3>
-<p aria-hidden="true">Image 1 of 1: ‘Hardware’</p>
-<figure><img src="fig/JobEfficiency.drawio.png" alt="Hardware" class="figure mx-auto d-block"><div class="figcaption">Hardware</div>
+<p aria-hidden="true">Image 1 of 1: ‘Diagram to visualize the data hierarchy of CPU architectures. Network, local disks, memory, and CPU caches have decreasing amounts of storage capacity, but increasing bandwidths and shorter latencies. Calculations occur in CPUs, possibly in multiple CPU cores, which may have multiple threads each, and even apply vectorized instructions.’</p>
+<figure><img src="fig/JobEfficiency.drawio.png" alt="Diagram to visualize the data hierarchy of CPU architectures. Network, local disks, memory, and CPU caches have decreasing amounts of storage capacity, but increasing bandwidths and shorter latencies. Calculations occur in CPUs, possibly in multiple CPU cores, which may have multiple threads each, and even apply vectorized instructions." class="figure mx-auto d-block"><div class="figcaption">The underlying hardware frames any performance
+analysis. Calculations are performed in multiple cores, potentially
+multiple threads per core, and even in vectorized instructions where a
+single operation is applied to multiple sets of data in a single
+instruction. Data moves through the data hierarchy to CPU cores, where
+each level “closer” to the CPU has a smaller storage capacity, but
+larger bandwidth and smaller latencies, improving access
+performance.</div>
 </figure><hr>
 <h3 id="05_performancereports-figure-2">Figure 2</h3>
-<p aria-hidden="true">Image 1 of 1: ‘"My Jobs" tab in the Cluster Cockpit web UI’</p>
-<figure><img src="fig/cc/cc_bar.png" alt='"My Jobs" tab in the Cluster Cockpit web UI' class="figure mx-auto d-block"></figure><hr>
+<p aria-hidden="true">Image 1 of 1: ‘"My Jobs" tab in the ClusterCockpit web UI’</p>
+<figure><img src="fig/cc/cc_bar.png" alt='"My Jobs" tab in the ClusterCockpit web UI' class="figure mx-auto d-block"><div class="figcaption">ClusterCockpits main menu. Select “My Jobs” to
+see a list of the jobs associated to your account.</div>
+</figure><hr>
 <h3 id="05_performancereports-figure-3">Figure 3</h3>
 <p aria-hidden="true">Image 1 of 1: ‘ClusterCockpit Job Info panel’</p>
 <figure><img src="fig/cc/job_metadata.png" alt="ClusterCockpit Job Info panel" class="figure mx-auto d-block"></figure><hr>
@@ -450,8 +459,8 @@ example</div>
 <p aria-hidden="true">Image 1 of 1: ‘Cluster Cockpit Roofline plot of a job’</p>
 <figure><img src="fig/cc/job_roofline.png" alt="Cluster Cockpit Roofline plot of a job" class="figure mx-auto d-block"></figure><hr>
 <h3 id="05_performancereports-figure-6">Figure 6</h3>
-<p aria-hidden="true">Image 1 of 1: ‘[decorative]’</p>
-<figure><img src="fig/cc/job_select_metrics.png" alt="" class="figure mx-auto d-block"></figure><hr>
+<p aria-hidden="true">Image 1 of 1: ‘Select Metrics button in the ClusterCockpit job view’</p>
+<figure><img src="fig/cc/job_select_metrics.png" alt="Select Metrics button in the ClusterCockpit job view" class="figure mx-auto d-block"></figure><hr>
 <h3 id="05_performancereports-figure-7">Figure 7</h3>
 <p aria-hidden="true">Image 1 of 1: ‘Linaro perf-report overview 1’</p>
 <figure><img src="fig/linaro/linaro_1.png" alt="Linaro perf-report overview 1" class="figure mx-auto d-block"></figure><hr>
@@ -558,8 +567,8 @@ all.</p>
   "url": "https://stderr-enst.github.io/jobefficiency/images.html",
   "identifier": "https://stderr-enst.github.io/jobefficiency/images.html",
   "dateCreated": "2025-03-28",
-  "dateModified": "2026-02-24",
-  "datePublished": "2026-02-24"
+  "dateModified": "2026-02-26",
+  "datePublished": "2026-02-26"
 }
 
   </script><script>
