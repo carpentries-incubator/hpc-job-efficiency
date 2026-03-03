@@ -402,7 +402,7 @@ scaling.</a></li>
 <button class="accordion-button instructor-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseInstructor1" aria-expanded="false" aria-controls="collapseInstructor1">
   <h3 class="accordion-header" id="headingInstructor1">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="edit-2"></i></div> Intention: Introduce/Recollect concept of Speedup and do a simple scaling study </h3>
 </button>
-<div id="collapseInstructor1" class="accordion-collapse collapse" data-bs-parent="#accordionInstructor1" aria-labelledby="headingInstructor1">
+<div id="collapseInstructor1" class="accordion-collapse collapse" aria-labelledby="headingInstructor1" data-bs-parent="#accordionInstructor1">
 <div class="accordion-body">
 <p>Narrative:</p>
 <ul><li>We panic, maybe we need more resources to meet the deadline with our
@@ -474,7 +474,7 @@ situation.</p>
 <button class="accordion-button instructor-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseInstructor2" aria-expanded="false" aria-controls="collapseInstructor2">
   <h3 class="accordion-header" id="headingInstructor2">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="edit-2"></i></div> Slurm Reservation and specific Hardware? </h3>
 </button>
-<div id="collapseInstructor2" class="accordion-collapse collapse" data-bs-parent="#accordionInstructor2" aria-labelledby="headingInstructor2">
+<div id="collapseInstructor2" class="accordion-collapse collapse" aria-labelledby="headingInstructor2" data-bs-parent="#accordionInstructor2">
 <div class="accordion-body">
 <p>You may need to reserve a set of resources for the course, such that
 enough resources for the following exercises are available. This is
@@ -566,7 +566,7 @@ the parallel raytracer?</p>
 <button class="accordion-button hint-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHint1" aria-expanded="false" aria-controls="collapseHint1">
   <h4 class="accordion-header" id="headingHint1"> Give me a hint </h4>
 </button>
-<div id="collapseHint1" class="accordion-collapse collapse" data-bs-parent="#accordionHint1" aria-labelledby="headingHint1">
+<div id="collapseHint1" class="accordion-collapse collapse" aria-labelledby="headingHint1" data-bs-parent="#accordionHint1">
 <div class="accordion-body">
 <p>You can use <code>sinfo</code> to find out the node names of your
 particular Slurm partition. Then use <code>scontrol</code> to show all
@@ -581,7 +581,7 @@ number of CPU (cores) available on that node.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
 <div class="accordion-body">
 <pre class="csv"><code>ntasks,time
 1,127.218
@@ -611,7 +611,7 @@ and the overhead starts to dominate.</p>
 <button class="accordion-button instructor-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseInstructor3" aria-expanded="false" aria-controls="collapseInstructor3">
   <h3 class="accordion-header" id="headingInstructor3">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="edit-2"></i></div> Todo: show, don’t tell </h3>
 </button>
-<div id="collapseInstructor3" class="accordion-collapse collapse" data-bs-parent="#accordionInstructor3" aria-labelledby="headingInstructor3">
+<div id="collapseInstructor3" class="accordion-collapse collapse" aria-labelledby="headingInstructor3" data-bs-parent="#accordionInstructor3">
 <div class="accordion-body">
 <p>info dump below in this section</p>
 <p>Maybe be more specific about which overheads and how we can see
@@ -733,7 +733,7 @@ and <span class="math inline">\(128\)</span> samples per pixel?</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
   <h4 class="accordion-header" id="headingSolution2"> Show me the solution </h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
 <div class="accordion-body">
 <p>For all of our measurements, the speedup and efficiencies are</p>
 <pre class="csv"><code>ntasks,time,speedup,efficiency
@@ -764,7 +764,7 @@ if their contribution to speedup is only 50% efficient or even less.</p>
 <button class="accordion-button spoiler-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSpoiler1" aria-expanded="false" aria-controls="collapseSpoiler1">
   <h3 class="accordion-header" id="headingSpoiler1">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="eye"></i></div> (Optional) plotting our .csvs </h3>
 </button>
-<div id="collapseSpoiler1" class="accordion-collapse collapse" data-bs-parent="#accordionSpoiler1" aria-labelledby="headingSpoiler1">
+<div id="collapseSpoiler1" class="accordion-collapse collapse" aria-labelledby="headingSpoiler1" data-bs-parent="#accordionSpoiler1">
 <div class="accordion-body">
 <p>If you have experience with python, you can use our <a href="../files/plot_scaling_from_csvs.py">python script</a> to create the
 same plots as above, but for your own data. It depends on
@@ -890,7 +890,7 @@ for two processors we need a height and a width of <span class="math inline">\(\
 <button class="accordion-button spoiler-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSpoiler2" aria-expanded="false" aria-controls="collapseSpoiler2">
   <h3 class="accordion-header" id="headingSpoiler2">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="eye"></i></div> Different ways of scaling workloads: spp </h3>
 </button>
-<div id="collapseSpoiler2" class="accordion-collapse collapse" data-bs-parent="#accordionSpoiler2" aria-labelledby="headingSpoiler2">
+<div id="collapseSpoiler2" class="accordion-collapse collapse" aria-labelledby="headingSpoiler2" data-bs-parent="#accordionSpoiler2">
 <div class="accordion-body">
 <p>To scale the workload of the snowman raytracer, we can multiply the
 number of parallel MPI processes, <code>${SLURM_NTASKS}</code>, with the
@@ -975,7 +975,7 @@ costs?</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution3" aria-expanded="false" aria-controls="collapseSolution3">
   <h4 class="accordion-header" id="headingSolution3"> Show me the solution </h4>
 </button>
-<div id="collapseSolution3" class="accordion-collapse collapse" data-bs-parent="#accordionSolution3" aria-labelledby="headingSolution3">
+<div id="collapseSolution3" class="accordion-collapse collapse" aria-labelledby="headingSolution3" data-bs-parent="#accordionSolution3">
 <div class="accordion-body">
 <pre class="csv"><code>ntasks,pixel,time,speedup,efficiency
 1,800,123.162
@@ -1034,7 +1034,7 @@ communication, output size on disk, and so on.</p>
 <button class="accordion-button spoiler-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSpoiler3" aria-expanded="false" aria-controls="collapseSpoiler3">
   <h3 class="accordion-header" id="headingSpoiler3">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="eye"></i></div> Automating Scaling Studies </h3>
 </button>
-<div id="collapseSpoiler3" class="accordion-collapse collapse" data-bs-parent="#accordionSpoiler3" aria-labelledby="headingSpoiler3">
+<div id="collapseSpoiler3" class="accordion-collapse collapse" aria-labelledby="headingSpoiler3" data-bs-parent="#accordionSpoiler3">
 <div class="accordion-body">
 <p>If you find yourself repeating similar measurements over and over
 again, you may be interested in an automation approach. This can be done
@@ -1122,7 +1122,7 @@ ACM, vol. 31, no. 5, pp. 532–533, May 1988, doi: 10.1145/42411.42415.<a href
         <p>Materials licensed under <a href="LICENSE.html">CC-BY 4.0</a> by the authors</p>
 
         <p>Template licensed under <a href="https://creativecommons.org/licenses/by-sa/4.0/" class="external-link">CC-BY 4.0</a> by <a href="https://carpentries.org/" class="external-link">The Carpentries</a></p>
-        <p>Built with <a href="https://github.com/carpentries/sandpaper/tree/0.18.5" class="external-link">sandpaper (0.18.5)</a>, <a href="https://github.com/carpentries/pegboard/tree/0.7.9" class="external-link">pegboard (0.7.9)</a>, and <a href="https://github.com/carpentries/varnish/tree/1.0.9" class="external-link">varnish (1.0.9)</a></p>
+        <p>Built with <a href="https://github.com/carpentries/sandpaper/tree/0.20.0" class="external-link">sandpaper (0.20.0)</a>, <a href="https://github.com/carpentries/pegboard/tree/0.7.9" class="external-link">pegboard (0.7.9)</a>, and <a href="https://github.com/carpentries/varnish/tree/1.0.9" class="external-link">varnish (1.0.9)</a></p>
 		</div>
 		</footer></div> <!-- / div.container -->
 	<div id="to-top">
@@ -1145,7 +1145,7 @@ ACM, vol. 31, no. 5, pp. 532–533, May 1988, doi: 10.1145/42411.42415.<a href
   "identifier": "https://stderr-enst.github.io/jobefficiency/instructor/04_scalingstudy.html",
   "dateCreated": "2025-03-28",
   "dateModified": "2025-12-12",
-  "datePublished": "2026-02-26"
+  "datePublished": "2026-03-03"
 }
 
   </script><script>
