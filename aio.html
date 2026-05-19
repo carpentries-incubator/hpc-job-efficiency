@@ -2583,7 +2583,7 @@ efficiency you get?</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
 <div class="accordion-body">
 <p>The batch file after adding the memory request becomes.</p>
 <pre class="input"><code>#!/usr/bin/bash
@@ -2863,7 +2863,7 @@ would that be?</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
   <h4 class="accordion-header" id="headingSolution2"> Show me the solution </h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
 <div class="accordion-body">
 <p>To query all of the above variable run</p>
 <div class="codewrapper sourceCode" id="cb15">
@@ -2937,7 +2937,7 @@ changes.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution3" aria-expanded="false" aria-controls="collapseSolution3">
   <h4 class="accordion-header" id="headingSolution3"> Show me the solution </h4>
 </button>
-<div id="collapseSolution3" class="accordion-collapse collapse" data-bs-parent="#accordionSolution3" aria-labelledby="headingSolution3">
+<div id="collapseSolution3" class="accordion-collapse collapse" aria-labelledby="headingSolution3" data-bs-parent="#accordionSolution3">
 <div class="accordion-body">
 <p>The machine these calculations have been run on has 112 core per
 node. So we can double the number of cores from 4 until 64 and stay
@@ -3928,7 +3928,7 @@ pixels and <code>-spp=512</code>.</p>
 </button>
 </div>
 </nav><div id="nav-tabContent-1" class="tab-content">
-<div id="nav-tabpanel-1-ClusterCockpit" class="tab-pane show active" aria-labelledby="nav-tab-1-ClusterCockpit" role="tabpanel">
+<div id="nav-tabpanel-1-ClusterCockpit" class="tab-pane show active" role="tabpanel" aria-labelledby="nav-tab-1-ClusterCockpit">
 <ol style="list-style-type: decimal">
 <li>Submit a job that runs for at least <span class="math inline">\(5\)</span> minutes, so it is picked up by cluster
 cockpit. The job script could look like this:</li>
@@ -3956,7 +3956,7 @@ job id, once it is available</li>
 see a list of the jobs associated to your account.</div>
 </figure>
 </div>
-<div id="nav-tabpanel-1-PerformanceReports" class="tab-pane" aria-labelledby="nav-tab-1-PerformanceReports" role="tabpanel">
+<div id="nav-tabpanel-1-PerformanceReports" class="tab-pane" role="tabpanel" aria-labelledby="nav-tab-1-PerformanceReports">
 <ol style="list-style-type: decimal">
 <li>Check your cluster documentation and/or module system if the Linaro
 Forge software suite is available</li>
@@ -3981,7 +3981,7 @@ Forge software suite is available</li>
 <code>.txt</code> files next to the regular Slurm logs.</li>
 </ol>
 </div>
-<div id="nav-tabpanel-1-TBD" class="tab-pane" aria-labelledby="nav-tab-1-TBD" role="tabpanel">
+<div id="nav-tabpanel-1-TBD" class="tab-pane" role="tabpanel" aria-labelledby="nav-tab-1-TBD">
 <p>N/A</p>
 </div>
 </div>
@@ -4021,7 +4021,7 @@ component?</li>
 </button>
 </div>
 </nav><div id="nav-tabContent-2" class="tab-content">
-<div id="nav-tabpanel-2-ClusterCockpit" class="tab-pane show active" aria-labelledby="nav-tab-2-ClusterCockpit" role="tabpanel">
+<div id="nav-tabpanel-2-ClusterCockpit" class="tab-pane show active" role="tabpanel" aria-labelledby="nav-tab-2-ClusterCockpit">
 <p>The job view of a particular job in ClusterCockpit begins with three
 summary panels for the job.</p>
 <figure><img src="fig/cc/job_metadata.png" alt="ClusterCockpit Job Info panel" class="figure mx-auto d-block"></figure><p>The <em>Job Info</em> panel summarizes Slurm metadata about the job,
@@ -4072,7 +4072,7 @@ the case here.</p>
 <figure><img src="fig/cc/job_select_metrics.png" alt="Select Metrics button in the ClusterCockpit job view" class="figure mx-auto d-block"></figure><p>More detailed plots for each individual metric are available and can
 be configured through the <em>Select Metrics</em> button.</p>
 </div>
-<div id="nav-tabpanel-2-PerformanceReports" class="tab-pane" aria-labelledby="nav-tab-2-PerformanceReports" role="tabpanel">
+<div id="nav-tabpanel-2-PerformanceReports" class="tab-pane" role="tabpanel" aria-labelledby="nav-tab-2-PerformanceReports">
 <p>Linaro Forge <code>perf-report</code> results are stored in a HTML or
 <code>.txt</code> format, for example:</p>
 <ul>
@@ -4094,7 +4094,7 @@ and accompanied with suggestions of further investigation.</p>
 Any performance optimization has to focus on improving calculations in
 the CPU.</p>
 </div>
-<div id="nav-tabpanel-2-TBD" class="tab-pane" aria-labelledby="nav-tab-2-TBD" role="tabpanel">
+<div id="nav-tabpanel-2-TBD" class="tab-pane" role="tabpanel" aria-labelledby="nav-tab-2-TBD">
 <p>N/A</p>
 </div>
 </div>
@@ -4143,7 +4143,7 @@ computational intensity.</p>
 </button>
 </div>
 </nav><div id="nav-tabContent-3" class="tab-content">
-<div id="nav-tabpanel-3-ClusterCockpit" class="tab-pane show active" aria-labelledby="nav-tab-3-ClusterCockpit" role="tabpanel">
+<div id="nav-tabpanel-3-ClusterCockpit" class="tab-pane show active" role="tabpanel" aria-labelledby="nav-tab-3-ClusterCockpit">
 <p>ClusterCockpit captures many dedicated CPU metrics and provides a
 timeline visualization for each.</p>
 <figure><img src="fig/cc/job_cpu_load_core.png" alt="ClusterCockpit cpu load per core" class="figure mx-auto d-block"></figure><p>The <code>cpu_load_core</code> shows the load of each individual core
@@ -4168,7 +4168,7 @@ clock. CPUs are capable of executing more than one instruction per clock
 tick, so a value of about <span class="math inline">\(2.25\)</span>
 indicates that the CPU is “busy enough”.</p>
 </div>
-<div id="nav-tabpanel-3-PerformanceReports" class="tab-pane" aria-labelledby="nav-tab-3-PerformanceReports" role="tabpanel">
+<div id="nav-tabpanel-3-PerformanceReports" class="tab-pane" role="tabpanel" aria-labelledby="nav-tab-3-PerformanceReports">
 <p>Performance Reports summarizes multiple CPU-related measurements.</p>
 <figure><img src="fig/linaro/linaro_cpu.png" alt="" class="figure mx-auto d-block"></figure><p>The raytracer spends 99.5% of its time in CPU-related operations.
 This breaks down into scalar numeric operations (25.2%) and memory
@@ -4183,7 +4183,7 @@ visualized. The 8 MPI processes of the example job should be explicitly
 mapped (pinned) to 8 cores of the job. Here, the thread affinity is not
 measured correctly, due to a bug in the underlying software.</p>
 </div>
-<div id="nav-tabpanel-3-TBD" class="tab-pane" aria-labelledby="nav-tab-3-TBD" role="tabpanel">
+<div id="nav-tabpanel-3-TBD" class="tab-pane" role="tabpanel" aria-labelledby="nav-tab-3-TBD">
 <p>N/A</p>
 </div>
 </div>
@@ -4213,7 +4213,7 @@ bandwidth and access latencies.</p>
 </button>
 </div>
 </nav><div id="nav-tabContent-4" class="tab-content">
-<div id="nav-tabpanel-4-ClusterCockpit" class="tab-pane show active" aria-labelledby="nav-tab-4-ClusterCockpit" role="tabpanel">
+<div id="nav-tabpanel-4-ClusterCockpit" class="tab-pane show active" role="tabpanel" aria-labelledby="nav-tab-4-ClusterCockpit">
 <figure><img src="fig/cc/job_mem_used.png" alt="" class="figure mx-auto d-block"></figure><p>The <code>job_mem_used</code> metric measures the memory capacity of
 a given job at sampled intervals as reported by the Slurm system. A job
 is limited to the maximum requested amount of memory and this limit
@@ -4229,7 +4229,7 @@ the roofline plot has not been populated.</p>
 critical measurement jobs with <code>--exclusive</code> to not be
 affected by other jobs on shared worker nodes.</p>
 </div>
-<div id="nav-tabpanel-4-PerformanceReports" class="tab-pane" aria-labelledby="nav-tab-4-PerformanceReports" role="tabpanel">
+<div id="nav-tabpanel-4-PerformanceReports" class="tab-pane" role="tabpanel" aria-labelledby="nav-tab-4-PerformanceReports">
 <figure><img src="fig/linaro/linaro_mem.png" alt="" class="figure mx-auto d-block"></figure><p>Performance Reports summarizes the memory utilization as a peak and
 mean measurement for all MPI processes. Here, the results suggest a
 possible imbalance between MPI processes, since some have significantly
@@ -4240,7 +4240,7 @@ this correlates with unevenly busy MPI processes.</p>
 <p>The memory usage over all is very small, so we may be committing too
 many resources to the amount of calculations in the job.</p>
 </div>
-<div id="nav-tabpanel-4-TBD" class="tab-pane" aria-labelledby="nav-tab-4-TBD" role="tabpanel">
+<div id="nav-tabpanel-4-TBD" class="tab-pane" role="tabpanel" aria-labelledby="nav-tab-4-TBD">
 <p>N/A</p>
 </div>
 </div>
@@ -4268,7 +4268,7 @@ many resources to the amount of calculations in the job.</p>
 </button>
 </div>
 </nav><div id="nav-tabContent-5" class="tab-content">
-<div id="nav-tabpanel-5-ClusterCockpit" class="tab-pane show active" aria-labelledby="nav-tab-5-ClusterCockpit" role="tabpanel">
+<div id="nav-tabpanel-5-ClusterCockpit" class="tab-pane show active" role="tabpanel" aria-labelledby="nav-tab-5-ClusterCockpit">
 <figure><img src="fig/cc/job_energy.png" alt="" class="figure mx-auto d-block"></figure><p>Depending on the ClusterCockpit configuration, an energy demand is
 displayed below the job info panels. This measurement is highly
 dependent on hardware configurations of your HPC systems, so the
@@ -4281,7 +4281,7 @@ get a more accurate estimate.</p>
 components and cooling of the clusters. Nevertheless, the estimate is a
 great tool to identify the scale of the jobs energy demand.</p>
 </div>
-<div id="nav-tabpanel-5-PerformanceReports" class="tab-pane" aria-labelledby="nav-tab-5-PerformanceReports" role="tabpanel">
+<div id="nav-tabpanel-5-PerformanceReports" class="tab-pane" role="tabpanel" aria-labelledby="nav-tab-5-PerformanceReports">
 <figure><img src="fig/linaro/linaro_energy.png" alt="" class="figure mx-auto d-block"></figure><p>In cases where Performance Reports has user access to energy counters
 of the operating system, it can also summarize the CPUs and systems
 energy expenditure. Here, we are unfortunately missing the required
@@ -4290,7 +4290,7 @@ access to the systems “RAPL” interface.</p>
 e.g. for exclusive jobs. Consult your clusters documentation or support
 for more information.</p>
 </div>
-<div id="nav-tabpanel-5-TBD" class="tab-pane" aria-labelledby="nav-tab-5-TBD" role="tabpanel">
+<div id="nav-tabpanel-5-TBD" class="tab-pane" role="tabpanel" aria-labelledby="nav-tab-5-TBD">
 <p>N/A</p>
 </div>
 </div>
@@ -4320,11 +4320,11 @@ available for each tool.</p>
 </button>
 </div>
 </nav><div id="nav-tabContent-6" class="tab-content">
-<div id="nav-tabpanel-6-ClusterCockpit" class="tab-pane show active" aria-labelledby="nav-tab-6-ClusterCockpit" role="tabpanel">
+<div id="nav-tabpanel-6-ClusterCockpit" class="tab-pane show active" role="tabpanel" aria-labelledby="nav-tab-6-ClusterCockpit">
 <figure><img src="fig/cc/job_table.png" alt="" class="figure mx-auto d-block"></figure><p>ClusterCockpit provides a detailed statistics table to all
 measurements involved with a job.</p>
 </div>
-<div id="nav-tabpanel-6-PerformanceReports" class="tab-pane" aria-labelledby="nav-tab-6-PerformanceReports" role="tabpanel">
+<div id="nav-tabpanel-6-PerformanceReports" class="tab-pane" role="tabpanel" aria-labelledby="nav-tab-6-PerformanceReports">
 <p><img src="fig/linaro/linaro_mpi.png" alt="" class="figure"> Performance Reports
 also summarizes the applications behavior in terms of MPI calls,
 e.g. time spent in collective calls involving all processors, or
@@ -4338,7 +4338,7 @@ summarizes measurements of interactions with the local file systems.
 Here, no I/O operations are affecting the applications performance at
 all.</p>
 </div>
-<div id="nav-tabpanel-6-TBD" class="tab-pane" aria-labelledby="nav-tab-6-TBD" role="tabpanel">
+<div id="nav-tabpanel-6-TBD" class="tab-pane" role="tabpanel" aria-labelledby="nav-tab-6-TBD">
 <p>N/A</p>
 </div>
 </div>
@@ -5037,8 +5037,8 @@ any links that you are not going to use.
   "url": "https://stderr-enst.github.io/jobefficiency/aio.html",
   "identifier": "https://stderr-enst.github.io/jobefficiency/aio.html",
   "dateCreated": "2025-03-28",
-  "dateModified": "2026-05-12",
-  "datePublished": "2026-05-12"
+  "dateModified": "2026-05-19",
+  "datePublished": "2026-05-19"
 }
 
   </script><script>
