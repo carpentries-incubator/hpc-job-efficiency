@@ -25,12 +25,13 @@ In this course, job efficiency refers to how effectively an application utilizes
 ::: prereq
 
 - Access to an HPC system
-- Example workload setup
-- Basic understanding of HPC systems including batch schedulers, parallel file systems, and environment modules, with the ability to submit simple jobs and understand execution workflows at a high level
+- Access to an example workload setup
+- Basic understanding of HPC systems including batch schedulers, parallel file systems, and environment modules
+- Ability to submit basic jobs and understand typical HPC execution workflows
 - Knowledge of tools and workflows used in HPC environments:
-    - Bash Shell Scripting
+    - Bash shell scripting
     - Secure remote access and file transfer using SSH and SCP
-    - Basic Slurm job scripting and workload management commands (`srun`, `sbatch`, `squeue`, `scancel`)
+    - Basic Slurm job scripts and workload management commands (`srun`, `sbatch`, `squeue`, `scancel`)
     - Version control systems: Git, GitHub, and GitLab
 
 ::::::::::
