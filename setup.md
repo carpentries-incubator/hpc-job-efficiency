@@ -13,18 +13,26 @@ After attending this training, participants will be able to:
 - Achieve first results in performance optimization of their application
 - Recall next steps to take towards learning performance optimization
 
+::: callout
+
+# Additional Note
+
+In this course, job efficiency refers to how effectively an application utilizes allocated computational resources, such as CPU cores, memory, GPUs, runtime, interconnect bandwidth, and energy consumption.
+
+:::::::::::
 
 ## Prerequisites
 ::: prereq
 
 - Access to an HPC system
-- Example workload setup
-- Basic knowledge of HPC systems (batch systems, parallel file systems, modules) -- being able to submit a simple job and understand what happens in broad terms
-- Knowledge of tools to work with HPC systems:
-   - Bash shell & scripting
-   - ssh & scp
-   - Simple slurm jobscripts and commands like `srun`, `sbatch`, `squeue`, `scancel`
-   - git
+- Access to an example workload setup
+- Basic understanding of HPC systems including batch schedulers, parallel file systems, and environment modules
+- Ability to submit basic jobs and understand typical HPC execution workflows
+- Knowledge of tools and workflows used in HPC environments:
+    - Bash shell scripting
+    - Secure remote access and file transfer using SSH and SCP
+    - Basic Slurm job scripts and workload management commands (`srun`, `sbatch`, `squeue`, `scancel`)
+    - Version control systems: Git, GitHub, and GitLab
 
 ::::::::::
 
@@ -65,23 +73,23 @@ Selftest should help to answer "Is the course for me?", i.e. prerequisites shoul
 
 You will need access to an HPC cluster to run the examples in this lesson.
 Discuss how to find out where to apply for access as a researcher (in general, in EU, in Germany, in NRW?).
-Refer to the [HPC Introduction lessons](https://nesi.github.io/hpc-intro/) to learn how to access and use a compute cluster of that scale.
+To learn how to access and use a compute cluster, refer to the [HPC Introduction](https://carpentries-incubator.github.io/hpc-intro/) lessons.
 
 - Executive summary of typical HPC workflow? Or refer to other HPCC courses that cover this
 - "HPC etiquette"
    - E.g. don't run benchmarks and other computationally heavy workloads on login node. Emphasise their purpose
    - Don't disturb jobs on shared nodes (<-- this phrasing is hard to grasp for newcomers and should be avoided. It will block them from trying things if they are afraid to break anything. Maybe this is more the responsibility of admins and users should just be aware that they may affect other users?)
-- Setup of belows workflow example (next section)
+- Setup of the example workflow below (next section)
 
 
 ::: discussion 
 
 ### Common Software on HPC Systems
-Working on an HPC system commonly involves a
+Working on an HPC system commonly involves:
 
-- *batch system* to schedule *jobs* (e.g. Slurm, PBS Pro, HTCondor, ...), a
-- *module* system to load certain versions of centrally provided software and a
-- way to log in to a *login node* of the cluster.
+- a *batch system* used to schedule and manage *jobs* (e.g. Slurm, PBS Pro, HTCondor, ...)
+- a *module system* to load and manage centrally provided software packages and software versions
+- a secure method to connect to a *login node* of the cluster, typically using SSH
 
 ::::::::::::::
 
@@ -138,21 +146,19 @@ Download the [data zip file](https://example.com/FIXME) and unzip it to your Des
 
 ::::::::::::::
 
-Throughout the course, we will use an example application to learn workflows and tools for evaluation of job performance.
-The example is a raytracer, rendering a prepared scene.
-It provides different means of parallelization, i.e. multiple processes (MPI), multithreading, or on a GPU (CUDA).
-MPI and multithreading can be combined.
-The GPU accelerated version is utilizing MPI processes just to manage processes and all calculation is done on, potentially multiple, GPUs.
+Throughout the course, we will use an example application to learn workflows and tools for evaluating job performance.
+The example is a ray tracer used to render a predefined scene.
+It supports multiple parallelization models, including distributed-memory parallelism using MPI, shared-memory multithreading, and GPU acceleration using CUDA. MPI and multithreading can also be combined.
+The GPU-accelerated version uses MPI processes primarily for process management and coordination, while all computational work is performed on one or more GPUs.
 
 We do not have to study and understand the example code in detail.
-After compilation, all necessary options are exposed as different binaries or through command line arguments.
+After compilation, all necessary options are exposed as separate binaries or through command-line arguments.
 
-We do, however, have to prepare a build environment with all necessary libraries, and build the code with `CMake`.
-This is a common occurrence in scientific software as well.
-Researchers are dependent on existing software and their first contact is in a situation like this, where they have to build and prepare the unknown code.
-Their first interest typically is: is this project useful for my research?
+We do, however, need to prepare a build environment with all required libraries and build the code with `CMake`. This is a common occurrence in scientific software as well.
+Researchers often depend on existing software, and their first interaction with a new project frequently occurs in a situation like this, where they have to build and prepare unfamiliar code.
+Their first question is typically: "Is this project useful for my research?"
 
-The example application should be prepared on a central location, e.g. your HPC clusters parallel file system, such that it is accessible for multiple runs on various worker nodes of your cluster.
+The example application should be prepared in a central location, such as the parallel file system of your cluster, to ensure that it is accessible from multiple worker nodes during distributed job execution.
 
 Let's get started by cloning the repository:
 
@@ -167,14 +173,14 @@ cd SnowmanRaytracer
 
 # Do not forget `--recursive`
 
-Our example project depends on another project, implementing the basic raytracing methods.
+Our example project depends on another project, implementing the basic ray tracing methods.
 This dependency is introduced as a `git submodule`, so recursive cloning is necessary, otherwise we cannot build the project.
 
 :::::::::::
 
 
 #### CPU Build
-The example application can perform calculations on CPUs, potentially across multiple nodes using MPI for communication, and/or in multiple threads.
+The example application can perform computations on CPUs using shared-memory multithreading and distributed-memory parallelism across multiple nodes via MPI communication.
 To prepare the out-of-source build:
 
 ```bash
@@ -200,9 +206,9 @@ This also serves as a reminder on how to work with software modules in general.
 ::::::::::::::
 
 
-In HPC systems this often happens through loading software modules, centrally provided by your administrators.
-How exactly the modules are named and what has to be loaded can very much depend on the specific configuration of your cluster.
-In one particular case it may look like this:
+In HPC systems, this often happens through loading software modules, centrally provided by your administrators.
+The exact module names and required software stacks can vary significantly depending on the configuration of the cluster.
+In one particular environment, the setup may look like this:
 
 ```bash
 # Only one example, consult your cluster documentation or ask the instructor or your HPC support
@@ -212,8 +218,8 @@ module load 2025 GCC/13.2.0 OpenMPI/4.1.6 Boost/1.83.0 CMake/3.27.6 libpng/1.6.4
 ::: callout
 
 # Software management differs widely on HPC systems
-The details of how you load different versions of compilers and libraries very much depend on your particular HPC system.
-Follow the instructor or consult your sites documentation or support staff in case of questions!
+The details of how different compiler and library versions are loaded depend strongly on the configuration of your particular HPC system.
+Follow the instructor's guidance or consult your site's documentation or support staff if you have questions.
 
 :::::::::::
 
@@ -237,15 +243,15 @@ Also discuss output of the application & `scp` to copy the output png
 ::::::::::::::
 
 
-Typically, it is recommended to build the software on exactly the same hardware architecture, where it is also intended to run later.
-For HPC systems, you have to ask yourself, if the login nodes have enough resources for software compilation and if they share exactly the same hardware with your worker nodes.
+Typically, it is recommended to build software on the same hardware architecture on which it will later be executed.
+For HPC systems, you should consider whether the login nodes provide sufficient resources for software compilation and whether they use the same hardware architecture as the worker nodes.
 Check your cluster documentation for any recommendations!
 
 Here, we will build and test the software in a first Slurm job script, `build_snowman.sbatch`:
 
 ```bash
 #!/usr/bin/env bash
-#SBATCH --job-name=bulid-and-test-Snowman
+#SBATCH --job-name=build-and-test-Snowman
 #SBATCH --nodes=1
 #SBATCH --ntasks=4
 
@@ -271,59 +277,60 @@ How about `srun cmake`, vs. multiple processes vs. multiple cpus per process?
 
 ::::::::::::::
 
-##### Running the Raytracer
-The `mpirun` command from our first test run, above, is
+##### Running the Ray Tracer
+The `mpirun` command from our first test run above:
 
-- starting the `raytracer` binary, with the prepared scene,
-- calculating the raytraced picture with $N = 4$ MPI processes, each using a single thread (`-threads=1`),
-- calculating $128 / N = 32$ samples per pixel (`-spp=128`) in each MPI process,
-- setting `height` and `width` of the resulting picture to $512$ pixel, and finally
-- storing the picture as `snowman.png`.
+- starts the `raytracer` binary with the prepared scene,
+- computes the ray-traced image with $N = 4$ MPI processes, each using a single thread (`-threads=1`),
+- computes $128 / N = 32$ samples per pixel (`-spp=128`) in each MPI process,
+- sets the `height` and `width` of the resulting image to $800$ pixels, and finally
+- stores the generated image as `snowman.png`.
 
-A raytracer is calculating the interaction of straight "light-rays" with objects placed in a 3D scene.
-Each object can have different material properties, resulting in different optical effects, e.g. matte or (partially) translucent surfaces.
-Light rays that reach the "camera" are contributing to the final picture, by accumulating their effects across all pixels.
+A ray tracer computes the interaction of straight "light rays" with objects placed in a 3D scene.
+Each object can have different material properties, resulting in different optical effects, such as matte or partially translucent surfaces.
+Light rays that reach the "camera" contribute to rendering the image by accumulating their effects across all pixels.
 
-Computationally, all operations can be reduced to matrix-matrix and matrix-vector calculations, which can be individually performed for each ray of light.
-This results in different parallelization schemes.
-You could divide the pixels of the final picture into regions, where each parallel process calculates one region.
+Computationally, ray tracing primarily consists of many independent geometric and vector operations, including matrix-vector and matrix-matrix calculations.
+These operations can therefore be evaluated in parallel across large numbers of rays and pixels.
+This enables different parallelization strategies.
+You could divide the pixels of the final image into regions, where each parallel process computes one region.
 Another strategy, which is applied here, is dividing the number of *samples per pixel* (`spp`) across all parallel processes.
-For each pixel, `spp` number of light rays contribute to the final pixel.
-For example, with `-spp=128` and $4$ MPI processes, each MPI process is responsible for $\frac{128}{4}=32$ samples for all pixels of the resulting picture.
+For each pixel, `spp` samples contribute to the final pixel.
+For example, with `-spp=128` and $4$ MPI processes, each MPI process computes $\frac{128}{4}=32$ samples contributing to all pixels of the final image.
 
-Instead of, but also additionally, the parallelization can be achieved through $T$ threads with the `-threads=T` parameter.
-Threads can share the same memory and therefore may have a lower memory footprint than multiple processes.
+In addition to MPI-based parallelization, the application also supports shared-memory parallelism through $T$ threads using the `-threads=T` parameter.
+Threads share the same address space and therefore may require less memory overhead than multiple processes.
 
 
 #### CUDA Build
-The example application can also utilize Nvidia GPUs via CUDA.
-In this case, the raytracing calculations are performed on the GPUs directory, which is an ideal environment for this type of calculations, provided, that the resolution and complexity is large enough.
+The example application can also utilize NVIDIA GPUs via CUDA.
+In this case, the ray-tracing computations are performed on GPUs, which provide an ideal environment for this type of workload, provided that the problem size and rendering complexity are sufficiently large to benefit from massive parallelism.
 
-CUDA support requires a separate build, which we will also run its own Slurm job.
-In this case, it may be especially important to build on the target hardware, since your login nodes may not contain the accelerators we intend to use.
+CUDA support requires a separate build, which we will execute in a separate Slurm job.
+In this case, it may be especially important to build on the target hardware, since your login nodes may not contain the accelerators intended for execution.
 
-Let's prepare the build directory again on our login node:
+Let us prepare the build directory again on our login node:
 ```bash
-# Assuming you are still in the SnowmanRaytracer source directory or the CPU build directory
+# Assuming you are still in the SnowmanRaytracer source directory or inside the CPU build directory
 cd ..
 mkdir build_gpu && cd build_gpu
 ```
 
-Additionally to the above dependencies, this build relies on CUDA and you may have to load the corresponding modules for your HPC system.
-The application still runs with MPI, but mostly to manage multiple processes, e.g. one process for each GPU, if multiple are used.
+In addition to the dependencies listed above, this build relies on CUDA and you may have to load the corresponding modules for your HPC system.
+The application still uses MPI for process management and coordination, for example, to assign one MPI process per GPU when multiple GPUs are used.
 
-Our build script (`build_snowman_cuda.sbatch`) may look like this:
+Our build script (`build_gpu_snowman_cuda.sbatch`) may look like this:
 ```bash
 #!/usr/bin/env bash
-#SBATCH --job-name=bulid-and-test-Snowman
+#SBATCH --job-name=build-gpu-and-test-Snowman
 #SBATCH --nodes=1
 #SBATCH --ntasks=2
-#SBATCH --partition=gpus
+#SBATCH --partition=gpu
 #SBATCH --gpus=2
 
 # Prepare your environment with the dependencies
 # This will likely look different in your case!
-module load 2025 GCC/13.2.0 OpenMPI/4.1.6 Boost/1.83.0 CMake/3.27.6 libpng/1.6.40 buildenv/default
+module load 2025 GCC/13.2.0 OpenMPI/4.1.6 Boost/1.83.0 CMake/3.27.6 libpng/1.6.40 buildenv/default CUDA/12.6.0
 
 # Assuming you are submitting from the "build_gpu" directory
 cmake -DCMAKE_BUILD_TYPE=Release -DENABLE_CUDA=ON ../SnowmanRaytracer
@@ -331,20 +338,23 @@ cmake -DCMAKE_BUILD_TYPE=Release -DENABLE_CUDA=ON ../SnowmanRaytracer
 # Building the software in parallel
 cmake --build . --parallel
 
-# First test run with 4 MPI processes
-export CUDA_VISIBLE_DEVICES=0,1
-mpirun -n 2 ./build/raytracer -width=800 -height=800 -spp=128 -threads=1 -png=snowman_gpu.png
+# First test run with 2 MPI processes
+export CUDA_VISIBLE_DEVICES=0,1 # Some HPC systems configure GPU visibility automatically
+mpirun -n 2 ./raytracer -width=800 -height=800 -spp=128 -threads=1 -png=snowman_gpu.png
 ```
 
 ::: instructor
 
-# TODO: CUDA Modules missing?
+# TODO: CUDA Modules missing or needed different versions on your HPC cluster?
+
+Some HPC systems automatically manage `CUDA_VISIBLE_DEVICES`.
+Manual configuration may not be necessary and can interfere with scheduler resource isolation.
 
 ::::::::::::::
 
 ## We are all set to learn about job efficiency!
-With the example application in place, we are all set to learn about many factors affecting job performance.
-We will repeatedly use this application in different configurations, so make sure to keep it in a central location that stays accessible throughout the course.
+With the example application in place, we are now ready to explore the many factors that affect job performance.
+We will repeatedly use this application in different configurations throughout the course, so make sure to keep it in a central location that remains accessible during the entire course.
 
 ## Acknowledgements
 
