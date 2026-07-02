@@ -1,15 +1,15 @@
 ---
 title: "Resource Requirements"
-teaching: 10
-exercises: 0
+teaching: 30
+exercises: 30
 ---
 
 ::: questions 
 
-- How many resources should I request initially?
-- What scheduler options exist to request resources?
-- How do I know if they are used well?
 - How large is my HPC cluster?
+- What scheduler options exist to request resources?
+- How many resources should I request initially?
+- How to know if resources are utilized well?
 
 :::
 
@@ -23,11 +23,13 @@ After completing this episode, participants should be able to …
 
 :::
 
-When you run a program on your local workstation or laptop, you typically don't plan out the usage of computing resources like memory or core-hours.
-Your applications simply take as much as they need and if your computer runs out of resources, you can just a few.
+When you run a program on your local workstation or laptop, you typically don't plan out the usage of computing resources like memory footprint or core-hours.
+Your applications simply take as much as they need and if your computer runs out of resources, you can either wait, close a few applications, or observe your local computer being overwhelmed.
+
 However, unless you are very rich, you probably don't have a dedicated HPC cluster just to yourself and instead you have to share one with your colleagues.
-In such a scenario greedily consuming as many resources as possible is very impolite, so we need to restrain ourselves and carefully allocate just as many resources as needed.
-These resource constraints are then enforced by the cluster's scheduling system so that you cannot accidentally use more resources than you think.
+In such a scenario greedily consuming as many resources as possible is very impolite.
+We need to restrain ourselves and carefully allocate just as many resources as needed.
+These resource constraints are then enforced by the clusters scheduling system so that you cannot accidentally use more resources than expected.
 
 ## Getting a feel for the size of your cluster
 
@@ -35,7 +37,9 @@ To start with your resource planning, it is always a good idea to first get a fe
 For example, if your cluster has tens of thousands of CPU cores and you use only 10 of them, you are far away from what would be considered excessive usage of resources.
 However, if your calculation utilizes GPUs and your cluster has only a handful of them, you should really make sure to use only the minimum amount necessary to get your work done.
 
-Let's start by getting an overview of the partitions of your cluster:
+Let's start by getting an overview of the partitions{{ glosario.partition }} of your cluster:
+
+test
 
 ```bash
 sinfo -O PartitionName,Nodes,CPUs,Memory,Gres,Time
@@ -328,7 +332,7 @@ After submitting the job with the lowered memory allocation everything seems fin
 
 This behavior seems contradictory at first: SLURM reported previously that our job only used around 367 MB of memory at most, which is well below the 500 MB limit we set. The explanation for this discrepancy lies in the fact that SLURM measures the peak memory consumption of jobs by *polling*, i.e., by periodically sampling how much memory the job currently uses. Unfortunately, if the program has spikes in memory consumption that are small enough to fit between two samples, SLURM will miss them and report an incorrect peak memory value. Spikes in memory usage are quite common, for example if your application uses short-lived subprocesses. Most annoyingly, many programs allocate a large chunk of memory right at the end of the computation to write out the results. In the case of the snowman raytracer, we encode the raw pixel data into a PNG at the end, which means we temporarily keep both the raw image and the PNG data in memory.
 
-![](fig/slurm-memory-sampling.svg)
+![](fig/slurm-memory-sampling.svg){alt="Example of "Allocated memory" as reported by Slurm. Regular sampling intervals may miss short peaks and therefore ignore the true maximum."}
 
 ::: caution
 
@@ -384,7 +388,7 @@ At this point you might want to point out to your audience that for certain appl
 
 So far we have tuned the time and memory limits of our job. Now let us have a look at the CPU core limit. This limit works slightly differently than the ones we looked at so far in the sense that your job is not getting terminated if you try to use more cores than you have allocated. Instead, the scheduler exploits the fact that multitasking operating systems can switch out the process a given CPU core is working on. If you have more active processes in your job than you have CPU cores (i.e., *CPU oversubscription*), the operating system will simply switch processes in and out while trying to ensure that each process gets an equal amount of CPU time. This happens very fast, so you can't see the switching directly, but tools like `htop` will show your processes running at less than 100% CPU utilization. Below you can see a situation of four processes running on three CPU cores, which results in each process running only 75% of the time.
 
-![](fig/cpu-oversubscription.svg)
+![](fig/cpu-oversubscription.svg){alt="CPU over-subscription example of four processes running on three CPU cores, resulting in one process to always be waiting."}
 
 ::: caution
 
@@ -573,7 +577,7 @@ module purge
 mpirun -- ./SnowmanRaytracer/build/raytracer -width=1024 -height=1024 -spp=256 -threads=1 -alloc_mode=3 -png=snowman.png
 
 echo -n "Total amount of memory used (in bytes): "
-cat /sys/fs/cgroup$(cat /proc/self/cgroup | awk -F ':' '{print $3}')/memory.peak
+cat /sys/fs/cgroup$(cat /proc/self/cgroup | awk -F ':' '{}')/memory.peak
 ```
 
 The important change here compared to the MPI jobs before is the `--nodes=2` directive, which instructs Slurm to distribute the 4 tasks across exactly two nodes.

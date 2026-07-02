@@ -1,0 +1,67 @@
+- slug: node
+  en:
+    term: "Node"
+    def: >
+      A single server in an HPC systems.
+
+- slug: login_node
+  en:
+    term: "Login node"
+    def: >
+      "Special purpose server to log in and interact with an HPC system. Also called: *front end node*."
+
+- slug: cluster
+  en:
+    term: "uster"
+    def: >
+      or *HPC system*, a collection of many nodes and services to provide a single large system that can be used for scientific computing.
+
+- slug: job
+  en:
+    term: ": Job"
+    def: >
+      Unit of work on an HPC system managed by the batch system. Typically a bash script containing all to-be-executed steps of a workflow.
+
+- slug: batch_system
+  en:
+    term: "Batch system"
+    def: >
+      also *scheduler*, responsible for distributing jobs to available resources on worker nodes.
+
+- slug: module
+  en:
+    term: "odule"
+    def: >
+      A provided software of a specific version that can be loaded when needed.
+
+- slug: slurm_cpu
+  en:
+    term: "Slurm CPU"
+    def: >
+      "CPU" in the context of Slurm options and mentions is often referring to a single core of a multi-core CPU.
+
+- slug: partition
+  en:
+    term: "Partition"
+    definition: >
+      A Slurm partition is a list of HPC servers with default job configurations and defined limits.
+      HPC systems typically define partitions per type of server, e.g. CPU resources and GPU resources separately,
+      as well as partitions per service level, e.g. separate for small, medium and large jobs.
+
+- slug: profiling
+  en:
+    term: "Profiling"
+    def: >
+      ...
+
+- slug: sampling
+  en:
+    term: "Sampling"
+    def: >
+      ...
+
+- slug: tracing
+  en:
+    term: "Tracing"
+    def: >
+      ...
