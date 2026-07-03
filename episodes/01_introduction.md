@@ -628,6 +628,7 @@ allocations. However, HPC workloads also depend heavily on other hardware resour
 
 For example, a job allocated one compute node with 48 CPU cores and 4 allocated GPUs
 for one hour consumes:
+
 - 1 node-hour,
 - 48 core-hours, and
 - 4 GPU-hours.
