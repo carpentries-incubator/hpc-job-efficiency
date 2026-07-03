@@ -45,6 +45,98 @@ What we're doing here:
 :::::::::::::::::::::::::::::::::::::
 
 
+### To be precise: Numerical efficiency
+
+> This has been moved from Introduction as it seems to be an abrupt transistion into
+Numerical efficiency.
+
+::: instructor
+
+Ask learners:
+- Can a calculation be fast but scientifically useless?
+- Can a calculation be extremely accurate but unnecessarily expensive?
+
+Guide the discussion toward the trade-off between numerical accuracy and computational
+cost.
+
+Different scientific applications require different levels of numerical precision.
+Choosing more precision than necessary may increase runtime, memory usage, and
+energy consumption without improving scientific results.
+
+::::::::::::::
+
+Computational inefficiency is not limited to unnecessarily slow implementations.
+It can also arise when calculations are performed with a higher numerical precision
+than required for the scientific objective.
+
+In scientific computing, numerical precision determines how accurately numbers are
+represented and processed by the CPU, for example through single-precision or
+double-precision floating-point arithmetic.
+
+Higher numerical precision generally increases computational cost, memory usage,
+and data movement. Lower precision, on the other hand, can improve performance and
+reduce memory consumption, but may also reduce numerical accuracy and stability.
+
+Choosing an appropriate numerical precision is therefore an important aspect of
+computational efficiency and depends strongly on the requirements of a given application.
+
+<!---
+The internal accuracy of`bc`is defined by an adjustable parameter`scale`which
+defines how some operations use digits after the decimal point. The default value of`scale`is 0.
+During each`bc`call within the summation loop of`sum.bash`, the intermediate result is rounded 
+according to the current setting of`scale`. An insufficiently low precision setting
+leads to an accumulation of rounding errors over many loop iterations,
+rendering the final result (like a sum or product) erroneous.--->
+
+::::::::::::: challenge
+### Compare numerical results
+
+Our `sum.bash` implementation also demonstrates how numerical methods and implementation
+details can affect computational accuracy.
+
+When running the two summation methods from the previous challenge, compare the final
+numerical results. Which result appears more accurate, and why?
+Is the inaccurate result smaller or larger than the expected value?
+
+:::: hint
+Think again about the airplane analogy.
+Which scenario is more prone to small losses accumulating over time?
+1. Passengers repeatedly handle their own individual baggage items.
+2. Baggage is handled collectively in a single coordinated operation.
+::::
+
+:::: solution
+The external loop implementation `sum.bash` and the internal `bc` one-liner may produce
+results similar to
+
+```output
+333833499.99999999999667056674 # bc, external loop (sum.bash)
+333833500                      # bc, internal loop (one-liner)
+```
+
+where the exact floating-point representation may vary slightly between systems.
+The implementation in `sum.bash` repeatedly evaluates expressions involving logarithms
+and exponentials: 
+
+```bash
+e(2 * l($i))
+```
+
+These operations introduce small numerical rounding errors during every loop iteration.
+Since the result is accumulated repeatedly, the rounding errors also accumulate over time.
+The one-liner implementation instead computes the powers directly inside a single `bc`
+execution context and therefore avoids much of the repeated conversion and evaluation
+overhead.
+
+As a result, the value produced by `sum.bash` is typically slightly smaller than the
+mathematically expected result due to accumulated truncation and rounding effects.
+Although `bc` supports arbitrary precision arithmetic, the effective numerical precision
+still depends on how calculations are performed and how intermediate results are represented.
+
+::::
+
+:::::::::::::
+
 ## Next Steps
 
 hpc-wiki.info
