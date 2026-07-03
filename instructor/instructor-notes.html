@@ -435,33 +435,41 @@ system</li>
 </ul>
 <hr>
 <br><h3 id="01_introduction-headingInstructor2">
-<a href="01_introduction.html#headingInstructor2">TODO: Possible to highlight individual benefits of efficient jobs more?</a><a class="anchor" aria-label="anchor" href="#01_introduction-headingInstructor2"></a>
+<a href="01_introduction.html#headingInstructor2">Instructor Note</a><a class="anchor" aria-label="anchor" href="#01_introduction-headingInstructor2"></a>
 </h3>
-<p>Maybe good to also address perspective of “why should I care”. You
-get more out of your fair share. Shorter iteration times =&gt;
-more/better insight …</p>
+<p>Ask learners: “Why should you care about efficiency?”</p>
+<p>After the answers, address the learners with efficient jobs, they can
+attain/achieve: - shorter turnaround time - lower resource consumption -
+lower allocation usage - more scientific iterations - lower energy
+consumption</p>
 <hr>
 <br><h3 id="01_introduction-headingInstructor3">
 <a href="01_introduction.html#headingInstructor3">Instructor Note</a><a class="anchor" aria-label="anchor" href="#01_introduction-headingInstructor3"></a>
 </h3>
-<p>#TODO: Can we use <code>time</code> and <code>date</code> to find the
-issue with the subshells?</p>
-<p>Better to teach a way to find the issue, than staring at the script
-and thinking about it</p>
+<p>Ask learners to run the script with <code>time</code> and estimate
+what it might be doing before revealing the source code of
+<code>sum.bash</code>.</p>
+<p>Guide learners toward identifying where time is spent: the
+mathematical calculations themselves or the repeated creation of
+external processes.</p>
 <hr>
 <br><h3 id="01_introduction-headingInstructor4">
-<a href="01_introduction.html#headingInstructor4">TODO: Maybe move discussion eleswere?</a><a class="anchor" aria-label="anchor" href="#01_introduction-headingInstructor4"></a>
+<a href="01_introduction.html#headingInstructor4">Instructor Note</a><a class="anchor" aria-label="anchor" href="#01_introduction-headingInstructor4"></a>
 </h3>
-<p>Quality and necessity of calculations are important factors in
-efficiency. Redundant calculations are inefficient, for example. This
-section may be still too much of a detour from the introduction, at
-least in its current form. May be a chance to shorten the episode as
-well</p>
+<p>Ask learners: - How do HPC centers measure resource usage? - How do
+users know how much of their allocation they have consumed?</p>
+<p>Use the upcoming challenge to introduce common HPC accounting
+concepts such as core-hours, allocations, queues, and resource
+limits.</p>
 <hr>
 <br><h3 id="01_introduction-headingInstructor5">
-<a href="01_introduction.html#headingInstructor5">TODO: Add actions / live-coding to sections below?</a><a class="anchor" aria-label="anchor" href="#01_introduction-headingInstructor5"></a>
+<a href="01_introduction.html#headingInstructor5">Instructor Note</a><a class="anchor" aria-label="anchor" href="#01_introduction-headingInstructor5"></a>
 </h3>
-<p>Maybe too much info vs. too little activity, currently?</p>
+<p>Encourage learners to estimate the ratio between <code>user</code>
+and <code>real</code> before discussing the meaning of the
+<code>-np 4</code> option. Do not explain the result immediately.</p>
+<p>The explanation of accumulated CPU time across multiple MPI processes
+will be introduced in the following episodes.</p>
 <hr>
 <br></section><section id="02_resourcerequirements"><h2 class="section-heading"><a href="02_resourcerequirements.html">Resource Requirements</a></h2>
 <hr class="half-width">
@@ -876,6 +884,19 @@ many levels)</li>
 <li>Deeper application profiling &amp; tools to use</li>
 </ul>
 <hr>
+<br><h3 id="09_nextsteps-headingInstructor2">
+<a href="09_nextsteps.html#headingInstructor2">Instructor Note</a><a class="anchor" aria-label="anchor" href="#09_nextsteps-headingInstructor2"></a>
+</h3>
+<p>Ask learners: - Can a calculation be fast but scientifically useless?
+- Can a calculation be extremely accurate but unnecessarily
+expensive?</p>
+<p>Guide the discussion toward the trade-off between numerical accuracy
+and computational cost.</p>
+<p>Different scientific applications require different levels of
+numerical precision. Choosing more precision than necessary may increase
+runtime, memory usage, and energy consumption without improving
+scientific results.</p>
+<hr>
 <br></section></section>
 </div>
     </main>
@@ -926,8 +947,8 @@ many levels)</li>
   "url": "https://stderr-enst.github.io/jobefficiency/instructor/instructor-notes.html",
   "identifier": "https://stderr-enst.github.io/jobefficiency/instructor/instructor-notes.html",
   "dateCreated": "2025-03-28",
-  "dateModified": "2026-06-30",
-  "datePublished": "2026-06-30"
+  "dateModified": "2026-07-03",
+  "datePublished": "2026-07-03"
 }
 
   </script><script>

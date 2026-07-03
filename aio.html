@@ -397,7 +397,7 @@
         
 <section id="aio-01_introduction"><p>Content from <a href="01_introduction.html">Introduction</a></p>
 <hr>
-<p>Last updated on 2025-12-12 |
+<p>Last updated on 2026-07-03 |
 
         <a href="https://github.com/stderr-enst/jobefficiency/edit/main/episodes/01_introduction.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <div class="text-end">
@@ -414,7 +414,8 @@
 <li>What exactly is job efficiency in the computing world?</li>
 <li>Why would I care about job efficiency and what are potential
 pitfalls?</li>
-<li>How can I start measuring how my program performs?</li>
+<li>How can I begin measuring the runtime performance of my
+programs?</li>
 </ul>
 </div>
 </div>
@@ -423,14 +424,14 @@ pitfalls?</li>
 <div class="card-body">
 <div class="inner bordered">
 <h3 class="card-title">Objectives</h3>
-<p>After completing this episode, participants should be able to …</p>
+<p>After completing this episode, participants should be able to:</p>
 <ul>
-<li>Use timing commands provided by
-<code>time</code>and<code>date</code>.</li>
-<li>Understand the benefits of efficient jobs in terms of runtime and
-numerical accuracy.</li>
-<li>Have developed some awareness about the overall high energy
-consumption of HPC.</li>
+<li>Use <code>time</code> and <code>date</code> to measure program
+runtime.</li>
+<li>Identify how implementation choices affect runtime, resource usage,
+and numerical results.</li>
+<li>Explain how inefficient jobs affect resource consumption and energy
+usage.</li>
 </ul>
 </div>
 </div>
@@ -440,55 +441,63 @@ consumption of HPC.</li>
 <section><h2 class="section-heading" id="background">Background<a class="anchor" aria-label="anchor" href="#background"></a>
 </h2>
 <hr class="half-width">
-<p>Job efficiency, as defined by Oxford’s English Dictionaries, is
-<em>the ratio of the useful work performed by a machine […] to the total
-energy expended or heat taken in</em>. In a high-performance-computing
-(HPC) context, the useful work is the entirety of all calculations to be
-performed by our (heat-generating) computers. Doing this efficiently
-thus translates to maximizing the calculations completed in some limited
-time span while minimizing the heat output. In more extreme words, we
-want to avoid running big computers for <em>nothing but hot
-air</em>.</p>
-<p>One may object that a single user’s job may hardly have an effect on
-an HPC system’s power usage since such systems are in power-on state
-24/7 anyway. The same may be argued about air travel. The plane will
-take off anyway, whether I board the plane or not. However, we indeed
-have some leverage in contributing to efficiency, defined by fuel
-consumption in air travel: traveling lightly, i.e., avoiding excessive
-baggage will improve the airplane’s ratio <span class="math inline">\(\frac{useful\;work}{total\;energy\;expended}\)</span>.
-So let’s get back to the ground and look at some inefficiencies in
-computing jobs, while we will continue to use the air-travel
-analogy.</p>
+<p>According to Oxford’s English Dictionaries, <em>efficiency</em> is
+“<em>the ratio of the useful work performed by a machine […] to the
+total energy expended or heat taken in</em>”.</p>
+<p>In a <em>High-Performance Computing</em> (<em>HPC</em>) context,
+<strong>the useful work</strong> corresponds to the scientific
+computations performed by an application. Efficient execution therefore
+means making effective use of allocated computational resources such as
+CPU cores, memory, GPUs, storage systems, and interconnect bandwidth,
+while also minimizing runtime and energy consumption. Or, phrased more
+bluntly, we want to avoid running large HPC systems for <em>nothing but
+hot air</em>.</p>
+<p>At first glance, a single inefficient job may seem to have little
+impact on overall power consumption of an HPC system, since such systems
+operate continuously anyway. A similar argument could be made about air
+travel: the airplane will take off regardless of whether one additional
+passenger boards the flight. However, individual behavior still
+contributes to overall efficiency. In air travel, passengers can improve
+fuel efficiency by traveling lightly and avoiding unnecessary baggage,
+thereby improving the airplane’s ratio <span class="math inline">\(\frac{useful\;work}{total\;energy\;expended}\)</span>.</p>
+<p>In HPC systems, users similarly influence overall system efficiency
+through the way they configure, execute, and optimize their workloads.
+Throughout this lesson, we will examine common inefficiencies in
+computational jobs while continuing to use the air-travel analogy to
+build intuition about resource utilization and performance
+optimization.</p>
 <div class="section level3">
-<h3 id="time-to-sleep">
-<code>time</code> to <code>sleep</code>
-<a class="anchor" aria-label="anchor" href="#time-to-sleep"></a>
+<h3 id="measuring-sleep-with-time">Measuring <code>sleep</code> with <code>time</code>
+<a class="anchor" aria-label="anchor" href="#measuring-sleep-with-time"></a>
 </h3>
-<p>Let’s look at the command<code>sleep</code></p>
+<p>Let’s look at the <code>sleep</code> command.</p>
 <div class="codewrapper sourceCode" id="cb1">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" tabindex="-1" aria-label="code-block-1-1"></a><span class="fu">sleep</span> 2</span></code></pre>
 </div>
-<p>This command triggers a “computer nap”. It actually delays whatever
-would come next for the specified time, here 2 seconds. You can verify
-that nap time using a stopwatch, the latter given by
-the<code>time</code>command:</p>
+<p>This command pauses execution for a specified duration, here 2
+seconds, before continuing with the next command. You can verify the
+pause duration using a stopwatch, here provided by the <code>time</code>
+command:</p>
 <div class="codewrapper sourceCode" id="cb2">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" tabindex="-1" aria-label="code-block-2-1"></a><span class="bu">time</span> sleep 2</span></code></pre>
 </div>
-<p>which will report something like</p>
-<pre><code>real	0m2.002s
-user	0m0.001s
-sys	0m0.000s</code></pre>
-<p>The <code>time</code> command shall be our first
-performance-measuring tool. <code>time</code>has become a bit of a
-<em>hello-world</em> equivalent in HPC contexts. This command gives you
-a breakdown of how your program uses CPU (Central Processing Unit) and
-wall-clock time. The standard output of <code>time</code> reports three
-fields, <em>real</em>, <em>user</em> and <em>sys</em>:</p>
+<p>which will produce output similar to</p>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>real    0m2.002s
+user    0m0.001s
+sys     0m0.000s</code></pre>
+</div>
+<p>The <code>time</code> command is often one of the first
+performance-analysis tools introduced in HPC. This command provides a
+breakdown of elapsed wall-clock time and CPU execution time consumed by
+your program. The <code>time</code> command reports three timing
+measurements: <em>real</em>, <em>user</em>, and <em>sys</em>.</p>
 <table class="table">
 <colgroup>
 <col width="8%">
@@ -505,37 +514,39 @@ fields, <em>real</em>, <em>user</em> and <em>sys</em>:</p>
 </tr>
 <tr>
 <td>user</td>
-<td>Time spent in <em>user</em>-mode: actual computations like math,
-loops, logic</td>
+<td>Time spent in <em>user</em> mode: application computations such as
+arithmetic operations, loops, and program logic</td>
 </tr>
 <tr>
 <td>sys</td>
-<td>Time spent in OS’s <em>kernel</em>-mode (system calls): I/O =
-reading/writing files, handling memory, talking to other devices</td>
+<td>Time spent in the operating system’s <em>kernel</em> mode (system
+calls): I/O = reading/writing files, memory management, and device
+communication</td>
 </tr>
 </tbody>
 </table>
-<p>The above<code>sleep</code>command abstains from any kind of math,
-I/O, or other work that would show up in <em>user</em> or <em>sys</em>
-time, hence these entries show (almost) zero.</p>
+<p>The <code>sleep</code> command performs almost no computations or I/O
+operations. As a result, the reported <em>user</em> and <em>sys</em>
+times remain close to zero.</p>
 <div id="accordionSpoiler1" class="accordion spoiler-accordion accordion-flush">
 <div class="accordion-item">
 <button class="accordion-button spoiler-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSpoiler1" aria-expanded="false" aria-controls="collapseSpoiler1">
-  <h3 class="accordion-header" id="headingSpoiler1">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="eye"></i></div> time or /usr/bin/time? that’s the question </h3>
+  <h3 class="accordion-header" id="headingSpoiler1">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="eye"></i></div> Shell keyword vs executable: time and /usr/bin/time </h3>
 </button>
-<div id="collapseSpoiler1" class="accordion-collapse collapse" data-bs-parent="#accordionSpoiler1" aria-labelledby="headingSpoiler1">
+<div id="collapseSpoiler1" class="accordion-collapse collapse" aria-labelledby="headingSpoiler1" data-bs-parent="#accordionSpoiler1">
 <div class="accordion-body">
-<p>The<code>time</code>command is both a keyword directly built into the
-Bash shell as well as an executable file, usually residing
-under<code>/usr/bin/time</code>. While very similar, they are not
-exactly the same. Shell/Bash keywords take precedence, so preceding a
-command with<code>time</code>invokes the shell keyword. Therefore, if
-you want to force the usage of<code>/usr/bin/time</code>, you would
-do</p>
+<p>The <code>time</code> command exists both as a shell keyword built
+into the Bash shell and as a standalone executable, usually residing
+under <code>/usr/bin/time</code>. While they behave similarly, they are
+not exactly the same. Shell keywords take precedence during shell
+command resolution, including over executables resolved through the
+user’s <code>PATH</code>, so preceding a command with <code>time</code>
+invokes the shell keyword. Therefore, if you want to explicitly invoke
+<code>/usr/bin/time</code>, you can use</p>
 <div class="codewrapper sourceCode" id="cb4">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" tabindex="-1" aria-label="code-block-4-1"></a><span class="co"># Explicitly calling the `time` binary</span></span>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" tabindex="-1" aria-label="code-block-4-1"></a><span class="co"># Explicitly invoking `/usr/bin/time`</span></span>
 <span id="cb4-2"><a href="#cb4-2" tabindex="-1" aria-label="code-block-4-2"></a><span class="ex">$</span> /usr/bin/time sleep 2</span>
 <span id="cb4-3"><a href="#cb4-3" tabindex="-1" aria-label="code-block-4-3"></a><span class="ex">0.00user</span> 0.00system 0:02.00elapsed 0%CPU <span class="er">(</span><span class="ex">0avgtext+0avgdata</span> 2176maxresident<span class="kw">)</span><span class="ex">k</span></span>
 <span id="cb4-4"><a href="#cb4-4" tabindex="-1" aria-label="code-block-4-4"></a><span class="ex">0inputs+0outputs</span> <span class="er">(</span><span class="ex">0major+90minor</span><span class="kw">)</span><span class="ex">pagefaults</span> 0swaps</span>
@@ -543,25 +554,99 @@ do</p>
 <span id="cb4-6"><a href="#cb4-6" tabindex="-1" aria-label="code-block-4-6"></a><span class="co"># Compare the output to the Bash built-in:</span></span>
 <span id="cb4-7"><a href="#cb4-7" tabindex="-1" aria-label="code-block-4-7"></a><span class="ex">$</span> time sleep 2</span>
 <span id="cb4-8"><a href="#cb4-8" tabindex="-1" aria-label="code-block-4-8"></a></span>
-<span id="cb4-9"><a href="#cb4-9" tabindex="-1" aria-label="code-block-4-9"></a><span class="ex">real</span>	0m2,003s</span>
-<span id="cb4-10"><a href="#cb4-10" tabindex="-1" aria-label="code-block-4-10"></a><span class="ex">user</span>	0m0,001s</span>
-<span id="cb4-11"><a href="#cb4-11" tabindex="-1" aria-label="code-block-4-11"></a><span class="ex">sys</span>	0m0,003s</span>
+<span id="cb4-9"><a href="#cb4-9" tabindex="-1" aria-label="code-block-4-9"></a><span class="ex">real</span>    0m2.003s</span>
+<span id="cb4-10"><a href="#cb4-10" tabindex="-1" aria-label="code-block-4-10"></a><span class="ex">user</span>    0m0.001s</span>
+<span id="cb4-11"><a href="#cb4-11" tabindex="-1" aria-label="code-block-4-11"></a><span class="ex">sys</span>     0m0.003s</span>
 <span id="cb4-12"><a href="#cb4-12" tabindex="-1" aria-label="code-block-4-12"></a></span>
-<span id="cb4-13"><a href="#cb4-13" tabindex="-1" aria-label="code-block-4-13"></a><span class="co"># Yet another output of `time` in zsh, an alternative shell implementation to bash</span></span>
+<span id="cb4-13"><a href="#cb4-13" tabindex="-1" aria-label="code-block-4-13"></a><span class="co"># Yet another example output of `time` in zsh, an alternative shell implementation to Bash</span></span>
 <span id="cb4-14"><a href="#cb4-14" tabindex="-1" aria-label="code-block-4-14"></a><span class="ex">$</span> time sleep 2</span>
-<span id="cb4-15"><a href="#cb4-15" tabindex="-1" aria-label="code-block-4-15"></a><span class="fu">sleep</span> 2  0,00s user 0,00s system 0% cpu 2,003 total</span></code></pre>
+<span id="cb4-15"><a href="#cb4-15" tabindex="-1" aria-label="code-block-4-15"></a><span class="fu">sleep</span> 2  0.00s user 0.00s system 0% cpu 2.003 total</span></code></pre>
 </div>
 <p>Notice the different output formatting. All tools provide similar
 insight, but the formatting and exact information may differ. So, if you
-saw something that looks different from the bash built-in command, this
+saw something that looks different from the Bash built-in command, this
 may be why!</p>
-<p>Further note, that shell keyword documentation is invoked
-via<code>help &lt;KEYWORD&gt;</code>, for example
-<code>help time</code>, while most executables have manual pages,
-e.g.,<code>man time</code>. At last, you can prefix the shell keyword
-with a backslash in order to stop Bash from evaluating it,
-so<code>\time sleep 2</code>will revert
-to<code>/usr/bin/time</code>.</p>
+<p>On HPC systems, different login shells or environment configurations
+may produce slightly different <code>time</code> output formats. This
+can become important when runtime information is parsed automatically in
+benchmarking or profiling workflows.</p>
+<div class="section level3">
+<h3 id="benchmarking-and-profiling">Benchmarking and profiling<a class="anchor" aria-label="anchor" href="#benchmarking-and-profiling"></a>
+</h3>
+<p>Runtime measurements are often collected automatically during
+performance studies.</p>
+<ul>
+<li>
+<strong>Benchmarking</strong> measures how application performance
+changes under different execution conditions, such as varying the number
+of CPU cores, nodes, threads, problem sizes, or hardware
+configurations.</li>
+<li>
+<strong>Profiling</strong> collects detailed information about how a
+program uses computational resources during execution. This may include
+where execution time is spent, memory usage, communication overhead, I/O
+activity, or other performance-related metrics.</li>
+</ul>
+<p>Because such workflows often process timing data automatically,
+differences in the output format produced by <code>time</code> may
+require special handling.</p>
+<p>Benchmarking and profiling are commonly used to identify performance
+bottlenecks and evaluate optimization strategies for HPC
+applications.</p>
+<p>It is also worth noting that shell keyword documentation is invoked
+via <code>help &lt;KEYWORD&gt;</code>, for example
+<code>help time</code>, while most executables have manual pages, e.g.,
+<code>man time</code>. Finally, you can prefix the command with a
+backslash to force Bash to invoke the external executable, so
+<code>\time sleep 2</code> will invoke the external
+<code>/usr/bin/time</code> executable.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="callout1" class="callout">
+<div class="callout-square">
+<i class="callout-icon" data-feather="bell"></i>
+</div>
+<span class="callout-header">Callout</span>
+<div class="callout-inner">
+<div class="callout-content">
+<p>Different HPC systems may provide different default login shells or
+environment configurations. You can inspect available shells using:</p>
+<div class="codewrapper sourceCode" id="cb5">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" tabindex="-1" aria-label="code-block-5-1"></a><span class="ex">$</span> cat /etc/shells</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>/bin/sh
+/bin/bash
+/usr/bin/sh
+/usr/bin/bash
+/usr/bin/tmux
+/bin/tmux
+/bin/csh
+/bin/tcsh
+/usr/bin/csh
+/usr/bin/tcsh
+/bin/ksh
+/bin/rksh
+/usr/bin/ksh
+/usr/bin/rksh</code></pre>
+</div>
+<p>To determine your currently active shell, you can use:</p>
+<div class="codewrapper sourceCode" id="cb7">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" tabindex="-1" aria-label="code-block-7-1"></a><span class="ex">$</span> echo <span class="st">"</span><span class="va">$SHELL</span><span class="st">"</span></span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>/bin/bash</code></pre>
 </div>
 </div>
 </div>
@@ -571,58 +656,65 @@ to<code>/usr/bin/time</code>.</p>
 <h3 id="time-for-a-date">Time for a <code>date</code>
 <a class="anchor" aria-label="anchor" href="#time-for-a-date"></a>
 </h3>
-<p>The<code>date</code>command, as its manpage (<code>man date</code>)
-says, prints or sets the system date and time. In fact, this gives us a
-super accurate stopwatch when used like this:</p>
-<div class="codewrapper sourceCode" id="cb5">
+<p>The <code>date</code> command, as described in its manual page
+(<code>man date</code>), prints or sets the system date and time. It can
+also be used as a lightweight source of high-resolution timestamps:</p>
+<div class="codewrapper sourceCode" id="cb9">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" tabindex="-1" aria-label="code-block-5-1"></a><span class="fu">date</span> +%s.%N</span></code></pre>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" tabindex="-1" aria-label="code-block-9-1"></a><span class="fu">date</span> +%s.%N</span></code></pre>
 </div>
-<p>reports a point in time as a number of seconds elapsed since a fixed
-reference point.</p>
+<p>This reports the current point in time as the number of seconds
+elapsed since a fixed reference point.</p>
 <div id="accordionSpoiler2" class="accordion spoiler-accordion accordion-flush">
 <div class="accordion-item">
 <button class="accordion-button spoiler-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSpoiler2" aria-expanded="false" aria-controls="collapseSpoiler2">
   <h3 class="accordion-header" id="headingSpoiler2">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="eye"></i></div> Epoch time </h3>
 </button>
-<div id="collapseSpoiler2" class="accordion-collapse collapse" data-bs-parent="#accordionSpoiler2" aria-labelledby="headingSpoiler2">
+<div id="collapseSpoiler2" class="accordion-collapse collapse" aria-labelledby="headingSpoiler2" data-bs-parent="#accordionSpoiler2">
 <div class="accordion-body">
-<p>A referenced time point is also referred to as Epoch time, where,
-according to the manpage of<code>date</code>, the (default) reference
-point is the beginning of the year 1970, given as “1970-01-01 00:00
-UTC”.</p>
+<p>Such a referenced point in time is commonly referred to as <em>Epoch
+time</em>. According to the <code>date</code> manual page, the default
+reference point is <code>1970-01-01 00:00:00 UTC</code>, commonly known
+as the Unix epoch.</p>
 </div>
 </div>
 </div>
 </div>
-<p>While<code>%s</code>invokes output of a referenced time, the
-additional specifier<code>%N</code>enforces an accuracy down to
-nanoseconds. Give it a try and you will see a large number (of seconds)
-followed by 9 digits after the decimal point.</p>
-<div id="an-accurate-stopwatch-date" class="callout challenge">
+<p>The format specifier <code>%s</code> prints the elapsed time in
+seconds since the Unix epoch, while <code>%N</code> appends the
+fractional nanosecond component.</p>
+<p>Running the command multiple times will therefore produce large
+floating-point numbers with nanosecond-resolution timestamps, although
+the actual timer precision depends on the operating system, kernel, and
+underlying hardware.</p>
+<div id="an-accurate-stopwatch-using-date" class="callout challenge">
 <div class="callout-square">
 <i class="callout-icon" data-feather="zap"></i>
 </div>
 <span class="callout-header">Challenge</span>
-<div id="an-accurate-stopwatch-date" class="callout-inner">
-<h3 class="callout-title">An accurate stopwatch: <code>date</code>
+<div id="an-accurate-stopwatch-using-date" class="callout-inner">
+<h3 class="callout-title">An accurate stopwatch using
+<code>date</code>
 </h3>
 <div class="callout-content">
-<p>You can use the construct<code>date +%s.%N</code>on the command line
-or in a Bash script to save start and end time points as a variable:</p>
-<div class="codewrapper sourceCode" id="cb6">
+<p>You can use the construct <code>date +%s.%N</code> on the command
+line or in a Bash script to store start and end timestamps in
+variables:</p>
+<div class="codewrapper sourceCode" id="cb10">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" tabindex="-1" aria-label="code-block-6-1"></a><span class="va">start</span><span class="op">=</span><span class="va">$(</span><span class="fu">date</span> +%s.%N<span class="va">)</span></span>
-<span id="cb6-2"><a href="#cb6-2" tabindex="-1" aria-label="code-block-6-2"></a><span class="co"># ... run some command(s)</span></span>
-<span id="cb6-3"><a href="#cb6-3" tabindex="-1" aria-label="code-block-6-3"></a><span class="va">end</span><span class="op">=</span><span class="va">$(</span><span class="fu">date</span> +%s.%N<span class="va">)</span></span></code></pre>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" tabindex="-1" aria-label="code-block-10-1"></a><span class="va">start</span><span class="op">=</span><span class="va">$(</span><span class="fu">date</span> +%s.%N<span class="va">)</span></span>
+<span id="cb10-2"><a href="#cb10-2" tabindex="-1" aria-label="code-block-10-2"></a></span>
+<span id="cb10-3"><a href="#cb10-3" tabindex="-1" aria-label="code-block-10-3"></a><span class="co"># ... run some command(s) ...</span></span>
+<span id="cb10-4"><a href="#cb10-4" tabindex="-1" aria-label="code-block-10-4"></a></span>
+<span id="cb10-5"><a href="#cb10-5" tabindex="-1" aria-label="code-block-10-5"></a><span class="va">end</span><span class="op">=</span><span class="va">$(</span><span class="fu">date</span> +%s.%N<span class="va">)</span></span></code></pre>
 </div>
-<p>This gives you a stopwatch by setting a start time, running some
-<strong>command(s)</strong>, and then storing the end time after
-<strong>command(s)</strong> into a second variable. Differencing the two
-times produces the elapsed time. Give this a try with
-the<code>sleep</code>command in between.</p>
+<p>This effectively creates a simple stopwatch: you record a start
+timestamp, execute one or more commands, and then record an end
+timestamp. The elapsed runtime can then be computed by subtracting the
+start time from the end time. Try this using the <code>sleep</code>
+command between the two timestamps.</p>
 </div>
 </div>
 </div>
@@ -631,14 +723,14 @@ the<code>sleep</code>command in between.</p>
 <button class="accordion-button hint-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHint1" aria-expanded="false" aria-controls="collapseHint1">
   <h4 class="accordion-header" id="headingHint1"> Give me a hint </h4>
 </button>
-<div id="collapseHint1" class="accordion-collapse collapse" data-bs-parent="#accordionHint1" aria-labelledby="headingHint1">
+<div id="collapseHint1" class="accordion-collapse collapse" aria-labelledby="headingHint1" data-bs-parent="#accordionHint1">
 <div class="accordion-body">
-<p>Differencing two numbers can be done, among other ways, using
-the<code>bc</code>calculator tool:</p>
-<div class="codewrapper sourceCode" id="cb7">
+<p>Subtracting floating-point numbers can be done using the
+<code>bc</code> calculator tool:</p>
+<div class="codewrapper sourceCode" id="cb11">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" tabindex="-1" aria-label="code-block-7-1"></a><span class="bu">echo</span> <span class="st">"</span><span class="va">$end</span><span class="st"> - </span><span class="va">$start</span><span class="st">"</span> <span class="kw">|</span> <span class="fu">bc</span> <span class="at">-l</span></span></code></pre>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" tabindex="-1" aria-label="code-block-11-1"></a><span class="bu">echo</span> <span class="st">"</span><span class="va">$end</span><span class="st"> - </span><span class="va">$start</span><span class="st">"</span> <span class="kw">|</span> <span class="fu">bc</span> <span class="at">-l</span></span></code></pre>
 </div>
 </div>
 </div>
@@ -649,65 +741,73 @@ the<code>bc</code>calculator tool:</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
 <div class="accordion-body">
-<div class="codewrapper sourceCode" id="cb8">
+<div class="codewrapper sourceCode" id="cb12">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" tabindex="-1" aria-label="code-block-8-1"></a><span class="co">#!/usr/bin/env bash</span></span>
-<span id="cb8-2"><a href="#cb8-2" tabindex="-1" aria-label="code-block-8-2"></a></span>
-<span id="cb8-3"><a href="#cb8-3" tabindex="-1" aria-label="code-block-8-3"></a><span class="va">start</span><span class="op">=</span><span class="va">$(</span><span class="fu">date</span> +%s.%N<span class="va">)</span></span>
-<span id="cb8-4"><a href="#cb8-4" tabindex="-1" aria-label="code-block-8-4"></a><span class="fu">sleep</span> 2</span>
-<span id="cb8-5"><a href="#cb8-5" tabindex="-1" aria-label="code-block-8-5"></a><span class="va">end</span><span class="op">=</span><span class="va">$(</span><span class="fu">date</span> +%s.%N<span class="va">)</span></span>
-<span id="cb8-6"><a href="#cb8-6" tabindex="-1" aria-label="code-block-8-6"></a></span>
-<span id="cb8-7"><a href="#cb8-7" tabindex="-1" aria-label="code-block-8-7"></a><span class="bu">echo</span> <span class="st">"</span><span class="va">$end</span><span class="st"> - </span><span class="va">$start</span><span class="st">"</span> <span class="kw">|</span> <span class="fu">bc</span> <span class="at">-l</span></span></code></pre>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" tabindex="-1" aria-label="code-block-12-1"></a><span class="co">#!/usr/bin/env bash</span></span>
+<span id="cb12-2"><a href="#cb12-2" tabindex="-1" aria-label="code-block-12-2"></a></span>
+<span id="cb12-3"><a href="#cb12-3" tabindex="-1" aria-label="code-block-12-3"></a><span class="va">start</span><span class="op">=</span><span class="va">$(</span><span class="fu">date</span> +%s.%N<span class="va">)</span></span>
+<span id="cb12-4"><a href="#cb12-4" tabindex="-1" aria-label="code-block-12-4"></a><span class="fu">sleep</span> 2</span>
+<span id="cb12-5"><a href="#cb12-5" tabindex="-1" aria-label="code-block-12-5"></a><span class="va">end</span><span class="op">=</span><span class="va">$(</span><span class="fu">date</span> +%s.%N<span class="va">)</span></span>
+<span id="cb12-6"><a href="#cb12-6" tabindex="-1" aria-label="code-block-12-6"></a></span>
+<span id="cb12-7"><a href="#cb12-7" tabindex="-1" aria-label="code-block-12-7"></a><span class="bu">echo</span> <span class="st">"</span><span class="va">$end</span><span class="st"> - </span><span class="va">$start</span><span class="st">"</span> <span class="kw">|</span> <span class="fu">bc</span> <span class="at">-l</span></span></code></pre>
 </div>
 </div>
 </div>
 </div>
 </div>
 </div>
-</section><section><h2 class="section-heading" id="part-1-example-for-an-inefficient-job">Part 1: Example for an inefficient job<a class="anchor" aria-label="anchor" href="#part-1-example-for-an-inefficient-job"></a>
+</section><section><h2 class="section-heading" id="part-1-an-inefficient-job-example">Part 1: An inefficient job example<a class="anchor" aria-label="anchor" href="#part-1-an-inefficient-job-example"></a>
 </h2>
 <hr class="half-width">
-<p>After warming up with some timing methods, let’s analyze the
-efficiency of a small script that makes our computer sweat a bit more
-than the<code>sleep</code>command. Have a look at the following Bash
-shell 7-liner.</p>
-<div class="codewrapper sourceCode" id="cb9">
+<p>After warming up with some basic timing methods, let’s analyze the
+efficiency of a small script that performs a slightly more demanding
+workload than the <code>sleep</code> command. Have a look at the
+following short Bash script.</p>
+<div class="codewrapper sourceCode" id="cb13">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" tabindex="-1" aria-label="code-block-9-1"></a><span class="co">#!/bin/bash</span></span>
-<span id="cb9-2"><a href="#cb9-2" tabindex="-1" aria-label="code-block-9-2"></a><span class="va">sum</span><span class="op">=</span>0</span>
-<span id="cb9-3"><a href="#cb9-3" tabindex="-1" aria-label="code-block-9-3"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="va">$(</span><span class="fu">seq</span> 1 1000<span class="va">)</span><span class="kw">;</span> <span class="cf">do</span></span>
-<span id="cb9-4"><a href="#cb9-4" tabindex="-1" aria-label="code-block-9-4"></a>  <span class="va">val</span><span class="op">=</span><span class="kw">`</span><span class="bu">echo</span> <span class="st">"e(2 * l(</span><span class="va">${i}</span><span class="st">))"</span> <span class="kw">|</span> <span class="fu">bc</span> <span class="at">-l</span><span class="kw">`</span></span>
-<span id="cb9-5"><a href="#cb9-5" tabindex="-1" aria-label="code-block-9-5"></a>  <span class="va">sum</span><span class="op">=</span><span class="va">$(</span><span class="bu">echo</span> <span class="st">"</span><span class="va">$sum</span><span class="st"> + </span><span class="va">$val</span><span class="st">"</span> <span class="kw">|</span> <span class="fu">bc</span> <span class="at">-l</span><span class="va">)</span></span>
-<span id="cb9-6"><a href="#cb9-6" tabindex="-1" aria-label="code-block-9-6"></a><span class="cf">done</span></span>
-<span id="cb9-7"><a href="#cb9-7" tabindex="-1" aria-label="code-block-9-7"></a><span class="bu">echo</span> Sum=<span class="va">$sum</span></span></code></pre>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" tabindex="-1" aria-label="code-block-13-1"></a><span class="co">#!/usr/bin/env bash</span></span>
+<span id="cb13-2"><a href="#cb13-2" tabindex="-1" aria-label="code-block-13-2"></a></span>
+<span id="cb13-3"><a href="#cb13-3" tabindex="-1" aria-label="code-block-13-3"></a><span class="va">sum</span><span class="op">=</span>0</span>
+<span id="cb13-4"><a href="#cb13-4" tabindex="-1" aria-label="code-block-13-4"></a></span>
+<span id="cb13-5"><a href="#cb13-5" tabindex="-1" aria-label="code-block-13-5"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="va">$(</span><span class="fu">seq</span> 1 1000<span class="va">)</span></span>
+<span id="cb13-6"><a href="#cb13-6" tabindex="-1" aria-label="code-block-13-6"></a><span class="cf">do</span></span>
+<span id="cb13-7"><a href="#cb13-7" tabindex="-1" aria-label="code-block-13-7"></a>  <span class="va">val</span><span class="op">=</span><span class="va">$(</span><span class="bu">echo</span> <span class="st">"e(2 * l(</span><span class="va">${i}</span><span class="st">))"</span> <span class="kw">|</span> <span class="fu">bc</span> <span class="at">-l</span><span class="va">)</span></span>
+<span id="cb13-8"><a href="#cb13-8" tabindex="-1" aria-label="code-block-13-8"></a>  <span class="va">sum</span><span class="op">=</span><span class="va">$(</span><span class="bu">echo</span> <span class="st">"</span><span class="va">$sum</span><span class="st"> + </span><span class="va">$val</span><span class="st">"</span> <span class="kw">|</span> <span class="fu">bc</span> <span class="at">-l</span><span class="va">)</span></span>
+<span id="cb13-9"><a href="#cb13-9" tabindex="-1" aria-label="code-block-13-9"></a><span class="cf">done</span></span>
+<span id="cb13-10"><a href="#cb13-10" tabindex="-1" aria-label="code-block-13-10"></a></span>
+<span id="cb13-11"><a href="#cb13-11" tabindex="-1" aria-label="code-block-13-11"></a><span class="bu">echo</span> Sum=<span class="va">$sum</span></span></code></pre>
 </div>
-<p>Copy-paste this to a file, say<code>sum.bash</code>, and make it
-executable via</p>
-<div class="codewrapper sourceCode" id="cb10">
+<p>Copy this into a file called <code>sum.bash</code>, or download it
+directly:</p>
+<div class="codewrapper sourceCode" id="cb14">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" tabindex="-1" aria-label="code-block-10-1"></a><span class="fu">chmod</span> u+x sum.bash</span></code></pre>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" tabindex="-1" aria-label="code-block-14-1"></a><span class="ex">curl</span> <span class="at">-L</span> <span class="at">-o</span> sum.bash https://raw.githubusercontent.com/carpentries-incubator/hpc-job-efficiency/main/learners/data/sum.bash</span></code></pre>
 </div>
-<p>The main part of this shell script consists of
-a<code>for</code>statement which is calculating the sum of all squares
-<span class="math inline">\(i^2\)</span> for 1000 iterations; note
-that<code>seq 1 1000</code>creates the number sequence (<span class="math inline">\(i=1,2,3,...,1000\)</span>). Inside the
-<code>for</code>loop the<code>bc</code>calculator tool is employed. The
-first statement inside the loop (<code>val=...</code>) prints the
-expression <code>e(2 * l(${i}))</code>, which is <code>bc</code>-talk
-for the expression <span class="math inline">\(i^2\)</span> because of
-the relation <span class="math inline">\(i^x=e^{x\cdot \ln(i)}\)</span>,
-for example <span class="math inline">\(e^{2\cdot\ln(3)}=3^2\)</span>,
-where ln is the natural logarithm. The second statement inside the loop
-(<code>sum=...</code>) accumulates the expressions
-<code>val=</code><span class="math inline">\(i^2\)</span>
-into<code>sum</code>, so the output of the final<code>echo</code>line is
-the total, <span class="math inline">\(\sum_{i=1}^{1000}i^2\)</span>.</p>
-
+<p>Then make it executable:</p>
+<div class="codewrapper sourceCode" id="cb15">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" tabindex="-1" aria-label="code-block-15-1"></a><span class="fu">chmod</span> u+x sum.bash</span></code></pre>
+</div>
+<p>The main part of this shell script is a <code>for</code> loop that
+computes the sum of all squares <span class="math inline">\(i^2\)</span>
+over 1000 iterations; note that <code>seq 1 1000</code> generates the
+sequence <span class="math inline">\(i = 1, 2, 3, \ldots, 1000\)</span>.
+Inside the <code>for</code> loop, the <code>bc</code> calculator tool is
+used to evaluate the mathematical expressions. The first statement
+inside the loop (<code>val=...</code>) evaluates the expression
+<code>e(2 * l(${i}))</code>, which corresponds to the mathematical
+identity <span class="math inline">\(i^2 = e^{2 \cdot \ln(i)}\)</span>.
+For example, <span class="math inline">\(e^{2 \cdot \ln(3)} =
+3^2\)</span>, where <span class="math inline">\(\ln\)</span> denotes the
+natural logarithm. The second statement inside the loop
+(<code>sum=...</code>) accumulates the computed values <span class="math inline">\(i^2\)</span> into the variable <code>sum</code>,
+so the final <code>echo</code> statement prints the total sum <span class="math inline">\(\sum_{i=1}^{1000}i^2\)</span>.</p>
 <div id="identify-the-inefficient-pieces" class="callout challenge">
 <div class="callout-square">
 <i class="callout-icon" data-feather="zap"></i>
@@ -716,10 +816,10 @@ the total, <span class="math inline">\(\sum_{i=1}^{1000}i^2\)</span>.</p>
 <div id="identify-the-inefficient-pieces" class="callout-inner">
 <h3 class="callout-title">Identify the inefficient pieces</h3>
 <div class="callout-content">
-<p>In the above Bash script, the<code>for</code>loop invokes the
-<code>bc</code>calculator twice during every loop iteration. Compared to
-another method to be investigated below, this method is rather slow. Any
-idea why that is the case?</p>
+<p>In the above Bash script, the <code>for</code> loop invokes the
+<code>bc</code> calculator twice during every loop iteration. Compared
+to more efficient approaches shown later, this method is relatively
+slow. Why might that be the case?</p>
 </div>
 </div>
 </div>
@@ -728,10 +828,10 @@ idea why that is the case?</p>
 <button class="accordion-button hint-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHint2" aria-expanded="false" aria-controls="collapseHint2">
   <h4 class="accordion-header" id="headingHint2"> Give me a hint </h4>
 </button>
-<div id="collapseHint2" class="accordion-collapse collapse" data-bs-parent="#accordionHint2" aria-labelledby="headingHint2">
+<div id="collapseHint2" class="accordion-collapse collapse" aria-labelledby="headingHint2" data-bs-parent="#accordionHint2">
 <div class="accordion-body">
-<p>Each statement<code>echo … | bc -l</code>spawns a
-new<code>bc</code>process via a subshell.</p>
+<p>Each statement of the form <code>echo ... | bc -l</code> launches a
+new <code>bc</code> process through a pipe and subshell.</p>
 </div>
 </div>
 </div>
@@ -741,29 +841,36 @@ new<code>bc</code>process via a subshell.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
   <h4 class="accordion-header" id="headingSolution2"> Show me the solution </h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
 <div class="accordion-body">
-<p>The statement<code>echo … | bc -l</code>spawns a
-new<code>bc</code>process via a subshell. Here, each loop iteration
-invokes two of those. Each subshell is essentially a separate process
-and involves a certain startup cost, parsing overhead, and OS-internal
-inter‑process communication. Such overhead will account for most of the
-total runtime of<code>sum.bash</code>.</p>
+<p>The construct <code>echo ... | bc -l</code> launches a new
+<code>bc</code> process for every invocation. In this script, each loop
+iteration creates two separate <code>bc</code> processes.</p>
+<p>Process creation, shell expansion, pipe setup, and inter-process
+communication all introduce overhead. Since the mathematical computation
+itself is very small, most of the total runtime of <code>sum.bash</code>
+is spent managing repeatedly spawned processes rather than performing
+useful calculations.</p>
 </div>
 </div>
 </div>
 </div>
-<p>The overhead in this shell script is dominated by process creation
-and context switching, that is, calling the<code>bc</code>tool so many
-times. Going back to our air-travel analogy, the summation of 1000
-numbers shall be equivalent to having a total of 1000 passengers board a
-large plane. When total boarding time counts, an inefficient boarding
-procedure would involve every passenger loading two carryon pieces. Many
-of you may have experienced, how stuffing an excessive number of baggage
-pieces into the overhead compartments can slow things down in the
-plane’s aisles, similar to the overhead due to the 2000 (two for each
-loop iteration)<code>bc</code>sub-processes that hinder the data stream
-inside the CPU’s “aisles”.</p>
+<p>The overhead in this shell script is dominated by repeatedly
+launching external <code>bc</code> processes. Each invocation requires
+process creation, shell expansion, pipe setup, and inter-process
+communication, while the actual mathematical work performed by
+<code>bc</code> is comparatively small.</p>
+<p>Going back to our air-travel analogy, the summation of 1000 numbers
+is equivalent to boarding 1000 passengers onto a large airplane. If
+minimizing total boarding time matters, an inefficient boarding
+procedure would involve every passenger bringing multiple oversized
+carry-on bags. Many travelers have experienced how loading excessive
+baggage into overhead compartments slows movement throughout the
+aircraft cabin.</p>
+<p>Similarly, the repeated creation of 2000 <code>bc</code> subprocesses
+(two during each loop iteration) introduces substantial
+process-management overhead that slows the overall execution of the
+script far more than the mathematical calculations themselves.</p>
 <div id="lets-pull-out-our-stopwatches" class="callout challenge">
 <div class="callout-square">
 <i class="callout-icon" data-feather="zap"></i>
@@ -772,8 +879,9 @@ inside the CPU’s “aisles”.</p>
 <div id="lets-pull-out-our-stopwatches" class="callout-inner">
 <h3 class="callout-title">Let’s pull out our stopwatches</h3>
 <div class="callout-content">
-<p>Using either<code>time</code>or<code>date</code>, can you get a
-runtime measurement for<code>sum.bash</code>?</p>
+<p>We can use either the <code>time</code> command or
+<code>date</code>-based timestamps. Can you measure the runtime of
+<code>sum.bash</code>?</p>
 </div>
 </div>
 </div>
@@ -782,12 +890,13 @@ runtime measurement for<code>sum.bash</code>?</p>
 <button class="accordion-button hint-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHint3" aria-expanded="false" aria-controls="collapseHint3">
   <h4 class="accordion-header" id="headingHint3"> Give me a hint </h4>
 </button>
-<div id="collapseHint3" class="accordion-collapse collapse" data-bs-parent="#accordionHint3" aria-labelledby="headingHint3">
+<div id="collapseHint3" class="accordion-collapse collapse" aria-labelledby="headingHint3" data-bs-parent="#accordionHint3">
 <div class="accordion-body">
-<p>You can precede any command with<code>time</code>. If you want to
-use<code>date</code>, remember that<code>now=$(date +%s.%N)</code>lets
-you store the current time point and<code>&amp;&amp;</code>lets you join
-commands together.</p>
+<p>You can prepend almost any command with <code>time</code>. If you
+want to use <code>date</code>, remember that
+<code>now=$(date +%s.%N)</code> stores the current timestamp in a
+variable, while <code>&amp;&amp;</code> allows multiple commands to be
+chained together.</p>
 </div>
 </div>
 </div>
@@ -797,36 +906,47 @@ commands together.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution3" aria-expanded="false" aria-controls="collapseSolution3">
   <h4 class="accordion-header" id="headingSolution3"> Show me the solution </h4>
 </button>
-<div id="collapseSolution3" class="accordion-collapse collapse" data-bs-parent="#accordionSolution3" aria-labelledby="headingSolution3">
+<div id="collapseSolution3" class="accordion-collapse collapse" aria-labelledby="headingSolution3" data-bs-parent="#accordionSolution3">
 <div class="accordion-body">
-<p>A straightforward way is</p>
-<div class="codewrapper sourceCode" id="cb11">
+<p>A straightforward approach is</p>
+<div class="codewrapper sourceCode" id="cb16">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" tabindex="-1" aria-label="code-block-11-1"></a><span class="bu">time</span> ./sum.bash</span></code></pre>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" tabindex="-1" aria-label="code-block-16-1"></a><span class="bu">time</span> ./sum.bash</span></code></pre>
 </div>
-<p>Alternatively,<code>date</code>and<code>&amp;&amp;</code>can be
-combined to a wrapper in order to
-time<code>sum.bash</code>externally,</p>
-<div class="codewrapper sourceCode" id="cb12">
+<p>Alternatively, <code>date</code> and <code>&amp;&amp;</code> can be
+combined into a wrapper command that measures the runtime of
+<code>sum.bash</code> externally:</p>
+<div class="codewrapper sourceCode" id="cb17">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" tabindex="-1" aria-label="code-block-12-1"></a><span class="va">start</span><span class="op">=</span><span class="va">$(</span><span class="fu">date</span> +%s.%N<span class="va">)</span> <span class="kw">&amp;&amp;</span> <span class="ex">./sum.bash</span> <span class="kw">&amp;&amp;</span> <span class="va">end</span><span class="op">=</span><span class="va">$(</span><span class="fu">date</span> +%s.%N<span class="va">)</span> <span class="kw">&amp;&amp;</span> <span class="bu">echo</span> <span class="st">"</span><span class="va">$end</span><span class="st"> - </span><span class="va">$start</span><span class="st">"</span> <span class="kw">|</span> <span class="fu">bc</span> <span class="at">-l</span></span></code></pre>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" tabindex="-1" aria-label="code-block-17-1"></a><span class="va">start</span><span class="op">=</span><span class="va">$(</span><span class="fu">date</span> +%s.%N<span class="va">)</span> <span class="kw">&amp;&amp;</span> <span class="ex">./sum.bash</span> <span class="kw">&amp;&amp;</span> <span class="va">end</span><span class="op">=</span><span class="va">$(</span><span class="fu">date</span> +%s.%N<span class="va">)</span> <span class="kw">&amp;&amp;</span> <span class="bu">echo</span> <span class="st">"</span><span class="va">$end</span><span class="st"> - </span><span class="va">$start</span><span class="st">"</span> <span class="kw">|</span> <span class="fu">bc</span> <span class="at">-l</span></span></code></pre>
 </div>
-<p>Another option is to place<code>date</code>inside the
-script<code>sum.bash</code>,</p>
-<div class="codewrapper sourceCode" id="cb13">
+<p>Another option is to place the timestamp measurements directly inside
+the <code>sum.bash</code> script, or download it directly:</p>
+<div class="codewrapper sourceCode" id="cb18">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" tabindex="-1" aria-label="code-block-13-1"></a><span class="co">#!/bin/bash</span></span>
-<span id="cb13-2"><a href="#cb13-2" tabindex="-1" aria-label="code-block-13-2"></a><span class="va">start</span><span class="op">=</span><span class="va">$(</span><span class="fu">date</span> +%s.%N<span class="va">)</span> <span class="co"># set start time</span></span>
-<span id="cb13-3"><a href="#cb13-3" tabindex="-1" aria-label="code-block-13-3"></a><span class="va">sum</span><span class="op">=</span>0</span>
-<span id="cb13-4"><a href="#cb13-4" tabindex="-1" aria-label="code-block-13-4"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="va">$(</span><span class="fu">seq</span> 1 1000<span class="va">)</span><span class="kw">;</span> <span class="cf">do</span></span>
-<span id="cb13-5"><a href="#cb13-5" tabindex="-1" aria-label="code-block-13-5"></a>  <span class="va">val</span><span class="op">=</span><span class="kw">`</span><span class="bu">echo</span> <span class="st">"e(2 * l(</span><span class="va">${i}</span><span class="st">))"</span> <span class="kw">|</span> <span class="fu">bc</span> <span class="at">-l</span><span class="kw">`</span></span>
-<span id="cb13-6"><a href="#cb13-6" tabindex="-1" aria-label="code-block-13-6"></a>  <span class="va">sum</span><span class="op">=</span><span class="va">$(</span><span class="bu">echo</span> <span class="st">"</span><span class="va">$sum</span><span class="st"> + </span><span class="va">$val</span><span class="st">"</span> <span class="kw">|</span> <span class="fu">bc</span> <span class="at">-l</span><span class="va">)</span></span>
-<span id="cb13-7"><a href="#cb13-7" tabindex="-1" aria-label="code-block-13-7"></a><span class="cf">done</span></span>
-<span id="cb13-8"><a href="#cb13-8" tabindex="-1" aria-label="code-block-13-8"></a><span class="va">end</span><span class="op">=</span><span class="va">$(</span><span class="fu">date</span> +%s.%N<span class="va">)</span> <span class="co"># set end time</span></span>
-<span id="cb13-9"><a href="#cb13-9" tabindex="-1" aria-label="code-block-13-9"></a><span class="bu">echo</span> Sum=<span class="va">$sum</span> runtime=<span class="kw">`</span><span class="bu">echo</span> <span class="st">"</span><span class="va">$end</span><span class="st"> - </span><span class="va">$start</span><span class="st">"</span> <span class="kw">|</span> <span class="fu">bc</span> <span class="at">-l</span><span class="kw">`</span></span></code></pre>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" tabindex="-1" aria-label="code-block-18-1"></a><span class="ex">curl</span> <span class="at">-L</span> <span class="at">-o</span> sum_with_date.bash https://raw.githubusercontent.com/carpentries-incubator/hpc-job-efficiency/main/learners/data/sum_with_date.bash</span></code></pre>
+</div>
+<div class="codewrapper sourceCode" id="cb19">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1" tabindex="-1" aria-label="code-block-19-1"></a><span class="co">#!/usr/bin/env bash</span></span>
+<span id="cb19-2"><a href="#cb19-2" tabindex="-1" aria-label="code-block-19-2"></a></span>
+<span id="cb19-3"><a href="#cb19-3" tabindex="-1" aria-label="code-block-19-3"></a><span class="va">start</span><span class="op">=</span><span class="va">$(</span><span class="fu">date</span> +%s.%N<span class="va">)</span> <span class="co"># store start timestamp</span></span>
+<span id="cb19-4"><a href="#cb19-4" tabindex="-1" aria-label="code-block-19-4"></a></span>
+<span id="cb19-5"><a href="#cb19-5" tabindex="-1" aria-label="code-block-19-5"></a><span class="va">sum</span><span class="op">=</span>0</span>
+<span id="cb19-6"><a href="#cb19-6" tabindex="-1" aria-label="code-block-19-6"></a></span>
+<span id="cb19-7"><a href="#cb19-7" tabindex="-1" aria-label="code-block-19-7"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="va">$(</span><span class="fu">seq</span> 1 1000<span class="va">)</span></span>
+<span id="cb19-8"><a href="#cb19-8" tabindex="-1" aria-label="code-block-19-8"></a><span class="cf">do</span></span>
+<span id="cb19-9"><a href="#cb19-9" tabindex="-1" aria-label="code-block-19-9"></a>  <span class="va">val</span><span class="op">=</span><span class="va">$(</span><span class="bu">echo</span> <span class="st">"e(2 * l(</span><span class="va">${i}</span><span class="st">))"</span> <span class="kw">|</span> <span class="fu">bc</span> <span class="at">-l</span><span class="va">)</span></span>
+<span id="cb19-10"><a href="#cb19-10" tabindex="-1" aria-label="code-block-19-10"></a>  <span class="va">sum</span><span class="op">=</span><span class="va">$(</span><span class="bu">echo</span> <span class="st">"</span><span class="va">$sum</span><span class="st"> + </span><span class="va">$val</span><span class="st">"</span> <span class="kw">|</span> <span class="fu">bc</span> <span class="at">-l</span><span class="va">)</span></span>
+<span id="cb19-11"><a href="#cb19-11" tabindex="-1" aria-label="code-block-19-11"></a><span class="cf">done</span></span>
+<span id="cb19-12"><a href="#cb19-12" tabindex="-1" aria-label="code-block-19-12"></a></span>
+<span id="cb19-13"><a href="#cb19-13" tabindex="-1" aria-label="code-block-19-13"></a><span class="va">end</span><span class="op">=</span><span class="va">$(</span><span class="fu">date</span> +%s.%N<span class="va">)</span> <span class="co"># store end timestamp</span></span>
+<span id="cb19-14"><a href="#cb19-14" tabindex="-1" aria-label="code-block-19-14"></a></span>
+<span id="cb19-15"><a href="#cb19-15" tabindex="-1" aria-label="code-block-19-15"></a><span class="bu">echo</span> Sum=<span class="va">$sum</span> runtime=<span class="va">$(</span><span class="bu">echo</span> <span class="st">"</span><span class="va">$end</span><span class="st"> - </span><span class="va">$start</span><span class="st">"</span> <span class="kw">|</span> <span class="fu">bc</span> <span class="at">-l</span><span class="va">)</span>s</span></code></pre>
 </div>
 </div>
 </div>
@@ -835,27 +955,32 @@ script<code>sum.bash</code>,</p>
 <div class="section level3">
 <h3 id="speeding-things-up">Speeding things up<a class="anchor" aria-label="anchor" href="#speeding-things-up"></a>
 </h3>
-<p>A remedy to the inefficiencies we found inside
-the<code>for</code>loop of<code>sum.bash</code>is to avoid the spawning
-of many sub-processes that are caused by repetitively
-calling<code>bc</code>. In other words, ideally, the many sub-processes
-conflate into one. In terms of the airplane analogy, we want people to
-store all their carryon pieces in a big container, where its subsequent
-loading onto the plane is a single process, as opposed to every
-passenger running a proprietary sub-process. Collapsing things into one
-sub-processes can be achieved by replacing the external loop by
-a<code>bc</code>-internal one:</p>
-<div class="codewrapper sourceCode" id="cb14">
+<p>A remedy for the inefficiencies inside the <code>for</code> loop of
+<code>sum.bash</code> is to avoid repeatedly spawning external
+<code>bc</code> processes. Ideally, we would like to perform all
+computations within a single <code>bc</code> invocation instead of
+launching thousands of separate subprocesses.</p>
+<p>Let us now revisit the airplane analogy: we want passengers to
+consolidate their carry-on baggage into a single large container that
+can be loaded onto the airplane in one coordinated operation, rather
+than having every passenger individually block the aisle while handling
+multiple bags.</p>
+<p>This reduction in process-management overhead can be achieved by
+replacing the external shell loop with a loop executed internally by
+<code>bc</code>:</p>
+<div class="codewrapper sourceCode" id="cb20">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" tabindex="-1" aria-label="code-block-14-1"></a><span class="bu">echo</span> <span class="st">"s=0; for(i=1; i&lt;=1000; i++)s+=i^2; s"</span> <span class="kw">|</span> <span class="fu">bc</span> <span class="at">-l</span></span></code></pre>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1" tabindex="-1" aria-label="code-block-20-1"></a><span class="bu">echo</span> <span class="st">"s=0; for(i=1; i&lt;=1000; i++) s+=i^2; s"</span> <span class="kw">|</span> <span class="fu">bc</span> <span class="at">-l</span></span></code></pre>
 </div>
-<p>In this method, to be called the <em>one-liner</em>, the loop,
-arithmetic, and accumulation are free of the overhead. This example
-shall be a placeholder for a common scenario, where potentially large
-efficiency gains can be achieved by replacing inefficient math
-implementations by numerically optimized software
-<em>libraries</em>.</p>
+<p>In this approach, which we will call the <em>one-liner</em>, the
+loop, arithmetic, and accumulation are executed inside a single
+<code>bc</code> process. This avoids the repeated process creation and
+communication overhead present in the original implementation.</p>
+<p>This example illustrates a common performance-engineering principle
+in HPC: substantial speedups can often be achieved by replacing
+inefficient implementations with numerically optimized software
+libraries or by reducing runtime-management overhead.</p>
 <div id="evaluate-the-runtime-improvement" class="callout challenge">
 <div class="callout-square">
 <i class="callout-icon" data-feather="zap"></i>
@@ -864,8 +989,8 @@ implementations by numerically optimized software
 <div id="evaluate-the-runtime-improvement" class="callout-inner">
 <h3 class="callout-title">Evaluate the runtime improvement</h3>
 <div class="callout-content">
-<p>Compare the runtimes of the summation
-script<code>sum.bash</code>versus the one-liner.</p>
+<p>Compare the runtimes of the summation script <code>sum.bash</code>
+and the one-liner.</p>
 </div>
 </div>
 </div>
@@ -874,10 +999,10 @@ script<code>sum.bash</code>versus the one-liner.</p>
 <button class="accordion-button hint-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHint4" aria-expanded="false" aria-controls="collapseHint4">
   <h4 class="accordion-header" id="headingHint4"> Give me a hint </h4>
 </button>
-<div id="collapseHint4" class="accordion-collapse collapse" data-bs-parent="#accordionHint4" aria-labelledby="headingHint4">
+<div id="collapseHint4" class="accordion-collapse collapse" aria-labelledby="headingHint4" data-bs-parent="#accordionHint4">
 <div class="accordion-body">
-<p>The Bash keyword<code>time</code>is sufficient to see the runtime
-difference.</p>
+<p>The Bash keyword <code>time</code> is sufficient to observe the
+runtime difference.</p>
 </div>
 </div>
 </div>
@@ -887,196 +1012,151 @@ difference.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution4" aria-expanded="false" aria-controls="collapseSolution4">
   <h4 class="accordion-header" id="headingSolution4"> Show me the solution </h4>
 </button>
-<div id="collapseSolution4" class="accordion-collapse collapse" data-bs-parent="#accordionSolution4" aria-labelledby="headingSolution4">
+<div id="collapseSolution4" class="accordion-collapse collapse" aria-labelledby="headingSolution4" data-bs-parent="#accordionSolution4">
 <div class="accordion-body">
-<p>You can use<code>time</code>for both summation methods,</p>
-<div class="codewrapper sourceCode" id="cb15">
+<p>You can use <code>time</code> for both summation methods:</p>
+<div class="codewrapper sourceCode" id="cb21">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" tabindex="-1" aria-label="code-block-15-1"></a><span class="bu">time</span> ./sum.bash</span>
-<span id="cb15-2"><a href="#cb15-2" tabindex="-1" aria-label="code-block-15-2"></a><span class="bu">time</span> echo <span class="st">"s=0; for(i=1; i&lt;=1000; i++)s+=i^2; s"</span> <span class="kw">|</span> <span class="fu">bc</span> <span class="at">-l</span></span></code></pre>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb21-1"><a href="#cb21-1" tabindex="-1" aria-label="code-block-21-1"></a><span class="bu">time</span> ./sum.bash</span>
+<span id="cb21-2"><a href="#cb21-2" tabindex="-1" aria-label="code-block-21-2"></a><span class="bu">time</span> echo <span class="st">"s=0; for(i=1; i&lt;=1000; i++) s+=i^2; s"</span> <span class="kw">|</span> <span class="fu">bc</span> <span class="at">-l</span></span></code></pre>
 </div>
 </div>
 </div>
 </div>
 </div>
-<p>While it depends a bit on the employed hardware, one will notice that
-the one-liner runs roughly 1000 times faster than<code>sum.bash</code>.
-Of course, one could live with this inefficiency when it is just needed
-once in a while and the script’s overall runtime amounts to just a few
-seconds. However, imagine some large-scale computing job that is
-supposed to finish within an hour on a supercomputer for which one has
-to pay a usage fee on a per-hour basis. If implemented poorly, an
-already small overhead increase, say by a factor of 2, would render this
-computing job expensive, both in terms of time and money.</p>
+<p>While the exact numbers depend on the underlying hardware and
+software environment, you will typically observe that the one-liner
+executes dramatically faster than <code>sum.bash</code>.</p>
+<p>Of course, one could tolerate such inefficiency if the script is only
+executed occasionally and its runtime is only a few seconds. However,
+consider a large-scale computational job running on a supercomputer
+where compute time is limited, shared, or billed per usage hour.</p>
+<p>In such environments, even seemingly small inefficiencies can become
+expensive. A slowdown by only a factor of two may double both the
+runtime and associated resource consumption, increasing cost, queue
+occupancy, and energy usage.</p>
 <div id="accordionSpoiler3" class="accordion spoiler-accordion accordion-flush">
 <div class="accordion-item">
 <button class="accordion-button spoiler-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSpoiler3" aria-expanded="false" aria-controls="collapseSpoiler3">
   <h3 class="accordion-header" id="headingSpoiler3">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="eye"></i></div> CPU-bound versus memory-bound </h3>
 </button>
-<div id="collapseSpoiler3" class="accordion-collapse collapse" data-bs-parent="#accordionSpoiler3" aria-labelledby="headingSpoiler3">
+<div id="collapseSpoiler3" class="accordion-collapse collapse" aria-labelledby="headingSpoiler3" data-bs-parent="#accordionSpoiler3">
 <div class="accordion-body">
-<p>The above runtime comparisons merely look at calculation speed, which
-depends on CPU processing speed. Such a task is thus called
-<em>CPU-bound</em>. On the other hand, the performance of a
-<em>memory-bound</em> process is limited by the speed of memory access.
-This happens when the CPU spends most of its time waiting for data to be
-fetched from memory (RAM), cache, or storage, causing its execution
-pipeline to stall. Optimization of memory-bound tasks addresses
-performance bottlenecks due to data transfer speeds rather than
-calculation speeds. Finally, when data transfer involves a high
-percentage of disk or network access, disk/networking speed becomes a
-limiting factor, rendering a process <em>I/O-bound</em>.</p>
+<p>The runtime comparisons above primarily measure computational
+performance. When the execution speed of a program is mainly limited by
+the processor’s ability to perform computations, the workload is called
+<em>CPU-bound</em> or <em>compute-bound</em>.</p>
+<p>In contrast, a <em>memory-bound</em> workload is limited primarily by
+memory-access performance rather than computational throughput. This
+occurs when the CPU spends a significant fraction of time waiting for
+data to be fetched from main memory, cache, or other memory hierarchies
+instead of performing computations.</p>
+<p>Optimizing memory-bound applications therefore focuses on improving
+data locality, memory-access patterns, cache utilization, and data
+movement efficiency rather than increasing raw computational
+performance.</p>
+<p>Finally, if performance is dominated by reading or writing data to
+storage devices or transferring data across a network, the workload
+becomes <em>I/O-bound</em>. In such cases, storage throughput, latency,
+or network bandwidth become the primary performance bottlenecks.</p>
 </div>
 </div>
 </div>
 </div>
-</div>
-<div class="section level3">
-<h3 id="to-be-precise-numerical-efficiency">To be precise: Numerical efficiency<a class="anchor" aria-label="anchor" href="#to-be-precise-numerical-efficiency"></a>
-</h3>
-
-<p>Inefficient computing is not only limited to being unnecessarily
-slow. It can also entail the scenario where an excessive accuracy can
-lead to unnecessary runtime increases. Without going into details, let’s
-just keep in mind that in computing, accuracy depends on the
-<em>precision</em> of the numbers that are being processed by the CPU.
-Precision essentially governs how many digits after the decimal point
-are accounted for in mathematical operations. The higher the precision,
-the fewer calculations can be processed within a fixed time. On the
-other hand, within that same time, the CPU can crank through more
-low-precision numbers; however, an insufficient precision can render
-lengthy calculations useless. The optimal degree of precision, in terms
-of computing efficiency, is application dependent.</p>
-<!---
-The internal accuracy of`bc`is defined by an adjustable parameter`scale`which
-defines how some operations use digits after the decimal point. The default value of`scale`is 0.
-During each`bc`call within the summation loop of`sum.bash`, the intermediate result is rounded
-according to the current setting of`scale`. An insufficiently low precision setting
-leads to an accumulation of rounding errors over many loop iterations,
-rendering the final result (like a sum or product) erroneous.--->
-<div id="compare-numerical-results" class="callout challenge">
-<div class="callout-square">
-<i class="callout-icon" data-feather="zap"></i>
-</div>
-<span class="callout-header">Challenge</span>
-<div id="compare-numerical-results" class="callout-inner">
-<h3 class="callout-title">Compare numerical results</h3>
-<div class="callout-content">
-<p>Our summation implementation via<code>sum.bash</code>exemplifies the
-case of an inaccurate calculation. When running the two summation
-methods in the previous challenge, have a look at the actual summation
-results. Which of the two end results do you think is more accurate and
-why? Is the erroneous result smaller or larger and why?</p>
-</div>
-</div>
-</div>
-<div id="accordionHint5" class="accordion challenge-accordion accordion-flush">
-<div class="accordion-item">
-<button class="accordion-button hint-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHint5" aria-expanded="false" aria-controls="collapseHint5">
-  <h4 class="accordion-header" id="headingHint5"> Give me a hint </h4>
-</button>
-<div id="collapseHint5" class="accordion-collapse collapse" data-bs-parent="#accordionHint5" aria-labelledby="headingHint5">
-<div class="accordion-body">
-<p>Think of another airplane example. Which scenario is more prone to
-things getting lost or forgotten? 1) Passengers bring and take their own
-baggage pieces to the cabin, or 2) Baggage pieces are stored and
-retrieved collectively.</p>
-</div>
-</div>
-</div>
-</div>
-<div id="accordionSolution5" class="accordion challenge-accordion accordion-flush">
-<div class="accordion-item">
-<button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution5" aria-expanded="false" aria-controls="collapseSolution5">
-  <h4 class="accordion-header" id="headingSolution5"> Show me the solution </h4>
-</button>
-<div id="collapseSolution5" class="accordion-collapse collapse" data-bs-parent="#accordionSolution5" aria-labelledby="headingSolution5">
-<div class="accordion-body">
-<p>The method<code>sum.bash</code>, using the
-external<code>for</code>loop, and the one-liner return the final sums,
-respectively,</p>
-<pre><code><span><span class="fl">103075329</span>  <span class="co"># bc, external loop (sum.bash)</span></span>
-<span><span class="fl">333833500</span>  <span class="co"># bc, internal loop (one-liner)</span></span></code></pre>
-<p>where the first result may vary on your machine. The
-method<code>sum.bash</code>is affected by the setting of the
-<code>bc</code>-internal parameter<code>scale</code>which defines how
-some operations, here the exponential function <strong>e(…)</strong> and
-logarithm <strong>ln(…)</strong> use digits after the decimal point. The
-default value of<code>scale</code>is 0, which basically leads to
-truncations after the decimal point, so rounding errors accumulate at
-every loop iteration. Hence, the final sum drifts downward (by a lot)
-compared to the second (true) value. Of course,<code>scale</code>can be
-increased. The manpage of<code>bc</code>actually says that it is “an
-arbitrary precision calculator language”.</p>
-</div>
-</div>
-</div>
-</div>
+<p>So far we have focused on efficiency from the perspective of runtime.
+In HPC environments, however, efficiency also affects resource
+consumption and energy usage. We now broaden the discussion from
+individual programs to the computing systems that execute them.</p>
 </div>
 </section><section><h2 class="section-heading" id="part-2-about-hpc-power-consumption">Part 2: About HPC power consumption<a class="anchor" aria-label="anchor" href="#part-2-about-hpc-power-consumption"></a>
 </h2>
 <hr class="half-width">
-<p>The <em>HP</em> (high performace) in HPC refers to the fact that the
-employed computer hardware is able to do a lot of multitasking, also
-called parallel computing. Parallel programming essentially exploits the
-CPU’s multitasking ability. Therefore, a lot of HPC-efficiency aspects
-revolve around keeping everyone in a CPU’s multitasking team equally
-busy. We will look at some of those aspects during the course of later
-episodes.</p>
+<p>Modern HPC systems achieve high performance by distributing
+computations across many CPU cores, GPUs, and compute nodes that operate
+in parallel.</p>
+<p>To make effective use of these resources, parallel programs divide a
+workload into smaller tasks that can execute concurrently.</p>
+<p>As a result, many HPC efficiency considerations revolve around
+keeping computational resources utilized effectively while minimizing
+idle time, synchronization overhead, and unnecessary communication.</p>
+<p>We will revisit several of these performance and efficiency aspects
+in later episodes.</p>
 
 <div class="section level3">
-<h3 id="the-more-the-merrier-cpugpu-cores">The more the merrier: CPU/GPU cores<a class="anchor" aria-label="anchor" href="#the-more-the-merrier-cpugpu-cores"></a>
+<h3 id="the-more-the-merrier-parallel-resources">The more the merrier: Parallel resources<a class="anchor" aria-label="anchor" href="#the-more-the-merrier-parallel-resources"></a>
 </h3>
-<p>Common parallel-computing jobs employ multiple cores of a CPU, or
-even multiple CPUs, simultaneously. A core is a processing unit within a
-CPU that independently executes instructions. These days (as of 2025),
-typical CPUs are quad-core (4 cores), octa-core (8 cores), and so on.
-High-end gaming CPUs often have 16+ cores, HPC cluster nodes feature
-multiple CPUs, oftentimes with 64+ cores each; and all these numbers
-keep going up.</p>
-<p>Nowadays, almost all HPC centers are also equipped with GPU (Graphics
-Processing Unit) hardware. Such hardware is optimal for jobs where
-<em>many cores</em> is more important than fewer powerful cores.<br>
-The number of GPU cores varies greatly depending on the model, ranging
-from a few hundred in low-end GPU cards to over 16,000 in high-end
-ones.</p>
+<p>Many parallel computing applications use multiple CPU cores, or even
+multiple CPUs, simultaneously. A CPU core is an independent processing
+unit capable of executing program instructions. Modern processors
+typically contain multiple cores. As of 2026, consumer CPUs commonly
+provide quad-core (4 cores), octa-core (8 cores), and higher core-count
+configurations. High-end desktop and gaming CPUs often feature 16 or
+more cores, while HPC compute nodes frequently provide multiple CPUs
+with dozens of cores each, typically 64 or more cores per node.</p>
+<p>Nowadays, most HPC centers are also equipped with <em>GPUs</em>
+(<em>Graphics Processing Units</em>). GPUs are particularly well suited
+for workloads that benefit from executing very large numbers of
+lightweight operations in parallel. The number of GPU cores varies
+greatly depending on the hardware model, ranging from a few hundred
+cores in low-end devices to many thousands in modern accelerator
+hardware.</p>
 </div>
 <div class="section level3">
 <h3 id="measuring-parallel-runtime-core-hours">Measuring parallel runtime: core hours<a class="anchor" aria-label="anchor" href="#measuring-parallel-runtime-core-hours"></a>
 </h3>
-<p>Owing to the inherent parallelism in the HPC world, people came up
-with some measure which takes the <em>granularity</em> into account when
-allocating not only runtime but also the number of requested cores. The
-unit <strong>core hour</strong> (<strong>core-h</strong>) represents the
-usage of one CPU core for one hour and scales with core count. For
-example, assume you have a monthly allocation of 500 core-h, with a fee
-incurred when exceeding that quota. So with 500 core-h, you could run a
-one-hour parallel job utilizing 500 CPU cores for free. Or, in the other
-extreme, if your program does not or cannot multitask, you could run a
-single-core job for 500 hours, provided you won’t forget at the end what
-this job was about.</p>
+<p>Because HPC applications often execute in parallel, resource usage is
+commonly measured using units that account for both runtime and the
+number of utilized processing cores.</p>
+<p>The unit <strong>core hour</strong> (<strong>core-h</strong>)
+represents the usage of one CPU core for one hour. Resource consumption
+therefore scales approximately linearly with the number of allocated
+cores and the runtime of the application. For example, assume you have a
+monthly allocation of <span class="math inline">\(500\)</span> core-h,
+with additional usage incurring extra cost. In that case, you could run:
+- a parallel job using <span class="math inline">\(500\)</span> CPU
+cores for <span class="math inline">\(1\)</span> hour, or - a
+single-core job for <span class="math inline">\(500\)</span> hours.</p>
+<p>Of course, the latter may require some patience before the
+computation finishes. Some HPC systems additionally account for GPU
+usage through units such as <strong>GPU-hours</strong>.</p>
 <div id="accordionSpoiler4" class="accordion spoiler-accordion accordion-flush">
 <div class="accordion-item">
 <button class="accordion-button spoiler-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSpoiler4" aria-expanded="false" aria-controls="collapseSpoiler4">
   <h3 class="accordion-header" id="headingSpoiler4">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="eye"></i></div> Other HPC resource types </h3>
 </button>
-<div id="collapseSpoiler4" class="accordion-collapse collapse" data-bs-parent="#accordionSpoiler4" aria-labelledby="headingSpoiler4">
+<div id="collapseSpoiler4" class="accordion-collapse collapse" aria-labelledby="headingSpoiler4" data-bs-parent="#accordionSpoiler4">
 <div class="accordion-body">
-<p>So far, the focus has been on core number and hours for HPC resource
-allocation. Keep in mind, however, that the HPC resource portfolio
-involves other hardware components as well:</p>
+<p>So far, the focus has been on CPU/GPU core counts and runtime as
+primary HPC resource allocations. However, HPC workloads also depend
+heavily on other hardware resources:</p>
 <ul>
-<li>Memory: There are (whether parallel or not) jobs, that request a
-large amount of memory (RAM). For example, some mathematical solution
-methods for large equation systems do not allow the compartmentalization
-of the total required memory across CPU cores, that is, many-core
-processes need to know each other’s memory chunks. HPC centers usually
-have large-memory nodes assigned for such applications.</li>
-<li>Storage: Other applications process huge amounts of data, think of
-genomics or climate modelling, which can involve terabytes or even
-petabytes of data to be stored and analyzed.</li>
+<li>
+<strong>Memory:</strong> Some applications require very large
+amounts of memory (RAM), regardless of whether they execute in parallel
+or serially. For example, certain numerical methods for solving large
+systems of equations require large shared-memory regions that cannot
+easily be partitioned across independent processes. HPC centers
+therefore often provide dedicated large-memory nodes for
+memory-intensive applications.</li>
+<li>
+<strong>Storage:</strong> Other applications process massive amounts
+of data. Fields such as genomics, climate modeling, and large-scale
+simulations may involve terabytes or even petabytes of data that must be
+stored, transferred, and analyzed efficiently.</li>
+<li>
+<strong>GPU-hours:</strong> Some HPC centers account for GPU usage
+separately using <strong>GPU-hours</strong> (<strong>GPU-h</strong>). A
+GPU-hour represents the use of one GPU for one hour, analogous to a CPU
+core-hour. For example, running a job for one hour on a node with four
+allocated GPUs consumes <strong>4 GPU-h</strong>. GPU-hours are
+typically accounted for independently of CPU core-hours, although
+individual HPC centers may combine both resources in their allocation or
+billing policies.</li>
 </ul>
+<p>For example, a job allocated one compute node with 48 CPU cores and 4
+allocated GPUs for one hour consumes: - 1 node-hour, - 48 core-hours,
+and - 4 GPU-hours.</p>
 </div>
 </div>
 </div>
@@ -1085,34 +1165,35 @@ petabytes of data to be stored and analyzed.</li>
 <div class="section level3">
 <h3 id="a-typical-hpc-computing-job">A typical HPC computing job<a class="anchor" aria-label="anchor" href="#a-typical-hpc-computing-job"></a>
 </h3>
-<p>Like in the automotive world, high performance means high power,
-which in turn involves a high energy demand. Let’s consider a typical
-parallel scientific-computing job to be run in some HPC center. Our
-example job shall be deemed too large for one CPU, so it employs
-multiple CPUs, which in turn are distributed across nodes. Node power
-usage is measured in W=Watt, which is the SI unit of power and
-corresponds to the rate of consumption of energy in an electric circuit.
-One compute node with a 64-core CPU can consume between 300 W in idle
-state, and 900 W (maximum load) for air-cooled systems, whereas this
-range is roughly 250-850 W for the slightly more efficient liquid-cooled
-systems. For comparison, an average coffee maker consumes between 800 W
-(drip coffee maker) and 1500 W (espresso machine). Our computing job
-shall then use these resources:</p>
-<ul>
-<li>12 nodes are crunching numbers in parallel</li>
-<li>64 cores/node (e.g., Intel® Xeon® 6774P, or AMD® EPYC® 9534)</li>
-<li>12 hours of full load (realistic for many scientific
-simulations)</li>
-<li>Power per node: (idle vs. full load):
-<ul>
-<li>Idle: ~300 W</li>
-<li>Full load: ~900 W</li>
-<li>Extra power per node: 600 W</li>
-</ul>
-</li>
-<li>Total extra power: 12 nodes × 600 W × 12 hours = 86,400 Wh = 86.4
-kWh</li>
-</ul>
+<p>Like many high-performance systems, HPC infrastructures require
+substantial electrical power to operate. Large-scale scientific
+computations therefore also translate into significant energy
+consumption. Consider a typical parallel scientific-computing workload
+running on an HPC center. Assume the problem is too large for a single
+CPU and therefore executes across multiple compute nodes in parallel.
+Power consumption is measured in watts (W), the SI unit of power, which
+describes the rate at which electrical energy is consumed. Modern HPC
+compute nodes equipped with 64-core CPUs may consume roughly: - about
+250–300 W while idle, and - about 850–900 W under heavy computational
+load, depending on factors such as processor generation and cooling
+technology.</p>
+<p>For comparison, a household coffee machine typically consumes between
+800 W and 1500 W while operating.</p>
+<p>Assume our example HPC job uses the following resources: - 12 compute
+nodes running in parallel, - 64 CPU cores per node (e.g., Intel® Xeon®
+6774P or AMD® EPYC® 9534), - 12 hours of sustained high utilization
+(realistic for many scientific simulations), - approximate power per
+node: - idle: <span class="math inline">\(\sim 300\)</span> W, - full
+load: <span class="math inline">\(\sim 900\)</span> W, - additional
+power draw under load: <span class="math inline">\(\sim 600\)</span>
+W.</p>
+<p>The additional energy consumption caused by the workload is therefore
+approximately</p>
+<p><span class="math display">\[
+12 \text{ nodes} \times 600 \text{ W} \times 12 \text{ h}
+= 86{,}400 \text{ Wh}
+= 86.4 \text{ kWh}
+\]</span></p>
 <div id="how-many-core-hours-does-this-job-involve" class="callout challenge">
 <div class="callout-square">
 <i class="callout-icon" data-feather="zap"></i>
@@ -1122,141 +1203,190 @@ kWh</li>
 <h3 class="callout-title">How many core hours does this job
 involve?</h3>
 <div class="callout-content">
-<p>HPC centers have different job <em>queues</em> for different kinds of
-computing jobs. For example, a queue named <em>big-jobs</em> may be
-reserved for jobs exceeding a total of 1024 parallel processes =
-<em>tasks</em>. Another queue named <em>big-mem</em> may accomodate
-tasks with high memory demands by giving access to high-memory nodes
-(e.g., 512 GB, 1 TB, or more RAM per compute node).</p>
-<p>Let’s assume, you have three job queues available, all with identical
-memory layout:</p>
+<p>HPC centers often provide different job <em>queues</em> for different
+classes of workloads. For example, a queue named <em>big-jobs</em> may
+be reserved for jobs exceeding a certain number of <em>parallel
+tasks</em> (often implemented as <em>processes</em>) (e.g., 1024).
+Another queue, such as <em>big-mem</em>, may provide access to nodes
+with very large memory capacities (e.g., 512 GB, 1 TB, or more RAM per
+compute node).</p>
+<p>Assume the following queues are available, all with identical memory
+configurations:</p>
 <ul>
 <li>
-<code>small-jobs</code>: Total task count of up to 511.</li>
+<code>small-jobs</code>: total task count up to 511.</li>
 <li>
-<code>medium-jobs</code>: Total task count 512-1023.</li>
+<code>medium-jobs</code>: total task count 512–1023.</li>
 <li>
-<code>big-jobs</code>: Total task count of 1024 or more.</li>
+<code>big-jobs</code>: total task count 1024 or more.</li>
 </ul>
-<p>When submitting the above computing job, in which queue would it end
-up? And, if there would be a charge of 1 Cent per core-h, what is the
-total cost in € (1€ = 100 Cents)?</p>
+<p>When submitting the example HPC workload from the previous section:
+1. Into which queue would the job be placed? 2. If the allocation cost
+is 1 cent per core-h, what would be the total cost in euros (€1 = 100
+cents)?</p>
 </div>
 </div>
 </div>
-<div id="accordionHint6" class="accordion challenge-accordion accordion-flush">
+<div id="accordionHint5" class="accordion challenge-accordion accordion-flush">
 <div class="accordion-item">
-<button class="accordion-button hint-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHint6" aria-expanded="false" aria-controls="collapseHint6">
-  <h4 class="accordion-header" id="headingHint6"> Give me a hint </h4>
+<button class="accordion-button hint-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHint5" aria-expanded="false" aria-controls="collapseHint5">
+  <h4 class="accordion-header" id="headingHint5"> Give me a hint </h4>
 </button>
-<div id="collapseHint6" class="accordion-collapse collapse" data-bs-parent="#accordionHint6" aria-labelledby="headingHint6">
+<div id="collapseHint5" class="accordion-collapse collapse" aria-labelledby="headingHint5" data-bs-parent="#accordionHint5">
 <div class="accordion-body">
-<p>The total number of tasks results from the product
-<em>cores-per-node</em> <span class="math inline">\(\times\)</span>
-<em>nodes</em>. Total core hours is the task count multiplied by the
-job’s requested time in hours.</p>
+<p>For this example, assume one task is assigned to each CPU core. The
+total number of tasks is therefore approximately: <span class="math display">\[
+\text{cores per node}  \times \text{number of nodes}
+\]</span></p>
+<p>Total core hours are then computed as: <span class="math display">\[
+\text{task count} \times \text{runtime in hours}
+\]</span></p>
 </div>
 </div>
 </div>
 </div>
-<div id="accordionSolution6" class="accordion challenge-accordion accordion-flush">
+<div id="accordionSolution5" class="accordion challenge-accordion accordion-flush">
 <div class="accordion-item">
-<button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution6" aria-expanded="false" aria-controls="collapseSolution6">
-  <h4 class="accordion-header" id="headingSolution6"> Show me the solution </h4>
+<button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution5" aria-expanded="false" aria-controls="collapseSolution5">
+  <h4 class="accordion-header" id="headingSolution5"> Show me the solution </h4>
 </button>
-<div id="collapseSolution6" class="accordion-collapse collapse" data-bs-parent="#accordionSolution6" aria-labelledby="headingSolution6">
+<div id="collapseSolution5" class="accordion-collapse collapse" aria-labelledby="headingSolution5" data-bs-parent="#accordionSolution5">
 <div class="accordion-body">
-<p>The total number of tasks is <em>cores-per-node</em> <span class="math inline">\(\times\)</span> <em>nodes</em> = <span class="math inline">\(64\times 12 = 768\)</span>, which would put the
-job into the<code>medium-jobs</code>queue. The HPC center would bill us
-for <span class="math inline">\(64\times 12\times 12 = 9216\)</span>
-core hours, hence €92.16.</p>
+<p>The total number of tasks is <span class="math display">\[
+\text{cores per node} \times \text{number of nodes} = 64 \times 12 = 768
+\]</span> which places the job into the <code>medium-jobs</code>
+queue.</p>
+<p>The total number of core hours is <span class="math display">\[
+64 \times 12 \times 12 = 9216 \text{ core-h}
+\]</span></p>
+<p>At a billing rate of 1 cent per core-h, the total cost becomes <span class="math display">\[
+9216 \times 0.01\,€ = 92.16\,€
+\]</span></p>
 </div>
 </div>
 </div>
 </div>
 </div>
 <div class="section level3">
-<h3 id="what-are-watt-hours">What are Watt hours?<a class="anchor" aria-label="anchor" href="#what-are-watt-hours"></a>
+<h3 id="what-are-watt-hours">What are watt-hours?<a class="anchor" aria-label="anchor" href="#what-are-watt-hours"></a>
 </h3>
-<p>The unit Wh (Watt-hours) measures energy, so 86,400 Wh is the energy
-that a 86,400 W (or 86.4 kW, k=kilo) powerful machine consumes in one
-hour. Back to coffee, brewing one cup needs 50-100 Wh, depending on
-preparation time and method. So, running your 12-node HPC job for 12
-hours is equivalent to brewing between 864 and 1,728 cups of coffee. For
-those of us who don’t drink coffee, assuming 100% conversion efficiency
-from our compute job’s heat to mechanical energy, which is unrealistic,
-we could lift an average African elephant (~6 tons) about 5,285 meters
-straight up, not quite to the top but in sight of Mount Kilimanjaro’s
-(5,895 m) summit.</p>
+<p>The unit Wh (watt-hour) measures energy. For example, 86,400 Wh
+corresponds to the amount of energy consumed by an 86.4 kW machine
+operating continuously for one hour.</p>
+<p>Returning to our coffee analogy, brewing a single cup of coffee
+typically requires roughly 50–100 Wh of energy, depending on the
+preparation method and brewing time. Running our 12-node HPC job for 12
+hours therefore consumes energy comparable to brewing approximately
+864–1728 cups of coffee.</p>
+<p>For a more physics-inspired comparison, suppose — unrealistically —
+that all energy consumed by the compute job could be converted perfectly
+into mechanical work. Using gravitational potential energy,</p>
+<p><span class="math display">\[
+\text{Energy} = \text{mass} \times \text{gravitational acceleration}
+\times \text{height}
+\]</span></p>
+<p>we could lift an average African elephant (approximately 6000 kg)
+vertically by roughly</p>
+<p><span class="math display">\[
+h \approx \frac{86.4 \times 3.6 \times 10^6}{6000 \times 9.81} \approx
+5285 \text{ m}
+\]</span></p>
+<p>which is nearly the elevation of Mount Kilimanjaro (5895 m).</p>
 <div id="accordionSpoiler5" class="accordion spoiler-accordion accordion-flush">
 <div class="accordion-item">
 <button class="accordion-button spoiler-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSpoiler5" aria-expanded="false" aria-controls="collapseSpoiler5">
   <h3 class="accordion-header" id="headingSpoiler5">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="eye"></i></div> Power-consuming hardware pieces </h3>
 </button>
-<div id="collapseSpoiler5" class="accordion-collapse collapse" data-bs-parent="#accordionSpoiler5" aria-labelledby="headingSpoiler5">
+<div id="collapseSpoiler5" class="accordion-collapse collapse" aria-labelledby="headingSpoiler5" data-bs-parent="#accordionSpoiler5">
 <div class="accordion-body">
-<p>Note that the focus is on <strong>extra</strong> power, that is,
-beyond the CPU’s idle state. Attributing our job’s extra power only to
-CPU usage underestimates its footprint. In practice, the actual delta
-from idle to full load will vary based on the load posed on other
-hardware components. Therefore, it is interesting to shed some light
-onto those other hardware components that start gearing up after hitting
-that Enter key which submits the above kind of HPC job.</p>
+<p>Note that the focus so far has been on <strong>additional</strong>
+power consumption caused by computational load beyond a system’s idle
+state. Attributing this increase only to CPU usage would underestimate
+the true energy footprint of an HPC workload.</p>
+<p>In practice, the additional power draw between idle and full
+utilization also depends on many other hardware components involved in
+executing a computational job. Therefore, it is useful to briefly
+examine which parts of an HPC system become active after submitting a
+large-scale computational workload.</p>
 <ul>
 <li>
-<p>CPUs consume power through two main processes:</p>
+<p><strong>CPUs</strong> consume power through two primary
+mechanisms:</p>
 <ol style="list-style-type: decimal">
-<li>Dynamic power consumption: It is caused by the constant switching of
-transistors and is influenced by the CPU’s clock frequency and
-voltage.</li>
-<li>Static power consumption: It is caused by small leakage currents
-even when the CPU is idle. This is a function of the total number of
-transistors.</li>
-</ol>
-<p>Both processes convert electrical energy into heat, which makes CPU
-cooling so important.</p>
-</li>
-<li><p>Memory (DRAM) consumes power primarily through its refresh
-cycles. These are required to counteract the charge leakage in the
-data-storing capacitors. Periodic refreshing is necessary to maintain
-data integrity, which is the main reason why DRAM draws power even when
-idle. Other power consumption factors include the static power drawn by
-the memory’s circuitry and the active power used during read/write
-operations.</p></li>
-<li><p>Network interface cards (NICs) consume power by converting
-digital data into electrical signals for transmission and reception.
-Power draw increases with data throughput, physical-media complexity,
-like fiber optics, and also depends on the specific interconnect
-technology used.</p></li>
-<li><p>Storage components: Hard drives (HDDs) require constant energy
-due to moving mechanical parts, like the disc-spinning motors. SSDs
-store data electronically via flash memory chips and are thus more
-power-efficient, especially when idle. However, when performing heavy
-read/write tasks, SSD power consumption can also be significant, though
-they complete these tasks faster than HDDs and return to their idle
-state sooner.</p></li>
 <li>
-<p>Cooling is one of the biggest contributors to total energy use in
-HPC:</p>
+<strong>Dynamic power consumption:</strong> caused by transistor
+switching activity during computations. It depends strongly on clock
+frequency and operating voltage.</li>
+<li>
+<strong>Static power consumption:</strong> caused by leakage
+currents that persist even when transistors are not actively switching
+(i.e., even when the CPU is idle). This component depends on transistor
+count and semiconductor manufacturing characteristics.</li>
+</ol>
+<p>Both mechanisms ultimately dissipate electrical energy as heat, which
+is why CPU cooling is essential.</p>
+</li>
+<li><p><strong>Memory (DRAM)</strong> consumes power primarily because
+stored electrical charge leaks over time and must therefore be refreshed
+periodically. These refresh cycles compensate for charge leakage in the
+memory cells. Periodic refreshing is necessary to maintain data
+integrity, which is one reason why DRAM consumes power even while idle.
+Additional power is consumed by memory-controller circuitry and by
+active read/write operations.</p></li>
+<li><p><strong>Network interface cards (NICs)</strong> consume power
+while transmitting and receiving data across the network fabric. Power
+consumption generally increases with network throughput, link speed,
+physical media, and interconnect technology.</p></li>
+<li>
+<p><strong>Storage systems</strong> also contribute significantly to
+power consumption:</p>
 <ul>
-<li>Idle: Cooling uses ~10–20% of total system power.</li>
-<li>Max load: Cooling can consume ~50–70% of total power (depends on
-liquid- or air-cooled systems).</li>
+<li>
+<strong>Hard disk drives (HDDs)</strong> require continuous power
+for spinning disks and moving mechanical components.</li>
+<li>
+<strong>Solid-state drives (SSDs)</strong> store data electronically
+and are typically more power-efficient, especially during idle
+operation. Under heavy I/O workloads, however, SSD power consumption can
+still become substantial, although they typically complete data
+transfers faster than HDDs and return to idle operation sooner.</li>
 </ul>
-<p>Cooling is essential because all electrical circuits generate heat
-during operation. Under heavy computational loads, insufficiently cooled
-CPUs and GPUs exceed their safe temperature limits.</p>
+</li>
+<li>
+<p><strong>Cooling systems</strong> are among the largest
+contributors to total datacenter energy use:</p>
+<ul>
+<li>
+<strong>Idle:</strong> During low utilization, cooling may account
+for roughly 10–20% of total system power.</li>
+<li>
+<strong>Maximum load:</strong> Under sustained heavy computational
+load, cooling infrastructure can consume a substantially larger fraction
+of overall datacenter power consumption, sometimes approaching 50–70%
+depending on cooling technology and datacenter design.</li>
+</ul>
+<p>Cooling is essential because all electrical components generate heat
+during operation. Under heavy workloads, insufficient cooling may cause
+CPUs and GPUs to exceed safe operating temperatures, potentially
+reducing performance through thermal throttling or damaging
+hardware.</p>
 </li>
 </ul>
 </div>
 </div>
 </div>
 </div>
-<p>These considerations hopefully highlight why there is benefit in
-identifying potential efficiency bottlenecks before submitting an
-energy-intense HPC job. If all passengers care about efficient job
-design, i.e., the total baggage load, more can simultaneously jump onto
-the HPC plane.</p>
+<p>These considerations highlight why identifying efficiency bottlenecks
+before submitting large HPC workloads is essential. Efficient job design
+reduces unnecessary energy consumption, improves overall system
+utilization, and allows HPC systems to execute workloads more
+efficiently and sustainably.</p>
+<p>Returning to the airplane analogy, if passengers minimize unnecessary
+baggage, the total aircraft load decreases. This either allows more
+passengers to travel simultaneously or reduces the fuel required for the
+journey. Similarly, efficient HPC workloads reduce unnecessary resource
+consumption and allow HPC systems to execute computational workloads
+more efficiently.</p>
 <!---
  Use timing commands provided by `time`and`date`.
 - Understand the benefits of efficient jobs in terms of runtime and numerical accuracy.
@@ -1270,18 +1400,15 @@ the HPC plane.</p>
 <div class="callout-inner">
 <div class="callout-content">
 <ul>
-<li>Using a <em>stopwatch</em> like<code>time</code>gives you a first
-tool to log actual versus expected runtimes; it is also useful for
-carrying out runtime comparisons.</li>
-<li>Which hardware piece (CPU, memory/RAM, disk, network, etc.) poses a
-limiting factor, depends on the nature of a particular application.</li>
-<li>Large-scale computing is power hungry, so we want to use the energy
-wisely. As shown in the next episodes, you have more <em>power</em> than
-it may be expected over controlling job efficiency and thus overall
-energy footprint.</li>
-<li>Computing job efficiency goes beyond individual gain in runtime as
-shared resources are used more effectively, that is, the ratio <span class="math inline">\(\frac{useful\;work}{total\;energy\;expended}\sim\frac{number\;of\;users}{total\;energy\;expended}\)</span>
-improves.</li>
+<li>Runtime can be measured using tools such as <code>time</code> and
+<code>date</code>.</li>
+<li>Repeated process creation can dominate runtime.</li>
+<li>HPC resource usage is commonly measured in core-hours.</li>
+<li>Computational workloads may be compute-bound, memory-bound, or I/O
+bound.</li>
+<li>Efficient jobs reduce both resource consumption and energy use.</li>
+<li>Implementation choices can affect both runtime and numerical
+accuracy.</li>
 </ul>
 </div>
 </div>
@@ -1292,27 +1419,92 @@ improves.</li>
 <hr class="half-width">
 <p>The following episodes will put a number of these introductory
 thoughts into concrete action by looking at efficiency aspects around a
-compute-intense graphical program. While it is not directly an
+computationally demanding graphical program. While it is not directly an
 action-loaded video game, it does contain essential pieces thereof,
 because it uses the technique of ray tracing.</p>
 <p>Ray tracing is a technique that simulates how light travels in a 3D
-scene to create realistic images. It simulates the behaviour of light in
+scene to create realistic images. It simulates the behavior of light in
 terms of optical effects like reflection, refraction, shadows,
 absorption, etc. The underlying calculations involve real-world physics,
-which makes them computationally expensive - a perfect HPC case.</p>
-<p>Here is a basic run script:</p>
-<pre><code>#!/usr/bin/bash
-#SBATCH --time=01:00:00
-#SBATCH --nodes=1
-#SBATCH --tasks-per-node=4
+which makes them computationally expensive - an ideal HPC use case.</p>
 
-# Put in the same "module load ..." command when building the raytracer program
+<div id="submit-your-first-raytracer-job-with-slurm" class="callout challenge">
+<div class="callout-square">
+<i class="callout-icon" data-feather="zap"></i>
+</div>
+<span class="callout-header">Challenge</span>
+<div id="submit-your-first-raytracer-job-with-slurm" class="callout-inner">
+<h3 class="callout-title">Submit your first raytracer job with
+Slurm</h3>
+<div class="callout-content">
+<div class="codewrapper sourceCode" id="cb22">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb22-1"><a href="#cb22-1" tabindex="-1" aria-label="code-block-22-1"></a><span class="co">#!/usr/bin/env bash</span></span>
+<span id="cb22-2"><a href="#cb22-2" tabindex="-1" aria-label="code-block-22-2"></a><span class="co">#SBATCH --job-name=first-script-Snowman</span></span>
+<span id="cb22-3"><a href="#cb22-3" tabindex="-1" aria-label="code-block-22-3"></a><span class="co">#SBATCH --time=01:00:00</span></span>
+<span id="cb22-4"><a href="#cb22-4" tabindex="-1" aria-label="code-block-22-4"></a><span class="co">#SBATCH --nodes=1</span></span>
+<span id="cb22-5"><a href="#cb22-5" tabindex="-1" aria-label="code-block-22-5"></a><span class="co">#SBATCH --tasks-per-node=4</span></span>
+<span id="cb22-6"><a href="#cb22-6" tabindex="-1" aria-label="code-block-22-6"></a></span>
+<span id="cb22-7"><a href="#cb22-7" tabindex="-1" aria-label="code-block-22-7"></a><span class="co"># Put in the same "module load ..." command when building the raytracer program</span></span>
+<span id="cb22-8"><a href="#cb22-8" tabindex="-1" aria-label="code-block-22-8"></a></span>
+<span id="cb22-9"><a href="#cb22-9" tabindex="-1" aria-label="code-block-22-9"></a><span class="bu">time</span> mpirun <span class="at">-np</span> 4 raytracer <span class="at">-width</span><span class="op">=</span>800 <span class="at">-height</span><span class="op">=</span>800 <span class="at">-spp</span><span class="op">=</span>128</span></code></pre>
+</div>
+</div>
+</div>
+</div>
+<div id="accordionHint6" class="accordion challenge-accordion accordion-flush">
+<div class="accordion-item">
+<button class="accordion-button hint-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHint6" aria-expanded="false" aria-controls="collapseHint6">
+  <h4 class="accordion-header" id="headingHint6"> Give me a hint </h4>
+</button>
+<div id="collapseHint6" class="accordion-collapse collapse" aria-labelledby="headingHint6" data-bs-parent="#accordionHint6">
+<div class="accordion-body">
+<p>Compare the <code>real</code> and <code>user</code> times reported at
+the end of the job’s output file (named something like
+<code>slurm-&lt;NUMBER&gt;.out</code>).</p>
+<p>How do they differ?</p>
+</div>
+</div>
+</div>
+</div>
+<div id="accordionSolution6" class="accordion challenge-accordion accordion-flush">
+<div class="accordion-item">
+<button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution6" aria-expanded="false" aria-controls="collapseSolution6">
+  <h4 class="accordion-header" id="headingSolution6"> Show me the solution </h4>
+</button>
+<div id="collapseSolution6" class="accordion-collapse collapse" aria-labelledby="headingSolution6" data-bs-parent="#accordionSolution6">
+<div class="accordion-body">
+<p>Notice that the reported <em>user</em> time is substantially larger
+than the elapsed <em>real</em> time.</p>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>Image rendered in CPU
 
-time mpirun -np 4 raytracer -width=800 -height=800 -spp=128</code></pre>
-<p>Check the<code>time</code>output at the end of the job’s output file
-(named something like <code>slurm-&lt;NUMBER&gt;.out</code>). You will
-notice that <em>user</em> time is by a certain factor larger than
-<em>real</em> time.</p>
+==============================================
+     Computational Performance Metrics
+==============================================
+Image Size:                 800 x 800
+Number of Snowmen:          3
+MPI Processes:              4
+Threads per Process:        1
+----------------------------------------------
+Performance (rays/sec):     2.699e+06
+----------------------------------------------
+Max Local Computation Time (s):              30.357
+Min Local Computation Time (s):              30.106
+Avg Local Computation Time (s):              30.172
+==============================================
+
+real    0m38.484s
+user    2m1.221s
+sys     0m3.969s</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
 <div id="discussion1" class="callout discussion">
 <div class="callout-square">
 <i class="callout-icon" data-feather="message-circle"></i>
@@ -1320,10 +1512,10 @@ notice that <em>user</em> time is by a certain factor larger than
 <span class="callout-header">Discussion</span>
 <div class="callout-inner">
 <div class="callout-content">
-<p>Why is the <code>user</code> timer larger than the <code>real</code>
-time, and what does it mean?</p>
-<p>Any guess which number in the <code>mpirun</code>line corresponds
-roughly to that factor?</p>
+<p>What is the ratio between the reported <code>user</code> and
+<code>real</code> times?</p>
+<p>Which command-line argument in <code>mpirun -np 4</code> might
+explain this ratio?</p>
 </div>
 </div>
 </div>
@@ -1403,7 +1595,7 @@ cluster:</p>
 <button class="accordion-button spoiler-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSpoiler1" aria-expanded="false" aria-controls="collapseSpoiler1">
   <h3 class="accordion-header" id="headingSpoiler1">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="eye"></i></div> Show details </h3>
 </button>
-<div id="collapseSpoiler1" class="accordion-collapse collapse" aria-labelledby="headingSpoiler1" data-bs-parent="#accordionSpoiler1">
+<div id="collapseSpoiler1" class="accordion-collapse collapse" data-bs-parent="#accordionSpoiler1" aria-labelledby="headingSpoiler1">
 <div class="accordion-body">
 <p>Here is a (simplified) example output for the command above:</p>
 <pre><code>PARTITION           NODES               CPUS                MEMORY              GRES                TIMELIMIT
@@ -1442,7 +1634,7 @@ partition is based on the resources it contains?</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
 <div class="accordion-body">
 <p>For our example output above we can make some educated guesses on
 what the partitions are supposed to be used for:</p>
@@ -1509,7 +1701,7 @@ or on your local machine.</p>
 <button class="accordion-button spoiler-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSpoiler2" aria-expanded="false" aria-controls="collapseSpoiler2">
   <h3 class="accordion-header" id="headingSpoiler2">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="eye"></i></div> Show details </h3>
 </button>
-<div id="collapseSpoiler2" class="accordion-collapse collapse" aria-labelledby="headingSpoiler2" data-bs-parent="#accordionSpoiler2">
+<div id="collapseSpoiler2" class="accordion-collapse collapse" data-bs-parent="#accordionSpoiler2" aria-labelledby="headingSpoiler2">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb4">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1542,7 +1734,7 @@ you can use</p>
 <button class="accordion-button spoiler-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSpoiler3" aria-expanded="false" aria-controls="collapseSpoiler3">
   <h3 class="accordion-header" id="headingSpoiler3">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="eye"></i></div> Show details </h3>
 </button>
-<div id="collapseSpoiler3" class="accordion-collapse collapse" aria-labelledby="headingSpoiler3" data-bs-parent="#accordionSpoiler3">
+<div id="collapseSpoiler3" class="accordion-collapse collapse" data-bs-parent="#accordionSpoiler3" aria-labelledby="headingSpoiler3">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb7">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1625,7 +1817,7 @@ idle nodes and CPU cores.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
   <h4 class="accordion-header" id="headingSolution2"> Show me the solution </h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb9">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -2043,7 +2235,7 @@ this?</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution3" aria-expanded="false" aria-controls="collapseSolution3">
   <h4 class="accordion-header" id="headingSolution3"> Show me the solution </h4>
 </button>
-<div id="collapseSolution3" class="accordion-collapse collapse" aria-labelledby="headingSolution3" data-bs-parent="#accordionSolution3">
+<div id="collapseSolution3" class="accordion-collapse collapse" data-bs-parent="#accordionSolution3" aria-labelledby="headingSolution3">
 <div class="accordion-body">
 <p>We can see that the CPU utilization time and the walltime are
 virtually identical to the MPI version of our job, while the memory
@@ -2108,7 +2300,7 @@ depending on the number of threads.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution4" aria-expanded="false" aria-controls="collapseSolution4">
   <h4 class="accordion-header" id="headingSolution4"> Show me the solution </h4>
 </button>
-<div id="collapseSolution4" class="accordion-collapse collapse" aria-labelledby="headingSolution4" data-bs-parent="#accordionSolution4">
+<div id="collapseSolution4" class="accordion-collapse collapse" data-bs-parent="#accordionSolution4" aria-labelledby="headingSolution4">
 <div class="accordion-body">
 <p>You can see that the CPU utilization of each <code>raytracer</code>
 thread goes down as the number of threads increases. This means, each
@@ -2169,7 +2361,7 @@ default to this behavior?</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution5" aria-expanded="false" aria-controls="collapseSolution5">
   <h4 class="accordion-header" id="headingSolution5"> Show me the solution </h4>
 </button>
-<div id="collapseSolution5" class="accordion-collapse collapse" aria-labelledby="headingSolution5" data-bs-parent="#accordionSolution5">
+<div id="collapseSolution5" class="accordion-collapse collapse" data-bs-parent="#accordionSolution5" aria-labelledby="headingSolution5">
 <div class="accordion-body">
 <p>In this case we have a <em>CPU bound</em> application, i.e., the work
 done by the CPU is the limiting factor and thus dividing this work into
@@ -2582,7 +2774,7 @@ efficiency you get?</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
 <div class="accordion-body">
 <p>The batch file after adding the memory request becomes.</p>
 <pre class="input"><code>#!/usr/bin/bash
@@ -2862,7 +3054,7 @@ would that be?</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
   <h4 class="accordion-header" id="headingSolution2"> Show me the solution </h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
 <div class="accordion-body">
 <p>To query all of the above variable run</p>
 <div class="codewrapper sourceCode" id="cb15">
@@ -2936,7 +3128,7 @@ changes.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution3" aria-expanded="false" aria-controls="collapseSolution3">
   <h4 class="accordion-header" id="headingSolution3"> Show me the solution </h4>
 </button>
-<div id="collapseSolution3" class="accordion-collapse collapse" aria-labelledby="headingSolution3" data-bs-parent="#accordionSolution3">
+<div id="collapseSolution3" class="accordion-collapse collapse" data-bs-parent="#accordionSolution3" aria-labelledby="headingSolution3">
 <div class="accordion-body">
 <p>The machine these calculations have been run on has 112 core per
 node. So we can double the number of cores from 4 until 64 and stay
@@ -3234,7 +3426,7 @@ the parallel raytracer?</p>
 <button class="accordion-button hint-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHint1" aria-expanded="false" aria-controls="collapseHint1">
   <h4 class="accordion-header" id="headingHint1"> Give me a hint </h4>
 </button>
-<div id="collapseHint1" class="accordion-collapse collapse" aria-labelledby="headingHint1" data-bs-parent="#accordionHint1">
+<div id="collapseHint1" class="accordion-collapse collapse" data-bs-parent="#accordionHint1" aria-labelledby="headingHint1">
 <div class="accordion-body">
 <p>You can use <code>sinfo</code> to find out the node names of your
 particular Slurm partition. Then use <code>scontrol</code> to show all
@@ -3249,7 +3441,7 @@ number of CPU (cores) available on that node.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
 <div class="accordion-body">
 <pre class="csv"><code>ntasks,time
 1,127.218
@@ -3390,7 +3582,7 @@ and <span class="math inline">\(128\)</span> samples per pixel?</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
   <h4 class="accordion-header" id="headingSolution2"> Show me the solution </h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
 <div class="accordion-body">
 <p>For all of our measurements, the speedup and efficiencies are</p>
 <pre class="csv"><code>ntasks,time,speedup,efficiency
@@ -3421,7 +3613,7 @@ if their contribution to speedup is only 50% efficient or even less.</p>
 <button class="accordion-button spoiler-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSpoiler1" aria-expanded="false" aria-controls="collapseSpoiler1">
   <h3 class="accordion-header" id="headingSpoiler1">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="eye"></i></div> (Optional) plotting our .csvs </h3>
 </button>
-<div id="collapseSpoiler1" class="accordion-collapse collapse" aria-labelledby="headingSpoiler1" data-bs-parent="#accordionSpoiler1">
+<div id="collapseSpoiler1" class="accordion-collapse collapse" data-bs-parent="#accordionSpoiler1" aria-labelledby="headingSpoiler1">
 <div class="accordion-body">
 <p>If you have experience with python, you can use our <a href="files/plot_scaling_from_csvs.py">python script</a> to create the
 same plots as above, but for your own data. It depends on
@@ -3549,7 +3741,7 @@ for two processors we need a height and a width of <span class="math inline">\(\
 <button class="accordion-button spoiler-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSpoiler2" aria-expanded="false" aria-controls="collapseSpoiler2">
   <h3 class="accordion-header" id="headingSpoiler2">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="eye"></i></div> Different ways of scaling workloads: spp </h3>
 </button>
-<div id="collapseSpoiler2" class="accordion-collapse collapse" aria-labelledby="headingSpoiler2" data-bs-parent="#accordionSpoiler2">
+<div id="collapseSpoiler2" class="accordion-collapse collapse" data-bs-parent="#accordionSpoiler2" aria-labelledby="headingSpoiler2">
 <div class="accordion-body">
 <p>To scale the workload of the snowman raytracer, we can multiply the
 number of parallel MPI processes, <code>${SLURM_NTASKS}</code>, with the
@@ -3636,7 +3828,7 @@ costs?</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution3" aria-expanded="false" aria-controls="collapseSolution3">
   <h4 class="accordion-header" id="headingSolution3"> Show me the solution </h4>
 </button>
-<div id="collapseSolution3" class="accordion-collapse collapse" aria-labelledby="headingSolution3" data-bs-parent="#accordionSolution3">
+<div id="collapseSolution3" class="accordion-collapse collapse" data-bs-parent="#accordionSolution3" aria-labelledby="headingSolution3">
 <div class="accordion-body">
 <pre class="csv"><code>ntasks,pixel,time,speedup,efficiency
 1,800,123.162
@@ -3697,7 +3889,7 @@ communication, output size on disk, and so on.</p>
 <button class="accordion-button spoiler-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSpoiler3" aria-expanded="false" aria-controls="collapseSpoiler3">
   <h3 class="accordion-header" id="headingSpoiler3">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="eye"></i></div> Automating Scaling Studies </h3>
 </button>
-<div id="collapseSpoiler3" class="accordion-collapse collapse" aria-labelledby="headingSpoiler3" data-bs-parent="#accordionSpoiler3">
+<div id="collapseSpoiler3" class="accordion-collapse collapse" data-bs-parent="#accordionSpoiler3" aria-labelledby="headingSpoiler3">
 <div class="accordion-body">
 <p>If you find yourself repeating similar measurements over and over
 again, you may be interested in an automation approach. This can be done
@@ -3927,7 +4119,7 @@ pixels and <code>-spp=512</code>.</p>
 </button>
 </div>
 </nav><div id="nav-tabContent-1" class="tab-content">
-<div id="nav-tabpanel-1-ClusterCockpit" class="tab-pane show active" aria-labelledby="nav-tab-1-ClusterCockpit" role="tabpanel">
+<div id="nav-tabpanel-1-ClusterCockpit" class="tab-pane show active" role="tabpanel" aria-labelledby="nav-tab-1-ClusterCockpit">
 <ol style="list-style-type: decimal">
 <li>Submit a job that runs for at least <span class="math inline">\(5\)</span> minutes, so it is picked up by cluster
 cockpit. The job script could look like this:</li>
@@ -3955,7 +4147,7 @@ job id, once it is available</li>
 see a list of the jobs associated to your account.</div>
 </figure>
 </div>
-<div id="nav-tabpanel-1-PerformanceReports" class="tab-pane" aria-labelledby="nav-tab-1-PerformanceReports" role="tabpanel">
+<div id="nav-tabpanel-1-PerformanceReports" class="tab-pane" role="tabpanel" aria-labelledby="nav-tab-1-PerformanceReports">
 <ol style="list-style-type: decimal">
 <li>Check your cluster documentation and/or module system if the Linaro
 Forge software suite is available</li>
@@ -3980,7 +4172,7 @@ Forge software suite is available</li>
 <code>.txt</code> files next to the regular Slurm logs.</li>
 </ol>
 </div>
-<div id="nav-tabpanel-1-TBD" class="tab-pane" aria-labelledby="nav-tab-1-TBD" role="tabpanel">
+<div id="nav-tabpanel-1-TBD" class="tab-pane" role="tabpanel" aria-labelledby="nav-tab-1-TBD">
 <p>N/A</p>
 </div>
 </div>
@@ -4020,7 +4212,7 @@ component?</li>
 </button>
 </div>
 </nav><div id="nav-tabContent-2" class="tab-content">
-<div id="nav-tabpanel-2-ClusterCockpit" class="tab-pane show active" aria-labelledby="nav-tab-2-ClusterCockpit" role="tabpanel">
+<div id="nav-tabpanel-2-ClusterCockpit" class="tab-pane show active" role="tabpanel" aria-labelledby="nav-tab-2-ClusterCockpit">
 <p>The job view of a particular job in ClusterCockpit begins with three
 summary panels for the job.</p>
 <figure><img src="fig/cc/job_metadata.png" alt="ClusterCockpit Job Info panel" class="figure mx-auto d-block"></figure><p>The <em>Job Info</em> panel summarizes Slurm metadata about the job,
@@ -4071,7 +4263,7 @@ the case here.</p>
 <figure><img src="fig/cc/job_select_metrics.png" alt="Select Metrics button in the ClusterCockpit job view" class="figure mx-auto d-block"></figure><p>More detailed plots for each individual metric are available and can
 be configured through the <em>Select Metrics</em> button.</p>
 </div>
-<div id="nav-tabpanel-2-PerformanceReports" class="tab-pane" aria-labelledby="nav-tab-2-PerformanceReports" role="tabpanel">
+<div id="nav-tabpanel-2-PerformanceReports" class="tab-pane" role="tabpanel" aria-labelledby="nav-tab-2-PerformanceReports">
 <p>Linaro Forge <code>perf-report</code> results are stored in a HTML or
 <code>.txt</code> format, for example:</p>
 <ul>
@@ -4093,7 +4285,7 @@ and accompanied with suggestions of further investigation.</p>
 Any performance optimization has to focus on improving calculations in
 the CPU.</p>
 </div>
-<div id="nav-tabpanel-2-TBD" class="tab-pane" aria-labelledby="nav-tab-2-TBD" role="tabpanel">
+<div id="nav-tabpanel-2-TBD" class="tab-pane" role="tabpanel" aria-labelledby="nav-tab-2-TBD">
 <p>N/A</p>
 </div>
 </div>
@@ -4142,7 +4334,7 @@ computational intensity.</p>
 </button>
 </div>
 </nav><div id="nav-tabContent-3" class="tab-content">
-<div id="nav-tabpanel-3-ClusterCockpit" class="tab-pane show active" aria-labelledby="nav-tab-3-ClusterCockpit" role="tabpanel">
+<div id="nav-tabpanel-3-ClusterCockpit" class="tab-pane show active" role="tabpanel" aria-labelledby="nav-tab-3-ClusterCockpit">
 <p>ClusterCockpit captures many dedicated CPU metrics and provides a
 timeline visualization for each.</p>
 <figure><img src="fig/cc/job_cpu_load_core.png" alt="ClusterCockpit cpu load per core" class="figure mx-auto d-block"></figure><p>The <code>cpu_load_core</code> shows the load of each individual core
@@ -4167,7 +4359,7 @@ clock. CPUs are capable of executing more than one instruction per clock
 tick, so a value of about <span class="math inline">\(2.25\)</span>
 indicates that the CPU is “busy enough”.</p>
 </div>
-<div id="nav-tabpanel-3-PerformanceReports" class="tab-pane" aria-labelledby="nav-tab-3-PerformanceReports" role="tabpanel">
+<div id="nav-tabpanel-3-PerformanceReports" class="tab-pane" role="tabpanel" aria-labelledby="nav-tab-3-PerformanceReports">
 <p>Performance Reports summarizes multiple CPU-related measurements.</p>
 <figure><img src="fig/linaro/linaro_cpu.png" alt="" class="figure mx-auto d-block"></figure><p>The raytracer spends 99.5% of its time in CPU-related operations.
 This breaks down into scalar numeric operations (25.2%) and memory
@@ -4182,7 +4374,7 @@ visualized. The 8 MPI processes of the example job should be explicitly
 mapped (pinned) to 8 cores of the job. Here, the thread affinity is not
 measured correctly, due to a bug in the underlying software.</p>
 </div>
-<div id="nav-tabpanel-3-TBD" class="tab-pane" aria-labelledby="nav-tab-3-TBD" role="tabpanel">
+<div id="nav-tabpanel-3-TBD" class="tab-pane" role="tabpanel" aria-labelledby="nav-tab-3-TBD">
 <p>N/A</p>
 </div>
 </div>
@@ -4212,7 +4404,7 @@ bandwidth and access latencies.</p>
 </button>
 </div>
 </nav><div id="nav-tabContent-4" class="tab-content">
-<div id="nav-tabpanel-4-ClusterCockpit" class="tab-pane show active" aria-labelledby="nav-tab-4-ClusterCockpit" role="tabpanel">
+<div id="nav-tabpanel-4-ClusterCockpit" class="tab-pane show active" role="tabpanel" aria-labelledby="nav-tab-4-ClusterCockpit">
 <figure><img src="fig/cc/job_mem_used.png" alt="" class="figure mx-auto d-block"></figure><p>The <code>job_mem_used</code> metric measures the memory capacity of
 a given job at sampled intervals as reported by the Slurm system. A job
 is limited to the maximum requested amount of memory and this limit
@@ -4228,7 +4420,7 @@ the roofline plot has not been populated.</p>
 critical measurement jobs with <code>--exclusive</code> to not be
 affected by other jobs on shared worker nodes.</p>
 </div>
-<div id="nav-tabpanel-4-PerformanceReports" class="tab-pane" aria-labelledby="nav-tab-4-PerformanceReports" role="tabpanel">
+<div id="nav-tabpanel-4-PerformanceReports" class="tab-pane" role="tabpanel" aria-labelledby="nav-tab-4-PerformanceReports">
 <figure><img src="fig/linaro/linaro_mem.png" alt="" class="figure mx-auto d-block"></figure><p>Performance Reports summarizes the memory utilization as a peak and
 mean measurement for all MPI processes. Here, the results suggest a
 possible imbalance between MPI processes, since some have significantly
@@ -4239,7 +4431,7 @@ this correlates with unevenly busy MPI processes.</p>
 <p>The memory usage over all is very small, so we may be committing too
 many resources to the amount of calculations in the job.</p>
 </div>
-<div id="nav-tabpanel-4-TBD" class="tab-pane" aria-labelledby="nav-tab-4-TBD" role="tabpanel">
+<div id="nav-tabpanel-4-TBD" class="tab-pane" role="tabpanel" aria-labelledby="nav-tab-4-TBD">
 <p>N/A</p>
 </div>
 </div>
@@ -4267,7 +4459,7 @@ many resources to the amount of calculations in the job.</p>
 </button>
 </div>
 </nav><div id="nav-tabContent-5" class="tab-content">
-<div id="nav-tabpanel-5-ClusterCockpit" class="tab-pane show active" aria-labelledby="nav-tab-5-ClusterCockpit" role="tabpanel">
+<div id="nav-tabpanel-5-ClusterCockpit" class="tab-pane show active" role="tabpanel" aria-labelledby="nav-tab-5-ClusterCockpit">
 <figure><img src="fig/cc/job_energy.png" alt="" class="figure mx-auto d-block"></figure><p>Depending on the ClusterCockpit configuration, an energy demand is
 displayed below the job info panels. This measurement is highly
 dependent on hardware configurations of your HPC systems, so the
@@ -4280,7 +4472,7 @@ get a more accurate estimate.</p>
 components and cooling of the clusters. Nevertheless, the estimate is a
 great tool to identify the scale of the jobs energy demand.</p>
 </div>
-<div id="nav-tabpanel-5-PerformanceReports" class="tab-pane" aria-labelledby="nav-tab-5-PerformanceReports" role="tabpanel">
+<div id="nav-tabpanel-5-PerformanceReports" class="tab-pane" role="tabpanel" aria-labelledby="nav-tab-5-PerformanceReports">
 <figure><img src="fig/linaro/linaro_energy.png" alt="" class="figure mx-auto d-block"></figure><p>In cases where Performance Reports has user access to energy counters
 of the operating system, it can also summarize the CPUs and systems
 energy expenditure. Here, we are unfortunately missing the required
@@ -4289,7 +4481,7 @@ access to the systems “RAPL” interface.</p>
 e.g. for exclusive jobs. Consult your clusters documentation or support
 for more information.</p>
 </div>
-<div id="nav-tabpanel-5-TBD" class="tab-pane" aria-labelledby="nav-tab-5-TBD" role="tabpanel">
+<div id="nav-tabpanel-5-TBD" class="tab-pane" role="tabpanel" aria-labelledby="nav-tab-5-TBD">
 <p>N/A</p>
 </div>
 </div>
@@ -4319,11 +4511,11 @@ available for each tool.</p>
 </button>
 </div>
 </nav><div id="nav-tabContent-6" class="tab-content">
-<div id="nav-tabpanel-6-ClusterCockpit" class="tab-pane show active" aria-labelledby="nav-tab-6-ClusterCockpit" role="tabpanel">
+<div id="nav-tabpanel-6-ClusterCockpit" class="tab-pane show active" role="tabpanel" aria-labelledby="nav-tab-6-ClusterCockpit">
 <figure><img src="fig/cc/job_table.png" alt="" class="figure mx-auto d-block"></figure><p>ClusterCockpit provides a detailed statistics table to all
 measurements involved with a job.</p>
 </div>
-<div id="nav-tabpanel-6-PerformanceReports" class="tab-pane" aria-labelledby="nav-tab-6-PerformanceReports" role="tabpanel">
+<div id="nav-tabpanel-6-PerformanceReports" class="tab-pane" role="tabpanel" aria-labelledby="nav-tab-6-PerformanceReports">
 <p><img src="fig/linaro/linaro_mpi.png" alt="" class="figure"> Performance Reports
 also summarizes the applications behavior in terms of MPI calls,
 e.g. time spent in collective calls involving all processors, or
@@ -4337,7 +4529,7 @@ summarizes measurements of interactions with the local file systems.
 Here, no I/O operations are affecting the applications performance at
 all.</p>
 </div>
-<div id="nav-tabpanel-6-TBD" class="tab-pane" aria-labelledby="nav-tab-6-TBD" role="tabpanel">
+<div id="nav-tabpanel-6-TBD" class="tab-pane" role="tabpanel" aria-labelledby="nav-tab-6-TBD">
 <p>N/A</p>
 </div>
 </div>
@@ -4511,7 +4703,7 @@ cases? - Is the increase in threads providing a speedup as expected?</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
 <div class="accordion-body">
 <ul>
 <li>Observation: The computation times are almost the same.</li>
@@ -4550,7 +4742,7 @@ made?</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
   <h4 class="accordion-header" id="headingSolution2"> Show me the solution </h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
 <div class="accordion-body">
 <p>Only 8 cores are active instead of 16</p>
 </div>
@@ -4601,7 +4793,7 @@ process/thread counts to better utilize the hardware in Case 2?</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution3" aria-expanded="false" aria-controls="collapseSolution3">
   <h4 class="accordion-header" id="headingSolution3"> Show me the solution </h4>
 </button>
-<div id="collapseSolution3" class="accordion-collapse collapse" data-bs-parent="#accordionSolution3" aria-labelledby="headingSolution3">
+<div id="collapseSolution3" class="accordion-collapse collapse" aria-labelledby="headingSolution3" data-bs-parent="#accordionSolution3">
 <div class="accordion-body">
 <ul>
 <li>MPI and thread pinning is hardware-aware.</li>
@@ -4724,7 +4916,7 @@ with 4 threads?</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution4" aria-expanded="false" aria-controls="collapseSolution4">
   <h4 class="accordion-header" id="headingSolution4"> Show me the solution </h4>
 </button>
-<div id="collapseSolution4" class="accordion-collapse collapse" data-bs-parent="#accordionSolution4" aria-labelledby="headingSolution4">
+<div id="collapseSolution4" class="accordion-collapse collapse" aria-labelledby="headingSolution4" data-bs-parent="#accordionSolution4">
 <div class="accordion-body">
 <ul>
 <li>8 and 32</li>
@@ -4922,7 +5114,7 @@ any links that you are not going to use.
  -->
 </section></section><section id="aio-09_nextsteps"><p>Content from <a href="09_nextsteps.html">Next Steps</a></p>
 <hr>
-<p>Last updated on 2025-10-29 |
+<p>Last updated on 2026-07-03 |
 
         <a href="https://github.com/stderr-enst/jobefficiency/edit/main/episodes/09_nextsteps.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <div class="text-end">
@@ -4952,6 +5144,109 @@ any links that you are not going to use.
 <li>Identify next steps to take with regard to performance
 optimization.</li>
 </ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="section level3">
+<h3 id="to-be-precise-numerical-efficiency">To be precise: Numerical efficiency<a class="anchor" aria-label="anchor" href="#to-be-precise-numerical-efficiency"></a>
+</h3>
+<blockquote>
+<p>This has been moved from Introduction as it seems to be an abrupt
+transistion into Numerical efficiency.</p>
+</blockquote>
+
+<p>Computational inefficiency is not limited to unnecessarily slow
+implementations. It can also arise when calculations are performed with
+a higher numerical precision than required for the scientific
+objective.</p>
+<p>In scientific computing, numerical precision determines how
+accurately numbers are represented and processed by the CPU, for example
+through single-precision or double-precision floating-point
+arithmetic.</p>
+<p>Higher numerical precision generally increases computational cost,
+memory usage, and data movement. Lower precision, on the other hand, can
+improve performance and reduce memory consumption, but may also reduce
+numerical accuracy and stability.</p>
+<p>Choosing an appropriate numerical precision is therefore an important
+aspect of computational efficiency and depends strongly on the
+requirements of a given application.</p>
+<!---
+The internal accuracy of`bc`is defined by an adjustable parameter`scale`which
+defines how some operations use digits after the decimal point. The default value of`scale`is 0.
+During each`bc`call within the summation loop of`sum.bash`, the intermediate result is rounded
+according to the current setting of`scale`. An insufficiently low precision setting
+leads to an accumulation of rounding errors over many loop iterations,
+rendering the final result (like a sum or product) erroneous.--->
+<div id="compare-numerical-results" class="callout challenge">
+<div class="callout-square">
+<i class="callout-icon" data-feather="zap"></i>
+</div>
+<span class="callout-header">Challenge</span>
+<div id="compare-numerical-results" class="callout-inner">
+<h3 class="callout-title">Compare numerical results</h3>
+<div class="callout-content">
+<p>Our <code>sum.bash</code> implementation also demonstrates how
+numerical methods and implementation details can affect computational
+accuracy.</p>
+<p>When running the two summation methods from the previous challenge,
+compare the final numerical results. Which result appears more accurate,
+and why? Is the inaccurate result smaller or larger than the expected
+value?</p>
+</div>
+</div>
+</div>
+<div id="accordionHint1" class="accordion challenge-accordion accordion-flush">
+<div class="accordion-item">
+<button class="accordion-button hint-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHint1" aria-expanded="false" aria-controls="collapseHint1">
+  <h4 class="accordion-header" id="headingHint1"> Give me a hint </h4>
+</button>
+<div id="collapseHint1" class="accordion-collapse collapse" aria-labelledby="headingHint1" data-bs-parent="#accordionHint1">
+<div class="accordion-body">
+<p>Think again about the airplane analogy. Which scenario is more prone
+to small losses accumulating over time? 1. Passengers repeatedly handle
+their own individual baggage items. 2. Baggage is handled collectively
+in a single coordinated operation.</p>
+</div>
+</div>
+</div>
+</div>
+<div id="accordionSolution1" class="accordion challenge-accordion accordion-flush">
+<div class="accordion-item">
+<button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
+  <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
+</button>
+<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
+<div class="accordion-body">
+<p>The external loop implementation <code>sum.bash</code> and the
+internal <code>bc</code> one-liner may produce results similar to</p>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code><span><span class="fl">333833499.99999999999667056674</span> <span class="co"># bc, external loop (sum.bash)</span></span>
+<span><span class="fl">333833500</span>                      <span class="co"># bc, internal loop (one-liner)</span></span></code></pre>
+</div>
+<p>where the exact floating-point representation may vary slightly
+between systems. The implementation in <code>sum.bash</code> repeatedly
+evaluates expressions involving logarithms and exponentials:</p>
+<div class="codewrapper sourceCode" id="cb2">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" tabindex="-1" aria-label="code-block-2-1"></a><span class="ex">e</span><span class="er">(</span><span class="ex">2</span> <span class="pp">*</span> l<span class="er">(</span><span class="va">$i</span><span class="kw">))</span></span></code></pre>
+</div>
+<p>These operations introduce small numerical rounding errors during
+every loop iteration. Since the result is accumulated repeatedly, the
+rounding errors also accumulate over time. The one-liner implementation
+instead computes the powers directly inside a single <code>bc</code>
+execution context and therefore avoids much of the repeated conversion
+and evaluation overhead.</p>
+<p>As a result, the value produced by <code>sum.bash</code> is typically
+slightly smaller than the mathematically expected result due to
+accumulated truncation and rounding effects. Although <code>bc</code>
+supports arbitrary precision arithmetic, the effective numerical
+precision still depends on how calculations are performed and how
+intermediate results are represented.</p>
 </div>
 </div>
 </div>
@@ -5036,8 +5331,8 @@ any links that you are not going to use.
   "url": "https://stderr-enst.github.io/jobefficiency/aio.html",
   "identifier": "https://stderr-enst.github.io/jobefficiency/aio.html",
   "dateCreated": "2025-03-28",
-  "dateModified": "2026-06-30",
-  "datePublished": "2026-06-30"
+  "dateModified": "2026-07-03",
+  "datePublished": "2026-07-03"
 }
 
   </script><script>

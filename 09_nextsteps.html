@@ -118,7 +118,7 @@
     <a id="search-button" class="btn btn-primary" href="aio.html" role="button" aria-label="Search the All In One page">Search the All In One page</a>
   </div><!--/div.container-fluid -->
 </nav><aside class="col-md-12 lesson-progress"><div class="progress incubator">
-    <div class="progress-bar incubator" role="progressbar" style="width: 93%" aria-valuenow="93" aria-valuemin="0" aria-valuemax="100" aria-label="Lesson Progress">93%</div>
+    <div class="progress-bar incubator" role="progressbar" style="width: 96%" aria-valuenow="96" aria-valuemin="0" aria-valuemax="100" aria-label="Lesson Progress">96%</div>
   </div>
 </aside><div class="container">
       <div class="row">
@@ -347,7 +347,7 @@
       </div>
     </nav><main id="main-content" class="main-content"><div class="container lesson-content">
         <h1>Next Steps</h1>
-        <p>Last updated on 2025-10-29 |
+        <p>Last updated on 2026-07-03 |
 
         <a href="https://github.com/stderr-enst/jobefficiency/edit/main/episodes/09_nextsteps.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 
@@ -385,6 +385,108 @@ optimization.</li>
 </div>
 </div>
 
+<div class="section level3">
+<h3 id="to-be-precise-numerical-efficiency">To be precise: Numerical efficiency<a class="anchor" aria-label="anchor" href="#to-be-precise-numerical-efficiency"></a></h3>
+<blockquote>
+<p>This has been moved from Introduction as it seems to be an abrupt
+transistion into Numerical efficiency.</p>
+</blockquote>
+
+<p>Computational inefficiency is not limited to unnecessarily slow
+implementations. It can also arise when calculations are performed with
+a higher numerical precision than required for the scientific
+objective.</p>
+<p>In scientific computing, numerical precision determines how
+accurately numbers are represented and processed by the CPU, for example
+through single-precision or double-precision floating-point
+arithmetic.</p>
+<p>Higher numerical precision generally increases computational cost,
+memory usage, and data movement. Lower precision, on the other hand, can
+improve performance and reduce memory consumption, but may also reduce
+numerical accuracy and stability.</p>
+<p>Choosing an appropriate numerical precision is therefore an important
+aspect of computational efficiency and depends strongly on the
+requirements of a given application.</p>
+<!---
+The internal accuracy of`bc`is defined by an adjustable parameter`scale`which
+defines how some operations use digits after the decimal point. The default value of`scale`is 0.
+During each`bc`call within the summation loop of`sum.bash`, the intermediate result is rounded
+according to the current setting of`scale`. An insufficiently low precision setting
+leads to an accumulation of rounding errors over many loop iterations,
+rendering the final result (like a sum or product) erroneous.--->
+<div id="compare-numerical-results" class="callout challenge">
+<div class="callout-square">
+<i class="callout-icon" data-feather="zap"></i>
+</div>
+<span class="callout-header">Challenge</span>
+<div id="compare-numerical-results" class="callout-inner">
+<h3 class="callout-title">Compare numerical results</h3>
+<div class="callout-content">
+<p>Our <code>sum.bash</code> implementation also demonstrates how
+numerical methods and implementation details can affect computational
+accuracy.</p>
+<p>When running the two summation methods from the previous challenge,
+compare the final numerical results. Which result appears more accurate,
+and why? Is the inaccurate result smaller or larger than the expected
+value?</p>
+</div>
+</div>
+</div>
+<div id="accordionHint1" class="accordion challenge-accordion accordion-flush">
+<div class="accordion-item">
+<button class="accordion-button hint-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHint1" aria-expanded="false" aria-controls="collapseHint1">
+  <h4 class="accordion-header" id="headingHint1"> Give me a hint </h4>
+</button>
+<div id="collapseHint1" class="accordion-collapse collapse" aria-labelledby="headingHint1" data-bs-parent="#accordionHint1">
+<div class="accordion-body">
+<p>Think again about the airplane analogy. Which scenario is more prone
+to small losses accumulating over time? 1. Passengers repeatedly handle
+their own individual baggage items. 2. Baggage is handled collectively
+in a single coordinated operation.</p>
+</div>
+</div>
+</div>
+</div>
+<div id="accordionSolution1" class="accordion challenge-accordion accordion-flush">
+<div class="accordion-item">
+<button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
+  <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
+</button>
+<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
+<div class="accordion-body">
+<p>The external loop implementation <code>sum.bash</code> and the
+internal <code>bc</code> one-liner may produce results similar to</p>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code><span><span class="fl">333833499.99999999999667056674</span> <span class="co"># bc, external loop (sum.bash)</span></span>
+<span><span class="fl">333833500</span>                      <span class="co"># bc, internal loop (one-liner)</span></span></code></pre>
+</div>
+<p>where the exact floating-point representation may vary slightly
+between systems. The implementation in <code>sum.bash</code> repeatedly
+evaluates expressions involving logarithms and exponentials:</p>
+<div class="codewrapper sourceCode" id="cb2">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" tabindex="-1" aria-label="code-block-2-1"></a><span class="ex">e</span><span class="er">(</span><span class="ex">2</span> <span class="pp">*</span> l<span class="er">(</span><span class="va">$i</span><span class="kw">))</span></span></code></pre>
+</div>
+<p>These operations introduce small numerical rounding errors during
+every loop iteration. Since the result is accumulated repeatedly, the
+rounding errors also accumulate over time. The one-liner implementation
+instead computes the powers directly inside a single <code>bc</code>
+execution context and therefore avoids much of the repeated conversion
+and evaluation overhead.</p>
+<p>As a result, the value produced by <code>sum.bash</code> is typically
+slightly smaller than the mathematically expected result due to
+accumulated truncation and rounding effects. Although <code>bc</code>
+supports arbitrary precision arithmetic, the effective numerical
+precision still depends on how calculations are performed and how
+intermediate results are represented.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
 <section><h2 class="section-heading" id="next-steps">Next Steps<a class="anchor" aria-label="anchor" href="#next-steps"></a></h2>
 <hr class="half-width"><p>hpc-wiki.info - I/O - CPU Front End - CPU Back End - Memory leak -
 Oversubscription - Underutilization</p>
@@ -468,8 +570,8 @@ any links that you are not going to use.
   "url": "https://stderr-enst.github.io/jobefficiency/09_nextsteps.html",
   "identifier": "https://stderr-enst.github.io/jobefficiency/09_nextsteps.html",
   "dateCreated": "2025-03-28",
-  "dateModified": "2025-10-29",
-  "datePublished": "2026-06-30"
+  "dateModified": "2026-07-03",
+  "datePublished": "2026-07-03"
 }
 
   </script><script>
