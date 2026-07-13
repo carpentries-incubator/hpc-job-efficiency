@@ -8,6 +8,7 @@ exercises: 40
 
 - How many resources should be requested for a given job?
 - How does our application behave at different scales?
+- Will the application benefit from requesting more computational resources?
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -33,12 +34,16 @@ Narrative:
 :::::::::::::::::::::::::::::::::::::
 
 
-The deadline is approaching way too fast and we may not finish our project in time.
+At times, you may think: "The deadline is approaching way too fast and we may not finish our project in time.
 Maybe requesting more resources from our clusters scheduler does the trick?
 How could we know if it helps and by how much?
 
 ## What is Scaling?
 The execution time of parallel applications changes with the number of parallel processes or threads.
+For example, when keeping the *problem size* fixed, i.e. keep the same amount of calculations, running the application with more processes/threads typically results in shorter execution times.
+We will consider the problem size as fixed for the first half of this episode and discuss the case of a varying problem size later.
+
+
 In a *scaling study* we measure how much the execution time changes by scanning a reasonable range of number of processes.
 In a common phrasing, this approach answers how the execution time *scales* with the number of parallel processors.
 
@@ -58,7 +63,7 @@ time mpirun -- ./raytracer -width=800 -height=800 -spp=128 -png "$(date +%Y-%m-%
 
 we can manually run such a scaling study by submitting multiple jobs.
 In OpenMPI versions 4 and 5 the number of Slurm tasks is automatically picked up, so we do not set `-n` or `-np` of `mpirun`.
-We use `--` to separate the arguments of `mpirun` -- none in this case -- from the MPI application `raytracer` and its arguments.
+We use `--` to separate the arguments of `mpirun` (none in this case) from the MPI application `raytracer` and its arguments.
 Otherwise you may experience errors in some versions of OpenMPI 5, where `mpirun` misinterprets the arguments of `raytracer` as its own.
 
 ::: callout
@@ -107,7 +112,7 @@ If you don't need a more regular update, it is good practice to keep the interva
 :::
 
 
-Once the jobs are finished, we can use `grep` to get the wall clock time of all four jobs:
+Once the jobs are finished, we can use `grep "real" slurm-*.out` to get the wall clock time of all four jobs:
 
 ```output
 slurm-16142767.out:real       2m7.218s
@@ -116,7 +121,7 @@ slurm-16142769.out:real       0m32.584s
 slurm-16142770.out:real       0m17.480s
 ```
 
-The real-time is decreasing significantly each time we double the number of Slurm tasks.
+The `real`-time is decreasing significantly each time we double the number of Slurm tasks.
 From this, we feel that doubling the number of CPU cores really is a winning strategy!
 
 :::::::::::::::::::::::::: challenge
@@ -196,6 +201,7 @@ It depends on the ratio between calculations, communications and various managem
 
 Many overheads and when they show also depend on the underlying hardware.
 So the sweet spot may very well be different for different clusters, even if the application and configuration stays the same!
+For example, network communication always introduces latencies (short waiting times) for each connection and their bandwidth determines how long a communication takes. Here, clusters using different network architectures and technologies often exhibit different scaling behavior and configuration sweet spots for your applications.
 
 Another common issue lies within our measurements themself.
 We perform a single time measurement on a worker node that is possibly shared with other jobs at the same time.
@@ -289,6 +295,16 @@ However, it would be difficult to justify additional cores, if their contributio
 :::
 :::::::::::::
 
+:::::::::::::::::::::::::: discussion
+# Discussion: Why does the Speedup Efficiency drop?
+
+Adding more and more resources is not always speeding up our application.
+What may be possible reasons for worse speedup efficiency at larger numbers of parallel processors/threads?
+
+Briefly collect and discuss any reasons you can think of. 
+::::::::::::::::::::::::::
+
+
 ::: spoiler
 # (Optional) plotting our `.csv`s
 
@@ -337,7 +353,7 @@ For our raytracer example, increasing the workload corresponds to more pixels, m
 # Gustafsons Law^[J. L. Gustafson, ‘Reevaluating Amdahl’s law’, Commun. ACM, vol. 31, no. 5, pp. 532–533, May 1988, doi: 10.1145/42411.42415.]
 A program scales on $N$ parallel processors, if the problem size also scales with the number of processors.
 The speedup $S$ becomes
-$$\text{S(N)} = \frac{s+pN}{s+p} = s+pN = N+s(1-N)$$
+$$\text{S(N)} = \frac{s+pN}{s+p} = s+pN = s+(1-s)N$$
 with $N$ processors, $s$ the time for the serial fraction, and $p$, the time for parallel fraction:
 :::::::::::
 
@@ -372,7 +388,9 @@ time mpirun -- ./build/raytracer -width=${pixel[${SLURM_NTASKS}]} -height=${pixe
 ::: spoiler
 # Different ways of scaling workloads: spp
 
-To scale the workload of the snowman raytracer, we can multiply the number of parallel MPI processes, `${SLURM_NTASKS}`, with the samples per pixel (starting from `-spp=128`).
+In each scaling study, it is crucial to identify which application parameters affect the execution time. There are often multiple ways.
+
+For the snowman raytracer, instead of changing the total number of pixels, we can multiply the number of parallel MPI processes (`${SLURM_NTASKS}`) with the samples per pixel (starting from `-spp=128`).
 For a single process, the whole $800 \times 800$ pixel picture is calculated in a single MPI process with 128 per pixel.
 Running with two MPI processes, both have to calculate half the number of pixels, but twice the amount of samples per pixel.
 
@@ -389,21 +407,23 @@ SPP="$[${SLURM_NTASKS}*128]"
 time mpirun -- ./build/raytracer -width=800 -height=800 -spp=${SPP} -threads=1 -png "$(date +%Y-%m-%d_%H%M%S).png"
 ```
 
-![Three snowmen in 800x800 with 128 samples per pixel](fig/spp128.png){alt='Three snowmen in 800x800 with 128 samples per pixel'}
+![Figure 1: Three snowmen in 800x800 with 128 samples per pixel](fig/spp128.png){alt='Three snowmen in 800x800 with 128 samples per pixel'}
 
-![Three snowmen in 800x800 with 8192 samples per pixel](fig/spp8192.png){alt='Three snowmen in 800x800 with 8192 samples per pixel'}
+![Figure 2: Three snowmen in 800x800 with 8192 samples per pixel](fig/spp8192.png){alt='Three snowmen in 800x800 with 8192 samples per pixel'}
 
-In direct comparison, and zooming in really close, you can see more noise in the first image, e.g. in the shadows.
+In direct comparison, and zooming in really close, you can see more noise in Figure 1, e.g. in the shadows, relative to Figure 2.
 One could argue that we passed the point of diminishing returns, though.
 Is a $64\times$ increase in computational cost worth the observed quality improvement?
 For the samples per pixel, we seem to not benefit much from weak scaling.
-Larger resolutions, by increasing the number of pixels, is the more useful dimension to increase in this case.
+Larger resolutions, by increasing the number of pixels, may be a more useful dimension to increase in this case.
+
+The usefulness of any computation can only be determined in the context of your scientific goals.
 :::
 
 Increasing the resolution may be worth the effort, if we have a use for a larger, more detailed picture.
 In practice, there is a cutoff, beyond which no reasonable improvement is to be expected.
 This is a question about accuracy, error margins, and overall quality, which can only be answered in the specific context of each research project.
-If there is no real improvement by increasing the workload, running a weakly scaling application is really just wasting valuable computational time and energy.
+If there is no tangible benefit of increasing the workload, running at a larger number of parallel processes does not serve a purpose, even if the application still exhibits good "weak scaling efficiency".
 
 If we increase the workload at the rate as our number of parallel processes ($N$) our speedup is defined as $$S_{\text{weak}}(N) = \frac{T(1)}{T(N)} \times N$$ since we do $N$ times more work with $N$ processors, compared to our reference $T(N=1)$.
 Efficiency is still defined as $$\eta_{\text{weak}}(N) = \frac{S_{\text{weak}}(N)}{N} = \frac{T(1)}{T(N)}$$
@@ -419,11 +439,11 @@ Repeat the previous scaling study and increase the number of pixels accordingly 
 - Create a `.csv` file and run the plotting script 
 
 ```csv
-ntasks,pixel,time,speedup,efficiency
-1,800,123.162
-2,1131,122.562
-4,1600,124.522
-8,2263,125.606
+ntasks, pixel,    time, speedup, efficiency
+     1,   800, 123.162,     ???,        ???
+     2,  1131, 122.562,     ???,        ???
+     4,  1600,     ???,     ???,        ???
+     8,  2263,     ???,     ???,        ???
 ...
 ```
 
@@ -432,14 +452,14 @@ Do you see a qualitative difference in the resulting `.png` files and is the inc
 
 ::: solution
 ```csv
-ntasks,pixel,time,speedup,efficiency
-1,800,123.162
-2,1131,122.562
-4,1600,124.522
-8,2263,125.606
-16,3200,125.803
-32,4526,130.137
-64,6400,138.636
+ntasks, pixel,    time, speedup, efficiency
+     1,   800, 123.162,    1.00,       1.00
+     2,  1131, 122.562,    2.01,       1.00
+     4,  1600, 124.522,    3.96,       0.99
+     8,  2263, 125.606,    7.84,       0.98
+    16,  3200, 125.803,   15.66,       0.98
+    32,  4526, 130.137,   30.28,       0.95
+    64,  6400, 138.636,   56.86,       0.89
 ```
 
 The scaling behavior is reaching an asymptotic limit, where each additional processor is contributing with the same efficiency to the increased workload.
