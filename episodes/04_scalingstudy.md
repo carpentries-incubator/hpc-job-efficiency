@@ -34,20 +34,36 @@ Narrative:
 :::::::::::::::::::::::::::::::::::::
 
 
-At times, you may think: "The deadline is approaching way too fast and we may not finish our project in time.
+At times, you may think: "The deadline is approaching too fast and we may not finish our project in time."
 Maybe requesting more resources from our clusters scheduler does the trick?
 How could we know if it helps and by how much?
+
+Answering this question is often a formal requirement for compute time requests at larger HPC systems.
+They want to see good *scaling* behavior in an application, before they give access to a bigger chunk of their computational power.
+So, how well does your parallel application utilize larger number of resources?
+How well, does it *scale*?
 
 ## What is Scaling?
 The execution time of parallel applications changes with the number of parallel processes or threads.
 For example, when keeping the *problem size* fixed, i.e. keep the same amount of calculations, running the application with more processes/threads typically results in shorter execution times.
-We will consider the problem size as fixed for the first half of this episode and discuss the case of a varying problem size later.
+We will consider the problem size as fixed for the first sections of this episode and discuss the case of a varying problem size later.
 
 
-In a *scaling study* we measure how much the execution time changes by scanning a reasonable range of number of processes.
+![Sketched execution times for a perfectly parallelized application. Doubling the number of parallel processors halves the execution time.](fig/sketch_scaling.svg){alt="Sketched execution times for a perfectly parallelized application"}
+
+In a *scaling study* we measure how much a certain metric of an application, most commonly the  execution time, changes with respect to the number of processes.
 In a common phrasing, this approach answers how the execution time *scales* with the number of parallel processors.
 
 Starting from the job script `render_snowman.sbatch`:
+
+::: instructor
+## Todo: Unify MPI and modules across examples
+
+We should address the various ways to start MPI programs at first use and choose a single way.
+Preparing the software is also cluster-specific (`module load ...`).
+
+In the mid-/long-term this may call for a site-specific implementation of the course, e.g. via the hpc-intro workbench.
+:::
 
 ```bash
 #!/usr/bin/bash
@@ -69,7 +85,8 @@ Otherwise you may experience errors in some versions of OpenMPI 5, where `mpirun
 ::: callout
 # Scaling other resources with number of CPU cores
 When scaling the resources outside of the job script, e.g. with `sbatch --ntasks=X ...`, as done above, we make sure to scale other resource requirements with the number of parallel processors.
-In this case, `--mem-per-cpu=200MB` is necessary, since `--mem` results in a fixed memory limit, independent of the number of processes.
+In this case, `--mem-per-cpu=200MB` is necessary to scale the amount of memory with the number of processors.
+`--mem` requests a fixed amount of memory per node.
 
 For example, if each MPI process needs $100\,$MB, requesting $2\,$GB would only be enough for up to 20 MPI processes.
 
@@ -221,7 +238,7 @@ In these cases, tools like `seff` show worse resource utilization results, since
 :::
 
 
-Scaling studies can be done with respect to different application and job parameters.
+Scaling studies can also be done with respect to different application and job parameters.
 For example, what is the execution time when we change the *workload*, e.g. a larger number of pixels, samples per pixels, or a more complex scene?
 How much does a communication overhead change, if we change the number of involved nodes while keeping the workload and number of tasks fixed, i.e. changing the *network communication surface*?
 Scaling studies like these can help identify pressure points that affect the applications performance.
