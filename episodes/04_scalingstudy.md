@@ -95,18 +95,6 @@ Forgetting a limit like this is a common pitfall in this situation.
 
 Let's start some measurements with $1$, $2$, $4$, and $8$ tasks:
 
-::: instructor
-## Slurm Reservation and specific Hardware?
-
-You may need to reserve a set of resources for the course, such that enough resources for the following exercises are available.
-This is especially important for `--exclusive` access.
-
-In that case, show how to use `--reservation=reservationname` to submit jobs.
-
-It may be a good idea to point out the particular hardware of your cluster / partition to emphasize how many cores are available on a single node and when the scaling study goes beyond a single node.
-:::
-
-
 ```output
 $ sbatch --ntasks 1 render_snowman.sbatch
 Submitted batch job 16142767
