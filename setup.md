@@ -5,7 +5,7 @@ title: Setup
 ## Learning Objectives
 After attending this training, participants will be able to:
 
-- Explain efficiency in the context of *High Performance Computing* (*HPC*) systems
+- Explain efficiency in the context of *High-Performance Computing* (*HPC*) systems
 - Use batch system tools and third party tools to measure job efficiency
 - Discern between worse and better performing jobs
 - Describe common concepts and terms related to performance on HPC systems
