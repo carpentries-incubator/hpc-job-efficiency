@@ -49,7 +49,7 @@ For example, when keeping the *problem size* fixed, i.e. keep the same amount of
 We will consider the problem size as fixed for the first sections of this episode and discuss the case of a varying problem size later.
 
 
-![Sketched execution times for a perfectly parallelized application. Doubling the number of parallel processors halves the execution time.](fig/sketch_scaling.svg){alt="Sketched execution times for a perfectly parallelized application"}
+![Sketched execution times for a perfectly and a 98% parallelized application. Doubling the number of parallel processors halves the execution time for the perfectly parallelized example, and a little bit less for the 98% parallelized version.](fig/sketch_scaling.svg){alt="Sketched execution times for a perfectly and a 98% parallelized application. Doubling the number of parallel processors halves the execution time for the perfectly parallelized example, and a little bit less for the 98% parallelized version."}
 
 In a *scaling study* we measure how much a certain metric of an application, most commonly the  execution time, changes with respect to the number of processes.
 In a common phrasing, this approach answers how the execution time *scales* with the number of parallel processors.
@@ -247,12 +247,16 @@ It answers the question
 
 > How much faster is the application with $N$ parallel processes/threads, compared to the serial execution with $1$ process/thread)?
 
-It is defined by the comparison of wall times $T(N)$ of the application with $N$ parallel processes: $$S(N) = \frac{T(1)}{T(N)}$$
+![Sketched speedup for a perfectly and 98% parallelized application. Doubling the number of parallel processors makes the perfectly parallel application twice as fast. The 98% parallelized application does not speed up at the same rate.](fig/sketch_speedup.svg){alt="Sketched speedup for a perfectly and 98% parallelized application. Doubling the number of parallel processors makes the perfectly parallel application twice as fast. The 98% parallelized application does not speed up at the same rate."}
+
+Speedup is defined by the comparison of wall times $T(N)$ of the application with $N$ parallel processes: $$S(N) = \frac{T(1)}{T(N)}$$
 Here, $T(1)$ is the wall time for a sequential execution, and $T(N)$ is the execution with $N$ parallel processes.
-For $2$ processes, we observe a speedup of $S(2) = \frac{127.218}{67.443} \approx 1.89$
+For our raytracer, with $2$ processes, we observe a speedup of $S(2) = \frac{127.218}{67.443} \approx 1.89$
+In reality, our application only got $1.89\times$ faster, for the $2$ parallel processes we have spent on it. Ideally, we would have expected a speedup of $2$, so our application does not seem perfectly efficient in terms of *using* the additional parallel processes to be faster.
 
-*Efficiency* in this context is defined as $$\eta(N) = \frac{S(N)}{N}$$ with speedup $S(N)$ and describes by how much additional parallel processes, $N$, deviate from the theoretical linear optimum.
+We can calculate the *efficiency* with wich each additional parallel process contributes to the applications speedup: $$\eta(N) = \frac{S(N)}{N}$$ 
 
+![Sketched efficiency for a perfectly and 98% parallelized application. For the perfectly scaling case, each additional parallel process contributes well to solving the calculations faster. For the 98% parallelized application, adding more parallel processes has diminishing returns.](fig/sketch_efficiency.svg){alt="Sketched efficiency for a perfectly and 98% parallelized application. For the perfectly scaling case, each additional parallel process contributes well to solving the calculations faster. For the 98% parallelized application, adding more parallel processes has diminishing returns."}
 
 ::: challenge
 ## Exercise: Calculate Speedup and Efficency
@@ -311,7 +315,7 @@ Briefly collect and discuss any reasons you can think of.
 
 
 ::: spoiler
-# (Optional) plotting our `.csv`s
+# (Optional) plotting our `.csv`
 
 If you have experience with python, you can use our [python script](files/plot_scaling_from_csvs.py) to create the same plots as above, but for your own data.
 It depends on `numpy`, `pandas`, and `matplotlib`, so make sure to prepare a corresponding python environment.
