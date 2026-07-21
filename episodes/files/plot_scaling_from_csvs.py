@@ -28,6 +28,7 @@ def strong_scaling():
     ax1.set_xlim(0, 130)
     ax2.set_xlim(0, 130)
     ax1.set_ylim(0, 2 * max_speedup)
+    ax2.set_ylim(0, 1.05)
 
     xticks = [4] + [ 8 * i for i in range(17) ]
     ax1.set_xticks(xticks)
@@ -64,6 +65,7 @@ def weak_scaling():
     ax1.set_xlim(0, 65)
     ax2.set_xlim(0, 65)
     ax1.set_ylim(0, 2 * max_speedup)
+    ax2.set_ylim(0, 1.05)
 
     xticks = [4] + [ 8 * i for i in range(9) ]
     ax1.set_xticks(xticks)

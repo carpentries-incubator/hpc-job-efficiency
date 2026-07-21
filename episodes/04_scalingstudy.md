@@ -335,8 +335,15 @@ An application is said to *scale strongly*, if adding more cores significantly r
 
 ::: callout
 # Amdahls Law^[G. M. Amdahl, ‘Validity of the single processor approach to achieving large scale computing capabilities’, in Proceedings of the April 18-20, 1967, spring joint computer conference, in AFIPS ’67 (Spring). New York, NY, USA: Association for Computing Machinery, Apr. 1967, pp. 483–485. doi: 10.1145/1465482.1465560.]
+
+![The model behind Amdahls Law: Assume an application consists of serial sections, e.g. reading from a file, and parallelizable sections, e.g. calculations in a loop. Both fractions add up to the whole program, i.e. $s + p = 1$. Here, Speedup through parallelization is inherently limited by only speeding up the parallel sections.](fig/amdahl_model.drawio.png){alt='The model behind Amdahls Law: Assume an application consists of serial sections, e.g. reading from a file, and parallelizable sections, e.g. calculations in a loop. Both fractions add up to the whole program, i.e. $s + p = 1$. Here, Speedup through parallelization is inherently limited by only speeding up the parallel sections.'}
+
 The speedup of a program through parallelization is limited by the execution time of the serial fraction that is not parallelizable.
-For a given execution time $T(N) = s + \frac{p}{N}$, with $s$ the time for the serial fraction, and $p$, the time for parallel fraction, speedup $S$ is defined as $$S(N) = \frac{s+p}{s+\frac{p}{N}} = \frac{1}{s + \frac{p}{N}} \Rightarrow \lim_{N\rightarrow \infty}  S(N) = \frac{1}{s}$$
+For a given execution time $T(N) = s + \frac{p}{N}$, with $s$ the serial fraction, and $p$, the parallel fraction of the applications execution time, speedup $S$ is defined as $$S(N) = \frac{T(1)}{T(N)} = \frac{1}{s + \frac{p}{N}} \Rightarrow \lim_{N\rightarrow \infty}  S(N) = \frac{1}{s}$$
+
+In other words, increasing the number of parallel processes $N$ for an application that only has a serial part that is taking up $1$% of the execution time, will never exceed a speedup of $\frac{1}{s} = \frac{1}{0.01} = 100$.
+No matter how many processes we will use!
+
 :::::::::::
 
 :::::::::::::::::::::::::: discussion
@@ -349,22 +356,35 @@ What other factors could affect your decision, e.g. available hardware and corre
 ::::::::::::::::::::::::::::
 
 
+:::::::::::::::::::::::::: instructor
+# When should we stop adding CPU cores?
+
+The learners should realize there is a point of diminishing returns.
+Where exactly to draw the line is debatable, but in the previous example $N=32$ seems to be a sweet spot with the best Speedup and an efficiency $>50$%.
+
+There are many reasons why a large number of parallel processes may result in worse speedup. Among others, it may be due to I/O overhead, synchronization between threads, or a limited divisibility of the problem domain, where additional processors could not solve additional work.
+::::::::::::::::::::::::::
+
+
 ## If scaling is limited, why are there larger HPC systems? Weak scaling.
 For a fixed problem size, we observed that adding more parallel processors can only help up to a certain point.
-But what if the project benefits from increasing the workload size?
-Does a higher resolution, more accuracy, or more statistics, etc., improve our insights and results?
-If that is the case, the perspective on the issue changes and adding more parallel processors can become more feasible as well.
+But what if the project benefits from increasing the workload size, i.e. doing *more* calculations?
+For example, does a higher resolution, more accuracy, or more statistics, etc., improve our insights and results?
+In this case, our perspective on efficiency changes and we address a different optimization than before: Doing more calculations with an increasing number of parallel processors.
 For our raytracer example, increasing the workload corresponds to more pixels, more samples per pixel, and/or a more complex scene.
 
 *Weak scaling* refers to the scaling behavior of an application for a fixed workload per parallel processing unit, e.g. increasing the number of pixels by the same amount as the number of parallel processors $N$.
 
+
 ::: callout
-# Gustafsons Law^[J. L. Gustafson, ‘Reevaluating Amdahl’s law’, Commun. ACM, vol. 31, no. 5, pp. 532–533, May 1988, doi: 10.1145/42411.42415.]
-A program scales on $N$ parallel processors, if the problem size also scales with the number of processors.
-The speedup $S$ becomes
-$$\text{S(N)} = \frac{s+pN}{s+p} = s+pN = s+(1-s)N$$
-with $N$ processors, $s$ the time for the serial fraction, and $p$, the time for parallel fraction:
-:::::::::::
+# The difference between strong and weak scaling
+
+In the previous discussion about Amdahls Law we kept the total amount of calculations fixed and increased the number of parallel processors $N$.
+Now, we are transitioning to a different perspective where we increase *both*, the number total amount of calculations and the number of parallel processors $N$,
+
+In the former, we reach an absolute limit for moderate numbers of $N$ and would not benefit from increasing the number of parallel processes $N$.
+In the later case, we may benefit solving more calculations and we hope to be back in the business of Supercomputers with an $N$ in the order of thousands!
+:::
 
 To scale the workload of the snowman raytracer, we can increase the number of calculated pixels with the same factor with which we increase the number of parallel processors.
 For one processor we have $800 \times 800 = 640000$ pixel.
@@ -484,6 +504,14 @@ However, going way beyond $6400 \times 6400$ pixels is probably not very meaning
 
 :::
 ::::::::::::::::::::::::::::::::::::
+
+::: callout
+# Gustafsons Law^[J. L. Gustafson, ‘Reevaluating Amdahl’s law’, Commun. ACM, vol. 31, no. 5, pp. 532–533, May 1988, doi: 10.1145/42411.42415.]
+A program scales on $N$ parallel processors, if the problem size also scales with the number of processors.
+The speedup $S$ becomes
+$$\text{S(N)} = \frac{s+pN}{s+p} = s+pN = s+(1-s)N$$
+with $N$ processors, $s$ the serial fraction, and $p$ the parallel fraction of the execution time.
+:::::::::::
 
 
 ## Summary
