@@ -309,28 +309,19 @@ It is often disabled on HPC systems, since code is optimized to maximize computa
 ### ClusterCockpit
 ClusterCockpit captures many dedicated CPU metrics and provides a timeline visualization for each.
 
-![](fig/cc/job_cpu_load_core.png){alt='ClusterCockpit cpu load per core'}
+![](fig/cc-new/cpu-user.png){alt='ClusterCockpit cpu_user metric'}
 
-The `cpu_load_core` shows the load of each individual core of the job.
-The `core` value of the drop down menu indicates a per-core metric.
-Other metrics are only available per socket or even per whole node.
-These coarser metrics may be affected by multiple jobs on shared nodes, so check the context of each metric you study to make sure that concurrent jobs do not influence your measurements.
+`cpu_user` shows, per core, the share of CPU time spent executing our application's own instructions, as opposed to time spent in kernel/system activity or sitting idle.
+A high `cpu_user` near $1$ is a good sign: the core is busy, and busy doing *our* work rather than system overhead.
+A core with low `cpu_user` is worth a closer look — it suggests the core is occupied, by other activities like waiting on I/O which is not *our work*.
 
-Here, the `cpu_load_core` reaches 1 after an initial ramp up phase.
-A value of significantly larger than 1 indicates an over-subscription where more processes/threads share the same CPU core.
-This can sometimes happen in an erroneous mismatch between OpenMP threads or MPI processes and Slurm tasks or threads per Slurm task.
+![](fig/cc-new/flops-any.png){alt='ClusterCockpit flops_any metric'}
 
-![](fig/cc/job_flops.png){alt='ClusterCockpit flops_any metric'}
-
-`flops_any` shows any floating point operation on AMD CPUs.
-Single and double precision operations are accumulated in the same result.
-A few FLOPs occur, but the example raytracer application seems to utilize many non-floating point operations.
-Therefore, a low `flops_any` is not necessarily critical in this case.
-
-![](fig/cc/job_ipc.png){alt=''}
-
-`ipc` (Instructions per Clock cycle) measures the number of operations the CPU is performing on average for each tick of its clock.
-CPUs are capable of executing more than one instruction per clock tick, so a value of about $2.25$ indicates that the CPU is "busy enough".
+flops_any` captures any floating point operation on Intel CPUs, at core-level granularity, with single- and double-precision operations accumulated into the same value.
+Recall from the Footprint panel that our job's `flops_any (avg)` sat at only $22.84$ GF/s, while the node's theoretical peak is $8532$ GF/s.
+That gap looks enormous, but it isn't a fair comparison yet: the $8532$ GF/s peak is for all $96$ cores of the exclusive node, while our job only ever uses $8$ of them. Scaled down to $8$ cores, the theoretical peak is roughly $711$ GF/s — so $22.84$ GF/s is still well below what our $8$ cores could theoretically achieve, but nowhere near the dramatic 96-core gap the raw numbers first suggest.
+This isn't a contradiction of the Roofline plot classifying the job as compute bound either way: compute bound only means the CPU's calculation capability is the limiting factor relative to how little data is moved, not that the job is issuing many *floating point* operations specifically.
+Our raytracer performs plenty of integer, branching, and memory-addressing work per byte loaded — the kind of work `flops_any` doesn't count at all — which is why a low `flops_any` here isn't necessarily a red flag.
 
 ### Performance Reports
 Performance Reports summarizes multiple CPU-related measurements.
@@ -365,19 +356,16 @@ Memory utilization is characterized in terms of used capacity, bandwidth and acc
 ::: group-tab
 ### ClusterCockpit
 
-![](fig/cc/job_mem_used.png){alt=''}
+![](fig/cc-new/mem-used.png){alt='ClusterCockpit mem_used metric'}
 
-The `job_mem_used` metric measures the memory capacity of a given job at sampled intervals as reported by the Slurm system.
-A job is limited to the maximum requested amount of memory and this limit should never be exceeded.
-If the application has very short-lived allocations, sharp peaks could fall in between the measured samples and not be captured in this metric.
+`mem_used` sits at approximately $5.8$ GB for our job, shown as an almost flat, straight line across the runtime — this is a good sign. A flat line means memory consumption is stable once the application has allocated what it needs.
+A slanted, steadily increasing line instead would be a warning sign of a **memory leak**: memory that is allocated but never freed, growing continuously over the job's runtime instead of leveling off.
 
-![](fig/cc/job_mem_bw.png){alt=''}
 
-The `mem_bw` metric represents the memory bandwidth at the socket-level of the CPU.
-Together with `flops_any`, this information is used to create the roofline plot from the job overview panels.
-Our job hardly moves any data to and from memory, which is why the roofline plot has not been populated.
+![](fig/cc-new/mem-bw.png){alt='ClusterCockpit mem_bw metric'}
 
-Since this measurement is only available on the socket-level, submit critical measurement jobs with `--exclusive` to not be affected by other jobs on shared worker nodes.
+`mem_bw` is a **socket-level** metric — it measures how much memory is transferred to and from a given CPU socket per second, not per individual core.
+Since our node has multiple sockets, you'll typically see a different `mem_bw` value reported for each socket. This difference depends entirely on which cores on each socket are actually active and running part of the application: a socket with more of our job's cores running on it will show higher memory traffic than a socket with fewer (or none) of them active.
 
 ### Performance Reports
 ![](fig/linaro/linaro_mem.png){alt=''}
@@ -396,11 +384,15 @@ N/A
 ### Energy
 ::: group-tab
 ### ClusterCockpit
-![](fig/cc/job_energy.png){alt=''}
+![](fig/cc-new/cpu-power.png){alt=''}
+
+`cpu_power` is another **socket-level** metric — it reports the power drawn by a CPU socket, not by an individual core.
+Even when none of a socket's cores are actively running our application, the socket still draws a **baseline power**, since the hardware is powered on and idling rather than fully switched off.
+As cores on a socket become active, power draw increases above that baseline — similarly to `mem_bw`, the exact increase depends on how many of that socket's cores are actually running part of our application. A socket with more active cores will show higher power draw than one with fewer (or none) active.
 
 Depending on the ClusterCockpit configuration, an energy demand is displayed below the job info panels.
 This measurement is highly dependent on hardware configurations of your HPC systems, so the estimates may vary.
-They are often based on CPU packe power measurements, which are unlikely to cover the whole energy demand of the node, e.g. omitting disks, fans, etc.
+They are often based on CPU package power measurements, which are unlikely to cover the whole energy demand of the node, e.g. omitting disks, fans, etc.
 In other cases, the energy may be estimated from power supply measurements and scaled to CPU activity to get a more accurate estimate.
 
 These estimates often still not include network, parallel filesystem components and cooling of the clusters.
