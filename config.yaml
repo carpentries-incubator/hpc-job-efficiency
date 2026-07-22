@@ -54,6 +54,7 @@ episodes:
 - 02_resourcerequirements.md
 - 03_schedulertools.md
 - 04_scalingstudy.md
+- 05_ClusterCockpit.md
 - 05_performancereports.md
 - 06_pinning.md
 - 07_bottlenecks.md
