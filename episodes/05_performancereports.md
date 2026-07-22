@@ -121,15 +121,21 @@ kernel.perf_event_paranoid
 :::
 
 Let us set up our performance measurement tool by running an example job with 8 cores.
-To give the job enough work to be worth measuring, let's go with $2263 \times 2263$ pixels and `-spp=512` and repeat experiments for 4-5 times.
-
-We request the node exclusively with --exclusive right away. As you'll see in a moment, several of the metrics ClusterCockpit reports are not measured per core, but per socket or even per whole node — so any other job sharing the node would quietly bleed into our measurements. Running exclusively is the easiest way to keep the numbers trustworthy while we're still learning to read them.
-
+To give the job enough work to be worth measuring, let's go with $2263 \times 2263$ pixels and `-spp=512`.
 
 ::: group-tab
 ### ClusterCockpit
 
+
+For ClusterCockpit specifically, we repeat this experiment 4–5 times back to back.
+
+A single run finishes quickly and would only give ClusterCockpit a handful of samples to plot, making the timelines look sparse and harder to read. Running it 4–5 times stretches the job out to roughly an hour, giving the sampling-based collectors enough time to gather a richer set of data points — which makes for much clearer plots when we look at the metrics.
+
+We also request the node exclusively with `--exclusive` right away.
+As you'll see in a moment, several of the metrics ClusterCockpit reports are not measured per core, but per socket or even per whole node — so any other job sharing the node would quietly bleed into our measurements. Running exclusively is the easiest way to keep the numbers trustworthy while we're still learning to read them.
+
 1. Submit a job that runs for at least $5$ minutes, so it is picked up by cluster cockpit. The job script could look like this:
+
 ```bash
 #!/usr/bin/bash
 #SBATCH --time=01:00:00
@@ -200,7 +206,7 @@ The *Footprint* panel summarizes a preconfigured set of performance characterist
 It categorizes values in a traffic-light system, so yellow and red indicators motivates further investigation.
 The exact list and type of metrics depends on the ClusterCockpit configuration, which is prepared by the administrator of the service.
 
-Here, all three values are in an acceptable range:
+Here, all four values are not in acceptable range. We see why:
 
 - `cpu_load (avg)` is shown in red. Since we requested the node with `--exclusive`, we were given all $96$ cores of the node, but our job only uses $8$ of them. The footprint compares load against the full $96$ cores that are requested by us, so it correctly flags that most of the requested resources are sitting idle — this is underutilization of requested resources.
 - `flops_any (avg)` is Floating Point Operations per second. In this case, it is calculated as $22.84 GF/s$, which is far below what the node can theoretically achieve. We will look into why in the coming episodes — it can point to anything from not utilizing the hardware features  to simply not needing many floating point operations at all.
@@ -226,7 +232,7 @@ In jobs performing floating point operations on data read from memory, i.e. any 
 - Where the diagonal and horizontal lines meet is the knee. Left of the knee = memory bound (data movement is the bottleneck). Right of the knee = compute bound (calculation capability is the bottleneck).
 - The colored dots show measurements taken at different points in time during the job's run, following a blue-to-red gradient: blue marks the start of the application, red marks the end. Their position relative to the rooflines shows how close each phase of execution came to the physical performance limits, and how that changed over the runtime.
 
-:::discussion
+:::::: discussion
 
 Below is the Roofline plot for our application.
 ![](fig/cc-new/roofline.png){alt='Cluster Cockpit Roofline plot of a job'}
@@ -238,8 +244,30 @@ Take a moment to look at where our raytracer's dot(s) land on the plot.
 - Given where the job sits, which metric is more interesting for our next investigation — `flops_any`, or `mem_bw`? Which one, if improved, would actually move the dot closer to a roofline?
 - Does the dot's position stay roughly constant over the blue-to-red timeline, or does it drift? What might cause a job to move further from (or closer to) the roofline as it runs?
 
-:::
+::::::
 
+::::::::: callout
+
+### Granularity of Metrics
+
+Not every metric ClusterCockpit shows describes your job — some describe the whole CPU socket, or even the whole node, regardless of how many cores your job actually occupies. The underlying collectors read hardware performance counters that are simply wired up at a particular level of the machine, and they have no notion of which Slurm job is currently running. This is true regardless of which monitoring tool you use, but it is essential to understand for reading ClusterCockpit correctly.
+
+Broadly, metrics come in three granularities:
+
+- **Core-level**: measured separately for each individual CPU core, e.g. `cpu_user`, `ipc`, `flops_any`. These are meaningful for your job even if other jobs share the same node, since each core is attributed to exactly one job.
+- **Socket-level**: measured once for an entire CPU socket (which may host several cores of several different jobs), e.g. `mem_bw` and the package power reading behind the Energy panel (`pkg_pwr`). If another job shares your socket, its memory traffic or power draw is mixed into your measurement.
+- **Node-levl**: measured once for the whole compute node, e.g. `cpu_load`, `mem_used` and network or filesystem metrics. These are effected by every job on the node, not just yours.
+
+Each metric plot in ClusterCockpit has a small drop-down menu as shown in image below, typically labelled core, socket, or node. This label tells you directly at which granularity that particular chart was measured — a core selection means one line per core of your job, while socket or node means the value is shared with (and possibly polluted by) other jobs. If the drop-down only offers socket or node, treat the value with more caution unless you know the node was exclusively yours
+
+![](fig/cc-new/granularity.png){alt='Drop down menu'}
+
+This is precisely why we requested `--exclusive` when submitting our job earlier in this episode: on a node reserved exclusively for our job, socket- and node-level metrics describe our job alone, since there is nothing else running to mix into the measurement. If you cannot use `--exclusive`, for example because your allocation only ever needs a fraction of a node, keep an eye on which granularity a given metric is measured at, and treat socket- or node-level values as an upper bound that may include other jobs' activity rather than a precise reading of your own.
+
+
+With that in mind, we dive into other metrics.
+
+:::::::::
 
 ![](fig/cc/job_select_metrics.png){alt='Select Metrics button in the ClusterCockpit job view'}
 
@@ -270,27 +298,6 @@ Any performance optimization has to focus on improving calculations in the CPU.
 N/A
 :::
 
-:::callout
-
-### Granularity of Metrics
-
-Not every metric ClusterCockpit shows describes your job — some describe the whole CPU socket, or even the whole node, regardless of how many cores your job actually occupies. The underlying collectors read hardware performance counters that are simply wired up at a particular level of the machine, and they have no notion of which Slurm job is currently running. This is true regardless of which monitoring tool you use, but it is essential to understand for reading ClusterCockpit correctly.
-
-Broadly, metrics come in three granularities:
-
-- **Core-level**: measured separately for each individual CPU core, e.g. `cpu_user`, `ipc`, `flops_any`. These are meaningful for your job even if other jobs share the same node, since each core is attributed to exactly one job.
-- **Socket-level**: measured once for an entire CPU socket (which may host several cores of several different jobs), e.g. `mem_bw` and the package power reading behind the Energy panel (`pkg_pwr`). If another job shares your socket, its memory traffic or power draw is mixed into your measurement.
-- **Node-levl**: measured once for the whole compute node, e.g. `cpu_load`, `mem_used` and network or filesystem metrics. These are effected by every job on the node, not just yours.
-
-Each metric plot in ClusterCockpit has a small drop-down menu, typically labelled core, socket, or node. This label tells you directly at which granularity that particular chart was measured — a core selection means one line per core of your job, while socket or node means the value is shared with (and possibly polluted by) other jobs. If the drop-down only offers socket or node, treat the value with more caution unless you know the node was exclusively yours
-
-This is precisely why we requested `--exclusive` when submitting our job earlier in this episode: on a node reserved exclusively for our job, socket- and node-level metrics describe our job alone, since there is nothing else running to mix into the measurement. If you cannot use `--exclusive`, for example because your allocation only ever needs a fraction of a node, keep an eye on which granularity a given metric is measured at, and treat socket- or node-level values as an upper bound that may include other jobs' activity rather than a precise reading of your own.
-
-
-With that in mind, we dive into other metrics.
-
-:::
-
 ### CPU
 
 CPU performance can be categorized in
@@ -317,7 +324,7 @@ A core with low `cpu_user` is worth a closer look — it suggests the core is oc
 
 ![](fig/cc-new/flops-any.png){alt='ClusterCockpit flops_any metric'}
 
-flops_any` captures any floating point operation on Intel CPUs, at core-level granularity, with single- and double-precision operations accumulated into the same value.
+`flops_any` captures any floating point operation on Intel CPUs, at core-level granularity, with single- and double-precision operations accumulated into the same value.
 Recall from the Footprint panel that our job's `flops_any (avg)` sat at only $22.84$ GF/s, while the node's theoretical peak is $8532$ GF/s.
 That gap looks enormous, but it isn't a fair comparison yet: the $8532$ GF/s peak is for all $96$ cores of the exclusive node, while our job only ever uses $8$ of them. Scaled down to $8$ cores, the theoretical peak is roughly $711$ GF/s — so $22.84$ GF/s is still well below what our $8$ cores could theoretically achieve, but nowhere near the dramatic 96-core gap the raw numbers first suggest.
 This isn't a contradiction of the Roofline plot classifying the job as compute bound either way: compute bound only means the CPU's calculation capability is the limiting factor relative to how little data is moved, not that the job is issuing many *floating point* operations specifically.
