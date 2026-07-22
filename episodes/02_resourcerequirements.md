@@ -24,10 +24,10 @@ After completing this episode, participants should be able to …
 :::
 
 When you run a program on your local workstation or laptop, you typically don't plan out the usage of computing resources like memory or core-hours.
-Your applications simply take as much as they need and if your computer runs out of resources, you can just a few.
+Your applications simply take as much as they need and if your computer runs out of resources, you can just close a few applications.
 However, unless you are very rich, you probably don't have a dedicated HPC cluster just to yourself and instead you have to share one with your colleagues.
-In such a scenario greedily consuming as many resources as possible is very impolite, so we need to restrain ourselves and carefully allocate just as many resources as needed.
-These resource constraints are then enforced by the cluster's scheduling system so that you cannot accidentally use more resources than you think.
+In such a scenario, greedily consuming as many resources as possible is very impolite, so we need to restrain ourselves and carefully allocate just as many resources as needed.
+These resource constraints are then enforced by the cluster's scheduling system so that you cannot allocate resources and then try to go over the bounds of your application.
 
 ## Getting a feel for the size of your cluster
 
@@ -41,11 +41,7 @@ Let's start by getting an overview of the partitions of your cluster:
 sinfo -O PartitionName,Nodes,CPUs,Memory,Gres,Time
 ```
 
-::: spoiler
-
-Here is a (simplified) example output for the command above:
-
-```
+```output
 PARTITION           NODES               CPUS                MEMORY              GRES                TIMELIMIT
 normal              223                 36                  95000+              (null)              1-00:00:00
 long                90                  36                  192000              (null)              7-00:00:00
@@ -56,9 +52,21 @@ gpu4090             8                   32                  360448              
 gpuh200             4                   128                 1547843             gpu:h200:8          7-00:00:00
 ```
 
-:::
+In the output, we see the name of each partition, the number of nodes in this partition, the number of CPU cores per node, the amount of memory per node in Mebibytes, the number of *generic resources* (typically GPUs) per node and finally the maximum amount of time any job is allowed to take.
 
-In the output, we see the name of each partition, the number of nodes in this partition, the number of CPU cores per node, the amount of memory per node (in Megabytes <span style="color: red">(or Mebibytes?)</span>), the number of *generic resources* (typically GPUs) per node and finally the maximum amount of time any job is allowed to take.
+::: callout
+
+# Available partitions depend on the HPC system
+
+Partitions often represent usage policies and you should read your clusters documentation about their names, underlying hardware, potential access restrictions etc.
+Some examples:
+
+- A partition with a high number of cores large amounts of memory per node is probably intended for shared memory processing.
+- A partition with a lot of nodes that each have only a (relatively) small number of cores and memory is probably intended for MPI calculations.
+- A partition with powerful GPUs, but only a small amount of CPU cores is likely intended for jobs where the majority of the work is offloaded to the GPUs.
+- A partition with less powerful GPUs but more CPU cores and memory is likely intended for hybrid workloads.
+
+:::
 
 ::: discussion
 
@@ -85,40 +93,23 @@ For our example output above we can make some educated guesses on what the parti
 
 :::
 
-::: instructor
-
-This discussion highly depends on the management philosophy of the cluster available to the learners.
-Some examples:
-
-- A partition with a high number of cores large amounts of memory per node is probably intended for SMP calculations.
-- A partition with a lot of nodes that each have only a (relatively) small number of cores and memory is probably intended for MPI calculations.
-- A partition with powerful GPUs, but only a small amount of CPU cores is likely intended for jobs where the majority of the work is offloaded to the GPUs.
-- A partition with less powerful GPUs but more CPU cores and memory is likely intended for hybrid workloads.
-
-:::
-
 To get a point of reference, you can also compare the total number of cores in the entire cluster to the number of CPU cores on the login node or on your local machine.
 
 ```bash
 lscpu | grep "CPU(s):"
-# If lscpu is not available on your machine, you can also use this command
-cat /proc/cpuinfo | grep "core id" | wc -l
 ```
-
-::: spoiler
-
-```bash
-$ lscpu | grep "CPU(s):"
+```output
 CPU(s):                               192
 NUMA node0 CPU(s):                    0-191
 ```
 
+If `lscpu` is not available on your machine, you can also use
 ``` bash
-$ cat /proc/cpuinfo | grep "core id" | wc -l
+cat /proc/cpuinfo | grep "core id" | wc -l
+```
+``` output
 192
 ```
-
-:::
 
 As you can see, your cluster likely has *multiple orders of magnitude*  more cores in total than the login node or your local machine.
 To see the amount of memory on the machine you are logged into you can use
@@ -126,15 +117,9 @@ To see the amount of memory on the machine you are logged into you can use
 ```bash
 cat /proc/meminfo | grep "MemTotal"
 ```
-
-::: spoiler
-
-```bash
-$ cat /proc/meminfo | grep "MemTotal"
+```output
 MemTotal:       395695636 kB
 ```
-
-:::
 
 Again, the total memory of the cluster is going to be much, much larger than the memory of any individual machine.
 
@@ -198,10 +183,11 @@ gpuh200             90/166/256/512      2/0/2/4
 ## Sizing your jobs
 
 The resources required by your jobs primarily depend on the application you want to run and are thus very specific to your particular HPC use case.
-While it is tempting to just wildly overestimate the resource requirements of your application to make sure it cannot possibly run out, this is not a good strategy.
-Not only would you have to face the wrath of your cluster administrators (and the other users!) for being inefficient, but you would also be punished by the scheduler itself:
-In most cluster configurations, your scheduling priority decreases faster if you request more resources and larger jobs often need to wait longer until a suitable slot becomes free.
-Thus, if you want to get your calculations done faster, you should request just enough resources for your application to work.
+
+Generously over-allocating resource requirements as a strategy to ensure job completion is usually counterproductive.
+Not only might you face the wrath of your cluster administrators (and other users!) for being overly greedy, but you may also be punished by the scheduler itself: large jobs have to wait longer for the resources to free up, while small jobs can be "squeezed" into the gaps between larger jobs.
+Also, you should remember that you are billed for the amount of resources you requested from the scheduler and not how much you actually use.
+In short, capping resource requests at actual job requirements helps reduce queue times and conserves your compute budget.
 
 Finding this amount of resources is often a matter of trial and error as many applications do not have precisely predictable resource requirements.
 Let's try this for our snowman renderer. Put the following in a file named `snowman.job`:
@@ -224,7 +210,7 @@ module purge
 mpirun -n 4 ./SnowmanRaytracer/build/raytracer -width=1024 -height=1024 -spp=256 -threads=1 -alloc_mode=3 -png=snowman.png
 ```
 
-The `#SBATCH` directives assign our job the following resources (line-by-line):
+The `#SBATCH` directives assign the following resources to our job (line-by-line):
 
 - 1 node...
 - ... from the partition `<put your partition here>`
@@ -233,11 +219,13 @@ The `#SBATCH` directives assign our job the following resources (line-by-line):
 - 1 GB of memory
 - A timelimit of 1 minute
 
-The last two `#SBATCH` directives specifiy that we want the output of our job to be captures in the file `snowman-stdout.log` and that the job should appear under the name `snowman`.
+The last two `#SBATCH` directives redirect the jobs output to the file `snowman-stdout.log` and assign the name "snowman" to the job.
 
 ::: callout
 
-The `--mem` directive is somewhat unfortunately named as it does not define the total amount of memory of your job, but the total amount of memory *per node*.
+# How much `--mem` do I get? 
+
+The `--mem` directive can be confusing as it does not define the total amount of memory of your job, but the total amount of memory *per node*.
 Here, this distinction does not matter as we only use one node, but you should keep in mind that changing the number of nodes often implies that you need to adapt the `--mem` value as well.
 Alternatively, you can also use the `--mem-per-cpu` directive such that the memory allocation automatically scales with the number of cores.
 However, even in this case you need to verify that your memory consumption actually scales linearly with the number of cores for your application!
@@ -256,21 +244,16 @@ This command will also print the ID of the job, so we can observe what is happen
 sacct -X -j <jobid of your job>
 ```
 
+We use the flag `-X` to only show a single summarising line per job.
 After a while, you will see that the status of your job is given as `TIMEOUT`.
-
-::: callout
-
-You might wonder what the `-X` flag does in the the `sacct` call above. This option instructs Slurm to not output information on the "job steps" associated with your job. Since we don't care about these right now, we set this flag to make the output more concise.
-
-:::
 
 Check the file `snowman-stdout.log` as well. Near the bottom you will see a line like this:
 
-```text
+```output
 slurmstepd: error: *** JOB 1234567 ON somenode CANCELLED AT 2025-04-01T13:37:00 DUE TO TIME LIMIT ***
 ```
 
-Evidently our job was aborted because it did not finish within the time limit of one minute that we set above. Let's try giving our job a time limit of 10 minutes instead.
+Evidently, our job was aborted because it did not finish within the time limit of one minute that we set above. Let's try giving our job a time limit of 10 minutes instead.
 ```bash
 #SBATCH --time=00:10:00
 ```
@@ -283,7 +266,7 @@ seff <jobid of your job>
 
 The output of `seff` contains many useful bits of information for sizing our job. In particular, let's look at these lines:
 
-```text
+```output
 [...]
 CPU Utilized: 00:21:34
 CPU Efficiency: 98.93% of 00:21:48 core-walltime
@@ -294,7 +277,10 @@ Memory Efficiency: 35.87% of 1.00 GB
 
 ::: callout
 
+# Measurements are hardware dependent!
+
 The exact numbers here depend a lot on the hardware and software of your local cluster.
+Differences between two HPC systems or even different partitions on the same HPC system may be caused by different CPU generations, larger or smaller memory bandwidths, file system and network technologies, etc.
 
 :::
 
@@ -304,7 +290,7 @@ The `CPU Utilized` line shows us how much CPU time our job has used. This is cal
 
 Finally, `Memory utilized` line shows the peak memory consumption that your job had at any point during its runtime, while `Memory Efficiency` is the ratio between this peak value and the requested amount of memory for the allocation. As we will see later, this value has to be taken with a grain of salt.
 
-Starting from the set of parameters that successfully run our program, we can now try to reduce the amout of requested resources. As is good scientific practice, we should only vary one parameter at a time and observe the result. Let's start by reducing the time limit. There is often a bit of jitter in the time needed to run a job since not all nodes are perfectly identical, so you should add a safety margin of 10 to 20 percent <span style="color:red">(completely arbitrary choice of numbers here; does everyone agree on the order of magnitude?)</span> According to the time reported by `seff`, seven minutes should therefore be a good time limit. If your cluster is faster, you might reduce this even further. 
+Starting from the set of parameters that successfully run our program, we can now try to reduce the amount of requested resources. As is good scientific practice, we should only vary one parameter at a time and observe the result. Let's start by reducing the time limit. There is often a bit of jitter in the time needed to run a job since not all nodes are perfectly identical, so you should add a arbitrarily scaled safety margin of about 10 percent. According to the time reported by `seff`, seven minutes should therefore be a good time limit. If your cluster is faster, you might reduce this even further. 
 
 ```bash
 #SBATCH --time=00:07:00
@@ -318,7 +304,7 @@ For the next section, the exact memory requirements depend on the cluster config
 
 :::
 
-Next, we can optimize our memory allocation. According to SLURM, we used 367.28 MB of memory in our last run, so let's set the memory limit to 500 MB.
+Next, we can optimize our memory allocation. According to Slurm, we used 367.28 MB of memory in our last run, so let's set the memory limit to 500 MB.
 
 ```bash
 #SBATCH --mem=500M
@@ -326,17 +312,17 @@ Next, we can optimize our memory allocation. According to SLURM, we used 367.28 
 
 After submitting the job with the lowered memory allocation everything seems fine for a while. But then, right at the end of the computation, our job will crash. Checking the job status with `sacct` will reveal that the job status is `OUT_OF_MEMORY` meaning that our job exceeded its memory limit and was terminated by the scheduler.
 
-This behavior seems contradictory at first: SLURM reported previously that our job only used around 367 MB of memory at most, which is well below the 500 MB limit we set. The explanation for this discrepancy lies in the fact that SLURM measures the peak memory consumption of jobs by *polling*, i.e., by periodically sampling how much memory the job currently uses. Unfortunately, if the program has spikes in memory consumption that are small enough to fit between two samples, SLURM will miss them and report an incorrect peak memory value. Spikes in memory usage are quite common, for example if your application uses short-lived subprocesses. Most annoyingly, many programs allocate a large chunk of memory right at the end of the computation to write out the results. In the case of the snowman raytracer, we encode the raw pixel data into a PNG at the end, which means we temporarily keep both the raw image and the PNG data in memory.
+This behavior seems contradictory at first: Slurm reported previously that our job only used around 367 MB of memory at most, which is well below the 500 MB limit we set. The explanation for this discrepancy lies in the fact that Slurm measures the peak memory consumption of jobs by *polling*, i.e., by periodically sampling how much memory the job currently uses. Unfortunately, if the program has spikes in memory consumption that are small enough to fit between two samples, Slurm will miss them and report an incorrect peak memory value. Spikes in memory usage are quite common, for example if your application uses short-lived subprocesses. Most annoyingly, many programs allocate a large chunk of memory right at the end of the computation to write out the results. In the case of the snowman raytracer, we encode the raw pixel data into a PNG at the end, which means we temporarily keep both the raw image and the PNG data in memory.
 
 ![](fig/slurm-memory-sampling.svg)
 
 ::: caution
 
-SLURM determines memory consuption by *polling*, i.e., periodically checking on the memory consumption of your job. If you job has a memory allocation profile with short spikes in memory usage, the value reported by `seff` can be incorrect. In particular, if the job gets cancelled due to memory exhaustion, you should not rely on the value reported by `seff` as it is likely significantly too low.
+Slurm determines memory consuption by *polling*, i.e., periodically checking on the memory consumption of your job. If you job has a memory allocation profile with short spikes in memory usage, the value reported by `seff` can be incorrect. In particular, if the job gets cancelled due to memory exhaustion, you should not rely on the value reported by `seff` as it is likely significantly too low.
 
 :::
 
-So how big is the peak memory consumption of our process *really*? Luckily, the Linux kernel keeps track of this for us, if SLURM is configured to use the so-called "cgroups v2" mechanism to enforce resource limits (which many HPC systems are). Let's use this system to find out how much memory the raytracer actually needs. First, we set the memory limit back to 1 GB, i.e., to a configuration that is known to work.
+So how big is the peak memory consumption of our process *really*? Luckily, the Linux kernel keeps track of this for us, if Slurm is configured to use the so-called "cgroups v2" mechanism to enforce resource limits (which many HPC systems are). Let's use this system to find out how much memory the raytracer actually needs. First, we set the memory limit back to 1 GB, i.e., to a configuration that is known to work.
 
 ```bash
 #SBATCH --mem=1G
@@ -346,29 +332,30 @@ Next, add these lines at the end of your job script:
 
 ```bash
 echo -n "Total amount of memory used (in bytes): "
-cat /sys/fs/cgroup/$(cat /proc/self/cgroup | awk -F ':' '{print $3}')/memory.peak
+CGROUPPATH="$(cat /proc/self/cgroup | awk -F ':' '{print $3}')"
+cat /sys/fs/cgroup/${CGROUPPATH}/memory.peak
 ```
 
 ::: callout
 
-Let's break down what these lines do:
+# Let's break down what these lines does
 
 - The first line prints out a nice label for our peak memory output. We use `-n` to omit the usual newline that `echo` adds at the end of its output.
-- The second line outputs the contents of a file (`cat`). The path of this file starts with `/sys/fs/cgroup`, which is a location where the Linux kernel exports all the cgroups v2 information as files.
-- For the next part of the path we need the so-called "cgroup path" of our job. To find out this path, we can use the `/proc/self/cgroup` file, which contains this path as the third entry of a colon-separated list. Therefore, we read the contents of this file (`cat`) and extract the third entry of the colon separated list (`awk -F ':' '{print $3}'`). Since we do this in `$(...)`, Bash will place the output of these commands (i.e., the cgroup path) at this point.
-- The final part of the path is the information we actually want from the cgroup. In out case, we are interested in `memory.peak`, which contains the peak memory consumption of the cgroup. 
+- For the next part we need the so-called "cgroup path" of our job. To find out this path, we can use the `/proc/self/cgroup` file, which contains this path as the third entry of a colon-separated list. Therefore, we read the contents of this file (`cat`) and extract the third entry of the colon separated list (`awk -F ':' '{print $3}'`). Since we do this in `$(...)`, Bash will place the output of these commands (i.e., the cgroup path) at this point.
+- The third line outputs the contents of a file (`cat`). The path of this file starts with `/sys/fs/cgroup`, which is a location where the Linux kernel exports all the cgroups v2 information as files.
+- The final part of the path is the information we actually want from the cgroup. In our case, we are interested in `memory.peak`, which contains the peak memory consumption of the cgroup. 
 
 :::
 
 When you submit your job and look at the output once it finishes, you will find a line like this:
 
-```text
+```output
 [...]
 Total amount of memory used (in bytes): 579346432
 [...]
 ```
 
-So even though SLURM reported our job to only use 367.28 MB of memory, we actually used nearly 600 MB! With this measurement we can make an informed decision on how to set the memory limit for our job:
+So even though Slurm reported our job to only use 367.28 MB of memory, we actually used nearly 600 MB! With this measurement we can make an informed decision on how to set the memory limit for our job:
 
 ```bash
 #SBATCH --mem=700M
@@ -388,7 +375,7 @@ So far we have tuned the time and memory limits of our job. Now let us have a lo
 
 ::: caution
 
-CPU oversubscription can even be harmful to performance as all the switching between processes by the operating system can cost a non-trivial amount of CPU time itself.
+CPU oversubscription can even be harmful to performance as all the switching between processes by the operating system can cost a significant amount of CPU time itself.
 
 :::
 
@@ -400,7 +387,7 @@ Let's try reducing the number of cores we allocate by reducing the number of MPI
 
 Now we have a mismatch between the number of tasks we request and the number of tasks we use in `mpirun`. However, MPI catches our folly and prevents us from accidentally oversubscribing our CPU cores. In the output file you see the full explanation
 
-```text
+```output
 There are not enough slots available in the system to satisfy the 4
 slots that were requested by the application:
 
@@ -417,7 +404,7 @@ environment in which PRRTE processes are run:
      processor cores if not provided)
   2. The --host command line parameter, via a ":N" suffix on the
      hostname (N defaults to 1 if not provided)
-  3. Resource manager (e.g., SLURM, PBS/Torque, LSF, etc.)
+  3. Resource manager (e.g., Slurm, PBS/Torque, LSF, etc.)
   4. If none of a hostfile, the --host command line parameter, or an
      RM is present, PRRTE defaults to the number of processor cores
 
@@ -449,7 +436,7 @@ If we actually want to see oversubscription in action, we need to switch from MP
 
 This works and if we look at the output of `seff` again we get a baseline for our multithreaded job
 
-```text
+```output
 [...]
 CPU Utilized: 00:21:32
 CPU Efficiency: 99.08% of 00:21:44 core-walltime
@@ -472,7 +459,7 @@ The exact reasons for this will be discussed in the following episodes, but here
 
 - Our job is strongly *compute-bound*, i.e., the time our job takes is mostly determined by how fast the CPU can do its calculations.
   This is why it does not matter much for CPU utilization whether we use MPI or threads as long as both can keep the same number of CPU cores busy.
-- MPI typically incurs an overhead in CPU usage and memory due to the need to communicate between the tasks (in comparison, threads can just share a block of memory without communication).
+- MPI typically incurs an overhead in CPU usage and memory due to the need to communicate between the tasks (in comparison, threads can share a block of memory without communication).
   In our raytracer, this overhead for CPU usage is negligible (hence the same CPU utilization time metrics), but there is a significant memory overhead.
 
 :::
@@ -510,7 +497,7 @@ Load is a fairly common metric to be monitored by cluster administrators, so if 
 
 Despite using twice the amount of threads, we barely see any difference in the output of `seff`:
 
-```text
+```output
 CPU Utilized: 00:21:29
 CPU Efficiency: 98.85% of 00:21:44 core-walltime
 Job Wall-clock time: 00:05:26
@@ -528,7 +515,7 @@ Let's see what happens when we increase the thread count to extreme levels:
 
 With this setting, `seff` yields
 
-```text
+```output
 CPU Utilized: 00:26:45
 CPU Efficiency: 99.07% of 00:27:00 core-walltime
 Job Wall-clock time: 00:06:45
@@ -580,6 +567,8 @@ The important change here compared to the MPI jobs before is the `--nodes=2` dir
 
 ::: callout
 
+# Slurm accepts ranges
+
 You can also leave the decision of how many nodes to use up to Slurm by specifying a minimum and a maximum number of nodes, e.g.,
 
 ```
@@ -593,7 +582,7 @@ would mean that Slurn can assign your job either one, two or three nodes.
 
 Let's look at the `seff` report of our job once again:
 
-```text
+```output
 [...]
 Nodes: 2
 Cores per node: 2
@@ -618,15 +607,14 @@ How well your program scales as you increase the number of nodes depends strongl
 
 We can also look at the memory consumption:
 
-```text
+```output
 [...]
 Total amount of memory used (in bytes): 464834560
 [...]
 ```
 
 As we can see, there was indeed less memory consumed on the node running our submit script compared to before (470 MB vs 580 MB).
-However, our method of measuring peak memory consumption does not tell us about the memory consumption of the second node
-and we have to use slightly more sophisticated tooling to find out how much memory we actually use.
+However, our method of measuring peak memory consumption does not account for the second node. So let’s reach deeper into the toolbox to find out how much memory we actually use.
 
 In the course material is a directory `mpi-cgroups-memory-report` that can help us out here, but we need to compile it first:
 
