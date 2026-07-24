@@ -84,11 +84,12 @@ Measurement results are either stored and analysed in a *timeline*, or aggregate
 
 
 ::: instructor
-## Prepare your tool!
+## Know your tool!
 
 *ClusterCockpit* is a job monitoring systems that can be configured to capture many performance metrics. It is easy to use, but has to be deployed by the cluster administration team.
 
 Be aware of site-specific setups, e.g. limiting access to performance counters, offering non-standard Slurm options during `sbatch` submission, and how licenses are handled.
+Not all metrics discussed in this episode may be configured on every cluster — the set of metrics collected and displayed is chosen by the local administration team, so some panels or plots covered here might simply be unavailable, or show different metrics, on your system.
 :::
 
 
@@ -97,7 +98,7 @@ Be aware of site-specific setups, e.g. limiting access to performance counters, 
 *ClusterCockpit*](https://clustercockpit.org/): A job monitoring service available on many clusters in NRW. Sampled measurements of the application are stored and visualized in a timeline for each job. It needs to be centrally provided by your HPC administration team and may not be available to you!
 
 This tools may require access to performance counters, sometimes granted by requesting `--exclusive`, but it really depends on the system.
-Look at your cluster documentation or talk to your HPC support staff.
+If something covered in this episode isn't available or looks different on your cluster, check your cluster documentation or ask your HPC support staff.
 :::
 
 ::: instructor
@@ -109,33 +110,57 @@ kernel.perf_event_paranoid
 :::
 
 Let us set up our performance measurement tool by running an example job with 8 cores.
-To give the job enough work to be worth measuring, let's go with $2263 \times 2263$ pixels and `-spp=512`, we repeat this experiment 4–5 times back to back.
+To give the job enough work to be worth measuring, let's go with $2263 \times 2263$ pixels and `-spp=512`, we repeat this experiment twice back to back.
 
-A single run finishes quickly and would only give ClusterCockpit a handful of samples to plot, making the timelines look sparse and harder to read. Running it 4–5 times stretches the job out to roughly an hour, giving the sampling-based collectors enough time to gather a richer set of data points — which makes for much clearer plots when we look at the metrics.
+A single run finishes quickly and would only give ClusterCockpit a handful of samples to plot, making the timelines look sparse and harder to read. Running it twice stretches the job out to roughly half an hour, giving the sampling-based collectors enough time to gather a richer set of data points — which makes for much clearer plots when we look at the metrics.
 
-We also request the node exclusively with `--exclusive` right away.
-As you'll see in a moment, several of the metrics ClusterCockpit reports are not measured per core, but per socket or even per whole node — so any other job sharing the node would quietly bleed into our measurements. Running exclusively is the easiest way to keep the numbers trustworthy while we're still learning to read them.
+We also request the node exclusively with `--exclusive` right away. We will see why it is important in a moment.
 
 1. Submit a job that runs for at least $5$ minutes, so it is picked up by cluster cockpit. The job script could look like this:
 
 ```bash
 #!/usr/bin/bash
-#SBATCH --time=01:00:00
-#SBATCH --partition=lm_devel
+#SBATCH --time=00:30:00
+#SBATCH --partition=intelsr_devel
 #SBATCH --cpus-per-task=1
-#SBATCH --ntasks=8
 #SBATCH --nodes=1
 #SBATCH --exclusive
 
 module purge
 module load GCC/13.2.0 OpenMPI/4.1.6-GCC-13.2.0 CMake/3.27.6-GCCcore-13.2.0 Boost/1.83.0-GCC-13.2.0 libpng/1.6.40-GCCcore-13.2.0
 
-for i in {1..4}; do
-        mpirun -n 8 ./build/raytracer -width=2263 -height=2263 -spp=512 -threads=1 -png "img_${SLURM_JOB_ID}_$(date +%Y-%m-%d_%H%M%S).png"
+for i in {1..2}; do
+        mpirun -- ./build/raytracer -width=2263 -height=2263 -spp=512 -threads=1 -png "img_${SLURM_JOB_ID}_$(date +%Y-%m-%d_%H%M%S).png"
 done
 ```
+For this episode, we call this job 1.
+
+:::: challenge
+## Exercise: Run a second job with `raytracer_float2`
+
+Submit a second job using the `raytracer_float4` executable instead of `raytracer` — keep the resolution, `-spp`, core count, repeat count, and `--exclusive` request all the same as the original job.
+And we call this job 2.
+::: solution
+```bash
+#!/usr/bin/bash
+#SBATCH --time=00:30:00
+#SBATCH --partition=intelsr_devel
+#SBATCH --nodes=1
+#SBATCH --cpus-per-task=1
+#SBATCH --exclusive
+
+module purge
+module load GCC/13.2.0 OpenMPI/4.1.6-GCC-13.2.0 CMake/3.27.6-GCCcore-13.2.0 Boost/1.83.0-GCC-13.2.0 libpng/1.6.40-GCCcore-13.2.0
+
+for i in {1..2}; do
+	mpirun -- ./build/raytracer_float4 -width=2263 -height=2263 -spp=512 -threads=1 -png "$(date +%Y-%m-%d_%H%M%S).png"
+done
+```
+:::
+::::
+
 2. Log in to the ClusterCockpit web interface of your HPC system, as explained in your cluster documentation.
-3. Go to `My Jobs` and click on the job with the same Slurm job id, once it is available
+3. Go to `My Jobs` and click on the job 1 with the same Slurm job id, once it is available
 
 ![ClusterCockpits main menu. Select "My Jobs" to see a list of the jobs associated to your account.](fig/cc/cc_bar.png){alt='"My Jobs" tab in the ClusterCockpit web UI'}
 
@@ -166,7 +191,7 @@ The exact list and type of metrics depends on the ClusterCockpit configuration, 
 Here, all four values are not in acceptable range. We see why:
 
 - `cpu_load (avg)` is shown in red. Since we requested the node with `--exclusive`, we were given all $96$ cores of the node, but our job only uses $8$ of them. The footprint compares load against the full $96$ cores that are requested by us, so it correctly flags that most of the requested resources are sitting idle — this is underutilization of requested resources.
-- `flops_any (avg)` is Floating Point Operations per second. In this case, it is calculated as $22.84 GF/s$, which is far below what the node can theoretically achieve. We will look into why in the coming episodes — it can point to anything from not utilizing the hardware features  to simply not needing many floating point operations at all.
+- `flops_any (avg)` is Floating Point Operations per second. In this case, it is calculated as $22.38 GF/s$, which is far below what the node can theoretically achieve. We will look into why in the coming episodes — it can point to anything from not utilizing the hardware features  to simply not needing many floating point operations at all.
 - `mem_used (avg)` shows the memory utilization of the job. This, together with the bandwidth metric below, is exactly why we requested an exclusive node in the first place: memory- and energy-related hardware counters are sensitive to granularity — they are measured at socket level or node level rather than per core — so running exclusively is what keeps them meaningful for our job alone. We go into this in more detail in the next section.
 - `mem_bw (avg)` is the memory bandwidth, i.e. how much data is transferred to and from memory per second.
 
@@ -176,7 +201,7 @@ In general, this panel gives the most information on where the issue lies and wh
 
 **How to read a Roofline Plot**
 
-Before looking at our job's result, here's what's actually what to expect on Roofline plot and how to understand the plot. Here is the example Roofline Plot:
+Before looking at our job's result, here's what to expect on Roofline plot and how to understand the plot. Here is the example Roofline Plot:
 
 ![](fig/roofline-example.png){alt='Example Roofline plot with labels'}
 
@@ -217,7 +242,7 @@ Broadly, metrics come in three granularities:
 
 Each metric plot in ClusterCockpit has a small drop-down menu as shown in image below, typically labelled core, socket, or node. This label tells you directly at which granularity that particular chart was measured — a core selection means one line per core of your job, while socket or node means the value is shared with (and possibly polluted by) other jobs. If the drop-down only offers socket or node, treat the value with more caution unless you know the node was exclusively yours
 
-![](fig/cc-new/granularity.png){alt='Drop down menu'}
+![](fig/cc-new/dropdown-menu.png){alt='Drop down menu'}
 
 This is precisely why we requested `--exclusive` when submitting our job earlier in this episode: on a node reserved exclusively for our job, socket- and node-level metrics describe our job alone, since there is nothing else running to mix into the measurement. If you cannot use `--exclusive`, for example because your allocation only ever needs a fraction of a node, keep an eye on which granularity a given metric is measured at, and treat socket- or node-level values as an upper bound that may include other jobs' activity rather than a precise reading of your own.
 
@@ -250,17 +275,47 @@ ClusterCockpit captures many dedicated CPU metrics and provides a timeline visua
 
 `cpu_user` shows, per core, the share of CPU time spent executing our application's own instructions, as opposed to time spent in kernel/system activity or sitting idle.
 A high `cpu_user` near $1$ is a good sign: the core is busy, and busy doing *our* work rather than system overhead.
-A core with low `cpu_user` is worth a closer look — it suggests the core is occupied, by other activities like waiting on I/O which is not *our work*.
+A core sitting noticeably below $1$ is worth a closer look — some of its time is going to something other than our application's own instructions, whether that's kernel activity, waiting, or other overhead.
+A `cpu_user` of $0$ means the core was idle for that interval — not running our application at all.
 
 ![](fig/cc-new/flops-any.png){alt='ClusterCockpit flops_any metric'}
 
 `flops_any` captures any floating point operation on Intel CPUs, at core-level granularity, with single- and double-precision operations accumulated into the same value.
-Recall from the Footprint panel that our job's `flops_any (avg)` sat at only $22.84$ GF/s, while the node's theoretical peak is $8532$ GF/s.
-That gap looks enormous, but it isn't a fair comparison yet: the $8532$ GF/s peak is for all $96$ cores of the exclusive node, while our job only ever uses $8$ of them. Scaled down to $8$ cores, the theoretical peak is roughly $711$ GF/s — so $22.84$ GF/s is still well below what our $8$ cores could theoretically achieve, but nowhere near the dramatic 96-core gap the raw numbers first suggest.
+Recall from the Footprint panel that our job's `flops_any (avg)` sat at only $22.38$ GF/s, while the node's theoretical peak is $8532$ GF/s.
+That gap looks enormous, but it isn't a fair comparison yet: the $8532$ GF/s peak is for all $96$ cores of the exclusive node, while our job only ever uses $8$ of them. Scaled down to $8$ cores, the theoretical peak is roughly $711$ GF/s — so $22.38$ GF/s is still well below what our $8$ cores could theoretically achieve, but nowhere near the dramatic 96-core gap the raw numbers first suggest.
 This isn't a contradiction of the Roofline plot classifying the job as compute bound either way: compute bound only means the CPU's calculation capability is the limiting factor relative to how little data is moved, not that the job is issuing many *floating point* operations specifically.
 
-Our raytracer performs plenty of integer, branching, and memory-addressing work per byte loaded — the kind of work `flops_any` doesn't count at all — which is why a low `flops_any` here isn't necessarily a red flag.
+:::: challenge
+## Exercise: Compare `flops_any` between job 1 and job 2
 
+We now have two jobs to compare: our job1 (`raytracer`) and a job2 run with the `raytracer_float4` executable.
+
+Look at the `flops_any` metric for both jobs. What's different between them, and why?
+
+::: solution
+
+![](fig/cc-new/vec-flops-any.png){alt='ClusterCockpit flops_any metric for job2'}
+
+In our measurements, `flops_any (avg)` per core is close to $3$ GF/s for job 1, and close to $6$ GF/s for job 2 — roughly a $2\times$ increase.
+
+`raytracer_float4` uses SIMD: `float4` corresponds to SSE2 vectorized instructions, where a single instruction operates on $4$ float operands at once, instead of one operand at a time as in the original scalar `raytracer`.
+`flops_any` counts floating point operations regardless of whether they were issued as scalar or vectorized instructions, each vectorized instruction in job 2 is counted as $4$ floating point operations rather than $1$. As a result, `flops_any (avg)` for job 2 is noticeably higher than for job 1 — for the same amount of *work* done, the vectorized version issues far fewer instructions to do it, and each one accomplishes $4\times$ as much.
+
+:::::: instructor
+## Demonstrating the Job 1 vs. Job 2 comparison
+
+Open Job 1 and Job 2 side by side in two browser tabs, and navigate both to the Roofline plot panel, to demonstrate the comparison live rather than just describing it.
+
+Hovering the cursor over a dot draws guide lines out to the x- and y-axes, letting you read off its operational intensity and achieved performance directly from the axes rather than judging position by eye alone. Hover over a dot in Job 1's plot, note where its guide lines land, then do the same for a dot at a similar point in the run in Job 2. Comparing the two readings this way gives learners a much clearer feel for exactly how much higher and how much further right Job 2's dots sit compared to Job 1's, rather than relying on "it looks a bit higher."
+:::::: 
+
+This is also a good moment to connect back to the Roofline plot: job 2's dots sit slightly higher on the plot than job 1's, and also shift further right along the x-axis — since computing more FLOPs per byte loaded raises the operational intensity too. They don't touch the upper, vectorized roofline yet — that would become more visible if we used the full node instead of just $8$ of its $96$ cores.
+
+:::
+::::
+
+Our raytracer performs plenty of integer, branching, and memory-addressing work per byte loaded — the kind of work `flops_any` doesn't count at all — which is why a low `flops_any` here isn't necessarily a red flag. 
+On top of that, our original raytracer isn't vectorized: it issues one scalar floating point operation at a time rather than operating on multiple values per instruction, which further caps how high `flops_any` can climb regardless of how well the rest of the code performs.
 
 ### Memory
 
@@ -269,7 +324,7 @@ Memory utilization is characterized in terms of used capacity, bandwidth and acc
 
 ![](fig/cc-new/mem-used.png){alt='ClusterCockpit mem_used metric'}
 
-`mem_used` sits at approximately $5.8$ GB for our job, shown as an almost flat, straight line across the runtime — this is a good sign. A flat line means memory consumption is stable once the application has allocated what it needs.
+`mem_used` sits at approximately $5$ GB for our job, shown as an almost flat, straight line across the runtime — this is a good sign. A flat line means memory consumption is stable once the application has allocated what it needs.
 A slanted, steadily increasing line instead would be a warning sign of a **memory leak**: memory that is allocated but never freed, growing continuously over the job's runtime instead of leveling off.
 
 
@@ -281,11 +336,7 @@ Since our node has multiple sockets, you'll typically see a different `mem_bw` v
 
 ### Energy
 
-![](fig/cc-new/cpu-power.png){alt=''}
-
-`cpu_power` is another **socket-level** metric — it reports the power drawn by a CPU socket, not by an individual core.
-Even when none of a socket's cores are actively running our application, the socket still draws a **baseline power**, since the hardware is powered on and idling rather than fully switched off.
-As cores on a socket become active, power draw increases above that baseline — similarly to `mem_bw`, the exact increase depends on how many of that socket's cores are actually running part of our application. A socket with more active cores will show higher power draw than one with fewer (or none) active.
+![](fig/cc-new/energy.png){alt=''}
 
 Depending on the ClusterCockpit configuration, an energy demand is displayed below the job info panels.
 This measurement is highly dependent on hardware configurations of your HPC systems, so the estimates may vary.
@@ -299,10 +350,10 @@ Nevertheless, the estimate is a great tool to identify the scale of the jobs ene
 ### Miscellaneous
 Typically, many more measurements and perspectives on the data are available for each tool.
 
-![](fig/cc/job_table.png){alt=''}
+![](fig/cc-new/stats.png){alt=''}
 
-ClusterCockpit provides a detailed statistics table to all measurements involved with a job.
-
+ClusterCockpit provides a detailed statistics table covering all measurements involved with a job. Alongside this table, you can also see your job script and Slurm info, which tells you how much of each resource was actually allocated to your job. 
+The statistics table itself shows the max, min, and avg values for whichever metrics have been configured for your ClusterCockpit deployment.
 
 :::: challenge
 ## Exercise: Match application behavior to hardware
