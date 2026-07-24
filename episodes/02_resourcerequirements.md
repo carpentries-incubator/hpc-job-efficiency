@@ -1,15 +1,15 @@
 ---
 title: "Resource Requirements"
-teaching: 10
-exercises: 0
+teaching: 40
+exercises: 40
 ---
 
 ::: questions 
 
+- How large is my HPC cluster?
 - How many resources should I request initially?
 - What scheduler options exist to request resources?
 - How do I know if they are used well?
-- How large is my HPC cluster?
 
 :::
 
@@ -18,22 +18,25 @@ exercises: 0
 After completing this episode, participants should be able to …
 
 - Identify the size of their jobs in relation to the HPC system.
-- Request a good amount of resources from the scheduler.
+- Request the proper amount of resources from the scheduler.
 - Change the parameters to see how the execution time changes.
 
 :::
 
 When you run a program on your local workstation or laptop, you typically don't plan out the usage of computing resources like memory or core-hours.
-Your applications simply take as much as they need and if your computer runs out of resources, you can just close a few applications.
-However, unless you are very rich, you probably don't have a dedicated HPC cluster just to yourself and instead you have to share one with your colleagues.
-In such a scenario, greedily consuming as many resources as possible is very impolite, so we need to restrain ourselves and carefully allocate just as many resources as needed.
-These resource constraints are then enforced by the cluster's scheduling system so that you cannot allocate resources and then try to go over the bounds of your application.
+Your applications simply take as much as they need and if your computer runs out of resources, you can close unneeded applications and wait.
+
+However, unless you are very rich, you probably don't have a dedicated HPC cluster just to yourself.
+Instead you have to share one with your colleagues.
+In such a scenario, greedily consuming as many resources as possible is very impolite.
+It's necessary to carefully allocate only as many resources as needed for the task at hand.
+These resource constraints are then enforced by the clusters scheduling system, such that your application can't consume more resources than specified by your job.
 
 ## Getting a feel for the size of your cluster
 
 To start with your resource planning, it is always a good idea to first get a feeling for the size of the cluster available to you.
 For example, if your cluster has tens of thousands of CPU cores and you use only 10 of them, you are far away from what would be considered excessive usage of resources.
-However, if your calculation utilizes GPUs and your cluster has only a handful of them, you should really make sure to use only the minimum amount necessary to get your work done.
+However, if your calculation utilizes GPUs and your cluster has only a handful of them, you should aim at using as few as possible in your jobs.
 
 Let's start by getting an overview of the partitions of your cluster:
 
@@ -58,7 +61,8 @@ In the output, we see the name of each partition, the number of nodes in this pa
 
 # Available partitions depend on the HPC system
 
-Partitions often represent usage policies and you should read your clusters documentation about their names, underlying hardware, potential access restrictions etc.
+Partitions often represent usage policies and you should read your clusters documentation about their names, underlying hardware, potential access restrictions, and so on.
+
 Some examples:
 
 - A partition with a high number of cores large amounts of memory per node is probably intended for shared memory processing.
@@ -80,8 +84,8 @@ For our example output above we can make some educated guesses on what the parti
 
 - The `normal` partition has a (relatively) small amount of memory and limits jobs to at most one day, but has by far the most nodes. This partition is probably designed for small- to medium-sized jobs.
   Since there are no `GRES` in this partition, only CPU computations can be performed here.
-  Also, as the number of cores per node is (relatively) small, this partition only allowd multithreading up to 36 threads and requires MPI for a higher degree of parallelism.
-- The `long` partition has double the memory compared to the `normal` partition, but less than half the number of nodes. It also allows for much longer running jobs.
+  Also, as the number of cores per node is (relatively) small, this partition only allowed multithreading up to 36 threads on the same node. MPI is required for a higher degree of parallelism across multiple nodes.
+- The `long` partition has double the memory compared to the `normal` partition, but considerably fewer nodes. It allows for much longer running jobs.
   This partition is likely intended for jobs that are too big for the `normal` partition.
 - `express` is a very small partition with a similar configuration to `normal`, but a very short time limit of only 2 hours. The purpose of this partition is likely testing and very short running jobs like software compilation.
 - Unlike the former partitions, `zen4` has a lot more cores and memory per node. The intent of this partition is probably to run jobs using large-scale multithreading. The name of the partitions implies a certain CPU generation (AMD Zen 4), which appears to be newer than the CPU model used in the `normal`, `long` and `express` partitions (typically core counts increase in newer CPU generations).
@@ -111,7 +115,8 @@ cat /proc/cpuinfo | grep "core id" | wc -l
 192
 ```
 
-As you can see, your cluster likely has *multiple orders of magnitude*  more cores in total than the login node or your local machine.
+With $223\ \text{nodes} \times 36\ \text{cores}(+ \text{other partitions})$ CPU cores, the cluster has *multiple orders of magnitude* more cores in total than the login node or your local machine.
+
 To see the amount of memory on the machine you are logged into you can use
 
 ```bash
@@ -123,11 +128,14 @@ MemTotal:       395695636 kB
 
 Again, the total memory of the cluster is going to be much, much larger than the memory of any individual machine.
 
-All of these cores and all of that memory are shared between you and all the other users of your cluster.
+All of the CPU cores and memory are shared between you and all the other users of your cluster.
 To get a feeling for the amount of resources per user, let's try to get an estimate for how many users there are by counting the number of home directories.
 
 ```bash
 find /home -maxdepth 1 -mindepth 1 -type d | wc -l
+```
+```output
+250
 ```
 
 ::: caution
@@ -136,23 +144,35 @@ On some clusters, home directories are not placed directly in `/home`, but are s
 
 :::
 
-By dividing the total number of cores / the total memory by the amount of users, you get an estimate of how many resources each user has available in a perfectly fair world.
+By dividing the total number of cores / the total memory by the amount of users, you get an estimate of how many resources each user has available if resources were equally distributed world.
+For example, for 250 users we would approximately get:
+
+|Partition   |CPU Cores / user|Memory / user|GRES / user|
+|------------|----------------|-------------|-----------|
+|`normal`    |32              |85 GiB       |-|
+|`long`      |13              |69 GiB       |-|
+|`express`   |1               |2 GiB        |-|
+|`zen4`      |35              |141 GiB      |-|
+|`gpuexpress`|0.128           |1 GiB        |0.028|
+|`gpu4090`   |1               |12 GiB       |0.192|
+|`gpuh200`   |2               |25 GiB       |0.128|
 
 ::: discussion
 
-Does this mean you can never use more than this amount of resources?
-
+Does the per-user limits mean we can never use more than this amount of resources?
 :::
+::: solution
+Users are typically not limited to the average per-user resources that we've calculated here.
+In reality, we observe:
 
-::: instructor
-
-The learners should realize that the per-user average they calculate here is very synthetic:
-
+- The average is over a long periods of time. Short term you can usually use much more.
+- Users are in different phases of their projects, some may require computational resources now Others are still in preparation and need them later.
 - Many users do not use their full share of resources, which leaves room for others to use more.
-- The average we calculate is only an average over long periods of time. Short term you can usually use much more.
 - Not all users are equal. For example, if some research groups have contributed to the funding of the cluster, they should also get more resources than those who did not.
 - The world is not perfectly fair. Especially on larger clusters, HPC resources have to be requested via project proposals. Those who write more / better proposals can use more resources.
 
+In practice it is really difficult to "saturate" your own share of the cluster with calculations over a long period of time.
+This is one of the reasons why a large and shared HPC system can be more efficient than individual computing resources.
 :::
 
 Now that you have an idea of how big your cluster is, you can start to make informed decisions on how many resources are reasonable to ask for.
