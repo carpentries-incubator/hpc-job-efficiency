@@ -665,12 +665,12 @@ numbers of lightweight operations in parallel. The number of GPU cores varies gr
 depending on the hardware model, ranging from a few hundred cores in low-end devices to
 many thousands in modern accelerator hardware.
 
-### Measuring parallel runtime: core hours
+### Measuring parallel runtime: core-hours
 
 Because HPC applications often execute in parallel, resource usage is commonly measured
 using units that account for both runtime and the number of utilized processing cores.
 
-The unit **core hour** (**core-h**) represents the usage of one CPU core for one hour.
+The unit **core-hour** (**core-h**) represents the usage of one CPU core for one hour.
 Resource consumption therefore scales approximately linearly with the number of allocated
 cores and the runtime of the application.
 For example, assume you have a monthly allocation of $500$ core-h, with additional usage
@@ -746,7 +746,7 @@ The additional energy consumption caused by the workload is therefore approximat
 \]
 
 ::::::::::::: challenge
-### How many core hours does this job involve?
+### How many core-hours does this job involve?
 
 HPC centers often provide different job *queues* for different classes of workloads.
 For example, a queue named *big-jobs* may be reserved for jobs exceeding a certain
@@ -772,7 +772,7 @@ The total number of tasks is therefore approximately:
 \text{cores per node}  \times \text{number of nodes}
 \]
 
-Total core hours are then computed as:
+Total core-hours are then computed as:
 \[
 \text{task count} \times \text{runtime in hours}
 \]
@@ -786,7 +786,7 @@ The total number of tasks is
 \]
 which places the job into the `medium-jobs` queue.
 
-The total number of core hours is
+The total number of core-hours is
 \[
 64 \times 12 \times 12 = 9216 \text{ core-h}
 \]
