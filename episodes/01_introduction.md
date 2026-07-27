@@ -94,6 +94,11 @@ Throughout this lesson, we will examine common inefficiencies in computational
 jobs while continuing to use the air-travel analogy to build intuition about
 resource utilization and performance optimization.
 
+Before we can improve the efficiency of a computational workload, we first need
+a way to measure it. One of the simplest and most informative performance metrics
+is the runtime of a program. The `time` command provides a convenient way to obtain
+this measurement.
+
 ### Measuring `sleep` with `time`
 
 Let's look at the `sleep` command.
@@ -303,37 +308,46 @@ $ echo "$SHELL"
 
 ### Time for a `date`
 
-The `date` command, as described in its manual page (`man date`), prints or sets the
+The `time` command measures the runtime of an entire command. Sometimes, however, we
+want to measure only part of a workflow or record timestamps inside a shell script.
+In these situations, the `date` command provides a simple way to obtain precise timestamps.
+
+As described in its manual page (`man date`), the `date` command prints or sets the
 system date and time.
 It can also be used as a lightweight source of high-resolution timestamps:
 
 ```bash
 date +%s.%N
 ```
-This reports the current point in time as the number of seconds elapsed since a fixed
-reference point.
+The timestamp is expressed as the number of seconds elapsed since a fixed reference point.
+
+Unlike `time`, which measures an entire command, recording timestamps with `date` allows
+us to measure selected parts of workflows or multiple commands within shell scripts.
 
 :::: spoiler
 ### Epoch time
 
-Such a referenced point in time is commonly referred to as *Epoch time*.
-According to the `date` manual page, the default reference point is
-`1970-01-01 00:00:00 UTC`, commonly known as the Unix epoch.
+To calculate elapsed time, timestamps must share a common reference point.
+Such a reference point is commonly called the *epoch*.
+
+According to the `date` manual page, the default reference point used by `date` is
+`1970-01-01 00:00:00 UTC`, commonly known as the **Unix epoch**.
 ::::
 
-The format specifier `%s` prints the elapsed time in seconds since the Unix epoch,
+The format specifier `%s` prints the number of elapsed seconds since the Unix epoch,
 while `%N` appends the fractional nanosecond component.
 
-Running the command multiple times will therefore produce large floating-point numbers
-with nanosecond-resolution timestamps, although the actual timer precision depends on
-the operating system, kernel, and underlying hardware.
+Running the command repeatedly therefore produces large floating-point numbers
+representing successive timestamps. Although `%N` prints nanoseconds, the actual
+timer precision depends on the operating system, kernel, and underlying hardware.
 
 ::::::::::::: challenge
 
-### An accurate stopwatch using `date`
+### Building a stopwatch with `date`
 
-You can use the construct `date +%s.%N` on the command line or in a Bash script 
-to store start and end timestamps in variables:
+Once we can record timestamps, we can build our own stopwatch.
+
+Store the current timestamp before and after running a command:
 
 ```bash
 start=$(date +%s.%N)
@@ -343,14 +357,12 @@ start=$(date +%s.%N)
 end=$(date +%s.%N)
 ```
 
-This effectively creates a simple stopwatch:
-you record a start timestamp, execute one or more commands, and then record an end
-timestamp. The elapsed runtime can then be computed by subtracting the start time
-from the end time.
+This creates a simple stopwatch. The elapsed runtime is obtained by subtracting the
+start timestamp from the end timestamp.
 Try this using the `sleep` command between the two timestamps.
 
 :::: hint
-Subtracting floating-point numbers can be done using the `bc` calculator tool:
+Floating-point subtraction can be performed using the `bc` calculator:
 
 ```bash
 echo "$end - $start" | bc -l
