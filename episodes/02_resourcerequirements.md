@@ -159,7 +159,7 @@ For example, for 250 users we would approximately get:
 
 ::: discussion
 
-Does the per-user limits mean we can never use more than this amount of resources?
+Do the per-user limits mean we can never use more than this amount of resources?
 :::
 ::: solution
 Users are typically not limited to the average per-user resources that we've calculated here.
@@ -209,7 +209,7 @@ Not only might you face the wrath of your cluster administrators (and other user
 Also, you should remember that you are billed for the amount of resources you requested from the scheduler and not how much you actually use.
 In short, capping resource requests at actual job requirements helps reduce queue times and conserves your compute budget.
 
-Finding this amount of resources is often a matter of trial and error as many applications do not have precisely predictable resource requirements.
+Finding the right amount of resources is often a matter of trial and error as many applications do not have precisely predictable resource requirements.
 Let's try this for our snowman renderer. Put the following in a file named `snowman.job`:
 ```bash
 #!/bin/bash
@@ -219,7 +219,7 @@ Let's try this for our snowman renderer. Put the following in a file named `snow
 #SBATCH --cpus-per-task=1
 #SBATCH --mem=1G
 #SBATCH --time=00:01:00
-#SBATCH --output=snowman-stdout.log
+#SBATCH --output=snowman-stdout-%j.log
 #SBATCH --job-name=snowman
 
 # Always a good idea to purge modules first to start with a clean module environment
@@ -230,13 +230,13 @@ module purge
 mpirun -n 4 ./SnowmanRaytracer/build/raytracer -width=1024 -height=1024 -spp=256 -threads=1 -alloc_mode=3 -png=snowman.png
 ```
 
-The `#SBATCH` directives assign the following resources to our job (line-by-line):
+We define job resource requirements through the following `#SBATCH` directives (line-by-line):
 
-- 1 node...
+- 1 node ...
 - ... from the partition `<put your partition here>`
-- 4 MPI tasks...
+- 4 MPI tasks ...
 - ... each of which uses one CPU core (so 4 cores in total)
-- 1 GB of memory
+- 1 GB of memory per node
 - A timelimit of 1 minute
 
 The last two `#SBATCH` directives redirect the jobs output to the file `snowman-stdout.log` and assign the name "snowman" to the job.
@@ -310,7 +310,7 @@ The `CPU Utilized` line shows us how much CPU time our job has used. This is cal
 
 Finally, `Memory utilized` line shows the peak memory consumption that your job had at any point during its runtime, while `Memory Efficiency` is the ratio between this peak value and the requested amount of memory for the allocation. As we will see later, this value has to be taken with a grain of salt.
 
-Starting from the set of parameters that successfully run our program, we can now try to reduce the amount of requested resources. As is good scientific practice, we should only vary one parameter at a time and observe the result. Let's start by reducing the time limit. There is often a bit of jitter in the time needed to run a job since not all nodes are perfectly identical, so you should add a arbitrarily scaled safety margin of about 10 percent. According to the time reported by `seff`, seven minutes should therefore be a good time limit. If your cluster is faster, you might reduce this even further. 
+Starting from the set of parameters that successfully run our program, we can now try to reduce the amount of requested resources. As is good scientific practice, we should only vary one parameter at a time and observe the result. Let's start by reducing the time limit. There is often a bit of variation in the time needed to run a job since not all nodes are perfectly identical, so you should add a arbitrarily scaled safety margin of maybe 10 percent. According to the time reported by `seff`, seven minutes should therefore be a good time limit. If your cluster is faster, you might reduce this even further. 
 
 ```bash
 #SBATCH --time=00:07:00
@@ -324,6 +324,8 @@ For the next section, the exact memory requirements depend on the cluster config
 
 :::
 
+### Sizing your jobs: Memory
+
 Next, we can optimize our memory allocation. According to Slurm, we used 367.28 MB of memory in our last run, so let's set the memory limit to 500 MB.
 
 ```bash
@@ -334,7 +336,7 @@ After submitting the job with the lowered memory allocation everything seems fin
 
 This behavior seems contradictory at first: Slurm reported previously that our job only used around 367 MB of memory at most, which is well below the 500 MB limit we set. The explanation for this discrepancy lies in the fact that Slurm measures the peak memory consumption of jobs by *polling*, i.e., by periodically sampling how much memory the job currently uses. Unfortunately, if the program has spikes in memory consumption that are small enough to fit between two samples, Slurm will miss them and report an incorrect peak memory value. Spikes in memory usage are quite common, for example if your application uses short-lived subprocesses. Most annoyingly, many programs allocate a large chunk of memory right at the end of the computation to write out the results. In the case of the snowman raytracer, we encode the raw pixel data into a PNG at the end, which means we temporarily keep both the raw image and the PNG data in memory.
 
-![](fig/slurm-memory-sampling.svg)
+![](fig/slurm-memory-sampling.svg){alt="Slurm determines memory consuption by *polling*, i.e., periodically checking on the memory consumption of your job. If you job has a memory allocation profile with short spikes in memory usage, the value reported by `seff` can be incorrect. In particular, if the job gets cancelled due to memory exhaustion, you should not rely on the value reported by `seff` as it is likely significantly too low."}
 
 ::: caution
 
@@ -356,16 +358,12 @@ CGROUPPATH="$(cat /proc/self/cgroup | awk -F ':' '{print $3}')"
 cat /sys/fs/cgroup/${CGROUPPATH}/memory.peak
 ```
 
-::: callout
-
-# Let's break down what these lines does
+Let's break down what each line does:
 
 - The first line prints out a nice label for our peak memory output. We use `-n` to omit the usual newline that `echo` adds at the end of its output.
-- For the next part we need the so-called "cgroup path" of our job. To find out this path, we can use the `/proc/self/cgroup` file, which contains this path as the third entry of a colon-separated list. Therefore, we read the contents of this file (`cat`) and extract the third entry of the colon separated list (`awk -F ':' '{print $3}'`). Since we do this in `$(...)`, Bash will place the output of these commands (i.e., the cgroup path) at this point.
+- For the next part we need the so-called "cgroup path" of our job. To find out this path, we can use the `/proc/self/cgroup` file, which contains this path as the third entry of a colon-separated list. Therefore, we read the contents of this file (`cat`) and extract the third entry of the colon-separated list (`awk -F ':' '{print $3}'`). Since we do this in `$(...)`, Bash will place the output of these commands (i.e., the cgroup path) at this point.
 - The third line outputs the contents of a file (`cat`). The path of this file starts with `/sys/fs/cgroup`, which is a location where the Linux kernel exports all the cgroups v2 information as files.
 - The final part of the path is the information we actually want from the cgroup. In our case, we are interested in `memory.peak`, which contains the peak memory consumption of the cgroup. 
-
-:::
 
 When you submit your job and look at the output once it finishes, you will find a line like this:
 
@@ -383,19 +381,36 @@ So even though Slurm reported our job to only use 367.28 MB of memory, we actual
 
 Run your job again with this limit to verify that it completes successfully.
 
+::: callout
+# Too tight memory limits can reduce performance!
+
+Slurm enforces memory limits for all processes in a job.
+Besides the applications memory demand (RSS - resident set size), this also includes caching mechanism of the Linux Kernel, e.g. for file I/O.
+
+Too tight memory limits can cause too small caches next to the applications memory demand.
+This in turn can severely reduce the jobs performance in some cases.
+
+:::
+
 ::: instructor
 
 At this point you might want to point out to your audience that for certain applications it can be disastrous for performance to set the memory constraint too tightly. The reason is that the memory limit enforced by Slurm does not only affect the resident set size of all the processes in the job allocation, but also the memory used for caching (e.g., file pages). If the allocation runs out of memory for the cache, it will have to evict memory pages to disk, which can cause I/O operations and new memory allocations to block for longer than usual. If the application makes heavy use of this cache (e.g., repeated read and/or write operations on the same file) and the memory pressure in the allocation is high, you can even run into a *cache thrashing* situation, where the job spends the majority of its time swapping data in and out of system memory and thus slows down to a crawl.
 
 :::
 
-So far we have tuned the time and memory limits of our job. Now let us have a look at the CPU core limit. This limit works slightly differently than the ones we looked at so far in the sense that your job is not getting terminated if you try to use more cores than you have allocated. Instead, the scheduler exploits the fact that multitasking operating systems can switch out the process a given CPU core is working on. If you have more active processes in your job than you have CPU cores (i.e., *CPU oversubscription*), the operating system will simply switch processes in and out while trying to ensure that each process gets an equal amount of CPU time. This happens very fast, so you can't see the switching directly, but tools like `htop` will show your processes running at less than 100% CPU utilization. Below you can see a situation of four processes running on three CPU cores, which results in each process running only 75% of the time.
+### Sizing your jobs: CPU Cores
 
-![](fig/cpu-oversubscription.svg)
+So far we have tuned the time and memory limits of our job. Now let us have a look at the CPU core limit.
+
+This limit works slightly differently than the ones we looked at so far in the sense that your job is not getting terminated if you try to use more cores than you have allocated. Instead, the scheduler exploits the fact that multitasking operating systems can switch out the process a given CPU core is working on. If you have more active processes in your job than you have CPU cores (i.e., *CPU oversubscription*), the operating system will simply switch processes in and out while trying to ensure that each process gets an equal amount of CPU time. This happens very fast, so you can't see the switching directly, but tools like `htop` will show your processes running at less than 100% CPU utilization.
+
+Below you can see a situation of four processes running on three CPU cores, which results in each process running only 75% of the time.
+
+![](fig/cpu-oversubscription.svg){alt="Depicted is a situation of four processes running on three CPU cores, which results in each process running only 75% of the time."}
 
 ::: caution
 
-CPU oversubscription can even be harmful to performance as all the switching between processes by the operating system can cost a significant amount of CPU time itself.
+CPU oversubscription can be harmful to performance as switching between processes by the operating system can cost a significant amount of CPU time itself.
 
 :::
 
@@ -454,7 +469,7 @@ If we actually want to see oversubscription in action, we need to switch from MP
 ./SnowmanRaytracer/build/raytracer -width=1024 -height=1024 -spp=256 -threads=4 -alloc_mode=3 -png=snowman.png
 ```
 
-This works and if we look at the output of `seff` again we get a baseline for our multithreaded job
+We use the output of `seff` as a baseline for our multithreaded job:
 
 ```output
 [...]
@@ -580,7 +595,8 @@ module purge
 mpirun -- ./SnowmanRaytracer/build/raytracer -width=1024 -height=1024 -spp=256 -threads=1 -alloc_mode=3 -png=snowman.png
 
 echo -n "Total amount of memory used (in bytes): "
-cat /sys/fs/cgroup$(cat /proc/self/cgroup | awk -F ':' '{print $3}')/memory.peak
+CGROUPPATH="$(cat /proc/self/cgroup | awk -F ':' '{print $3}')"
+cat /sys/fs/cgroup/${CGROUPPATH}/memory.peak
 ```
 
 The important change here compared to the MPI jobs before is the `--nodes=2` directive, which instructs Slurm to distribute the 4 tasks across exactly two nodes.
@@ -621,7 +637,7 @@ Only at the very end, when the final image is assembled from the samples calcula
 
 ::: callout
 
-How well your program scales as you increase the number of nodes depends strongly on the amount of communication in your program.
+How well your program makes use of a larger number of nodes depends strongly on the amount of communication in your program.
 
 :::
 
@@ -687,8 +703,6 @@ At this point you can present some scheduling strategies specific to your cluste
 Now would be a good time to show them the harsh reality of HPC scheduling on a contested partition and demonstrate that a major part of using an HPC cluster is waiting for your jobs to start.
 
 :::
-
-<span style="color:red">I'm not sure if this is the right section to discuss this...</span>
 
 ::: keypoints
 
