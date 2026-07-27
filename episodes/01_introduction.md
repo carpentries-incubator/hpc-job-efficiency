@@ -319,6 +319,13 @@ It can also be used as a lightweight source of high-resolution timestamps:
 ```bash
 date +%s.%N
 ```
+
+```output
+1785152285.376560875
+```
+
+The exact output will vary each time the command is run.
+
 The timestamp is expressed as the number of seconds elapsed since a fixed reference point.
 
 Unlike `time`, which measures an entire command, recording timestamps with `date` allows
@@ -331,7 +338,16 @@ To calculate elapsed time, timestamps must share a common reference point.
 Such a reference point is commonly called the *epoch*.
 
 According to the `date` manual page, the default reference point used by `date` is
-`1970-01-01 00:00:00 UTC`, commonly known as the **Unix epoch**.
+`1970-01-01T00:00:00+00:00`, commonly known as the **Unix epoch**.
+
+```bash
+date -u -d @0 --iso-8601=seconds
+```
+
+```output
+1970-01-01T00:00:00+00:00
+```
+
 ::::
 
 The format specifier `%s` prints the number of elapsed seconds since the Unix epoch,
