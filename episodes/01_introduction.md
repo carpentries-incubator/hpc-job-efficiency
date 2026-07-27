@@ -907,7 +907,7 @@ more efficiently.
 :::::::::::::::::::::::::::::::::::::: keypoints
 - Runtime can be measured using tools such as `time` and `date`.
 - Repeated process creation can dominate runtime.
-- HPC resource usage is commonly measured in core-hours.
+- HPC resource usage is commonly measured in core-hours and GPU-hours.
 - Computational workloads may be compute-bound, memory-bound, or I/O bound.
 - Efficient jobs reduce both resource consumption and energy use.
 - Implementation choices can affect both runtime and numerical accuracy.
