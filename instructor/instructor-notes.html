@@ -766,50 +766,38 @@ practices etc.</p>
 </h3>
 <p>Narrative:</p>
 <ul>
-<li>We get the feeling, that hardware has a lot to offer, but the rabbit
-hole is deep!</li>
-<li>What are the “dimensions” in which we can optimize the throughput of
-snowman pictures per hour?</li>
-<li>Can we improve how the work maps to certain CPUs / Memory
-regions?</li>
+<li>We have already seen how to observe resource utilization and
+identify inefficient use of hardware resources.</li>
+<li>One way to improve resource utilization is to control where
+processes and threads are placed.</li>
+<li>How does the mapping of work to CPUs and memory regions affect
+performance?</li>
 </ul>
 <p>What we’re doing here:</p>
 <ul>
-<li>Introduce pinning and slurm hint options</li>
+<li>Introduce pinning and slurm affinity options</li>
 <li>Relate to hardware effects</li>
-<li>Use third party performance tools to observe effects!</li>
+<li>A few practical tricks to diagnose and understand poor process
+placement.</li>
 </ul>
 <hr>
 <br><h3 id="06_pinning-headingInstructor2">
-<a href="06_pinning.html#headingInstructor2">ToDo: Extract episode about pinning</a><a class="anchor" aria-label="anchor" href="#06_pinning-headingInstructor2"></a>
-</h3>
-<p>Stick to simple options here. Put more complex options for pinning /
-hints, etc. into its own episode somewhere later in the course</p>
-<p>Pinning is an important part of job optimization, but requires some
-knowledge, e.g. about the hardware hierarchies in a cluster, NUMA, etc.
-So it should be done after we’ve introduced different performance
-reports and their perspective on hardware</p>
-<p>Maybe point to <a href="https://apps.fz-juelich.de/jsc/llview/pinning" class="external-link">JSC pinning
-simulator</a> and have similar diagrams as an independent “offline”
-version in this course</p>
-<hr>
-<br><h3 id="06_pinning-headingInstructor3">
-<a href="06_pinning.html#headingInstructor3">Note: Login to the compute job</a><a class="anchor" aria-label="anchor" href="#06_pinning-headingInstructor3"></a>
+<a href="06_pinning.html#headingInstructor2">Note: Login to the compute job</a><a class="anchor" aria-label="anchor" href="#06_pinning-headingInstructor2"></a>
 </h3>
 <p>This is cluster specific. It can possibly be done in two ways: 1.
 <code>srun --pty --overlap --jobid=&lt;jobid&gt; /bin/bash</code> 2.
 Check on which node job runs and login to the node via SSH</p>
 <hr>
-<br><h3 id="06_pinning-headingInstructor4">
-<a href="06_pinning.html#headingInstructor4">TODO: Show an animation</a><a class="anchor" aria-label="anchor" href="#06_pinning-headingInstructor4"></a>
+<br><h3 id="06_pinning-headingInstructor3">
+<a href="06_pinning.html#headingInstructor3">TODO: Show an animation</a><a class="anchor" aria-label="anchor" href="#06_pinning-headingInstructor3"></a>
 </h3>
 <ul>
 <li>current behavior with overlapping threads on the same core.</li>
 <li>Expected behavior when threads are pinned to separate cores.</li>
 </ul>
 <hr>
-<br><h3 id="06_pinning-headingInstructor5">
-<a href="06_pinning.html#headingInstructor5">Note</a><a class="anchor" aria-label="anchor" href="#06_pinning-headingInstructor5"></a>
+<br><h3 id="06_pinning-headingInstructor4">
+<a href="06_pinning.html#headingInstructor4">Note</a><a class="anchor" aria-label="anchor" href="#06_pinning-headingInstructor4"></a>
 </h3>
 <ul>
 <li>This exercise assumes the following hardware setup:

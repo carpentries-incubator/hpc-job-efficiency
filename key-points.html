@@ -471,21 +471,48 @@ vectorization</li>
 </ul></section><section id="06_pinning"><h2 class="section-heading"><a href="06_pinning.html">Pinning</a></h2>
 <hr class="half-width">
 <ul>
-<li><p><strong>Always check how pinning works</strong><br>
-Use verbose reporting (e.g., <code>--report-bindings</code>) to see how
-MPI processes and threads are mapped to cores and sockets.</p></li>
-<li><p><strong>Documentation is your friend</strong><br>
-For OpenMPI with <code>mpirun</code>, consult the manual: <a href="https://www.open-mpi.org/doc/v4.1/man1/mpirun.1.php" class="external-link">https://www.open-mpi.org/doc/v4.1/man1/mpirun.1.php</a></p></li>
-<li><p><strong>Know your hardware</strong><br>
-Understanding the number of sockets, cores per socket, and NUMA regions
-on your cluster helps you make effective binding decisions.</p></li>
-<li><p><strong>Avoid oversubscription</strong><br>
-Assigning more threads or processes than available cores hurts
-performance — it causes contention and idle waits.</p></li>
-<li><p><strong>Recommended practice for OpenMPI</strong><br>
-Use <code>--bind-to core</code> along with <code>--map-by</code> to
-control placement and threads per process to maximize
-throughput.</p></li>
+<li>A Slurm-CPU is a schedulable execution unit visible to the operating
+system.</li>
+<li>A process usually equates a Slurm task and involves <span class="math inline">\(\ge 1\)</span> (Slurm-)CPUs.</li>
+<li>OpenMP threads are software threads created by an application.
+<ul>
+<li>It is common to run one OpenMP-thread per CPU.</li>
+</ul>
+</li>
+<li>Pinning, or binding, is to keep computation and data close together
+in order to improve performance through minimized latencies.
+<ul>
+<li>The CPU- and memory-binding options of <code>srun</code> control
+resource allocation and placement of Slurm jobs.</li>
+<li>
+<code>srun --cpu-bind ...</code> controls where Slurm runs tasks,
+i.e., where computation runs.</li>
+<li>
+<code>srun --mem-bind ...</code> controls where Slurm allocates
+memory, i.e., where data is allocated.</li>
+</ul>
+</li>
+<li>The benefit of CPU and memory placement strongly depends on the
+application, cluster configuration and hardware.</li>
+<li>On NUMA systems, CPU- and memory often go together to keep
+computation and data close to one another.</li>
+<li>Hints provide guidance to Slurm about the expected characteristics
+of an application.
+<ul>
+<li>
+<code>srun --hint=compute_bound ...</code> may be beneficial for
+applications that require many CPU resources.</li>
+<li>
+<code>srun --hint=memory_bound ...</code> may be beneficial for
+applications that are limited by memory bandwidth.</li>
+</ul>
+</li>
+<li>Memory-intensive applications are often more sensitive to NUMA
+locality than compute-intensive applications. The <code>stream</code>
+program is such a case.</li>
+<li>
+<code>numactl</code> provides fine-grained control over CPU and
+memory placement.</li>
 </ul></section><section id="08_accelerators"><h2 class="section-heading"><a href="08_accelerators.html">Performance of Accelerators</a></h2>
 <hr class="half-width">
 <ul>
