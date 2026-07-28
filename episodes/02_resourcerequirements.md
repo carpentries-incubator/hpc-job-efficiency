@@ -84,7 +84,7 @@ For our example output above we can make some educated guesses on what the parti
 
 - The `normal` partition has a (relatively) small amount of memory and limits jobs to at most one day, but has by far the most nodes. This partition is probably designed for small- to medium-sized jobs.
   Since there are no `GRES` in this partition, only CPU computations can be performed here.
-  Also, as the number of cores per node is (relatively) small, this partition only allowed multithreading up to 36 threads on the same node. MPI is required for a higher degree of parallelism across multiple nodes.
+  Also, as the number of cores per node is (relatively) small, this partition only allows multithreading up to 36 threads on the same node. MPI is required for a higher degree of parallelism across multiple nodes.
 - The `long` partition has double the memory compared to the `normal` partition, but considerably fewer nodes. It allows for much longer running jobs.
   This partition is likely intended for jobs that are too big for the `normal` partition.
 - `express` is a very small partition with a similar configuration to `normal`, but a very short time limit of only 2 hours. The purpose of this partition is likely testing and very short running jobs like software compilation.
