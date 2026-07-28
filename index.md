@@ -24,3 +24,17 @@ Outlining the course
    - Working on HPC Systems (Batch system, shared file systems, software modules, ...)
    - Performance of scheduled batch jobs
    - Application performance is only addressed briefly (related to job efficiency), but in-depth is outside of the scope. Episode "Next Steps" should point towards deeper performance analyses, e.g. with tracers and profilers, and how to get started there
+
+::: instructor
+
+# Select and prepare a toolset!
+
+This course requires certain software to be in place, so make sure to:
+
+1. Update all Slurm job script examples with
+   - The correct partitions
+   - Correct module load commands (OpenMPI, GCC, etc.)
+2. Select either GNU `time`, your clusters shell built-in `time`, or third party tools like `hyperfine`
+3. Update `config.yaml` with the correct version of episode 05, i.e. ClusterCockpit ord LinaroForge perf reports. More alternatives are TBD.
+
+:::
