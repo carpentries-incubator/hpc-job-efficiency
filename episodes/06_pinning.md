@@ -29,32 +29,18 @@ After completing this episode, participants should be able to …
 
 Narrative:
 
-- We get the feeling, that hardware has a lot to offer, but the rabbit hole is deep!
-- What are the "dimensions" in which we can optimize the throughput of snowman pictures per hour?
-- Can we improve how the work maps to certain CPUs / Memory regions?
-
+- We have already seen how to observe resource utilization and identify inefficient use of hardware resources.
+- One way to improve resource utilization is to control where processes and threads are placed.
+- How does the mapping of work to CPUs and memory regions affect performance?
 
 What we're doing here:
 
-- Introduce pinning and slurm hint options
+- Introduce pinning and slurm affinity options
 - Relate to hardware effects
-- Use third party performance tools to observe effects!
+- A few practical tricks to diagnose and understand poor process placement.
 
 :::::::::::::::::::::::::::::::::::::
 
-
-:::::::::::::::::::::::::: instructor
-## ToDo: Extract episode about pinning
-
-Stick to simple options here.
-Put more complex options for pinning / hints, etc. into its own episode somewhere later in the course
-
-Pinning is an important part of job optimization, but requires some knowledge, e.g. about the hardware hierarchies in a cluster, NUMA, etc.
-So it should be done after we've introduced different performance reports and their perspective on hardware
-
-Maybe point to [JSC pinning simulator](https://apps.fz-juelich.de/jsc/llview/pinning) and have similar diagrams as an independent "offline" version in this course
-
-:::::::::::::::::::::::::::::::::::::
 
 ## The benchmark code used in this episode
 Let us first prepare a so-called benchmark for doing some pinning experiments in this episode.
@@ -69,17 +55,9 @@ wget https://www.cs.virginia.edu/stream/FTP/Code/stream.c
 # compile, may need appropriate module to make gcc available, enable OpenMP
 gcc -O3 -fopenmp -DSTREAM_ARRAY_SIZE=100000000 -DNTIMES=20 stream.c -o stream
 ```
-Now you have the executable `stream`, which measures memory throughput for the following common numerical array operations:
-```input
-Copy:   a[i] = b[i]
-Scale:  a[i] = q * b[i]
-Add:    a[i] = b[i] + c[i]
-Triad:  a[i] = b[i] + q * c[i]
-```
-These are operations that make up the main work in numerical codes when they loop over large arrays. Improving code efficiency
-involves minimizing the overhead associated with accessing the memory of such large arrays during computations. This is where pinning (or binding) will come into play later in this episode. 
+This creates the executable `stream`.
 
-### Testing `stream`
+### Running `stream`
 To get aquainted with the output of `stream`, run it:
 ```bash
 ./stream
@@ -120,6 +98,19 @@ Triad:         172339.1     0.015706     0.013926     0.020396
 Solution Validates: avg error less than 1.000000e-13 on all three arrays
 -------------------------------------------------------------
 ```
+
+### Understanding the output
+The benchmark reports the achieved memory bandwidth for four simple operations:
+```input
+Copy:   a[i] = b[i]
+Scale:  a[i] = q * b[i]
+Add:    a[i] = b[i] + c[i]
+Triad:  a[i] = b[i] + q * c[i]
+```
+These are operations that make up the main work in numerical codes when they loop over large arrays. Improving code efficiency
+involves minimizing the overhead associated with accessing the memory of such large arrays during computations. This is where pinning (or binding) will come into play later in this episode.
+The reported Best Rate (MB/s) is the highest sustained memory bandwidth achieved for each operation.
+
 The first notable metric is the "Number of Threads" (requested and counted, here 192).
 This should appear given that `stream` was compiled with OpenMP (`-fopenmp`). We will treat threads in more detail soon.
 The other output of interest is the bandwidth in MB/s reported at the bottom
@@ -133,18 +124,20 @@ While this episode is called "Pinning", you will notice that many pinning-relate
 
 ### What is a CPU in a pinning/binding context?
 Let us clarify some potential confusion around the word "CPU", as it is somewhat overloaded.
-Hardware vendors often use "CPU" to mean a processor chip. A CPU chip contains independent execution engines. These are called *cores*.
-Cores are a physical thing, as opposed to a *logical* unit.
-The distinction between pyhsical and logical is relevant since the number of logical execution units can be larger than the number of given (physical) cores. 
+Hardware vendors often use "CPU" to mean the whole processor chip. That chip contains multiple independent execution units:
 
-In Linux and Slurm, CPU refers to a logical execution unit.
-Therefore, in this episode, CPU always means a logical execution unit, not the physical processor chip. And:
+- A **core** is the *physical* execution unit on the chip — the actual hardware that runs instructions.
+- A **thread** is the *logical* execution unit exposed by a core. If simultaneous multithreading (SMT) is off, one core provides exactly one thread, so the two are the same thing. If SMT is on, one physical core provides two (or more) threads, each independently schedulable.
+
+This physical-vs-logical distinction matters because the number of logical execution units (threads) can be larger than the number of physical cores actually present.
+
+In Linux and Slurm, CPU refers to a thread - logical execution unit - not the physical processor chip. And:
 
 - We will use quite a few Slurm commands below. Slurm command options often contain "cpu", for example `--cpus-per-task`.
 This is because a CPU in Slurm is: 1 logical execution unit = 1 *Slurm-CPU*.
 - A Slurm-CPU is a schedulable execution unit visible to the operating system.
-- In general: 1 Slurm-CPU = 1 physical CPU core, but not always, sometimes: 2 or more Slurm-CPUs constitute 1 physical CPU core.
-- The Slurm option `--cpus-per-task` determines how many CPUs Slurm allocates.
+- In general: 1 Slurm-CPU = 1 physical CPU core, but not always, sometimes with SMT enabled: 2 or more Slurm-CPUs constitute 1 physical CPU core.
+- The Slurm option `--cpus-per-task` determines how many threads Slurm allocates.
 
 :::::::::::::::::::::::::: spoiler
 Historically, CPU refers to the *physical processor chip*. For example, a compute
@@ -171,7 +164,7 @@ Time to run our `stream` program in an "HPC-way".
 We are now on a HPC compute node. You may be on the login node, the landing point when you `ssh`-ed from your own machine.
 In case, you cannot run jobs on the login node, you will need to allocate some resources first:
 ```bash
-salloc --ntasks=2 --cpus-per-task=24 --mem=4G
+salloc --ntasks=2 --cpus-per-task=24 --nodes=1 --mem=5G
 ```
 Now we use Slurm's tool `srun` for running parallel jobs. Launch the following two runs:
 ```bash
@@ -209,7 +202,7 @@ Hence, with multiple CPUs, their runtimes and bandwidth outcomes will never be e
 
 ### Tasks
 In the above `srun` commands, Slurm uses the options `--ntasks`, and not something like `--nprocesses`. 
-A *task* is Slurm's term for a unit of work that the scheduler starts and manages. In most cases: **1 task = 1 process**.
+A *task* is Slurm's term for an independent unit of work that the scheduler starts, places on resources and manages. In most cases: **1 task = 1 process**.
 
 Back to the kitchen analogy. Imagine the `stream` computing job would be a catering order.
 Then, Slurm would be the event manager. It manages the resources you requested, which may be one (`--ntasks=1)` or two (`--ntasks=2`) kitchens.
@@ -249,11 +242,7 @@ where now the output for "Number of Threads" will most likely show the number 4.
 The `stream` runtime is programmed such that it detects four available CPUs and therefore creates four threads by default.
 
 ## Multiple cooks: OpenMP
-In the earlier two-task run using `--ntasks=2`, you may have noticed that the output appeared at once, that is,
-the two processes ran in *parallel*, as opposed to a *sequential* output of two processes:
-```bash
-srun --ntasks=1 ./stream; srun --ntasks=1 ./stream
-```
+
 In case you want to try again, put `time` in front of every `srun` and check the parallel against the sum of the sequential runtimes.
 
 The `stream` program is an OpenMP-parallel program. The large loops of array operations are distributed over OpenMP-threads.
@@ -362,26 +351,6 @@ srun --ntasks=2 ./stream
 ::::
 :::::::::::::
 
-::::::::::::: challenge
-### Selecting an optimal process and thread count
-The job is to render 128 snowmen of the same pixel size. The employed parallel rendering framework
-is able to spawn independent instances of the raytracer program. Given the pixel size, the recommendation is
-to use 8 execution streams for each raytacer instance.
-What is an appropriate `srun` command for this?
-
-:::: hint
-Each raytracer instance can be treated as a Slurm task. The number of execution streams within a task is the thread count.
-::::
-
-:::: solution
-```bash
-srun --ntasks=16 --cpus-per-task=8 ./stream
-```
-With a fixed thread count of `--cpus-per-task=8`, the number of raytracer instances comes out as 128/8, hence
-`--ntasks=16`.
-::::
-:::::::::::::
-
 
 ## Managing the kitchen: The Linux scheduler
 By now, we have gained some decent understanding about tasks and threads and how they make up a parallel run.
@@ -405,11 +374,13 @@ gcc -O3 -fopenmp -DSTREAM_ARRAY_SIZE=100000000 -DNTIMES=100 stream.c -o stream_l
 ```
 Now open a second terminal on the same compute node where you have been running `stream` and type
 ```bash
-watch -n 0.5 'ps -eLo pid,tid,psr,comm | grep stream
+srun --pty --overlap --jobid=<id> /bin/bash
+watch -n 0.5 'ps -eLo pid,tid,psr,comm | grep stream_long
 ```
 The `watch` command keeps an eye on repeated calls to `ps` which then greps for running `stream` processes.
 Back in the original terminal, employ 12 CPUs by running the new version, `stream_long`:
 ```bash
+srun --pty --overlap --jobid=<id> /bin/bash
 export OMP_NUM_THREADS=12
 ./stream_long
 ```
@@ -476,10 +447,12 @@ So these NUMA regions seem to resemble something like "areas of jurisdiction" ov
 :::::::::::::
 
 ## Non-Uniform Memory Access (NUMA)
-*Non-Uniform Memory Access* (NUMA) is a computer memory design used in multiprocessor systems. Memory access time varies depending on the memory location relative to the processor.
-In a NUMA system, the architecture is divided into multiple regions called *nodes*.
-NUMA nodes are not to be confused with HPC compute nodes hosting processor chips. 
-Each NUMA node contains one or more CPUs along with its own dedicated memory.
+*Non-Uniform Memory Access* (NUMA) is a computer memory design used in multiprocessor systems. Memory access time depends on where the memory is located relative to the accessing processor.
+In a NUMA system, the architecture is divided into multiple regions called *NUMA nodes*.
+A single compute node can contain several NUMA nodes.
+Each NUMA node contains one or more cores  along with the portion of the system's memory that is *local* to it - meaning that CPU can access it faster than memory attached to a different NUMA node. 
+Memory isn't exclusive to a NUMA node, though: a core  can still access another NUMA node's memory, just at higher latency and/or lower bandwidth, which is precisely what makes access "non-uniform" rather than a fixed cost regardless of location.
+
 Your personal laptop may have only one node, while a HPC system is likely to have more.
 
 ## Binding 2: Memory affinity
@@ -660,7 +633,8 @@ By setting *N*>0, CPUs are placed on nodes away from 0, while memory stays on 0.
 Can you see a correlation between increasing *N* and bandwidth?
 
 ::::::::::::: challenge
-### Observing thread count on NUMA nodes  
+### Observing thread count on NUMA nodes
+First and foremost `unset OMP_NUM_THREADS`  
 Compare the output for "Number of Threads" between the run
 `numactl ./stream` and a corresponding run with CPU-binding to node 0.
 You may see a different "Number of Threads". If that is the case, which one is smaller and why?
