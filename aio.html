@@ -284,7 +284,7 @@
 <div class="accordion accordion-flush" id="accordionFlush6">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading6">
-        <a href="05_performancereports.html">5. Performance Overview</a>
+        <a href="05_overview_ClusterCockpit.html">5. Performance Overview</a>
     </div>
 <!--/div.accordion-header-->
 
@@ -308,7 +308,7 @@
 <div class="accordion accordion-flush" id="accordionFlush8">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading8">
-        <a href="07_bottlenecks.html">7. How to identify a bottleneck?</a>
+        <a href="08_accelerators.html">7. Performance of Accelerators</a>
     </div>
 <!--/div.accordion-header-->
 
@@ -320,19 +320,7 @@
 <div class="accordion accordion-flush" id="accordionFlush9">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading9">
-        <a href="08_accelerators.html">8. Performance of Accelerators</a>
-    </div>
-<!--/div.accordion-header-->
-
-  </div>
-<!--/div.accordion-item-->
-</div>
-<!--/div.accordion-flush-->
-
-<div class="accordion accordion-flush" id="accordionFlush10">
-  <div class="accordion-item">
-    <div class="accordion-header" id="flush-heading10">
-        <a href="09_nextsteps.html">9. Next Steps</a>
+        <a href="09_nextsteps.html">8. Next Steps</a>
     </div>
 <!--/div.accordion-header-->
 
@@ -537,7 +525,7 @@ times remain close to zero.</p>
 <button class="accordion-button spoiler-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSpoiler1" aria-expanded="false" aria-controls="collapseSpoiler1">
   <h3 class="accordion-header" id="headingSpoiler1">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="eye"></i></div> Why does time sometimes produce different output? </h3>
 </button>
-<div id="collapseSpoiler1" class="accordion-collapse collapse" aria-labelledby="headingSpoiler1" data-bs-parent="#accordionSpoiler1">
+<div id="collapseSpoiler1" class="accordion-collapse collapse" data-bs-parent="#accordionSpoiler1" aria-labelledby="headingSpoiler1">
 <div class="accordion-body">
 <p>You may notice that the output of <code>time</code> on your system
 looks different from the examples shown in this lesson. This is because
@@ -756,7 +744,7 @@ workflows or multiple commands within shell scripts.</p>
 <button class="accordion-button spoiler-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSpoiler2" aria-expanded="false" aria-controls="collapseSpoiler2">
   <h3 class="accordion-header" id="headingSpoiler2">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="eye"></i></div> Epoch time </h3>
 </button>
-<div id="collapseSpoiler2" class="accordion-collapse collapse" aria-labelledby="headingSpoiler2" data-bs-parent="#accordionSpoiler2">
+<div id="collapseSpoiler2" class="accordion-collapse collapse" data-bs-parent="#accordionSpoiler2" aria-labelledby="headingSpoiler2">
 <div class="accordion-body">
 <p>To calculate elapsed time, timestamps must share a common reference
 point. Such a reference point is commonly called the <em>epoch</em>.</p>
@@ -817,7 +805,7 @@ the <code>sleep</code> command between the two timestamps.</p>
 <button class="accordion-button hint-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHint1" aria-expanded="false" aria-controls="collapseHint1">
   <h4 class="accordion-header" id="headingHint1"> Give me a hint </h4>
 </button>
-<div id="collapseHint1" class="accordion-collapse collapse" aria-labelledby="headingHint1" data-bs-parent="#accordionHint1">
+<div id="collapseHint1" class="accordion-collapse collapse" data-bs-parent="#accordionHint1" aria-labelledby="headingHint1">
 <div class="accordion-body">
 <p>Floating-point subtraction can be performed using the <code>bc</code>
 calculator:</p>
@@ -835,7 +823,7 @@ calculator:</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb21">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -922,7 +910,7 @@ slow. Why might that be the case?</p>
 <button class="accordion-button hint-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHint2" aria-expanded="false" aria-controls="collapseHint2">
   <h4 class="accordion-header" id="headingHint2"> Give me a hint </h4>
 </button>
-<div id="collapseHint2" class="accordion-collapse collapse" aria-labelledby="headingHint2" data-bs-parent="#accordionHint2">
+<div id="collapseHint2" class="accordion-collapse collapse" data-bs-parent="#accordionHint2" aria-labelledby="headingHint2">
 <div class="accordion-body">
 <p>Each statement of the form <code>echo ... | bc -l</code> launches a
 new <code>bc</code> process through a pipe and subshell.</p>
@@ -935,7 +923,7 @@ new <code>bc</code> process through a pipe and subshell.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
   <h4 class="accordion-header" id="headingSolution2"> Show me the solution </h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
 <div class="accordion-body">
 <p>The construct <code>echo ... | bc -l</code> launches a new
 <code>bc</code> process for every invocation. In this script, each loop
@@ -984,7 +972,7 @@ script far more than the mathematical calculations themselves.</p>
 <button class="accordion-button hint-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHint3" aria-expanded="false" aria-controls="collapseHint3">
   <h4 class="accordion-header" id="headingHint3"> Give me a hint </h4>
 </button>
-<div id="collapseHint3" class="accordion-collapse collapse" aria-labelledby="headingHint3" data-bs-parent="#accordionHint3">
+<div id="collapseHint3" class="accordion-collapse collapse" data-bs-parent="#accordionHint3" aria-labelledby="headingHint3">
 <div class="accordion-body">
 <p>You can prepend almost any command with <code>time</code>. If you
 want to use <code>date</code>, remember that
@@ -1000,7 +988,7 @@ chained together.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution3" aria-expanded="false" aria-controls="collapseSolution3">
   <h4 class="accordion-header" id="headingSolution3"> Show me the solution </h4>
 </button>
-<div id="collapseSolution3" class="accordion-collapse collapse" aria-labelledby="headingSolution3" data-bs-parent="#accordionSolution3">
+<div id="collapseSolution3" class="accordion-collapse collapse" data-bs-parent="#accordionSolution3" aria-labelledby="headingSolution3">
 <div class="accordion-body">
 <p>A straightforward approach is</p>
 <div class="codewrapper sourceCode" id="cb25">
@@ -1093,7 +1081,7 @@ and the one-liner.</p>
 <button class="accordion-button hint-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHint4" aria-expanded="false" aria-controls="collapseHint4">
   <h4 class="accordion-header" id="headingHint4"> Give me a hint </h4>
 </button>
-<div id="collapseHint4" class="accordion-collapse collapse" aria-labelledby="headingHint4" data-bs-parent="#accordionHint4">
+<div id="collapseHint4" class="accordion-collapse collapse" data-bs-parent="#accordionHint4" aria-labelledby="headingHint4">
 <div class="accordion-body">
 <p>The Bash keyword <code>time</code> is sufficient to observe the
 runtime difference.</p>
@@ -1106,7 +1094,7 @@ runtime difference.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution4" aria-expanded="false" aria-controls="collapseSolution4">
   <h4 class="accordion-header" id="headingSolution4"> Show me the solution </h4>
 </button>
-<div id="collapseSolution4" class="accordion-collapse collapse" aria-labelledby="headingSolution4" data-bs-parent="#accordionSolution4">
+<div id="collapseSolution4" class="accordion-collapse collapse" data-bs-parent="#accordionSolution4" aria-labelledby="headingSolution4">
 <div class="accordion-body">
 <p>You can use <code>time</code> for both summation methods:</p>
 <div class="codewrapper sourceCode" id="cb30">
@@ -1135,7 +1123,7 @@ occupancy, and energy usage.</p>
 <button class="accordion-button spoiler-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSpoiler3" aria-expanded="false" aria-controls="collapseSpoiler3">
   <h3 class="accordion-header" id="headingSpoiler3">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="eye"></i></div> CPU-bound versus memory-bound </h3>
 </button>
-<div id="collapseSpoiler3" class="accordion-collapse collapse" aria-labelledby="headingSpoiler3" data-bs-parent="#accordionSpoiler3">
+<div id="collapseSpoiler3" class="accordion-collapse collapse" data-bs-parent="#accordionSpoiler3" aria-labelledby="headingSpoiler3">
 <div class="accordion-body">
 <p>The runtime comparisons above primarily measure computational
 performance. When the execution speed of a program is mainly limited by
@@ -1219,7 +1207,7 @@ usage through units such as <strong>GPU-hours</strong>.</p>
 <button class="accordion-button spoiler-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSpoiler4" aria-expanded="false" aria-controls="collapseSpoiler4">
   <h3 class="accordion-header" id="headingSpoiler4">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="eye"></i></div> Other HPC resource types </h3>
 </button>
-<div id="collapseSpoiler4" class="accordion-collapse collapse" aria-labelledby="headingSpoiler4" data-bs-parent="#accordionSpoiler4">
+<div id="collapseSpoiler4" class="accordion-collapse collapse" data-bs-parent="#accordionSpoiler4" aria-labelledby="headingSpoiler4">
 <div class="accordion-body">
 <p>So far, the focus has been on CPU/GPU core counts and runtime as
 primary HPC resource allocations. However, HPC workloads also depend
@@ -1330,7 +1318,7 @@ cents)?</p>
 <button class="accordion-button hint-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHint5" aria-expanded="false" aria-controls="collapseHint5">
   <h4 class="accordion-header" id="headingHint5"> Give me a hint </h4>
 </button>
-<div id="collapseHint5" class="accordion-collapse collapse" aria-labelledby="headingHint5" data-bs-parent="#accordionHint5">
+<div id="collapseHint5" class="accordion-collapse collapse" data-bs-parent="#accordionHint5" aria-labelledby="headingHint5">
 <div class="accordion-body">
 <p>For this example, assume one task is assigned to each CPU core. The
 total number of tasks is therefore approximately: <span class="math display">\[
@@ -1348,7 +1336,7 @@ total number of tasks is therefore approximately: <span class="math display">\[
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution5" aria-expanded="false" aria-controls="collapseSolution5">
   <h4 class="accordion-header" id="headingSolution5"> Show me the solution </h4>
 </button>
-<div id="collapseSolution5" class="accordion-collapse collapse" aria-labelledby="headingSolution5" data-bs-parent="#accordionSolution5">
+<div id="collapseSolution5" class="accordion-collapse collapse" data-bs-parent="#accordionSolution5" aria-labelledby="headingSolution5">
 <div class="accordion-body">
 <p>The total number of tasks is <span class="math display">\[
 \text{cores per node} \times \text{number of nodes} = 64 \times 12 = 768
@@ -1395,7 +1383,7 @@ h \approx \frac{86.4 \times 3.6 \times 10^6}{6000 \times 9.81} \approx
 <button class="accordion-button spoiler-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSpoiler5" aria-expanded="false" aria-controls="collapseSpoiler5">
   <h3 class="accordion-header" id="headingSpoiler5">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="eye"></i></div> Power-consuming hardware pieces </h3>
 </button>
-<div id="collapseSpoiler5" class="accordion-collapse collapse" aria-labelledby="headingSpoiler5" data-bs-parent="#accordionSpoiler5">
+<div id="collapseSpoiler5" class="accordion-collapse collapse" data-bs-parent="#accordionSpoiler5" aria-labelledby="headingSpoiler5">
 <div class="accordion-body">
 <p>Note that the focus so far has been on <strong>additional</strong>
 power consumption caused by computational load beyond a system’s idle
@@ -1557,7 +1545,7 @@ Slurm</h3>
 <button class="accordion-button hint-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHint6" aria-expanded="false" aria-controls="collapseHint6">
   <h4 class="accordion-header" id="headingHint6"> Give me a hint </h4>
 </button>
-<div id="collapseHint6" class="accordion-collapse collapse" aria-labelledby="headingHint6" data-bs-parent="#accordionHint6">
+<div id="collapseHint6" class="accordion-collapse collapse" data-bs-parent="#accordionHint6" aria-labelledby="headingHint6">
 <div class="accordion-body">
 <p>Compare the <code>real</code> and <code>user</code> times reported at
 the end of the job’s output file (named something like
@@ -1572,7 +1560,7 @@ the end of the job’s output file (named something like
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution6" aria-expanded="false" aria-controls="collapseSolution6">
   <h4 class="accordion-header" id="headingSolution6"> Show me the solution </h4>
 </button>
-<div id="collapseSolution6" class="accordion-collapse collapse" aria-labelledby="headingSolution6" data-bs-parent="#accordionSolution6">
+<div id="collapseSolution6" class="accordion-collapse collapse" data-bs-parent="#accordionSolution6" aria-labelledby="headingSolution6">
 <div class="accordion-body">
 <p>Notice that the reported <em>user</em> time is substantially larger
 than the elapsed <em>real</em> time.</p>
@@ -1624,7 +1612,7 @@ any links that you are not going to use.
  -->
 </section></section><section id="aio-02_resourcerequirements"><p>Content from <a href="02_resourcerequirements.html">Resource Requirements</a></p>
 <hr>
-<p>Last updated on 2026-02-24 |
+<p>Last updated on 2026-07-28 |
 
         <a href="https://github.com/stderr-enst/jobefficiency/edit/main/episodes/02_resourcerequirements.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <div class="text-end">
@@ -1694,7 +1682,7 @@ cluster:</p>
 <button class="accordion-button spoiler-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSpoiler1" aria-expanded="false" aria-controls="collapseSpoiler1">
   <h3 class="accordion-header" id="headingSpoiler1">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="eye"></i></div> Show details </h3>
 </button>
-<div id="collapseSpoiler1" class="accordion-collapse collapse" data-bs-parent="#accordionSpoiler1" aria-labelledby="headingSpoiler1">
+<div id="collapseSpoiler1" class="accordion-collapse collapse" aria-labelledby="headingSpoiler1" data-bs-parent="#accordionSpoiler1">
 <div class="accordion-body">
 <p>Here is a (simplified) example output for the command above:</p>
 <pre><code>PARTITION           NODES               CPUS                MEMORY              GRES                TIMELIMIT
@@ -1733,7 +1721,7 @@ partition is based on the resources it contains?</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
 <div class="accordion-body">
 <p>For our example output above we can make some educated guesses on
 what the partitions are supposed to be used for:</p>
@@ -1800,7 +1788,7 @@ or on your local machine.</p>
 <button class="accordion-button spoiler-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSpoiler2" aria-expanded="false" aria-controls="collapseSpoiler2">
   <h3 class="accordion-header" id="headingSpoiler2">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="eye"></i></div> Show details </h3>
 </button>
-<div id="collapseSpoiler2" class="accordion-collapse collapse" data-bs-parent="#accordionSpoiler2" aria-labelledby="headingSpoiler2">
+<div id="collapseSpoiler2" class="accordion-collapse collapse" aria-labelledby="headingSpoiler2" data-bs-parent="#accordionSpoiler2">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb4">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1833,7 +1821,7 @@ you can use</p>
 <button class="accordion-button spoiler-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSpoiler3" aria-expanded="false" aria-controls="collapseSpoiler3">
   <h3 class="accordion-header" id="headingSpoiler3">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="eye"></i></div> Show details </h3>
 </button>
-<div id="collapseSpoiler3" class="accordion-collapse collapse" data-bs-parent="#accordionSpoiler3" aria-labelledby="headingSpoiler3">
+<div id="collapseSpoiler3" class="accordion-collapse collapse" aria-labelledby="headingSpoiler3" data-bs-parent="#accordionSpoiler3">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb7">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1916,7 +1904,7 @@ idle nodes and CPU cores.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
   <h4 class="accordion-header" id="headingSolution2"> Show me the solution </h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb9">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -2334,7 +2322,7 @@ this?</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution3" aria-expanded="false" aria-controls="collapseSolution3">
   <h4 class="accordion-header" id="headingSolution3"> Show me the solution </h4>
 </button>
-<div id="collapseSolution3" class="accordion-collapse collapse" data-bs-parent="#accordionSolution3" aria-labelledby="headingSolution3">
+<div id="collapseSolution3" class="accordion-collapse collapse" aria-labelledby="headingSolution3" data-bs-parent="#accordionSolution3">
 <div class="accordion-body">
 <p>We can see that the CPU utilization time and the walltime are
 virtually identical to the MPI version of our job, while the memory
@@ -2399,7 +2387,7 @@ depending on the number of threads.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution4" aria-expanded="false" aria-controls="collapseSolution4">
   <h4 class="accordion-header" id="headingSolution4"> Show me the solution </h4>
 </button>
-<div id="collapseSolution4" class="accordion-collapse collapse" data-bs-parent="#accordionSolution4" aria-labelledby="headingSolution4">
+<div id="collapseSolution4" class="accordion-collapse collapse" aria-labelledby="headingSolution4" data-bs-parent="#accordionSolution4">
 <div class="accordion-body">
 <p>You can see that the CPU utilization of each <code>raytracer</code>
 thread goes down as the number of threads increases. This means, each
@@ -2460,7 +2448,7 @@ default to this behavior?</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution5" aria-expanded="false" aria-controls="collapseSolution5">
   <h4 class="accordion-header" id="headingSolution5"> Show me the solution </h4>
 </button>
-<div id="collapseSolution5" class="accordion-collapse collapse" data-bs-parent="#accordionSolution5" aria-labelledby="headingSolution5">
+<div id="collapseSolution5" class="accordion-collapse collapse" aria-labelledby="headingSolution5" data-bs-parent="#accordionSolution5">
 <div class="accordion-body">
 <p>In this case we have a <em>CPU bound</em> application, i.e., the work
 done by the CPU is the limiting factor and thus dividing this work into
@@ -2681,7 +2669,7 @@ any links that you are not going to use.
  -->
 </section></section><section id="aio-03_schedulertools"><p>Content from <a href="03_schedulertools.html">Scheduler Tools</a></p>
 <hr>
-<p>Last updated on 2025-11-11 |
+<p>Last updated on 2026-07-28 |
 
         <a href="https://github.com/stderr-enst/jobefficiency/edit/main/episodes/03_schedulertools.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <div class="text-end">
@@ -2873,7 +2861,7 @@ efficiency you get?</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
 <div class="accordion-body">
 <p>The batch file after adding the memory request becomes.</p>
 <pre class="input"><code>#!/usr/bin/bash
@@ -3153,7 +3141,7 @@ would that be?</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
   <h4 class="accordion-header" id="headingSolution2"> Show me the solution </h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
 <div class="accordion-body">
 <p>To query all of the above variable run</p>
 <div class="codewrapper sourceCode" id="cb15">
@@ -3227,7 +3215,7 @@ changes.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution3" aria-expanded="false" aria-controls="collapseSolution3">
   <h4 class="accordion-header" id="headingSolution3"> Show me the solution </h4>
 </button>
-<div id="collapseSolution3" class="accordion-collapse collapse" data-bs-parent="#accordionSolution3" aria-labelledby="headingSolution3">
+<div id="collapseSolution3" class="accordion-collapse collapse" aria-labelledby="headingSolution3" data-bs-parent="#accordionSolution3">
 <div class="accordion-body">
 <p>The machine these calculations have been run on has 112 core per
 node. So we can double the number of cores from 4 until 64 and stay
@@ -3353,7 +3341,7 @@ any links that you are not going to use.
  -->
 </section></section><section id="aio-04_scalingstudy"><p>Content from <a href="04_scalingstudy.html">Scaling Study</a></p>
 <hr>
-<p>Last updated on 2025-12-12 |
+<p>Last updated on 2026-07-28 |
 
         <a href="https://github.com/stderr-enst/jobefficiency/edit/main/episodes/04_scalingstudy.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <div class="text-end">
@@ -4039,11 +4027,11 @@ Apr. 1967, pp. 483–485. doi: 10.1145/1465482.1465560.<a href="#fnref1" class
 <li id="fn2"><p>J. L. Gustafson, ‘Reevaluating Amdahl’s law’, Commun.
 ACM, vol. 31, no. 5, pp. 532–533, May 1988, doi: 10.1145/42411.42415.<a href="#fnref2" class="footnote-back">↩︎</a></p></li>
 </ol>
-</div></section><section id="aio-05_performancereports"><p>Content from <a href="05_performancereports.html">Performance Overview</a></p>
+</div></section><section id="aio-05_overview_ClusterCockpit"><p>Content from <a href="05_overview_ClusterCockpit.html">Performance Overview</a></p>
 <hr>
-<p>Last updated on 2026-02-26 |
+<p>Last updated on 2026-07-28 |
 
-        <a href="https://github.com/stderr-enst/jobefficiency/edit/main/episodes/05_performancereports.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
+        <a href="https://github.com/stderr-enst/jobefficiency/edit/main/episodes/05_overview_ClusterCockpit.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <div class="text-end">
           <button role="button" aria-pressed="false" tabindex="0" id="expand-code" class="pull-right" data-expand="Expand All Solutions " data-collapse="Collapse All Solutions "> Expand All Solutions <i aria-hidden="true" data-feather="plus"></i></button>
         </div>
@@ -4056,8 +4044,9 @@ ACM, vol. 31, no. 5, pp. 532–533, May 1988, doi: 10.1145/42411.42415.<a href
 <h3 class="card-title">Questions</h3>
 <ul>
 <li>Is job wall-time the only way to study job performance?</li>
-<li>What are commonly used metrics and perspectives on job
-performance?</li>
+<li>What are commonly used metrics to describe job performance?</li>
+<li>What are common workflows to evaluate performance?</li>
+<li>How can I find the bottlenecks in a given job?</li>
 </ul>
 </div>
 </div>
@@ -4073,6 +4062,8 @@ tools.</li>
 <li>Explain the difference between sampling and tracing.</li>
 <li>Measure utilization and the impact of underlying hardware
 components.</li>
+<li>Determine if their job is affected by a typical performance
+bottleneck pattern.</li>
 </ul>
 </div>
 </div>
@@ -4082,8 +4073,124 @@ components.</li>
 <p>Wall-time measurements with <code>time</code> do not tell us why
 exactly an application is slower than expected. To learn more about the
 <em>why</em>, we have to measure our applications behavior in more
-detail and capture the utilization of underlying hardware. Broadly
-categorized, a jobs performance is mostly dependent on</p>
+detail and capture the utilization of underlying hardware.</p>
+<div id="the-performance-measurement-tool" class="callout">
+<div class="callout-square">
+<i class="callout-icon" data-feather="bell"></i>
+</div>
+<span class="callout-header">Callout</span>
+<div id="the-performance-measurement-tool" class="callout-inner">
+<h3 class="callout-title">The performance measurement tool</h3>
+<div class="callout-content">
+<p><a href="https://clustercockpit.org/" class="external-link"><em>ClusterCockpit</em></a>: A
+job monitoring service available on many clusters in NRW. Sampled
+measurements of the application are stored and visualized in a timeline
+for each job. It needs to be centrally provided by your HPC
+administration team and may not be available to you!</p>
+<p>This tool may require access to performance counters, sometimes
+granted by requesting <code>--exclusive</code>, but it really depends on
+the system. If something covered in this episode isn’t available or
+looks different on your cluster, check your cluster documentation or ask
+your HPC support staff.</p>
+</div>
+</div>
+</div>
+<p>Let us set up our performance measurement tool by running an example
+job with 8 cores. To give the job enough work to be worth measuring,
+let’s go with <span class="math inline">\(2263 \times 2263\)</span>
+pixels and <code>-spp=512</code>, we repeat this experiment twice back
+to back.</p>
+<p>A single run finishes quickly and would give ClusterCockpit only a
+handful of samples to plot, making the timelines look sparse and hard to
+read. Running it twice stretches the job out to a longer time, giving
+the sampling-based collectors enough time to gather a richer set of data
+points, which makes for much clearer plots when we look at the metrics.
+Additionally, we limit the execution time to 20 minutes to not wait too
+long, before getting the results. It does not hurt us, if the job gets
+cut off by the Slurm <code>TIMEOUT</code>, since the measurements will
+still represent the applications behavior up to that point.</p>
+<p>Submit a job that runs for at least <span class="math inline">\(5\)</span> minutes, so it is picked up by cluster
+cockpit. The job could look like this:</p>
+<div class="codewrapper sourceCode" id="cb2">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" tabindex="-1" aria-label="code-block-2-1"></a><span class="co">#!/usr/bin/bash</span></span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1" aria-label="code-block-2-2"></a><span class="co">#SBATCH --time=00:20:00</span></span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1" aria-label="code-block-2-3"></a><span class="co">#SBATCH --partition=intelsr_devel</span></span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1" aria-label="code-block-2-4"></a><span class="co">#SBATCH --ntasks=4</span></span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1" aria-label="code-block-2-5"></a><span class="co">#SBATCH --cpus-per-task=1</span></span>
+<span id="cb2-6"><a href="#cb2-6" tabindex="-1" aria-label="code-block-2-6"></a><span class="co">#SBATCH --nodes=1</span></span>
+<span id="cb2-7"><a href="#cb2-7" tabindex="-1" aria-label="code-block-2-7"></a><span class="co">#SBATCH --exclusive</span></span>
+<span id="cb2-8"><a href="#cb2-8" tabindex="-1" aria-label="code-block-2-8"></a></span>
+<span id="cb2-9"><a href="#cb2-9" tabindex="-1" aria-label="code-block-2-9"></a><span class="ex">module</span> purge</span>
+<span id="cb2-10"><a href="#cb2-10" tabindex="-1" aria-label="code-block-2-10"></a><span class="ex">module</span> load GCC/13.2.0 OpenMPI/4.1.6-GCC-13.2.0 CMake/3.27.6-GCCcore-13.2.0 Boost/1.83.0-GCC-13.2.0 libpng/1.6.40-GCCcore-13.2.0</span>
+<span id="cb2-11"><a href="#cb2-11" tabindex="-1" aria-label="code-block-2-11"></a></span>
+<span id="cb2-12"><a href="#cb2-12" tabindex="-1" aria-label="code-block-2-12"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="dt">{</span><span class="dv">1</span><span class="dt">..</span><span class="dv">3</span><span class="dt">}</span><span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb2-13"><a href="#cb2-13" tabindex="-1" aria-label="code-block-2-13"></a>    <span class="ex">mpirun</span> <span class="at">--</span> ./build/raytracer <span class="at">-width</span><span class="op">=</span>2263 <span class="at">-height</span><span class="op">=</span>2263 <span class="at">-spp</span><span class="op">=</span>512 <span class="at">-threads</span><span class="op">=</span>1 <span class="at">-png</span> <span class="st">"img_</span><span class="va">${SLURM_JOB_ID}</span><span class="st">_</span><span class="va">$(</span><span class="fu">date</span> +%Y-%m-%d_%H%M%S<span class="va">)</span><span class="st">.png"</span></span>
+<span id="cb2-14"><a href="#cb2-14" tabindex="-1" aria-label="code-block-2-14"></a><span class="cf">done</span></span></code></pre>
+</div>
+<p>We will call this job 1. Note the use of <code>--exclusive</code>
+here, which books a whole node for the job. This is important to make
+sure the performance measurements are not disturbed by concurrent jobs.
+Additionally, ClusteCockpit collects some metrics only on a per-node
+basis, so concurrent jobs would make these measurements less usable</p>
+<div id="exercise-run-a-second-job-with-raytracer_float4" class="callout discussion">
+<div class="callout-square">
+<i class="callout-icon" data-feather="message-circle"></i>
+</div>
+<span class="callout-header">Discussion</span>
+<div id="exercise-run-a-second-job-with-raytracer_float4" class="callout-inner">
+<h3 class="callout-title">Exercise: Run a second job with
+<code>raytracer_float4</code>
+</h3>
+<div class="callout-content">
+<p>Submit a second job using the <code>raytracer_float4</code>
+executable instead of <code>raytracer</code> — keep the resolution,
+<code>-spp</code>, core count, repeat count, and
+<code>--exclusive</code> request all the same as the original job.</p>
+<p>We will call this job 2.</p>
+</div>
+</div>
+</div>
+<div id="accordionSolution1" class="accordion challenge-accordion accordion-flush">
+<div class="accordion-item">
+<button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
+  <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
+</button>
+<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
+<div class="accordion-body">
+<p>There are other binaries next to the <code>raytracer</code> example,
+called <code>raytracer_float4</code>, <code>_float8</code>,
+<code>_float16</code>. We can start one of those in our job script
+instead:</p>
+<div class="codewrapper sourceCode" id="cb3">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" tabindex="-1" aria-label="code-block-3-1"></a><span class="co">#!/usr/bin/bash</span></span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1" aria-label="code-block-3-2"></a><span class="co">#SBATCH --time=00:20:00</span></span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1" aria-label="code-block-3-3"></a><span class="co">#SBATCH --partition=intelsr_devel</span></span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1" aria-label="code-block-3-4"></a><span class="co">#SBATCH --ntasks=4</span></span>
+<span id="cb3-5"><a href="#cb3-5" tabindex="-1" aria-label="code-block-3-5"></a><span class="co">#SBATCH --nodes=1</span></span>
+<span id="cb3-6"><a href="#cb3-6" tabindex="-1" aria-label="code-block-3-6"></a><span class="co">#SBATCH --cpus-per-task=1</span></span>
+<span id="cb3-7"><a href="#cb3-7" tabindex="-1" aria-label="code-block-3-7"></a><span class="co">#SBATCH --exclusive</span></span>
+<span id="cb3-8"><a href="#cb3-8" tabindex="-1" aria-label="code-block-3-8"></a></span>
+<span id="cb3-9"><a href="#cb3-9" tabindex="-1" aria-label="code-block-3-9"></a><span class="ex">module</span> purge</span>
+<span id="cb3-10"><a href="#cb3-10" tabindex="-1" aria-label="code-block-3-10"></a><span class="ex">module</span> load GCC/13.2.0 OpenMPI/4.1.6-GCC-13.2.0 CMake/3.27.6-GCCcore-13.2.0 Boost/1.83.0-GCC-13.2.0 libpng/1.6.40-GCCcore-13.2.0</span>
+<span id="cb3-11"><a href="#cb3-11" tabindex="-1" aria-label="code-block-3-11"></a></span>
+<span id="cb3-12"><a href="#cb3-12" tabindex="-1" aria-label="code-block-3-12"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="dt">{</span><span class="dv">1</span><span class="dt">..</span><span class="dv">3</span><span class="dt">}</span><span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb3-13"><a href="#cb3-13" tabindex="-1" aria-label="code-block-3-13"></a>    <span class="ex">mpirun</span> <span class="at">--</span> ./build/raytracer_float4 <span class="at">-width</span><span class="op">=</span>2263 <span class="at">-height</span><span class="op">=</span>2263 <span class="at">-spp</span><span class="op">=</span>512 <span class="at">-threads</span><span class="op">=</span>1 <span class="at">-png</span> <span class="st">"</span><span class="va">$(</span><span class="fu">date</span> +%Y-%m-%d_%H%M%S<span class="va">)</span><span class="st">.png"</span></span>
+<span id="cb3-14"><a href="#cb3-14" tabindex="-1" aria-label="code-block-3-14"></a><span class="cf">done</span></span></code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>While the test jobs are running, let’s look into the relationship
+between computer hardware architecture and performance.</p>
+<section><h2 class="section-heading" id="hardware-architecture-counters">Hardware Architecture &amp; Counters<a class="anchor" aria-label="anchor" href="#hardware-architecture-counters"></a>
+</h2>
+<hr class="half-width">
+<p>Broadly categorized, a jobs performance is mostly dependent on</p>
 <ul>
 <li>
 <strong>CPU utilization</strong>, e.g. how quickly instructions can
@@ -4124,12 +4231,14 @@ to finish in the CPU cores. The absolute performance of the application
 is improved, but it will be always “slowed down” somewhere.</p>
 <p>Did you experience a situation, where an application was clearly
 slowed down in some way?</p>
+<p>What performance bottleneck scenarios can you imagine in the given
+hardware architecture sketch?</p>
 </div>
 </div>
 </div>
-<section><h2 class="section-heading" id="measurement-workflows">Measurement Workflows<a class="anchor" aria-label="anchor" href="#measurement-workflows"></a>
-</h2>
-<hr class="half-width">
+<div class="section level3">
+<h3 id="measurement-workflows">Measurement Workflows<a class="anchor" aria-label="anchor" href="#measurement-workflows"></a>
+</h3>
 <p>To learn how applications utilize the computers hardware, we employ
 third party tools that read usage metrics from <em>performance
 counters</em>, often implemented either in the operating system kernels
@@ -4159,127 +4268,17 @@ and fluctuating results between repeated measurements.</p>
 <p>Measurement results are either stored and analysed in a
 <em>timeline</em>, or aggregated into a final measurement, often called
 a <em>profile</em>.</p>
-
-<div id="pick-your-tool" class="callout">
-<div class="callout-square">
-<i class="callout-icon" data-feather="bell"></i>
-</div>
-<span class="callout-header">Callout</span>
-<div id="pick-your-tool" class="callout-inner">
-<h3 class="callout-title">Pick your tool!</h3>
-<div class="callout-content">
-<p>For the following episodes, you can choose between three alternative
-perspectives on our jobs. Choose one tool and stick to it for the rest
-of the course. The alternatives are:</p>
-<ol style="list-style-type: decimal">
-<li>
-<a href="https://clustercockpit.org/" class="external-link"><em>ClusterCockpit</em></a>: A
-job monitoring service available on many clusters in NRW. Sampled
-measurements of the application are stored and visualized in a timeline
-for each job. It needs to be centrally provided by your HPC
-administration team and may not be available to you!</li>
-<li>
-<a href="https://docs.linaroforge.com/25.0.4/html/forge/performance_reports/index.html" class="external-link"><em>Linaro
-Forge Performance Reports</em></a>: A commercial sampling-based profiler
-providing a single page performance overview of your job. Access to
-licenses required.</li>
-<li>
-<em>TBD</em>: A free, open source tool/set of tools, to get a
-general performance overview of your job.</li>
-</ol>
-<p>These tools may require access to performance counters, sometimes
-granted by requesting <code>--exclusive</code>, but it really depends on
-the system. Look at your cluster documentation or talk to your HPC
-support staff.</p>
-</div>
-</div>
-</div>
-
-<p>Let us set up our performance measurement tool by running an example
-job with 8 cores. To give the job enough work to be worth measuring,
-let’s go with <span class="math inline">\(2263 \times 2263\)</span>
-pixels and <code>-spp=512</code>.</p>
-<div class="tabs">
-<nav><div id="nav-tab-1" class="nav nav-tabs" role="tablist">
-<button class="nav-link active" id="nav-tab-1-ClusterCockpit" name="ClusterCockpit" data-bs-toggle="tab" data-bs-target="#nav-tabpanel-1-ClusterCockpit" type="button" role="tab" aria-controls="nav-tabpanel-1-ClusterCockpit" aria-selected="true">
-  <h3 class="tab-header" id="nav-tab-heading-1-ClusterCockpit">
-  ClusterCockpit
-  </h3>
-</button>
-<button class="nav-link" id="nav-tab-1-PerformanceReports" name="PerformanceReports" data-bs-toggle="tab" data-bs-target="#nav-tabpanel-1-PerformanceReports" type="button" role="tab" aria-controls="nav-tabpanel-1-PerformanceReports" aria-selected="false">
-  <h3 class="tab-header" id="nav-tab-heading-1-PerformanceReports">
-  Performance Reports
-  </h3>
-</button>
-<button class="nav-link" id="nav-tab-1-TBD" name="TBD" data-bs-toggle="tab" data-bs-target="#nav-tabpanel-1-TBD" type="button" role="tab" aria-controls="nav-tabpanel-1-TBD" aria-selected="false">
-  <h3 class="tab-header" id="nav-tab-heading-1-TBD">
-  TBD
-  </h3>
-</button>
-</div>
-</nav><div id="nav-tabContent-1" class="tab-content">
-<div id="nav-tabpanel-1-ClusterCockpit" class="tab-pane show active" aria-labelledby="nav-tab-1-ClusterCockpit" role="tabpanel">
-<ol style="list-style-type: decimal">
-<li>Submit a job that runs for at least <span class="math inline">\(5\)</span> minutes, so it is picked up by cluster
-cockpit. The job script could look like this:</li>
-</ol>
-<div class="codewrapper sourceCode" id="cb2">
-<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" tabindex="-1" aria-label="code-block-2-1"></a><span class="co">#!/usr/bin/bash</span></span>
-<span id="cb2-2"><a href="#cb2-2" tabindex="-1" aria-label="code-block-2-2"></a><span class="co">#SBATCH --time=01:00:00</span></span>
-<span id="cb2-3"><a href="#cb2-3" tabindex="-1" aria-label="code-block-2-3"></a><span class="co">#SBATCH --ntasks=8</span></span>
-<span id="cb2-4"><a href="#cb2-4" tabindex="-1" aria-label="code-block-2-4"></a><span class="co">#SBATCH --nodes=1</span></span>
-<span id="cb2-5"><a href="#cb2-5" tabindex="-1" aria-label="code-block-2-5"></a><span class="co">#SBATCH --mem-per-cpu=1000MB</span></span>
-<span id="cb2-6"><a href="#cb2-6" tabindex="-1" aria-label="code-block-2-6"></a></span>
-<span id="cb2-7"><a href="#cb2-7" tabindex="-1" aria-label="code-block-2-7"></a><span class="ex">module</span> load 2025 GCC/13.2.0 OpenMPI/4.1.6 buildenv/default Boost/1.83.0 CMake/3.27.6 libpng/1.6.40</span>
-<span id="cb2-8"><a href="#cb2-8" tabindex="-1" aria-label="code-block-2-8"></a></span>
-<span id="cb2-9"><a href="#cb2-9" tabindex="-1" aria-label="code-block-2-9"></a><span class="ex">mpirun</span> <span class="at">--</span> ./build/raytracer <span class="at">-width</span><span class="op">=</span>2263 <span class="at">-height</span><span class="op">=</span>2263 <span class="at">-spp</span><span class="op">=</span>512 <span class="at">-threads</span><span class="op">=</span>1 <span class="at">-png</span> <span class="st">"</span><span class="va">$(</span><span class="fu">date</span> +%Y-%m-%d_%H%M%S<span class="va">)</span><span class="st">.png"</span></span></code></pre>
-</div>
-<ol start="2" style="list-style-type: decimal">
-<li>Log in to the ClusterCockpit web interface of your HPC system, as
-explained in your cluster documentation.</li>
-<li>Go to <code>My Jobs</code> and click on the job with the same Slurm
-job id, once it is available</li>
-</ol>
-<figure><img src="fig/cc/cc_bar.png" alt='"My Jobs" tab in the ClusterCockpit web UI' class="figure mx-auto d-block"><div class="figcaption">ClusterCockpits main menu. Select “My Jobs” to
-see a list of the jobs associated to your account.</div>
-</figure>
-</div>
-<div id="nav-tabpanel-1-PerformanceReports" class="tab-pane" aria-labelledby="nav-tab-1-PerformanceReports" role="tabpanel">
-<ol style="list-style-type: decimal">
-<li>Check your cluster documentation and/or module system if the Linaro
-Forge software suite is available</li>
-<li>Submit a job loading the Linaro Forge module and start
-<code>mpirun</code> with the <code>perf-report</code> application:</li>
-</ol>
-<div class="codewrapper sourceCode" id="cb3">
-<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" tabindex="-1" aria-label="code-block-3-1"></a><span class="co">#!/usr/bin/bash</span></span>
-<span id="cb3-2"><a href="#cb3-2" tabindex="-1" aria-label="code-block-3-2"></a><span class="co">#SBATCH --time=01:00:00</span></span>
-<span id="cb3-3"><a href="#cb3-3" tabindex="-1" aria-label="code-block-3-3"></a><span class="co">#SBATCH --ntasks=8</span></span>
-<span id="cb3-4"><a href="#cb3-4" tabindex="-1" aria-label="code-block-3-4"></a><span class="co">#SBATCH --nodes=1</span></span>
-<span id="cb3-5"><a href="#cb3-5" tabindex="-1" aria-label="code-block-3-5"></a><span class="co">#SBATCH --mem-per-cpu=1000MB</span></span>
-<span id="cb3-6"><a href="#cb3-6" tabindex="-1" aria-label="code-block-3-6"></a></span>
-<span id="cb3-7"><a href="#cb3-7" tabindex="-1" aria-label="code-block-3-7"></a><span class="ex">module</span> load 2025 LinaroForge/25.1.1 GCC/13.2.0 OpenMPI/4.1.6 buildenv/default Boost/1.83.0 CMake/3.27.6 libpng/1.6.40</span>
-<span id="cb3-8"><a href="#cb3-8" tabindex="-1" aria-label="code-block-3-8"></a></span>
-<span id="cb3-9"><a href="#cb3-9" tabindex="-1" aria-label="code-block-3-9"></a><span class="ex">perf-report</span> mpirun <span class="at">--</span> ./build/raytracer <span class="at">-width</span><span class="op">=</span>2263 <span class="at">-height</span><span class="op">=</span>2263 <span class="at">-spp</span><span class="op">=</span>512 <span class="at">-threads</span><span class="op">=</span>1 <span class="at">-png</span> <span class="st">"</span><span class="va">$(</span><span class="fu">date</span> +%Y-%m-%d_%H%M%S<span class="va">)</span><span class="st">.png"</span></span></code></pre>
-</div>
-<ol start="3" style="list-style-type: decimal">
-<li>Performance Report results are created as <code>.html</code> and
-<code>.txt</code> files next to the regular Slurm logs.</li>
-</ol>
-</div>
-<div id="nav-tabpanel-1-TBD" class="tab-pane" aria-labelledby="nav-tab-1-TBD" role="tabpanel">
-<p>N/A</p>
-</div>
-</div>
 </div>
 </section><section><h2 class="section-heading" id="general-report">General Report<a class="anchor" aria-label="anchor" href="#general-report"></a>
 </h2>
 <hr class="half-width">
-<p>As a first step, to go beyond a wall-time analysis, we employ the
+<p>Going back to our Cluster Cockpit results, log in to the
+ClusterCockpit web interface of your HPC system, as explained in your
+cluster documentation. Go to <code>My Jobs</code> and click on the job 1
+with the same Slurm job id, once it is available</p>
+<figure><img src="fig/cc/cc_bar.png" alt='"My Jobs" tab in the ClusterCockpit web UI' class="figure mx-auto d-block"><div class="figcaption">ClusterCockpits main menu. Select “My Jobs” to
+see a list of the jobs associated to your account.</div>
+</figure><p>As a first step, to go beyond a wall-time analysis, we employ the
 measurement tool to produce a general overview of our applications
 behavior. Here, we typically try to answer questions like:</p>
 <ul>
@@ -4292,106 +4291,174 @@ component?</li>
 <div class="section level3">
 <h3 id="first-overview">First Overview<a class="anchor" aria-label="anchor" href="#first-overview"></a>
 </h3>
-<div class="tabs">
-<nav><div id="nav-tab-2" class="nav nav-tabs" role="tablist">
-<button class="nav-link active" id="nav-tab-2-ClusterCockpit" name="ClusterCockpit" data-bs-toggle="tab" data-bs-target="#nav-tabpanel-2-ClusterCockpit" type="button" role="tab" aria-controls="nav-tabpanel-2-ClusterCockpit" aria-selected="true">
-  <h3 class="tab-header" id="nav-tab-heading-2-ClusterCockpit">
-  ClusterCockpit
-  </h3>
-</button>
-<button class="nav-link" id="nav-tab-2-PerformanceReports" name="PerformanceReports" data-bs-toggle="tab" data-bs-target="#nav-tabpanel-2-PerformanceReports" type="button" role="tab" aria-controls="nav-tabpanel-2-PerformanceReports" aria-selected="false">
-  <h3 class="tab-header" id="nav-tab-heading-2-PerformanceReports">
-  Performance Reports
-  </h3>
-</button>
-<button class="nav-link" id="nav-tab-2-TBD" name="TBD" data-bs-toggle="tab" data-bs-target="#nav-tabpanel-2-TBD" type="button" role="tab" aria-controls="nav-tabpanel-2-TBD" aria-selected="false">
-  <h3 class="tab-header" id="nav-tab-heading-2-TBD">
-  TBD
-  </h3>
-</button>
-</div>
-</nav><div id="nav-tabContent-2" class="tab-content">
-<div id="nav-tabpanel-2-ClusterCockpit" class="tab-pane show active" aria-labelledby="nav-tab-2-ClusterCockpit" role="tabpanel">
 <p>The job view of a particular job in ClusterCockpit begins with three
 summary panels for the job.</p>
-<figure><img src="fig/cc/job_metadata.png" alt="ClusterCockpit Job Info panel" class="figure mx-auto d-block"></figure><p>The <em>Job Info</em> panel summarizes Slurm metadata about the job,
+<figure><img src="fig/cc-new/job-metrics.png" alt="ClusterCockpit Job Info panel" class="figure mx-auto d-block"></figure><p>The <em>Job Info</em> panel summarizes Slurm metadata about the job,
 e.g. job ID, accounts, start time, duration, etc.</p>
-<figure><img src="fig/cc/job_footprint.png" alt="Cluster Cockpit Footprint panel summarizing central job characteristics" class="figure mx-auto d-block"></figure><p>The <em>Footprint</em> panel summarizes a preconfigured set of
+<figure><img src="fig/cc-new/footprint.png" alt="Cluster Cockpit Footprint panel summarizing central job characteristics" class="figure mx-auto d-block"></figure><p>The <em>Footprint</em> panel summarizes a preconfigured set of
 performance characteristics for the job. It categorizes values in a
 traffic-light system, so yellow and red indicators motivates further
 investigation. The exact list and type of metrics depends on the
 ClusterCockpit configuration, which is prepared by the administrator of
 the service.</p>
-<p>Here, all three values are in an acceptable range:</p>
+<p>Here, all four values are not in acceptable range. We see why:</p>
 <ul>
 <li>
-<code>cpu_load_core (avg)</code> is the average load per core.
-Across all <span class="math inline">\(8\)</span> cores of the job, each
-one was on average utilized at 86% (<span class="math inline">\(0.86\)</span>). The perfect value would be <span class="math inline">\(1\)</span>
-</li>
+<code>cpu_load (avg)</code> is shown in red. Since we requested the
+node with <code>--exclusive</code>, we were given all <span class="math inline">\(96\)</span> cores of the node, but our job only
+uses <span class="math inline">\(8\)</span> of them. The footprint
+compares load against the full <span class="math inline">\(96\)</span>
+cores that are requested by us, so it correctly flags that most of the
+requested resources are sitting idle. This is underutilization of
+requested resources.</li>
 <li>
-<code>cpu_user (avg)</code> is the average CPU utilization by user
-processes (the application), opposed to system activities or even idle
-cycles</li>
+<code>flops_any (avg)</code> is Floating Point Operations per
+second. In this case, it is calculated as <span class="math inline">\(22.38 GF/s\)</span>, which is far below what the
+node can theoretically achieve. It can point to anything from not
+utilizing the hardware features to simply not needing many floating
+point operations at all.</li>
 <li>
-<code>job_mem_used (max)</code> shows the maximum value that has
-been measured across the jobs duration. With <span class="math inline">\(3.75\)</span> GB available per core on this
-particular HPC system, the job could have used up to <span class="math inline">\(30\)</span> GB of memory. Any value below that is
-acceptable, but we could consider lower <code>--mem</code> settings in
-our Slurm job configuration.</li>
+<code>mem_used (avg)</code> shows the memory utilization of the job.
+This, together with the bandwidth metric below, is exactly why we
+requested an exclusive node in the first place: memory- and
+energy-related hardware counters are not available at a per-core
+granularity. They are measured at socket level or node level rather than
+per core, so running exclusively is what keeps them meaningful for our
+job alone.</li>
+<li>
+<code>mem_bw (avg)</code> is the memory bandwidth, i.e. how much
+data is transferred to and from memory per second.</li>
 </ul>
-<figure><img src="fig/cc/job_roofline.png" alt="Cluster Cockpit Roofline plot of a job" class="figure mx-auto d-block"></figure><p>In jobs performing floating point operations on data read from
-memory, i.e. any numeric operation, which are very common in HPC, a
-<strong>Roofline plot</strong> is a common visualization of the jobs
-performance.</p>
-<p>On the x-axis, <em>computational intensity</em> shows the ratio of
-floating point operations compared to the loaded data from memory. The
-bold diagonal line represents the maximum possible performance limited
-by the memory bandwidth. On the other hand, the horizontal lines
-represent the maximum possible performance limited by the number of
-possible scalar operations (lower line) and vectorized instructions
-(upper line).</p>
-<p>Many calculations on fewer data result in a large computational
-intensity (<em>compute bound</em>), right of the knee. Few calculations
-on more data results in less computational density (<em>memory
-bound</em>), left of the knee.</p>
-<p>Color-coded dots show how close the application came to the physical
-performance limits over the job duration. There is no data visible for
-jobs that employ no floating point operations, which unfortunately is
-the case here.</p>
+<div id="granularity-of-metrics" class="callout">
+<div class="callout-square">
+<i class="callout-icon" data-feather="bell"></i>
+</div>
+<span class="callout-header">Callout</span>
+<div id="granularity-of-metrics" class="callout-inner">
+<h3 class="callout-title">Granularity of Metrics</h3>
+<div class="callout-content">
+<p>Not every metric ClusterCockpit shows describes your job. Some
+describe the whole CPU socket, or even the whole node, regardless of how
+many cores your job actually occupies. The underlying collectors read
+hardware performance counters that are simply wired up at a particular
+level of the machine, and they have no notion of which Slurm job is
+currently running. This is true regardless of which monitoring tool you
+use, but it is essential to understand for reading ClusterCockpit
+correctly.</p>
+<p>Metrics come in three granularities:</p>
+<ul>
+<li>
+<strong>Core-level</strong>: measured separately for each individual
+CPU core, e.g. <code>cpu_user</code>, <code>ipc</code>,
+<code>flops_any</code>. These are meaningful for your job even if other
+jobs share the same node, since each core is attributed to exactly one
+job.</li>
+<li>
+<strong>Socket-level</strong>: measured once for an entire CPU
+socket (which may host several cores of several different jobs),
+e.g. <code>mem_bw</code> and the package power reading behind the Energy
+panel (<code>pkg_pwr</code>). If another job shares your socket, its
+memory traffic or power draw is mixed into your measurement.</li>
+<li>
+<strong>Node-level</strong>: measured once for the whole compute
+node, e.g. <code>cpu_load</code>, <code>mem_used</code> and network or
+filesystem metrics. These are effected by every job on the node, not
+just yours.</li>
+</ul>
+<p>Each metric plot in ClusterCockpit has a small drop-down menu as
+shown in image below, typically labelled core, socket, or node. This
+label tells you directly at which granularity that particular chart was
+measured — a core selection means one line per core of your job, while
+socket or node means the value is shared with (and possibly polluted by)
+other jobs. If the drop-down only offers socket or node, treat the value
+with more caution unless you know the node was exclusively yours</p>
+<figure><img src="fig/cc-new/dropdown-menu.png" alt="Drop down menu" class="figure mx-auto d-block"></figure><p>This is precisely why we requested <code>--exclusive</code> when
+submitting our job earlier in this episode: on a node reserved
+exclusively for our job, socket- and node-level metrics describe our job
+alone, since there is nothing else running to mix into the measurement.
+If you cannot use <code>--exclusive</code>, for example because your
+allocation only ever needs a fraction of a node, keep an eye on which
+granularity a given metric is measured at, and treat socket- or
+node-level values as an upper bound that may include other jobs’
+activity rather than a precise reading of your own.</p>
+</div>
+</div>
+</div>
 <figure><img src="fig/cc/job_select_metrics.png" alt="Select Metrics button in the ClusterCockpit job view" class="figure mx-auto d-block"></figure><p>More detailed plots for each individual metric are available and can
 be configured through the <em>Select Metrics</em> button.</p>
-</div>
-<div id="nav-tabpanel-2-PerformanceReports" class="tab-pane" aria-labelledby="nav-tab-2-PerformanceReports" role="tabpanel">
-<p>Linaro Forge <code>perf-report</code> results are stored in a HTML or
-<code>.txt</code> format, for example:</p>
+<p>In general, the footprint panel gives the most information on what
+issues our job may have and where to start the investigation. In our
+case:</p>
 <ul>
-<li><a href="data/raytracer_8p_1n_2025-12-16_09-53.html">Linaro
-<code>perf-report</code> (HTML version)</a></li>
-<li><a href="data/raytracer_8p_1n_2025-12-16_09-53.txt">Linaro
-<code>perf-report</code> (txt version)</a></li>
+<li>We can utilize all <span class="math inline">\(96\)</span> cores
+instead of just <span class="math inline">\(8\)</span> to make use of
+the full exclusive allocation.</li>
+<li>We can try to improve either <code>flops_any</code> or
+<code>mem_bw</code>. To know which one actually makes sense to target,
+we need to look at the next panel, the <em>Roofline plot</em>.</li>
 </ul>
-<p>The text file is readable from the command line, which is very
-convenient for quick checks in HPC environments. The HTML version,
-however, provides better rendered visualizations and formatting.</p>
-<figure><img src="fig/linaro/linaro_1.png" alt="Linaro perf-report overview 1" class="figure mx-auto d-block"></figure><p>At the top, the Performance Report states metadata about the
-underlying computer hardware and the application. The job is summarized
-in terms of computational intensity, time spent in MPI calls, and impact
-of disk I/O operations.</p>
-<p>The application is automatically classified in these three dimensions
-and accompanied with suggestions of further investigation.</p>
-<p>Here, our application spends 99.5% of the runtime in computations.
-Any performance optimization has to focus on improving calculations in
-the CPU.</p>
 </div>
-<div id="nav-tabpanel-2-TBD" class="tab-pane" aria-labelledby="nav-tab-2-TBD" role="tabpanel">
-<p>N/A</p>
+<div class="section level3">
+<h3 id="how-to-read-a-roofline-plot">How to read a Roofline Plot<a class="anchor" aria-label="anchor" href="#how-to-read-a-roofline-plot"></a>
+</h3>
+<p>Before looking at our job’s result, here’s what to expect on Roofline
+plot and how to understand the plot. Here is the example Roofline
+Plot:</p>
+<figure><img src="fig/roofline-example.png" alt="Example Roofline plot with labels" class="figure mx-auto d-block"></figure><p>In jobs performing floating point operations on data read from
+memory, i.e. any numeric operation, which are very common in HPC, a
+Roofline plot is a common visualization of the jobs performance.</p>
+<ul>
+<li>The x-axis is operational intensity: how many floating point
+operations are performed per byte loaded from memory. The y-axis is
+achieved performance: floating point operations per second.</li>
+<li>A diagonal line marks the maximum performance possible. <span class="math display">\[P_{peak} = \min(\text{Memory Bandwidth} \times
+\text{Operational Intensity},\ \text{Flop/s}_{peak})\]</span>
+</li>
+<li>A job with low intensity i.e. high memory transfers is pinned close
+to diagonal line: memory is the bottleneck, no matter how fast the CPU
+could otherwise compute.</li>
+<li>The two horizontal lines mark the maximum performance possible if
+CPU computation itself is the limit: lower line for scalar operations, a
+higher one once vectorized instructions are used.</li>
+<li>Where the diagonal and horizontal lines meet is the knee. Left of
+the knee = memory bound (data movement is the bottleneck). Right of the
+knee = compute bound (calculation capability is the bottleneck).</li>
+<li>The colored dots show measurements taken at different points in time
+during the job’s run, following a blue-to-red gradient: blue marks the
+start of the application, red marks the end. Their position relative to
+the rooflines shows how close each phase of execution came to the
+physical performance limits, and how that changed over the runtime.</li>
+</ul>
+<div id="discussion3" class="callout discussion">
+<div class="callout-square">
+<i class="callout-icon" data-feather="message-circle"></i>
+</div>
+<span class="callout-header">Discussion</span>
+<div class="callout-inner">
+<div class="callout-content">
+<p>Below is the Roofline plot for our application. <img src="fig/cc-new/roofline.png" alt="Cluster Cockpit Roofline plot of a job" class="figure"></p>
+<p>Take a moment to look at where our raytracer’s dot(s) land on the
+plot.</p>
+<ul>
+<li>Is the job <strong>compute bound or memory bound</strong>? Which
+side of the knee do the measurements fall on?</li>
+<li>Do the dots sit close to the scalar roofline, or closer to the
+vectorized roofline? What does that tell you about whether the
+application is actually using vectorized instructions?</li>
+<li>Given where the job sits, which metric is more interesting for our
+next investigation — <code>flops_any</code>, or <code>mem_bw</code>?
+Which one, if improved, would actually move the dot closer to a
+roofline?</li>
+<li>Does the dot’s position stay roughly constant over the blue-to-red
+timeline, or does it drift? What might cause a job to move further from
+(or closer to) the roofline as it runs?</li>
+</ul>
 </div>
 </div>
 </div>
 </div>
 <div class="section level3">
-<h3 id="cpu">CPU<a class="anchor" aria-label="anchor" href="#cpu"></a>
+<h3 id="cpu-metrics">CPU Metrics<a class="anchor" aria-label="anchor" href="#cpu-metrics"></a>
 </h3>
 <p>CPU performance can be categorized in</p>
 <ol style="list-style-type: decimal">
@@ -4414,155 +4481,124 @@ amount, which is a common limiting factor in everyday calculations. On
 HPC systems, the benefit of SMT is very much application-dependent. It
 is often disabled on HPC systems, since code is optimized to maximize
 computational intensity.</p>
-<div class="tabs">
-<nav><div id="nav-tab-3" class="nav nav-tabs" role="tablist">
-<button class="nav-link active" id="nav-tab-3-ClusterCockpit" name="ClusterCockpit" data-bs-toggle="tab" data-bs-target="#nav-tabpanel-3-ClusterCockpit" type="button" role="tab" aria-controls="nav-tabpanel-3-ClusterCockpit" aria-selected="true">
-  <h3 class="tab-header" id="nav-tab-heading-3-ClusterCockpit">
-  ClusterCockpit
-  </h3>
-</button>
-<button class="nav-link" id="nav-tab-3-PerformanceReports" name="PerformanceReports" data-bs-toggle="tab" data-bs-target="#nav-tabpanel-3-PerformanceReports" type="button" role="tab" aria-controls="nav-tabpanel-3-PerformanceReports" aria-selected="false">
-  <h3 class="tab-header" id="nav-tab-heading-3-PerformanceReports">
-  Performance Reports
-  </h3>
-</button>
-<button class="nav-link" id="nav-tab-3-TBD" name="TBD" data-bs-toggle="tab" data-bs-target="#nav-tabpanel-3-TBD" type="button" role="tab" aria-controls="nav-tabpanel-3-TBD" aria-selected="false">
-  <h3 class="tab-header" id="nav-tab-heading-3-TBD">
-  TBD
-  </h3>
-</button>
-</div>
-</nav><div id="nav-tabContent-3" class="tab-content">
-<div id="nav-tabpanel-3-ClusterCockpit" class="tab-pane show active" aria-labelledby="nav-tab-3-ClusterCockpit" role="tabpanel">
 <p>ClusterCockpit captures many dedicated CPU metrics and provides a
 timeline visualization for each.</p>
-<figure><img src="fig/cc/job_cpu_load_core.png" alt="ClusterCockpit cpu load per core" class="figure mx-auto d-block"></figure><p>The <code>cpu_load_core</code> shows the load of each individual core
-of the job. The <code>core</code> value of the drop down menu indicates
-a per-core metric. Other metrics are only available per socket or even
-per whole node. These coarser metrics may be affected by multiple jobs
-on shared nodes, so check the context of each metric you study to make
-sure that concurrent jobs do not influence your measurements.</p>
-<p>Here, the <code>cpu_load_core</code> reaches 1 after an initial ramp
-up phase. A value of significantly larger than 1 indicates an
-over-subscription where more processes/threads share the same CPU core.
-This can sometimes happen in an erroneous mismatch between OpenMP
-threads or MPI processes and Slurm tasks or threads per Slurm task.</p>
-<figure><img src="fig/cc/job_flops.png" alt="ClusterCockpit flops_any metric" class="figure mx-auto d-block"></figure><p><code>flops_any</code> shows any floating point operation on AMD
-CPUs. Single and double precision operations are accumulated in the same
-result. A few FLOPs occur, but the example raytracer application seems
-to utilize many non-floating point operations. Therefore, a low
-<code>flops_any</code> is not necessarily critical in this case.</p>
-<figure><img src="fig/cc/job_ipc.png" alt="" class="figure mx-auto d-block"></figure><p><code>ipc</code> (Instructions per Clock cycle) measures the number
-of operations the CPU is performing on average for each tick of its
-clock. CPUs are capable of executing more than one instruction per clock
-tick, so a value of about <span class="math inline">\(2.25\)</span>
-indicates that the CPU is “busy enough”.</p>
+<figure><img src="fig/cc-new/cpu-user.png" alt="ClusterCockpit cpu_user metric" class="figure mx-auto d-block"></figure><p><code>cpu_user</code> shows, per core, the share of CPU time spent
+executing our application’s own instructions, as opposed to time spent
+in kernel/system activity or sitting idle. A high <code>cpu_user</code>
+near <span class="math inline">\(1\)</span> is a good sign: the core is
+busy, and busy doing <em>our</em> work rather than system overhead. A
+core sitting noticeably below <span class="math inline">\(1\)</span> is
+worth a closer look. Some of its time is going to something other than
+our application’s own instructions, whether that’s kernel activity,
+waiting, or other overhead. A <code>cpu_user</code> of <span class="math inline">\(0\)</span> means the core was idle for that
+interval and not running our application at all.</p>
+<figure><img src="fig/cc-new/flops-any.png" alt="ClusterCockpit flops_any metric" class="figure mx-auto d-block"></figure><p><code>flops_any</code> captures any floating point operation on Intel
+CPUs, at core-level granularity, with single- and double-precision
+operations accumulated into the same value. Recall from the Footprint
+panel that our job’s <code>flops_any (avg)</code> sat at only <span class="math inline">\(22.38\)</span> GF/s, while the node’s theoretical
+peak is <span class="math inline">\(8532\)</span> GF/s.</p>
+<p>That gap looks enormous, but it isn’t a fair comparison yet: the
+<span class="math inline">\(8532\)</span> GF/s peak is for all <span class="math inline">\(96\)</span> cores of the exclusive node, while our
+job only ever uses <span class="math inline">\(8\)</span> of them.
+Scaled down to <span class="math inline">\(8\)</span> cores, the
+theoretical peak is roughly <span class="math inline">\(711\)</span>
+GF/s, so <span class="math inline">\(22.38\)</span> GF/s is still well
+below what our <span class="math inline">\(8\)</span> cores could
+theoretically achieve, but nowhere near the dramatic 96-core gap the raw
+numbers first suggest. This isn’t a contradiction of the Roofline plot
+classifying the job as compute bound either way: compute bound only
+means the CPU’s calculation capability is the limiting factor relative
+to how little data is moved, not that the job is issuing many
+<em>floating point</em> operations specifically.</p>
+<div id="exercise-compare-flops_any-between-job-1-and-job-2" class="callout challenge">
+<div class="callout-square">
+<i class="callout-icon" data-feather="zap"></i>
 </div>
-<div id="nav-tabpanel-3-PerformanceReports" class="tab-pane" aria-labelledby="nav-tab-3-PerformanceReports" role="tabpanel">
-<p>Performance Reports summarizes multiple CPU-related measurements.</p>
-<figure><img src="fig/linaro/linaro_cpu.png" alt="" class="figure mx-auto d-block"></figure><p>The raytracer spends 99.5% of its time in CPU-related operations.
-This breaks down into scalar numeric operations (25.2%) and memory
-access (63.2%). It recommends to study the memory access patterns and
-utilization of vectorized instructions as optimization approaches.</p>
-<figure><img src="fig/linaro/linaro_thread.png" alt="" class="figure mx-auto d-block"></figure><p>The “Threads” section summarizes threading behavior for multithreaded
-applications. A third of the time is spend in thread synchronization
-operations.</p>
-<figure><img src="fig/linaro/linaro_thread_affinity.png" alt="" class="figure mx-auto d-block"></figure><p>In the “Thread Affinity” section, the applications association
-between individual threads and processes to specific CPU cores is
-visualized. The 8 MPI processes of the example job should be explicitly
-mapped (pinned) to 8 cores of the job. Here, the thread affinity is not
-measured correctly, due to a bug in the underlying software.</p>
-</div>
-<div id="nav-tabpanel-3-TBD" class="tab-pane" aria-labelledby="nav-tab-3-TBD" role="tabpanel">
-<p>N/A</p>
+<span class="callout-header">Challenge</span>
+<div id="exercise-compare-flops_any-between-job-1-and-job-2" class="callout-inner">
+<h3 class="callout-title">Exercise: Compare <code>flops_any</code>
+between job 1 and job 2</h3>
+<div class="callout-content">
+<p>We now have two jobs to compare: our job1 (<code>raytracer</code>)
+and a job2 run with the <code>raytracer_float4</code> executable.</p>
+<p>Look at the <code>flops_any</code> metric for both jobs. What’s
+different between them, and why?</p>
 </div>
 </div>
 </div>
+<div id="accordionSolution2" class="accordion challenge-accordion accordion-flush">
+<div class="accordion-item">
+<button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
+  <h4 class="accordion-header" id="headingSolution2"> Show me the solution </h4>
+</button>
+<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
+<div class="accordion-body">
+<figure><img src="fig/cc-new/vec-flops-any.png" alt="ClusterCockpit flops_any metric for job2" class="figure mx-auto d-block"></figure><p>In our measurements, <code>flops_any (avg)</code> per core is close
+to <span class="math inline">\(3\)</span> GF/s for job 1, and close to
+<span class="math inline">\(6\)</span> GF/s for job 2, roughly a <span class="math inline">\(2\times\)</span> increase.</p>
+<p><code>raytracer_float4</code> uses SIMD: <code>float4</code>
+corresponds to SSE2 vectorized instructions, where a single instruction
+operates on <span class="math inline">\(4\)</span> float operands at
+once, instead of one operand at a time as in the original scalar
+<code>raytracer</code>.</p>
+<p><code>flops_any</code> counts floating point operations regardless of
+whether they were issued as scalar or vectorized instructions, each
+vectorized instruction in job 2 is counted as <span class="math inline">\(4\)</span> floating point operations rather than
+<span class="math inline">\(1\)</span>. As a result,
+<code>flops_any (avg)</code> for job 2 is noticeably higher than for job
+1. For the same amount of <em>work</em> done, the vectorized version
+issues far fewer instructions to do it, and each one accomplishes <span class="math inline">\(4\times\)</span> as much.</p>
+
+<p>This is also a good moment to connect back to the Roofline plot: job
+2’s dots sit slightly higher on the plot than job 1’s, and also shift
+further right along the x-axis — since computing more FLOPs per byte
+loaded raises the operational intensity too. They don’t touch the upper,
+vectorized roofline yet — that would become more visible if we used the
+full node instead of just <span class="math inline">\(8\)</span> of its
+<span class="math inline">\(96\)</span> cores.</p>
+</div>
+</div>
+</div>
+</div>
+<p>Our raytracer performs plenty of integer, branching, and
+memory-addressing work per byte loaded, which does not count towards
+<code>flops_any</code>. This is why a low <code>flops_any</code> is not
+necessarily a red flag here. On top of that, our original raytracer is
+not vectorized. It issues one scalar floating point operation at a time
+rather than operating on multiple values per instruction, which further
+caps how high <code>flops_any</code> can climb regardless of how well
+the rest of the code performs.</p>
 </div>
 <div class="section level3">
-<h3 id="memory">Memory<a class="anchor" aria-label="anchor" href="#memory"></a>
+<h3 id="memory-metrics">Memory Metrics<a class="anchor" aria-label="anchor" href="#memory-metrics"></a>
 </h3>
 <p>Memory utilization is characterized in terms of used capacity,
 bandwidth and access latencies.</p>
-<div class="tabs">
-<nav><div id="nav-tab-4" class="nav nav-tabs" role="tablist">
-<button class="nav-link active" id="nav-tab-4-ClusterCockpit" name="ClusterCockpit" data-bs-toggle="tab" data-bs-target="#nav-tabpanel-4-ClusterCockpit" type="button" role="tab" aria-controls="nav-tabpanel-4-ClusterCockpit" aria-selected="true">
-  <h3 class="tab-header" id="nav-tab-heading-4-ClusterCockpit">
-  ClusterCockpit
-  </h3>
-</button>
-<button class="nav-link" id="nav-tab-4-PerformanceReports" name="PerformanceReports" data-bs-toggle="tab" data-bs-target="#nav-tabpanel-4-PerformanceReports" type="button" role="tab" aria-controls="nav-tabpanel-4-PerformanceReports" aria-selected="false">
-  <h3 class="tab-header" id="nav-tab-heading-4-PerformanceReports">
-  Performance Reports
-  </h3>
-</button>
-<button class="nav-link" id="nav-tab-4-TBD" name="TBD" data-bs-toggle="tab" data-bs-target="#nav-tabpanel-4-TBD" type="button" role="tab" aria-controls="nav-tabpanel-4-TBD" aria-selected="false">
-  <h3 class="tab-header" id="nav-tab-heading-4-TBD">
-  TBD
-  </h3>
-</button>
-</div>
-</nav><div id="nav-tabContent-4" class="tab-content">
-<div id="nav-tabpanel-4-ClusterCockpit" class="tab-pane show active" aria-labelledby="nav-tab-4-ClusterCockpit" role="tabpanel">
-<figure><img src="fig/cc/job_mem_used.png" alt="" class="figure mx-auto d-block"></figure><p>The <code>job_mem_used</code> metric measures the memory capacity of
-a given job at sampled intervals as reported by the Slurm system. A job
-is limited to the maximum requested amount of memory and this limit
-should never be exceeded. If the application has very short-lived
-allocations, sharp peaks could fall in between the measured samples and
-not be captured in this metric.</p>
-<figure><img src="fig/cc/job_mem_bw.png" alt="" class="figure mx-auto d-block"></figure><p>The <code>mem_bw</code> metric represents the memory bandwidth at the
-socket-level of the CPU. Together with <code>flops_any</code>, this
-information is used to create the roofline plot from the job overview
-panels. Our job hardly moves any data to and from memory, which is why
-the roofline plot has not been populated.</p>
-<p>Since this measurement is only available on the socket-level, submit
-critical measurement jobs with <code>--exclusive</code> to not be
-affected by other jobs on shared worker nodes.</p>
-</div>
-<div id="nav-tabpanel-4-PerformanceReports" class="tab-pane" aria-labelledby="nav-tab-4-PerformanceReports" role="tabpanel">
-<figure><img src="fig/linaro/linaro_mem.png" alt="" class="figure mx-auto d-block"></figure><p>Performance Reports summarizes the memory utilization as a peak and
-mean measurement for all MPI processes. Here, the results suggest a
-possible imbalance between MPI processes, since some have significantly
-more memory demand than others (<span class="math inline">\(447\)</span>
-vs. <span class="math inline">\(212\)</span> MiB on average)</p>
-<p>If calculations depend directly on the amount of data in memory, then
-this correlates with unevenly busy MPI processes.</p>
-<p>The memory usage over all is very small, so we may be committing too
-many resources to the amount of calculations in the job.</p>
-</div>
-<div id="nav-tabpanel-4-TBD" class="tab-pane" aria-labelledby="nav-tab-4-TBD" role="tabpanel">
-<p>N/A</p>
-</div>
-</div>
-</div>
+<figure><img src="fig/cc-new/mem-used.png" alt="ClusterCockpit mem_used metric" class="figure mx-auto d-block"></figure><p><code>mem_used</code> sits at approximately <span class="math inline">\(5\)</span> GB for our job, shown as an almost
+flat, straight line across the runtime, which is a good sign. A flat
+line means memory consumption is stable once the application has
+allocated what it needs. A slanted, steadily increasing line instead
+would be a warning sign of a <strong>memory leak</strong>: memory that
+is allocated but never freed, growing continuously over the job’s
+runtime instead of leveling off.</p>
+<figure><img src="fig/cc-new/mem-bw.png" alt="ClusterCockpit mem_bw metric" class="figure mx-auto d-block"></figure><p><code>mem_bw</code> is a <strong>socket-level</strong> metric. It
+measures how much memory is transferred to and from a given CPU socket
+per second, not per individual core. Since our node has multiple
+sockets, you’ll typically see a different <code>mem_bw</code> value
+reported for each socket. This difference depends entirely on which
+cores on each socket are actually active and running part of the
+application: a socket with more of our job’s cores running on it will
+show higher memory traffic than a socket with fewer (or none) of them
+active.</p>
 </div>
 <div class="section level3">
 <h3 id="energy">Energy<a class="anchor" aria-label="anchor" href="#energy"></a>
 </h3>
-<div class="tabs">
-<nav><div id="nav-tab-5" class="nav nav-tabs" role="tablist">
-<button class="nav-link active" id="nav-tab-5-ClusterCockpit" name="ClusterCockpit" data-bs-toggle="tab" data-bs-target="#nav-tabpanel-5-ClusterCockpit" type="button" role="tab" aria-controls="nav-tabpanel-5-ClusterCockpit" aria-selected="true">
-  <h3 class="tab-header" id="nav-tab-heading-5-ClusterCockpit">
-  ClusterCockpit
-  </h3>
-</button>
-<button class="nav-link" id="nav-tab-5-PerformanceReports" name="PerformanceReports" data-bs-toggle="tab" data-bs-target="#nav-tabpanel-5-PerformanceReports" type="button" role="tab" aria-controls="nav-tabpanel-5-PerformanceReports" aria-selected="false">
-  <h3 class="tab-header" id="nav-tab-heading-5-PerformanceReports">
-  Performance Reports
-  </h3>
-</button>
-<button class="nav-link" id="nav-tab-5-TBD" name="TBD" data-bs-toggle="tab" data-bs-target="#nav-tabpanel-5-TBD" type="button" role="tab" aria-controls="nav-tabpanel-5-TBD" aria-selected="false">
-  <h3 class="tab-header" id="nav-tab-heading-5-TBD">
-  TBD
-  </h3>
-</button>
-</div>
-</nav><div id="nav-tabContent-5" class="tab-content">
-<div id="nav-tabpanel-5-ClusterCockpit" class="tab-pane show active" aria-labelledby="nav-tab-5-ClusterCockpit" role="tabpanel">
-<figure><img src="fig/cc/job_energy.png" alt="" class="figure mx-auto d-block"></figure><p>Depending on the ClusterCockpit configuration, an energy demand is
+<figure><img src="fig/cc-new/energy.png" alt="" class="figure mx-auto d-block"></figure><p>Depending on the ClusterCockpit configuration, an energy demand is
 displayed below the job info panels. This measurement is highly
 dependent on hardware configurations of your HPC systems, so the
-estimates may vary. They are often based on CPU packe power
+estimates may vary. They are often based on CPU package power
 measurements, which are unlikely to cover the whole energy demand of the
 node, e.g. omitting disks, fans, etc. In other cases, the energy may be
 estimated from power supply measurements and scaled to CPU activity to
@@ -4571,68 +4607,21 @@ get a more accurate estimate.</p>
 components and cooling of the clusters. Nevertheless, the estimate is a
 great tool to identify the scale of the jobs energy demand.</p>
 </div>
-<div id="nav-tabpanel-5-PerformanceReports" class="tab-pane" aria-labelledby="nav-tab-5-PerformanceReports" role="tabpanel">
-<figure><img src="fig/linaro/linaro_energy.png" alt="" class="figure mx-auto d-block"></figure><p>In cases where Performance Reports has user access to energy counters
-of the operating system, it can also summarize the CPUs and systems
-energy expenditure. Here, we are unfortunately missing the required
-access to the systems “RAPL” interface.</p>
-<p>Your HPC system may have a way to enable access to energy counters,
-e.g. for exclusive jobs. Consult your clusters documentation or support
-for more information.</p>
-</div>
-<div id="nav-tabpanel-5-TBD" class="tab-pane" aria-labelledby="nav-tab-5-TBD" role="tabpanel">
-<p>N/A</p>
-</div>
-</div>
-</div>
-</div>
 <div class="section level3">
 <h3 id="miscellaneous">Miscellaneous<a class="anchor" aria-label="anchor" href="#miscellaneous"></a>
 </h3>
 <p>Typically, many more measurements and perspectives on the data are
 available for each tool.</p>
-<div class="tabs">
-<nav><div id="nav-tab-6" class="nav nav-tabs" role="tablist">
-<button class="nav-link active" id="nav-tab-6-ClusterCockpit" name="ClusterCockpit" data-bs-toggle="tab" data-bs-target="#nav-tabpanel-6-ClusterCockpit" type="button" role="tab" aria-controls="nav-tabpanel-6-ClusterCockpit" aria-selected="true">
-  <h3 class="tab-header" id="nav-tab-heading-6-ClusterCockpit">
-  ClusterCockpit
-  </h3>
-</button>
-<button class="nav-link" id="nav-tab-6-PerformanceReports" name="PerformanceReports" data-bs-toggle="tab" data-bs-target="#nav-tabpanel-6-PerformanceReports" type="button" role="tab" aria-controls="nav-tabpanel-6-PerformanceReports" aria-selected="false">
-  <h3 class="tab-header" id="nav-tab-heading-6-PerformanceReports">
-  Performance Reports
-  </h3>
-</button>
-<button class="nav-link" id="nav-tab-6-TBD" name="TBD" data-bs-toggle="tab" data-bs-target="#nav-tabpanel-6-TBD" type="button" role="tab" aria-controls="nav-tabpanel-6-TBD" aria-selected="false">
-  <h3 class="tab-header" id="nav-tab-heading-6-TBD">
-  TBD
-  </h3>
-</button>
+<figure><img src="fig/cc-new/stats.png" alt="" class="figure mx-auto d-block"></figure><p>ClusterCockpit provides a detailed statistics table covering all
+measurements involved with a job. Alongside this table, you can also see
+your job script and Slurm info, which tells you how much of each
+resource was actually allocated to your job. The statistics table itself
+shows the max, min, and avg values for whichever metrics have been
+configured for your ClusterCockpit deployment.</p>
 </div>
-</nav><div id="nav-tabContent-6" class="tab-content">
-<div id="nav-tabpanel-6-ClusterCockpit" class="tab-pane show active" aria-labelledby="nav-tab-6-ClusterCockpit" role="tabpanel">
-<figure><img src="fig/cc/job_table.png" alt="" class="figure mx-auto d-block"></figure><p>ClusterCockpit provides a detailed statistics table to all
-measurements involved with a job.</p>
-</div>
-<div id="nav-tabpanel-6-PerformanceReports" class="tab-pane" aria-labelledby="nav-tab-6-PerformanceReports" role="tabpanel">
-<p><img src="fig/linaro/linaro_mpi.png" alt="" class="figure"> Performance Reports
-also summarizes the applications behavior in terms of MPI calls,
-e.g. time spent in collective calls involving all processors, or
-point-to-point communications.</p>
-<p>In larger MPI applications, this can be of great help identify issues
-in MPI programming. The example application has mostly independent MPI
-processes, where only initial data is scattered, and final results are
-gathered between processes.</p>
-<p><img src="fig/linaro/linaro_io.png" alt="" class="figure"> The I/O block
-summarizes measurements of interactions with the local file systems.
-Here, no I/O operations are affecting the applications performance at
-all.</p>
-</div>
-<div id="nav-tabpanel-6-TBD" class="tab-pane" aria-labelledby="nav-tab-6-TBD" role="tabpanel">
-<p>N/A</p>
-</div>
-</div>
-</div>
+</section><section><h2 class="section-heading" id="how-to-identify-a-bottleneck">How to identify a bottleneck?<a class="anchor" aria-label="anchor" href="#how-to-identify-a-bottleneck"></a>
+</h2>
+<hr class="half-width">
 <div id="exercise-match-application-behavior-to-hardware" class="callout challenge">
 <div class="callout-square">
 <i class="callout-icon" data-feather="zap"></i>
@@ -4659,12 +4648,12 @@ accelerators.</p>
 </div>
 </div>
 </div>
-<div id="accordionSolution1" class="accordion challenge-accordion accordion-flush">
+<div id="accordionSolution3" class="accordion challenge-accordion accordion-flush">
 <div class="accordion-item">
-<button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
-  <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
+<button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution3" aria-expanded="false" aria-controls="collapseSolution3">
+  <h4 class="accordion-header" id="headingSolution3"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
+<div id="collapseSolution3" class="accordion-collapse collapse" data-bs-parent="#accordionSolution3" aria-labelledby="headingSolution3">
 <div class="accordion-body">
 <ol style="list-style-type: decimal">
 <li>CPU (FLOPS), maybe the cache hierarchy if matrix elements do not
@@ -4676,7 +4665,6 @@ align well to cache sizes</li>
 <li>Memory (capacity)</li>
 <li>I/O (disk)</li>
 </ol>
-</div>
 </div>
 </div>
 </div>
@@ -4725,7 +4713,7 @@ any links that you are not going to use.
  -->
 </section></section><section id="aio-06_pinning"><p>Content from <a href="06_pinning.html">Pinning</a></p>
 <hr>
-<p>Last updated on 2025-10-31 |
+<p>Last updated on 2026-07-28 |
 
         <a href="https://github.com/stderr-enst/jobefficiency/edit/main/episodes/06_pinning.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <div class="text-end">
@@ -4802,7 +4790,7 @@ cases? - Is the increase in threads providing a speedup as expected?</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
 <div class="accordion-body">
 <ul>
 <li>Observation: The computation times are almost the same.</li>
@@ -4841,7 +4829,7 @@ made?</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
   <h4 class="accordion-header" id="headingSolution2"> Show me the solution </h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
 <div class="accordion-body">
 <p>Only 8 cores are active instead of 16</p>
 </div>
@@ -4892,7 +4880,7 @@ process/thread counts to better utilize the hardware in Case 2?</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution3" aria-expanded="false" aria-controls="collapseSolution3">
   <h4 class="accordion-header" id="headingSolution3"> Show me the solution </h4>
 </button>
-<div id="collapseSolution3" class="accordion-collapse collapse" data-bs-parent="#accordionSolution3" aria-labelledby="headingSolution3">
+<div id="collapseSolution3" class="accordion-collapse collapse" aria-labelledby="headingSolution3" data-bs-parent="#accordionSolution3">
 <div class="accordion-body">
 <ul>
 <li>MPI and thread pinning is hardware-aware.</li>
@@ -5015,7 +5003,7 @@ with 4 threads?</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution4" aria-expanded="false" aria-controls="collapseSolution4">
   <h4 class="accordion-header" id="headingSolution4"> Show me the solution </h4>
 </button>
-<div id="collapseSolution4" class="accordion-collapse collapse" data-bs-parent="#accordionSolution4" aria-labelledby="headingSolution4">
+<div id="collapseSolution4" class="accordion-collapse collapse" aria-labelledby="headingSolution4" data-bs-parent="#accordionSolution4">
 <div class="accordion-body">
 <ul>
 <li>8 and 32</li>
@@ -5061,90 +5049,9 @@ throughput.</p></li>
 Place links that you need to refer to multiple times across pages here. Delete
 any links that you are not going to use.
  -->
-</section></section><section id="aio-07_bottlenecks"><p>Content from <a href="07_bottlenecks.html">How to identify a bottleneck?</a></p>
-<hr>
-<p>Last updated on 2025-09-24 |
-
-        <a href="https://github.com/stderr-enst/jobefficiency/edit/main/episodes/07_bottlenecks.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
-<div class="text-end">
-          <button role="button" aria-pressed="false" tabindex="0" id="expand-code" class="pull-right" data-expand="Expand All Solutions " data-collapse="Collapse All Solutions "> Expand All Solutions <i aria-hidden="true" data-feather="plus"></i></button>
-        </div>
-<div class="overview card">
-<h2 class="card-header">Overview</h2>
-<div class="row g-0">
-<div class="col-md-4">
-<div class="card-body">
-<div class="inner">
-<h3 class="card-title">Questions</h3>
-<ul>
-<li>How can I find the bottlenecks in a given job?</li>
-<li>What are common workflows to evaluate performance?</li>
-<li>What are some common types of bottlenecks?</li>
-</ul>
-</div>
-</div>
-</div>
-<div class="col-md-8">
-<div class="card-body">
-<div class="inner bordered">
-<h3 class="card-title">Objectives</h3>
-<p>After completing this episode, participants should be able to …</p>
-<ul>
-<li>Choose between multiple workflows to evaluate job performance.</li>
-<li>Name typical performance issues.</li>
-<li>Determine if their job is affected by one of these issues.</li>
-</ul>
-</div>
-</div>
-</div>
-</div>
-</div>
-<section><h2 class="section-heading" id="how-to-identify-a-bottleneck">How to identify a bottleneck?<a class="anchor" aria-label="anchor" href="#how-to-identify-a-bottleneck"></a>
-</h2>
-<hr class="half-width">
-<!-- EPISODE CONTENT HERE --></section><section><h2 class="section-heading" id="summary">Summary<a class="anchor" aria-label="anchor" href="#summary"></a>
-</h2>
-<hr class="half-width">
-<p>Leading question: We were looking at a standard configuration with
-CPU, Memory, Disks, Network, so far. What about GPU applications, which
-are very common these days?</p>
-<div id="keypoints1" class="callout keypoints">
-<div class="callout-square">
-<i class="callout-icon" data-feather="key"></i>
-</div>
-<span class="callout-header">Key Points</span>
-<div class="callout-inner">
-<div class="callout-content">
-<ul>
-<li>General advice on the workflow</li>
-<li>Performance reports may provide an automated summary with
-recommendations</li>
-<li>Performance metrics can be categorized by the underlying hardware,
-e.g. CPU, memory, I/O, accelerators.</li>
-<li>Bottlenecks can appear by metrics being saturated at the physical
-limits of the hardware or indirectly by other metrics being far from
-what the physical limits are.</li>
-<li>Interpreting bottlenecks is closely related to what the application
-is supposed to do.</li>
-<li>Relative measurements (baseline vs. change)
-<ul>
-<li>system is quiescent, fixed CPU freq + affinity, warmups, …</li>
-<li>Reproducibility -&gt; link to git course?</li>
-</ul>
-</li>
-<li>Scanning results for smoking guns</li>
-<li>Any best practices etc.</li>
-</ul>
-</div>
-</div>
-</div>
-<!--
-Place links that you need to refer to multiple times across pages here. Delete
-any links that you are not going to use.
- -->
 </section></section><section id="aio-08_accelerators"><p>Content from <a href="08_accelerators.html">Performance of Accelerators</a></p>
 <hr>
-<p>Last updated on 2025-09-24 |
+<p>Last updated on 2026-07-28 |
 
         <a href="https://github.com/stderr-enst/jobefficiency/edit/main/episodes/08_accelerators.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <div class="text-end">
@@ -5213,7 +5120,7 @@ any links that you are not going to use.
  -->
 </section></section><section id="aio-09_nextsteps"><p>Content from <a href="09_nextsteps.html">Next Steps</a></p>
 <hr>
-<p>Last updated on 2026-07-03 |
+<p>Last updated on 2026-07-28 |
 
         <a href="https://github.com/stderr-enst/jobefficiency/edit/main/episodes/09_nextsteps.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <div class="text-end">
@@ -5301,7 +5208,7 @@ value?</p>
 <button class="accordion-button hint-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHint1" aria-expanded="false" aria-controls="collapseHint1">
   <h4 class="accordion-header" id="headingHint1"> Give me a hint </h4>
 </button>
-<div id="collapseHint1" class="accordion-collapse collapse" aria-labelledby="headingHint1" data-bs-parent="#accordionHint1">
+<div id="collapseHint1" class="accordion-collapse collapse" data-bs-parent="#accordionHint1" aria-labelledby="headingHint1">
 <div class="accordion-body">
 <p>Think again about the airplane analogy. Which scenario is more prone
 to small losses accumulating over time? 1. Passengers repeatedly handle
@@ -5316,7 +5223,7 @@ in a single coordinated operation.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
 <div class="accordion-body">
 <p>The external loop implementation <code>sum.bash</code> and the
 internal <code>bc</code> one-liner may produce results similar to</p>

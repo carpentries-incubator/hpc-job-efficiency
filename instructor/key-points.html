@@ -285,7 +285,7 @@
 <div class="accordion accordion-flush" id="accordionFlush6">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading6">
-        <a href="05_performancereports.html">5. Performance Overview</a>
+        <a href="05_overview_ClusterCockpit.html">5. Performance Overview</a>
     </div>
 <!--/div.accordion-header-->
 
@@ -309,7 +309,7 @@
 <div class="accordion accordion-flush" id="accordionFlush8">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading8">
-        <a href="07_bottlenecks.html">7. How to identify a bottleneck?</a>
+        <a href="08_accelerators.html">7. Performance of Accelerators</a>
     </div>
 <!--/div.accordion-header-->
 
@@ -321,19 +321,7 @@
 <div class="accordion accordion-flush" id="accordionFlush9">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading9">
-        <a href="08_accelerators.html">8. Performance of Accelerators</a>
-    </div>
-<!--/div.accordion-header-->
-
-  </div>
-<!--/div.accordion-item-->
-</div>
-<!--/div.accordion-flush-->
-
-<div class="accordion accordion-flush" id="accordionFlush10">
-  <div class="accordion-item">
-    <div class="accordion-header" id="flush-heading10">
-        <a href="09_nextsteps.html">9. Next Steps</a>
+        <a href="09_nextsteps.html">8. Next Steps</a>
     </div>
 <!--/div.accordion-header-->
 
@@ -465,7 +453,7 @@ workloads</li>
 program</li>
 <li>Gustafson’s law: more resources for parallel processing still help,
 if larger workloads can meaningfully contribute to project results</li>
-</ul></section><section id="05_performancereports"><h2 class="section-heading"><a href="05_performancereports.html">Performance Overview</a></h2>
+</ul></section><section id="05_overview_ClusterCockpit"><h2 class="section-heading"><a href="05_overview_ClusterCockpit.html">Performance Overview</a></h2>
 <hr class="half-width">
 <ul>
 <li>Performance tools measure data as regular samples or by tracing
@@ -500,27 +488,6 @@ performance — it causes contention and idle waits.</p></li>
 Use <code>--bind-to core</code> along with <code>--map-by</code> to
 control placement and threads per process to maximize
 throughput.</p></li>
-</ul></section><section id="07_bottlenecks"><h2 class="section-heading"><a href="07_bottlenecks.html">How to identify a bottleneck?</a></h2>
-<hr class="half-width">
-<ul>
-<li>General advice on the workflow</li>
-<li>Performance reports may provide an automated summary with
-recommendations</li>
-<li>Performance metrics can be categorized by the underlying hardware,
-e.g. CPU, memory, I/O, accelerators.</li>
-<li>Bottlenecks can appear by metrics being saturated at the physical
-limits of the hardware or indirectly by other metrics being far from
-what the physical limits are.</li>
-<li>Interpreting bottlenecks is closely related to what the application
-is supposed to do.</li>
-<li>Relative measurements (baseline vs. change)
-<ul>
-<li>system is quiescent, fixed CPU freq + affinity, warmups, …</li>
-<li>Reproducibility -&gt; link to git course?</li>
-</ul>
-</li>
-<li>Scanning results for smoking guns</li>
-<li>Any best practices etc.</li>
 </ul></section><section id="08_accelerators"><h2 class="section-heading"><a href="08_accelerators.html">Performance of Accelerators</a></h2>
 <hr class="half-width">
 <ul>

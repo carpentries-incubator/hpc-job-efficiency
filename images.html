@@ -284,7 +284,7 @@
 <div class="accordion accordion-flush" id="accordionFlush6">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading6">
-        <a href="05_performancereports.html">5. Performance Overview</a>
+        <a href="05_overview_ClusterCockpit.html">5. Performance Overview</a>
     </div>
 <!--/div.accordion-header-->
 
@@ -308,7 +308,7 @@
 <div class="accordion accordion-flush" id="accordionFlush8">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading8">
-        <a href="07_bottlenecks.html">7. How to identify a bottleneck?</a>
+        <a href="08_accelerators.html">7. Performance of Accelerators</a>
     </div>
 <!--/div.accordion-header-->
 
@@ -320,19 +320,7 @@
 <div class="accordion accordion-flush" id="accordionFlush9">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading9">
-        <a href="08_accelerators.html">8. Performance of Accelerators</a>
-    </div>
-<!--/div.accordion-header-->
-
-  </div>
-<!--/div.accordion-item-->
-</div>
-<!--/div.accordion-flush-->
-
-<div class="accordion accordion-flush" id="accordionFlush10">
-  <div class="accordion-item">
-    <div class="accordion-header" id="flush-heading10">
-        <a href="09_nextsteps.html">9. Next Steps</a>
+        <a href="09_nextsteps.html">8. Next Steps</a>
     </div>
 <!--/div.accordion-header-->
 
@@ -423,9 +411,9 @@ pixel</div>
 <p aria-hidden="true">Image 1 of 1: ‘Speedup and efficiency of weak scaling example’</p>
 <figure><img src="fig/weak_scaling.png" alt="Speedup and efficiency of weak scaling example" class="figure mx-auto d-block"><div class="figcaption">Speedup and efficiency of weak scaling
 example</div>
-</figure><hr></section><section id="05_performancereports"><h2 class="section-heading"><a href="05_performancereports.html">Performance Overview</a></h2>
+</figure><hr></section><section id="05_overview_ClusterCockpit"><h2 class="section-heading"><a href="05_overview_ClusterCockpit.html">Performance Overview</a></h2>
 <hr class="half-width">
-<h3 id="05_performancereports-figure-1">Figure 1</h3>
+<h3 id="05_overview_ClusterCockpit-figure-1">Figure 1</h3>
 <p aria-hidden="true">Image 1 of 1: ‘Diagram to visualize the data hierarchy of CPU architectures. Network, local disks, memory, and CPU caches have decreasing amounts of storage capacity, but increasing bandwidths and shorter latencies. Calculations occur in CPUs, possibly in multiple CPU cores, which may have multiple threads each, and even apply vectorized instructions.’</p>
 <figure><img src="fig/JobEfficiency.drawio.png" alt="Diagram to visualize the data hierarchy of CPU architectures. Network, local disks, memory, and CPU caches have decreasing amounts of storage capacity, but increasing bandwidths and shorter latencies. Calculations occur in CPUs, possibly in multiple CPU cores, which may have multiple threads each, and even apply vectorized instructions." class="figure mx-auto d-block"><div class="figcaption">The underlying hardware frames any performance
 analysis. Calculations are performed in multiple cores, potentially
@@ -436,77 +424,51 @@ each level “closer” to the CPU has a smaller storage capacity, but
 larger bandwidth and smaller latencies, improving access
 performance.</div>
 </figure><hr>
-<h3 id="05_performancereports-figure-2">Figure 2</h3>
+<h3 id="05_overview_ClusterCockpit-figure-2">Figure 2</h3>
 <p aria-hidden="true">Image 1 of 1: ‘"My Jobs" tab in the ClusterCockpit web UI’</p>
 <figure><img src="fig/cc/cc_bar.png" alt='"My Jobs" tab in the ClusterCockpit web UI' class="figure mx-auto d-block"><div class="figcaption">ClusterCockpits main menu. Select “My Jobs” to
 see a list of the jobs associated to your account.</div>
 </figure><hr>
-<h3 id="05_performancereports-figure-3">Figure 3</h3>
+<h3 id="05_overview_ClusterCockpit-figure-3">Figure 3</h3>
 <p aria-hidden="true">Image 1 of 1: ‘ClusterCockpit Job Info panel’</p>
-<figure><img src="fig/cc/job_metadata.png" alt="ClusterCockpit Job Info panel" class="figure mx-auto d-block"></figure><hr>
-<h3 id="05_performancereports-figure-4">Figure 4</h3>
+<figure><img src="fig/cc-new/job-metrics.png" alt="ClusterCockpit Job Info panel" class="figure mx-auto d-block"></figure><hr>
+<h3 id="05_overview_ClusterCockpit-figure-4">Figure 4</h3>
 <p aria-hidden="true">Image 1 of 1: ‘Cluster Cockpit Footprint panel summarizing central job characteristics’</p>
-<figure><img src="fig/cc/job_footprint.png" alt="Cluster Cockpit Footprint panel summarizing central job characteristics" class="figure mx-auto d-block"></figure><hr>
-<h3 id="05_performancereports-figure-5">Figure 5</h3>
-<p aria-hidden="true">Image 1 of 1: ‘Cluster Cockpit Roofline plot of a job’</p>
-<figure><img src="fig/cc/job_roofline.png" alt="Cluster Cockpit Roofline plot of a job" class="figure mx-auto d-block"></figure><hr>
-<h3 id="05_performancereports-figure-6">Figure 6</h3>
+<figure><img src="fig/cc-new/footprint.png" alt="Cluster Cockpit Footprint panel summarizing central job characteristics" class="figure mx-auto d-block"></figure><hr>
+<h3 id="05_overview_ClusterCockpit-figure-5">Figure 5</h3>
+<p aria-hidden="true">Image 1 of 1: ‘Drop down menu’</p>
+<figure><img src="fig/cc-new/dropdown-menu.png" alt="Drop down menu" class="figure mx-auto d-block"></figure><hr>
+<h3 id="05_overview_ClusterCockpit-figure-6">Figure 6</h3>
 <p aria-hidden="true">Image 1 of 1: ‘Select Metrics button in the ClusterCockpit job view’</p>
 <figure><img src="fig/cc/job_select_metrics.png" alt="Select Metrics button in the ClusterCockpit job view" class="figure mx-auto d-block"></figure><hr>
-<h3 id="05_performancereports-figure-7">Figure 7</h3>
-<p aria-hidden="true">Image 1 of 1: ‘Linaro perf-report overview 1’</p>
-<figure><img src="fig/linaro/linaro_1.png" alt="Linaro perf-report overview 1" class="figure mx-auto d-block"></figure><hr>
-<h3 id="05_performancereports-figure-8">Figure 8</h3>
-<p aria-hidden="true">Image 1 of 1: ‘ClusterCockpit cpu load per core’</p>
-<figure><img src="fig/cc/job_cpu_load_core.png" alt="ClusterCockpit cpu load per core" class="figure mx-auto d-block"></figure><hr>
-<h3 id="05_performancereports-figure-9">Figure 9</h3>
-<p aria-hidden="true">Image 1 of 1: ‘ClusterCockpit flops_any metric’</p>
-<figure><img src="fig/cc/job_flops.png" alt="ClusterCockpit flops_any metric" class="figure mx-auto d-block"></figure><hr>
-<h3 id="05_performancereports-figure-10">Figure 10</h3>
-<p aria-hidden="true">Image 1 of 1: ‘[decorative]’</p>
-<figure><img src="fig/cc/job_ipc.png" alt="" class="figure mx-auto d-block"></figure><hr>
-<h3 id="05_performancereports-figure-11">Figure 11</h3>
-<p aria-hidden="true">Image 1 of 1: ‘[decorative]’</p>
-<figure><img src="fig/linaro/linaro_cpu.png" alt="" class="figure mx-auto d-block"></figure><hr>
-<h3 id="05_performancereports-figure-12">Figure 12</h3>
-<p aria-hidden="true">Image 1 of 1: ‘[decorative]’</p>
-<figure><img src="fig/linaro/linaro_thread.png" alt="" class="figure mx-auto d-block"></figure><hr>
-<h3 id="05_performancereports-figure-13">Figure 13</h3>
-<p aria-hidden="true">Image 1 of 1: ‘[decorative]’</p>
-<figure><img src="fig/linaro/linaro_thread_affinity.png" alt="" class="figure mx-auto d-block"></figure><hr>
-<h3 id="05_performancereports-figure-14">Figure 14</h3>
-<p aria-hidden="true">Image 1 of 1: ‘[decorative]’</p>
-<figure><img src="fig/cc/job_mem_used.png" alt="" class="figure mx-auto d-block"></figure><hr>
-<h3 id="05_performancereports-figure-15">Figure 15</h3>
-<p aria-hidden="true">Image 1 of 1: ‘[decorative]’</p>
-<figure><img src="fig/cc/job_mem_bw.png" alt="" class="figure mx-auto d-block"></figure><hr>
-<h3 id="05_performancereports-figure-16">Figure 16</h3>
-<p aria-hidden="true">Image 1 of 1: ‘[decorative]’</p>
-<figure><img src="fig/linaro/linaro_mem.png" alt="" class="figure mx-auto d-block"></figure><hr>
-<h3 id="05_performancereports-figure-17">Figure 17</h3>
-<p aria-hidden="true">Image 1 of 1: ‘[decorative]’</p>
-<figure><img src="fig/cc/job_energy.png" alt="" class="figure mx-auto d-block"></figure><hr>
-<h3 id="05_performancereports-figure-18">Figure 18</h3>
-<p aria-hidden="true">Image 1 of 1: ‘[decorative]’</p>
-<figure><img src="fig/linaro/linaro_energy.png" alt="" class="figure mx-auto d-block"></figure><hr>
-<h3 id="05_performancereports-figure-19">Figure 19</h3>
-<p aria-hidden="true">Image 1 of 1: ‘[decorative]’</p>
-<figure><img src="fig/cc/job_table.png" alt="" class="figure mx-auto d-block"></figure><hr>
-<h3 id="05_performancereports-figure-20">Figure 20</h3>
-<p aria-hidden="true">Image 1 of 1: ‘[decorative]’</p>
-<p><img src="fig/linaro/linaro_mpi.png" alt="" class="figure"> Performance Reports
-also summarizes the applications behavior in terms of MPI calls,
-e.g. time spent in collective calls involving all processors, or
-point-to-point communications.</p>
+<h3 id="05_overview_ClusterCockpit-figure-7">Figure 7</h3>
+<p aria-hidden="true">Image 1 of 1: ‘Example Roofline plot with labels’</p>
+<figure><img src="fig/roofline-example.png" alt="Example Roofline plot with labels" class="figure mx-auto d-block"></figure><hr>
+<h3 id="05_overview_ClusterCockpit-figure-8">Figure 8</h3>
+<p aria-hidden="true">Image 1 of 1: ‘Cluster Cockpit Roofline plot of a job’</p>
+<p>Below is the Roofline plot for our application. <img src="fig/cc-new/roofline.png" alt="Cluster Cockpit Roofline plot of a job" class="figure"></p>
 <hr>
-<h3 id="05_performancereports-figure-21">Figure 21</h3>
+<h3 id="05_overview_ClusterCockpit-figure-9">Figure 9</h3>
+<p aria-hidden="true">Image 1 of 1: ‘ClusterCockpit cpu_user metric’</p>
+<figure><img src="fig/cc-new/cpu-user.png" alt="ClusterCockpit cpu_user metric" class="figure mx-auto d-block"></figure><hr>
+<h3 id="05_overview_ClusterCockpit-figure-10">Figure 10</h3>
+<p aria-hidden="true">Image 1 of 1: ‘ClusterCockpit flops_any metric’</p>
+<figure><img src="fig/cc-new/flops-any.png" alt="ClusterCockpit flops_any metric" class="figure mx-auto d-block"></figure><hr>
+<h3 id="05_overview_ClusterCockpit-figure-11">Figure 11</h3>
+<p aria-hidden="true">Image 1 of 1: ‘ClusterCockpit flops_any metric for job2’</p>
+<figure><img src="fig/cc-new/vec-flops-any.png" alt="ClusterCockpit flops_any metric for job2" class="figure mx-auto d-block"></figure><hr>
+<h3 id="05_overview_ClusterCockpit-figure-12">Figure 12</h3>
+<p aria-hidden="true">Image 1 of 1: ‘ClusterCockpit mem_used metric’</p>
+<figure><img src="fig/cc-new/mem-used.png" alt="ClusterCockpit mem_used metric" class="figure mx-auto d-block"></figure><hr>
+<h3 id="05_overview_ClusterCockpit-figure-13">Figure 13</h3>
+<p aria-hidden="true">Image 1 of 1: ‘ClusterCockpit mem_bw metric’</p>
+<figure><img src="fig/cc-new/mem-bw.png" alt="ClusterCockpit mem_bw metric" class="figure mx-auto d-block"></figure><hr>
+<h3 id="05_overview_ClusterCockpit-figure-14">Figure 14</h3>
 <p aria-hidden="true">Image 1 of 1: ‘[decorative]’</p>
-<p><img src="fig/linaro/linaro_io.png" alt="" class="figure"> The I/O block
-summarizes measurements of interactions with the local file systems.
-Here, no I/O operations are affecting the applications performance at
-all.</p>
-<hr></section><section id="06_pinning"><h2 class="section-heading"><a href="06_pinning.html">Pinning</a></h2>
-<hr class="half-width"></section><section id="07_bottlenecks"><h2 class="section-heading"><a href="07_bottlenecks.html">How to identify a bottleneck?</a></h2>
+<figure><img src="fig/cc-new/energy.png" alt="" class="figure mx-auto d-block"></figure><hr>
+<h3 id="05_overview_ClusterCockpit-figure-15">Figure 15</h3>
+<p aria-hidden="true">Image 1 of 1: ‘[decorative]’</p>
+<figure><img src="fig/cc-new/stats.png" alt="" class="figure mx-auto d-block"></figure><hr></section><section id="06_pinning"><h2 class="section-heading"><a href="06_pinning.html">Pinning</a></h2>
 <hr class="half-width"></section><section id="08_accelerators"><h2 class="section-heading"><a href="08_accelerators.html">Performance of Accelerators</a></h2>
 <hr class="half-width"></section><section id="09_nextsteps"><h2 class="section-heading"><a href="09_nextsteps.html">Next Steps</a></h2>
 <hr class="half-width"></section>

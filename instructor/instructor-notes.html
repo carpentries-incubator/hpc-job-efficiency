@@ -285,7 +285,7 @@
 <div class="accordion accordion-flush" id="accordionFlush6">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading6">
-        <a href="05_performancereports.html">5. Performance Overview</a>
+        <a href="05_overview_ClusterCockpit.html">5. Performance Overview</a>
     </div>
 <!--/div.accordion-header-->
 
@@ -309,7 +309,7 @@
 <div class="accordion accordion-flush" id="accordionFlush8">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading8">
-        <a href="07_bottlenecks.html">7. How to identify a bottleneck?</a>
+        <a href="08_accelerators.html">7. Performance of Accelerators</a>
     </div>
 <!--/div.accordion-header-->
 
@@ -321,19 +321,7 @@
 <div class="accordion accordion-flush" id="accordionFlush9">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading9">
-        <a href="08_accelerators.html">8. Performance of Accelerators</a>
-    </div>
-<!--/div.accordion-header-->
-
-  </div>
-<!--/div.accordion-item-->
-</div>
-<!--/div.accordion-flush-->
-
-<div class="accordion accordion-flush" id="accordionFlush10">
-  <div class="accordion-item">
-    <div class="accordion-header" id="flush-heading10">
-        <a href="09_nextsteps.html">9. Next Steps</a>
+        <a href="09_nextsteps.html">8. Next Steps</a>
     </div>
 <!--/div.accordion-header-->
 
@@ -674,10 +662,10 @@ single node and when the scaling study goes beyond a single node.</p>
 <p>Maybe be more specific about which overheads and how we can see
 them?</p>
 <hr>
-<br></section><section id="05_performancereports"><h2 class="section-heading"><a href="05_performancereports.html">Performance Overview</a></h2>
+<br></section><section id="05_overview_ClusterCockpit"><h2 class="section-heading"><a href="05_overview_ClusterCockpit.html">Performance Overview</a></h2>
 <hr class="half-width">
-<h3 id="05_performancereports-headingInstructor1">
-<a href="05_performancereports.html#headingInstructor1">Intention: Introduce third party tools for performance reports</a><a class="anchor" aria-label="anchor" href="#05_performancereports-headingInstructor1"></a>
+<h3 id="05_overview_ClusterCockpit-headingInstructor1">
+<a href="05_overview_ClusterCockpit.html#headingInstructor1">Intention: Introduce third party tools for performance reports</a><a class="anchor" aria-label="anchor" href="#05_overview_ClusterCockpit-headingInstructor1"></a>
 </h3>
 <p>Narrative:</p>
 <ul>
@@ -697,36 +685,79 @@ representations of data, e.g. Roofline</li>
 <li>Relate to hardware on the same level of detail</li>
 </ul>
 <hr>
-<br><h3 id="05_performancereports-headingInstructor2">
-<a href="05_performancereports.html#headingInstructor2">Pick and prepare your tool!</a><a class="anchor" aria-label="anchor" href="#05_performancereports-headingInstructor2"></a>
+<br><h3 id="05_overview_ClusterCockpit-headingInstructor2">
+<a href="05_overview_ClusterCockpit.html#headingInstructor2">TODO: Discuss requirements in more detail?</a><a class="anchor" aria-label="anchor" href="#05_overview_ClusterCockpit-headingInstructor2"></a>
 </h3>
-<p>We move on with three alternatives here.</p>
-<ol style="list-style-type: decimal">
-<li>
-<em>ClusterCockpit</em> is a job monitoring systems that can be
-configured to capture many performance metrics. It is easy to use, but
-has to be deployed by the cluster administration team.</li>
-<li>
-<em>Linaro Forge Performance Reports</em> provides a good first
-performance overview, but is a commercial application that requires
-access to valid licenses.</li>
-<li>
-<em>TBD</em> is a set of open source tools to create a performance
-overview independent of centralized services and licenses.</li>
-</ol>
-<p>Pick one tool and stick to it throughout the rest of the course.
-Consider mentioning alternatives and that learners may not have access
-to certain tools on every cluster, e.g. missing licenses for Linaro
-Forge.</p>
-<p>Be aware of site-specific setups, e.g. limiting access to performance
-counters, offering non-standard Slurm options during <code>sbatch</code>
-submission, and how licenses are handled.</p>
-<hr>
-<br><h3 id="05_performancereports-headingInstructor3">
-<a href="05_performancereports.html#headingInstructor3">TODO: Discuss requirements in more detail?</a><a class="anchor" aria-label="anchor" href="#05_performancereports-headingInstructor3"></a>
-</h3>
+<p>Dependent on the cluster config, some of these may have to be
+addressed?</p>
 <pre><code>cap_perfmon,cap_sys_ptrace,cap_syslog=ep
 kernel.perf_event_paranoid</code></pre>
+<hr>
+<br><h3 id="05_overview_ClusterCockpit-headingInstructor3">
+<a href="05_overview_ClusterCockpit.html#headingInstructor3">Prepare a reservation!</a><a class="anchor" aria-label="anchor" href="#05_overview_ClusterCockpit-headingInstructor3"></a>
+</h3>
+<p>We’ll have to run a couple of 20 minutes long
+<code>--exclusive</code> jobs here, so make sure enough resources are
+available for the exercise!</p>
+<hr>
+<br><h3 id="05_overview_ClusterCockpit-headingInstructor4">
+<a href="05_overview_ClusterCockpit.html#headingInstructor4">Know your tool!</a><a class="anchor" aria-label="anchor" href="#05_overview_ClusterCockpit-headingInstructor4"></a>
+</h3>
+<p>We provide alternatives for this episode. Make sure to select the
+right one in your <code>config.yaml</code>.</p>
+<p><em>ClusterCockpit</em> is a job monitoring systems that can be
+configured to capture many performance metrics. It is easy to use, but
+has to be deployed by the cluster administration team.</p>
+<p>Be aware of site-specific setups, e.g. limiting access to performance
+counters, offering non-standard Slurm options during <code>sbatch</code>
+submission, and how licenses are handled. Not all metrics discussed in
+this episode may be configured on every cluster — the set of metrics
+collected and displayed is chosen by the local administration team, so
+some panels or plots covered here might simply be unavailable, or show
+different metrics, on your system.</p>
+<hr>
+<br><h3 id="05_overview_ClusterCockpit-headingInstructor5">
+<a href="05_overview_ClusterCockpit.html#headingInstructor5">Demonstrating the Job 1 vs. Job 2 comparison</a><a class="anchor" aria-label="anchor" href="#05_overview_ClusterCockpit-headingInstructor5"></a>
+</h3>
+<p>Open Job 1 and Job 2 side by side in two browser tabs, and navigate
+both to the Roofline plot panel, to demonstrate the comparison live
+rather than just describing it.</p>
+<p>Hovering the cursor over a dot draws guide lines out to the x- and
+y-axes, letting you read off its operational intensity and achieved
+performance directly from the axes rather than judging position by eye
+alone. Hover over a dot in Job 1’s plot, note where its guide lines
+land, then do the same for a dot at a similar point in the run in Job 2.
+Comparing the two readings this way gives learners a much clearer feel
+for exactly how much higher and how much further right Job 2’s dots sit
+compared to Job 1’s, rather than relying on “it looks a bit higher.”</p>
+<hr>
+<br><h3 id="05_overview_ClusterCockpit-headingInstructor6">
+<a href="05_overview_ClusterCockpit.html#headingInstructor6">Intention: Uncover one or two issues in the application</a><a class="anchor" aria-label="anchor" href="#05_overview_ClusterCockpit-headingInstructor6"></a>
+</h3>
+<p>What we’re doing here:</p>
+<ul>
+<li>Where does our system choke?</li>
+<li>What’s a bottleneck?</li>
+<li>How can we identify a bottleneck?</li>
+<li>“Online” and “after the fact” workflows of performance measurements
+(trace, accumulated results, attached to the process (live), or after it
+ran)</li>
+<li>Point to additional resources of common performance/bottleneck
+issues, e.g. on hpc-wiki</li>
+</ul>
+<p>Maybe something like this already occurred before in 4. Scaling
+Study, or 5. Performance Overview</p>
+<p>Summary could be: - General advice on the workflow - Performance
+reports may provide an automated summary with recommendations -
+Performance metrics can be categorized by the underlying hardware,
+e.g. CPU, memory, I/O, accelerators. - Bottlenecks can appear by metrics
+being saturated at the physical limits of the hardware or indirectly by
+other metrics being far from what the physical limits are. -
+Interpreting bottlenecks is closely related to what the application is
+supposed to do. - Relative measurements (baseline vs. change) - system
+is quiescent, fixed CPU freq + affinity, warmups, … - Reproducibility
+-&gt; link to git course? - Scanning results for smoking guns - Any best
+practices etc.</p>
 <hr>
 <br></section><section id="06_pinning"><h2 class="section-heading"><a href="06_pinning.html">Pinning</a></h2>
 <hr class="half-width">
@@ -797,29 +828,6 @@ over-allocating threads per domain.<br>
 <li>You are free to adjust <code>-n</code> and <code>-threads</code>
 based on your cluster.</li>
 </ul>
-<hr>
-<br></section><section id="07_bottlenecks"><h2 class="section-heading"><a href="07_bottlenecks.html">How to identify a bottleneck?</a></h2>
-<hr class="half-width">
-<h3 id="07_bottlenecks-headingInstructor1">
-<a href="07_bottlenecks.html#headingInstructor1">Intention: Uncover one or two issues in the application</a><a class="anchor" aria-label="anchor" href="#07_bottlenecks-headingInstructor1"></a>
-</h3>
-<p>Narrative:</p>
-<ul>
-<li>Okay, what’s slowest with creating snowman pictures?</li>
-<li>Where does our system choke?</li>
-</ul>
-<p>What we’re doing here:</p>
-<ul>
-<li>What’s a bottleneck?</li>
-<li>How can we identify a bottleneck?</li>
-<li>“Online” and “after the fact” workflows of performance measurements
-(trace, accumulated results, attached to the process (live), or after it
-ran)</li>
-<li>Point to additional resources of common performance/bottleneck
-issues, e.g. on hpc-wiki</li>
-</ul>
-<p>Maybe something like this already occurred before in 4. Scaling
-Study, or 5. Performance Overview</p>
 <hr>
 <br></section><section id="08_accelerators"><h2 class="section-heading"><a href="08_accelerators.html">Performance of Accelerators</a></h2>
 <hr class="half-width">
