@@ -152,6 +152,7 @@ continue to the next section.
 | ST | Stopped |
 | S | Suspended |
 | TO | Timeout |
+| ... | ... |
 
 Once the job is completed, the `squeue --me` no longer lists the job:
 
@@ -190,7 +191,7 @@ The application reports its own computational performance in the output file. Th
 scheduler also records information about the job itself, such as resource usage and
 execution time. Next, we'll inspect those scheduler records using `sacct`.
 
-### Inspect the completed jobs using accounting `sacct` tool
+## Inspect the completed jobs using accounting `sacct` tool
 
 :::::::::::::::: instructor
 Note that the information `sacct` can provide depends on the information
@@ -204,29 +205,28 @@ trackable resources are listed in `AccountingStorageTRES`. For I/O
 to print the optional trackable resources.
 ::::::::::::::::::::::::::
 
-The `sacct` command shows data stored in the job accounting database. You can
-query the data of any of your previously run jobs. Just like with `seff` you
-will need to provide the job ID to query the accounting database. Rather than
-keeping track of all your jobs yourself you can ask `sacct` to provide you
-with an overview of the jobs you have run.
+The `sacct` command shows data stored in the job accounting database. You can query
+the accounting information for any of your previously completed jobs. Rather than
+keeping track of job IDs yourself, `sacct` can also provide an overview of your
+recent jobs.
 
 ```bash
 sacct
 ```
 
 ```output
-JobID           JobName  Partition    Account  AllocCPUS      State ExitCode
------------- ---------- ---------- ---------- ---------- ---------- --------
-309902       render_sn+  STD-s-96h  project_a          4  COMPLETED      0:0
-309902.batch      batch             project_a          4  COMPLETED      0:0
-309902.exte+     extern             project_a          4  COMPLETED      0:0
-309903       render_sn+  STD-s-96h  project_a          4  COMPLETED      0:0
-309903.batch      batch             project_a          4  COMPLETED      0:0
-309903.exte+     extern             project_a          4  COMPLETED      0:0
-310002       render_sn+  STD-s-96h  project_a          4  COMPLETED      0:0
-310002.batch      batch             project_a          4  COMPLETED      0:0
-310002.exte+     extern             project_a          4  COMPLETED      0:0
+JobID           JobName  Partition    Account  AllocCPUS      State ExitCode 
+------------ ---------- ---------- ---------- ---------- ---------- -------- 
+21271983     render-sn+      short       whep          4  COMPLETED      0:0 
+21271983.ba+      batch                  whep          4  COMPLETED      0:0 
+21271983.ex+     extern                  whep          4  COMPLETED      0:0
 ```
+
+Each submitted job appears as one primary job entry followed by one or more
+job steps. For this episode, we will focus on the primary job entry, since
+it summarizes the entire job.
+
+::: spoiler
 
 In the output every job is shown three times here. This is because `sacct`
 lists one line for the primary job entry, followed by a line for every job
@@ -234,65 +234,229 @@ step. A job step corresponds to an `mpirun` or `srun` command. The `extern`
 line corresponds to all work that is done outside of SLURM's control,
 for example an `ssh` command that runs something somewhere else.
 
+:::
+
 Note that by default `sacct` only lists the jobs that have been run today. You
 can use the `--starttime` option to list all jobs that have been run since
 the given start date. For example, try running
 
 ```bash
-sacct --starttime=2025-09-25
+sacct --starttime=<YYYY-MM-DD>
 ```
 
 ```output
 JobID           JobName  Partition    Account  AllocCPUS      State ExitCode
 ------------ ---------- ---------- ---------- ---------- ---------- --------
-308755       snowman.s+  STD-s-96h  project_a         16  COMPLETED      0:0
-308755.batch      batch             project_a         16  COMPLETED      0:0
-308755.exte+     extern             project_a         16  COMPLETED      0:0
-308756       snowman.s+  STD-s-96h  project_a          4  COMPLETED      0:0
-308756.batch      batch             project_a          4  COMPLETED      0:0
-308756.exte+     extern             project_a          4  COMPLETED      0:0
-309486       interacti+  STD-s-96h  project_a          4     FAILED      1:0
-309486.exte+     extern             project_a          4  COMPLETED      0:0
-309486.0          prted             project_a          4  COMPLETED      0:0
-309489       render_sn+  STD-s-96h  project_a          4  COMPLETED      0:0
-309489.batch      batch             project_a          4  COMPLETED      0:0
-309489.exte+     extern             project_a          4  COMPLETED      0:0
-309902       render_sn+  STD-s-96h  project_a          4  COMPLETED      0:0
-309902.batch      batch             project_a          4  COMPLETED      0:0
-309902.exte+     extern             project_a          4  COMPLETED      0:0
-309903       render_sn+  STD-s-96h  project_a          4  COMPLETED      0:0
-309903.batch      batch             project_a          4  COMPLETED      0:0
-309903.exte+     extern             project_a          4  COMPLETED      0:0
-310002       render_sn+  STD-s-96h  project_a          4  COMPLETED      0:0
-310002.batch      batch             project_a          4  COMPLETED      0:0
-310002.exte+     extern             project_a          4  COMPLETED      0:0
+21271983     render-sn+      short       whep          4  COMPLETED      0:0 
+21271983.ba+      batch                  whep          4  COMPLETED      0:0 
+21271983.ex+     extern                  whep          4  COMPLETED      0:0
+21283742     render-sn+      short       whep         16  COMPLETED      0:0 
+21283742.ba+      batch                  whep         16  COMPLETED      0:0 
+21283742.ex+     extern                  whep         16  COMPLETED      0:0 
 ```
 
-You may want to change the date of `2025-09-25` to something more sensible
+You may want to change the date of `YYYY-MM-DD` to something more sensible
 when you work through this tutorial.
-Note that some HPC systems may limit the range of such a request to a maximum of, for example, 30 days to avoid overloading the slurm database with too large requests.
+Note that some HPC systems may limit the range of such a request to a maximum of,
+for example, 30 days to avoid overloading the slurm database with too large requests.
 
 With the job ID you can ask `sacct` for information about a specific job
 as in
 
 ```bash
-sacct --jobs=310002
+sacct --jobs=21271983
 ```
 
 ```output
 JobID           JobName  Partition    Account  AllocCPUS      State ExitCode
 ------------ ---------- ---------- ---------- ---------- ---------- --------
-310002       render_sn+  STD-s-96h  project_a          4  COMPLETED      0:0
-310002.batch      batch             project_a          4  COMPLETED      0:0
-310002.exte+     extern             project_a          4  COMPLETED      0:0
+21271983     render-sn+      short       whep          4  COMPLETED      0:0 
+21271983.ba+      batch                  whep          4  COMPLETED      0:0 
+21271983.ex+     extern                  whep          4  COMPLETED      0:0
 ```
 
 Using `sacct` with the `--jobs` flag is just another way to select which jobs
 we want more information about. In itself it does not provide any additional
 information.
-To get more specific data we need to explicitly ask for the information
-we want. As SLURM collects a broad range of data about every job it is worth
-to evaluate what the most relevant items are.
+
+So far we've identified the completed job we want to inspect. The default `sacct`
+output only provides a summary of each job. To answer questions about resource
+usage–such as how long the job ran, how much memory the job used, or how efficiently
+it used the allocated CPUs–we need to ask `sacct` to display additional accounting
+fields.
+
+The `--format` option lets us choose exactly which accounting fields to display.
+We'll start with one simple example before requesting several metrics together.
+
+### How long did my job run?
+
+```bash
+sacct --jobs=21271983 --format=Elapsed
+```
+
+```output
+   Elapsed
+----------
+  00:00:36 
+  00:00:36 
+  00:00:36
+```
+
+::: instructor
+
+# Give more insight in the collected `sacct` metrics
+
+- `AllocCPUS`: number of CPU cores we requested for the job
+- `MaxRSS` = `AveRSS`: low fluctuation in memory, data is held throughout the whole job
+- `MaxPages` & `AvePages`: number of pages loaded into memory
+- `MaxDiskRead`: Data read from disk by the application, but also to start the application.
+
+For the challenge, ask the learners and answer after the exercise:
+
+- Did I use the CPUs effectively?
+    - AllocCPUS
+    - TotalCPU
+    - CPU frequency
+- Did I have enough memory?
+    - RSS
+    - Page faults
+- Was I waiting on storage?
+    - Disk read
+    - Disk write
+- Additional Information
+    - Energy
+
+:::
+
+::::::::::::::::::: challenge
+
+Request the metrics discussed above from `sacct`, including `JobID`.
+Note that the `--format` flag takes a comma separated list. Also note that
+the result shows that more data is read than written, even though
+the program generates and writes an image, and reads no data at all.
+Why would that be?
+
+For all the available options use the command:
+
+```bash
+sacct --helpformat
+```
+
+```output
+Account             AdminComment        AllocCPUS           AllocNodes         
+AllocTRES           AssocID             AveCPU              AveCPUFreq         
+AveDiskRead         AveDiskWrite        AvePages            AveRSS             
+AveVMSize           BlockID             Cluster             Comment            
+Constraints         ConsumedEnergy      ConsumedEnergyRaw   Container          
+CPUTime             CPUTimeRAW          DBIndex             DerivedExitCode    
+Elapsed             ElapsedRaw          Eligible            End                
+ExitCode            Extra               FailedNode          Flags              
+GID                 Group               JobID               JobIDRaw           
+JobName             Layout              Licenses            MaxDiskRead        
+MaxDiskReadNode     MaxDiskReadTask     MaxDiskWrite        MaxDiskWriteNode   
+MaxDiskWriteTask    MaxPages            MaxPagesNode        MaxPagesTask       
+MaxRSS              MaxRSSNode          MaxRSSTask          MaxVMSize          
+MaxVMSizeNode       MaxVMSizeTask       McsLabel            MinCPU             
+MinCPUNode          MinCPUTask          NCPUS               NNodes             
+NodeList            NTasks              Partition           Planned            
+PlannedCPU          PlannedCPURAW       Priority            QOS                
+QOSRAW              Reason              ReqCPUFreq          ReqCPUFreqGov      
+ReqCPUFreqMax       ReqCPUFreqMin       ReqCPUS             ReqMem             
+ReqNodes            ReqTRES             Reservation         ReservationId      
+Start               State               Submit              SubmitLine         
+Suspended           SystemComment       SystemCPU           Timelimit          
+TimelimitRaw        TotalCPU            TRESUsageInAve      TRESUsageInMax     
+TRESUsageInMaxNode  TRESUsageInMaxTask  TRESUsageInMin      TRESUsageInMinNode 
+TRESUsageInMinTask  TRESUsageInTot      TRESUsageOutAve     TRESUsageOutMax    
+TRESUsageOutMaxNode TRESUsageOutMaxTask TRESUsageOutMin     TRESUsageOutMinNode
+TRESUsageOutMinTask TRESUsageOutTot     UID                 User               
+UserCPU             WCKey               WCKeyID             WorkDir
+```
+
+Address the learners to concentrate on RSS, Pages, CPUS, Disk Read and Write, Energy and Frequency.
+
+::::::::: solution
+
+To query all of the above variable run
+
+```bash
+sacct --jobs=21271983 --format=MaxRSS,AveRSS,MaxPages,AvePages,AllocCPUS,Elapsed,MaxDiskRead,MaxDiskWrite,ConsumedEnergy,AveCPUFreq
+```
+
+```output
+    MaxRSS     AveRSS MaxPages   AvePages  AllocCPUS    Elapsed  MaxDiskRead MaxDiskWrite ConsumedEnergy AveCPUFreq 
+---------- ---------- -------- ---------- ---------- ---------- ------------ ------------ -------------- ---------- 
+                                                   4   00:00:36                                        0            
+   616644K    616644K      787        787          4   00:00:36       95.11M       16.53M              0     33.38M 
+         0          0        0          0          4   00:00:36        0.01M        0.00M              0      2.35G
+```
+
+Although the program we have run generates an image and writes that
+to a file, there is also a non-zero amount of data read. The writing part
+is associated with the image file the program writes. The reading part is
+not associated with anything that the program does, as it doesn't read
+anything from disk. It is instead associated with the fact that the operating
+system has to read the program itself and its dependencies to execute it.
+
+:::::::::
+
+:::::::::::::::::::
+
+::: spoiler
+
+### More about accounting `sacct` metrics:
+
+### How long did my job actually run?
+
+- `Elapsed` is the wall-clock time between the start and the completion of the job.
+  It tells you how long the job occupied the allocated resources. Comparing this
+  value with the requested wall time helps determine whether the requested time
+  limit was appropriate.
+
+### How many CPU cores did the scheduler allocate?
+
+- `AllocCPUS` reports the number of CPUs allocated for the job. This is the amount
+  of CPU resources the scheduler reserved based on the resource request in the job
+  script. It does not indicate how effectively those CPUs were used.
+
+### How much memory did my application use?
+
+- `MaxRSS` and `AveRSS` report the maximum and average Resident Size Set (RSS), which
+  is the amount of memory actively resident in physical RAM. Comparing these values
+  with the memory requested for the job helps determine whether the memory request
+  is appropriate.
+
+### Was the application limited by memory?
+
+- `MaxPages` and `AvePages` report the number of page faults that occurred during the
+  job. Page faults occur when data required by the application is not currently resident
+  in the physical memory and must be retrieved. Large numbers of page faults can
+  significantly reduce performance because the application spends more time waiting
+  for memory instead of performing computations.
+
+### How much data moved to and from storage?
+
+- `MaxDiskRead` and `MaxDiskWrite` report the amount of data read from and written to
+  storage during the job. Disk activity may include not only application input and
+  output files but also reading the executable and shared libraries required to start
+  the program.
+
+### How much energy did the job consume?
+
+- `ConsumedEnergy` reports the energy used by the job if the HPC system is configured
+  to collect this information. On systems where energy accounting is not enabled, this
+  value is typically reported as zero.
+
+### At what frequency did the CPU run?
+
+- `AveCPUFreq` reports the average CPU frequency during the job. Some processors
+  automatically adjust their operating frequency depending on workload, temperature, and
+  power-management policies. This metric is mainly useful when investigating performance
+  on systems that support dynamic frequency scaling.
+
+:::
+
+## Interpret the efficiency of the submitted jobs using `seff` tool
 
 ::: instructor
 
@@ -306,107 +470,7 @@ Maybe remove `AveCPUFreq` instead, or do we try to teach something specific abou
 
 Don't forget to change the example output of all `sacct`s in the following examples/challenges!
 
-::::::::::::::
-
-- `MaxRSS`, `AveRSS`, or the Maximum or Average Resident Size Set (RSS). The
-  RSS is the memory allocated by a program that is actually resident in the
-  main memory of the computer. If the computer gets low on memory then the
-  virtual memory manager can extend the apparently available memory by moving
-  some of the data from memory to disk. This is done entirely transparently to the
-  application, but the data that has been moved to disk is no longer resident
-  in main memory. As a result accessing it will be slower because it needs to
-  retrieved from disk first. Therefore if the RSS is small compared to the
-  total amount of memory the program uses this might affect the performance
-  of the program.
-- `MaxPages`, `AvePages`, or the Maximum or Average number of Page Faults.
-  These quantities are related to the Resident Size Sets. When the program
-  tries to access data that is not resident in main memory this triggers a
-  page fault.
-  The virtual memory manager responds to a page fault by retrieving the accessed
-  data from disk (and potentially migrating other data to disk to make
-  space). These operations are typically costly. Therefore high numbers of
-  page faults typically correspond to a significant reduction in the program's
-  performance. For example, the CPU utilization might drop from as high as 98%
-  to as low as 2% due to page faults. For that reason some HPC machines are
-  configured to kill your job if the application generates a high rate of
-  page faults.
-- `AllocCPUS` is the number of CPUs allocated for the job.
-- `Elapsed` is the amount of wall clock time it took to complete the job. I.e.
-  the amount of time that passed between the start and finish of the job.
-- `MaxDiskRead`, the Maximum amount of data read from disk.
-- `MaxDiskWrite`, the Maximum amount of data written to disk.
-- `ConsumedEnergy`, the amount of energy consumed by the job if that information  was collected. The data may not be collected on your particular HPC system and is reported as 0.
-- `AveCPUFreq`, the average CPU frequency of all tasks in a job, given in kHz. In general the
-  higher the clock frequency of the processor the faster the calculation runs.
-  The exception is if the application is memory bandwidth limited and the data
-  cannot be moved to processor fast enough to keep it busy. In that case
-  modern hardware might throttle the frequency. This saves energy as the power
-  consumption scales linearly with the clock frequency, but doesn't slow
-  the calculation down as the processor was having to wait for data anyway.
-
-We can explicitly select the data elements that we are interested in. To
-see how long the job took to complete run
-
-```bash
-sacct --jobs=310002 --format=Elapsed
-```
-
-```output
-   Elapsed
-----------
-  00:01:58
-  00:01:58
-  00:01:58
-```
-
-::::::::::::::::::: challenge
-
-Request information regarding all of the above variables from `sacct`, including `JobID`.
-Note that the `--format` flag takes a comma separated list. Also note that
-the result shows that more data is read than written, even though
-the program generates and write an image, and reads no data at all.
-Why would that be?
-
-::::::::: solution
-
-To query all of the above variable run
-
-```bash
-sacct --jobs=310002 --format=MaxRSS,AveRSS,MaxPages,AvePages,AllocCPUS,Elapsed,MaxDiskRead,MaxDiskWrite,ConsumedEnergy,AveCPUFreq
-```
-
-```output
-    MaxRSS     AveRSS MaxPages   AvePages  AllocCPUS    Elapsed  MaxDiskRead MaxDiskWrite ConsumedEnergy AveCPUFreq
----------- ---------- -------- ---------- ---------- ---------- ------------ ------------ -------------- ----------
-                                                   4   00:01:58                                        0
-    51556K     51556K      132        132          4   00:01:58        6.91M        0.72M              0         3M
-         0          0        0          0          4   00:01:58        0.01M        0.00M              0         3M
-```
-
-Although the program we have run generates an image and writes that
-to a file, there is also a none zero amount of data read. The writing part
-is associated with the image file the program writes. The reading part is
-not associated with anything that the program does, as it doesn't read
-anything from disk. It is instead associated with the fact that the operating
-system has to read the program itself and it's dependencies to execute it.
-
-:::::::::
-
-:::::::::::::
-
-
-::: instructor
-
-# Give more insight in the collected `sacct` metrics
-
-- `AllocCPUS`: number of CPU cores we requested for the job
-- `MaxRSS` = `AveRSS`: low fluctuation in memory, data is held throughout the whole job
-- `MaxPages` & `AvePages`: number of pages loaded into memory
-- `MaxDiskRead`: Data read from disk by the application, but also to start the application.
-
-::::::::::::::
-
-### Interpret the efficiency of the submitted jobs using `seff` tool
+:::
 
 The `seff` command can be used to learn about how efficiently your job
 has run. The `seff` command takes the job identifier as an argument
