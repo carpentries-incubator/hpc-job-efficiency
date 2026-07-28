@@ -1,5 +1,5 @@
 ---
-title: "Performance Overview with ClusterCockpit"
+title: "Performance Overview"
 teaching: 10
 exercises: 0
 ---
@@ -86,6 +86,8 @@ Measurement results are either stored and analysed in a *timeline*, or aggregate
 ::: instructor
 ## Know your tool!
 
+We provide alternatives for this episode. Make sure to select the right one in your `config.yaml`.
+
 *ClusterCockpit* is a job monitoring systems that can be configured to capture many performance metrics. It is easy to use, but has to be deployed by the cluster administration team.
 
 Be aware of site-specific setups, e.g. limiting access to performance counters, offering non-standard Slurm options during `sbatch` submission, and how licenses are handled.
@@ -94,8 +96,9 @@ Not all metrics discussed in this episode may be configured on every cluster —
 
 
 ::: callout
+## The performance measurement tool
 
-*ClusterCockpit*](https://clustercockpit.org/): A job monitoring service available on many clusters in NRW. Sampled measurements of the application are stored and visualized in a timeline for each job. It needs to be centrally provided by your HPC administration team and may not be available to you!
+[*ClusterCockpit*](https://clustercockpit.org/): A job monitoring service available on many clusters in NRW. Sampled measurements of the application are stored and visualized in a timeline for each job. It needs to be centrally provided by your HPC administration team and may not be available to you!
 
 This tools may require access to performance counters, sometimes granted by requesting `--exclusive`, but it really depends on the system.
 If something covered in this episode isn't available or looks different on your cluster, check your cluster documentation or ask your HPC support staff.

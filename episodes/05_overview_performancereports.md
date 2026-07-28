@@ -1,5 +1,5 @@
 ---
-title: "Performance Overview with LinaroForge PerfReports"
+title: "Performance Overview"
 teaching: 10
 exercises: 0
 ---
@@ -84,22 +84,23 @@ Measurement results are either stored and analysed in a *timeline*, or aggregate
 
 
 ::: instructor
-## Prepare your tool!
+## Know your tool!
 
-We move on with three alternatives here.
+We provide alternatives for this episode. Make sure to select the right one in your `config.yaml`.
 
-1. *Linaro Forge Performance Reports* provides a good first performance overview, but is a commercial application that requires access to valid licenses.
+*Linaro Forge Performance Reports* provides a good first performance overview, but is a commercial application that requires access to valid licenses.
 
 Be aware of site-specific setups, e.g. limiting access to performance counters, offering non-standard Slurm options during `sbatch` submission, and how licenses are handled.
 :::
 
 
 ::: callout
-## Pick your tool!
+## The performance measurement tool
 
-2. [*Linaro Forge Performance Reports*](https://docs.linaroforge.com/25.0.4/html/forge/performance_reports/index.html): A commercial sampling-based profiler providing a single page performance overview of your job. Access to licenses required.
+[*Linaro Forge Performance Reports*](https://docs.linaroforge.com/25.0.4/html/forge/performance_reports/index.html): A commercial sampling-based profiler providing a single page performance overview of your job. Access to licenses required.
 
 Look at your cluster documentation or talk to your HPC support staff.
+If something covered in this episode isn't available or looks different on your cluster, check your cluster documentation or ask your HPC support staff.
 :::
 
 ::: instructor
