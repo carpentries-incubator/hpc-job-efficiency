@@ -458,6 +458,113 @@ system has to read the program itself and its dependencies to execute it.
 
 :::
 
+::::::::::::::::::::::: challenge
+
+# This challenge needs correction
+
+So far we have considered our initial calculation using 4 cores.
+To run the calculation faster we could consider using more cores.
+Run the same calculation on 8, 16, and 32 cores as well. Collect
+and compare the results from `sacct` and see how the job performance
+changes.
+
+::::::: solution
+
+The machine these calculations have been run on has 112 core
+per node. So we can double the number of cores from 4 until
+64 and stay within one node. If we go to two nodes then some
+of the communication between tasks will have to go across the
+interconnect. At that point the performance characteristics
+might change in a discontinuous manner. Hence we try to
+avoid doing that.
+
+Alternatively you might scale the calculation across multiple
+nodes, for example 2, 4, 8, 16 nodes. With 112 cores per node
+you would have to make sure that the calculation is large enough
+for such a large number of cores to make sense.
+
+Create `running_snowmen.sh` with
+
+```input
+#!/usr/bin/bash
+for nn in 4 8 16 32; do
+    id=`sbatch --parsable --time=00:12:00 --nodes=1 --tasks-per-node=$nn --ntasks-per-core=1 render_snowman.sh`
+    echo "ntasks $nn jobid $id"
+done
+```
+
+Create `render_snowman.sh` with
+
+```input
+#!/usr/bin/bash
+
+# Possibly a "module load ..." command to load required libraries
+# Depends on your particular HPC system
+
+export START=`pwd`
+# Create a sub-directory for this job if it doesn't exist already
+mkdir -p $START/test.$SLURM_NTASKS
+cd $START/test.$SLURM_NTASKS
+# The -spp flag ensures we have enough samples per ray such that the job
+# on 32 cores takes longer than 30s. Slurm by default is configured such
+# that job data is collected every 30s. If the job finishes in less than
+# that Slurm might fail to collect some of the data about the job.
+mpirun -np $SLURM_NTASKS raytracer -width=800 -height=800 -spp 1024 -threads=1 -alloc_mode=3 -png=rendered_snowman.png
+```
+
+Next we submit this whole set of calculations
+
+```bash
+./running_snowmen.sh
+```
+
+producing
+
+```output
+ntasks 4 jobid 349291
+ntasks 8 jobid 349292
+ntasks 16 jobid 349293
+ntasks 32 jobid 349294
+```
+
+After the jobs are completed we can run
+
+```bash
+sacct --jobs=349291,349292,349293,349294 \
+      --format=MaxRSS,AveRSS,MaxPages,AvePages,AllocCPUS,Elapsed,MaxDiskRead,MaxDiskWrite,ConsumedEnergy,AveCPUFreq
+```
+
+to produce
+
+```output
+    MaxRSS     AveRSS MaxPages   AvePages  AllocCPUS    Elapsed  MaxDiskRead MaxDiskWrite ConsumedEnergy AveCPUFreq
+---------- ---------- -------- ---------- ---------- ---------- ------------ ------------ -------------- ----------
+                                                   4   00:09:35                                        0
+   142676K    142676K        1          1          4   00:09:35        7.75M        0.72M              0       743K
+         0          0        0          0          4   00:09:35        0.01M        0.00M              0      2.61M
+                                                   8   00:05:01                                        0
+   289024K    289024K        0          0          8   00:05:01       10.15M        1.45M              0       960K
+         0          0        0          0          8   00:05:02        0.01M        0.00M              0      2.42M
+                                                  16   00:02:21                                        0
+   563972K    563972K       93         93         16   00:02:21       15.00M        2.94M              0      1.03M
+         0          0        0          0         16   00:02:21        0.01M        0.00M              0      2.99M
+                                                  32   00:01:14                                        0
+  1082540K   1082540K      260        260         32   00:01:14       24.83M        6.07M              0      1.08M
+         0          0        0          0         32   00:01:14        0.01M        0.00M              0         3M
+```
+
+Note that the elapse time goes down as the number of cores increases, which is reasonable as more cores
+normally can get the job done quicker. The amount of data read also increases as every MPI rank has to
+read the executable and all associated shared libraries. The volume of data written is harder to understand.
+Every run produces an image file `rendered_snowman.png` that is about 100KB in size. This file is written
+just by the root MPI rank. This cannot explain the increase in data written with increasing numbers of cores.
+The increasing number of page faults with increasing numbers of cores suggests that paging memory to disk
+is responsible for the majority of data written.
+
+:::::::
+
+:::::::::::::::::::::::
+
 So far, we have used `sacct` to inspect the accounting information collected for completed
 jobs. While `sacct` lets us examine individual accounting fields, interpreting all of these
 metrics can take some effort. Rather than displaying those accounting fields individually,
@@ -699,113 +806,6 @@ hardware efficiently or that it produced useful work as efficiently as possible.
 The `seff` command cannot give you any information about the I/O performance of
 your job. You have to use other approaches for that, and `sacct` may be one of them.
 
-
-::::::::::::::::::::::: challenge
-
-# This challenge needs correction
-
-So far we have considered our initial calculation using 4 cores.
-To run the calculation faster we could consider using more cores.
-Run the same calculation on 8, 16, and 32 cores as well. Collect
-and compare the results from `sacct` and see how the job performance
-changes.
-
-::::::: solution
-
-The machine these calculations have been run on has 112 core
-per node. So we can double the number of cores from 4 until
-64 and stay within one node. If we go to two nodes then some
-of the communication between tasks will have to go across the
-interconnect. At that point the performance characteristics
-might change in a discontinuous manner. Hence we try to
-avoid doing that.
-
-Alternatively you might scale the calculation across multiple
-nodes, for example 2, 4, 8, 16 nodes. With 112 cores per node
-you would have to make sure that the calculation is large enough
-for such a large number of cores to make sense.
-
-Create `running_snowmen.sh` with
-
-```input
-#!/usr/bin/bash
-for nn in 4 8 16 32; do
-    id=`sbatch --parsable --time=00:12:00 --nodes=1 --tasks-per-node=$nn --ntasks-per-core=1 render_snowman.sh`
-    echo "ntasks $nn jobid $id"
-done
-```
-
-Create `render_snowman.sh` with
-
-```input
-#!/usr/bin/bash
-
-# Possibly a "module load ..." command to load required libraries
-# Depends on your particular HPC system
-
-export START=`pwd`
-# Create a sub-directory for this job if it doesn't exist already
-mkdir -p $START/test.$SLURM_NTASKS
-cd $START/test.$SLURM_NTASKS
-# The -spp flag ensures we have enough samples per ray such that the job
-# on 32 cores takes longer than 30s. Slurm by default is configured such
-# that job data is collected every 30s. If the job finishes in less than
-# that Slurm might fail to collect some of the data about the job.
-mpirun -np $SLURM_NTASKS raytracer -width=800 -height=800 -spp 1024 -threads=1 -alloc_mode=3 -png=rendered_snowman.png
-```
-
-Next we submit this whole set of calculations
-
-```bash
-./running_snowmen.sh
-```
-
-producing
-
-```output
-ntasks 4 jobid 349291
-ntasks 8 jobid 349292
-ntasks 16 jobid 349293
-ntasks 32 jobid 349294
-```
-
-After the jobs are completed we can run
-
-```bash
-sacct --jobs=349291,349292,349293,349294 \
-      --format=MaxRSS,AveRSS,MaxPages,AvePages,AllocCPUS,Elapsed,MaxDiskRead,MaxDiskWrite,ConsumedEnergy,AveCPUFreq
-```
-
-to produce
-
-```output
-    MaxRSS     AveRSS MaxPages   AvePages  AllocCPUS    Elapsed  MaxDiskRead MaxDiskWrite ConsumedEnergy AveCPUFreq
----------- ---------- -------- ---------- ---------- ---------- ------------ ------------ -------------- ----------
-                                                   4   00:09:35                                        0
-   142676K    142676K        1          1          4   00:09:35        7.75M        0.72M              0       743K
-         0          0        0          0          4   00:09:35        0.01M        0.00M              0      2.61M
-                                                   8   00:05:01                                        0
-   289024K    289024K        0          0          8   00:05:01       10.15M        1.45M              0       960K
-         0          0        0          0          8   00:05:02        0.01M        0.00M              0      2.42M
-                                                  16   00:02:21                                        0
-   563972K    563972K       93         93         16   00:02:21       15.00M        2.94M              0      1.03M
-         0          0        0          0         16   00:02:21        0.01M        0.00M              0      2.99M
-                                                  32   00:01:14                                        0
-  1082540K   1082540K      260        260         32   00:01:14       24.83M        6.07M              0      1.08M
-         0          0        0          0         32   00:01:14        0.01M        0.00M              0         3M
-```
-
-Note that the elapse time goes down as the number of cores increases, which is reasonable as more cores
-normally can get the job done quicker. The amount of data read also increases as every MPI rank has to
-read the executable and all associated shared libraries. The volume of data written is harder to understand.
-Every run produces an image file `rendered_snowman.png` that is about 100KB in size. This file is written
-just by the root MPI rank. This cannot explain the increase in data written with increasing numbers of cores.
-The increasing number of page faults with increasing numbers of cores suggests that paging memory to disk
-is responsible for the majority of data written.
-
-:::::::
-
-:::::::::::::::::::::::
 
 ## Shortcomings
 
