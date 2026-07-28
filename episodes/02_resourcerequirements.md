@@ -362,7 +362,7 @@ Let's break down what each line does:
 
 - The first line prints out a nice label for our peak memory output. We use `-n` to omit the usual newline that `echo` adds at the end of its output.
 - For the next part we need the so-called "cgroup path" of our job. To find out this path, we can use the `/proc/self/cgroup` file, which contains this path as the third entry of a colon-separated list. Therefore, we read the contents of this file (`cat`) and extract the third entry of the colon-separated list (`awk -F ':' '{print $3}'`). Since we do this in `$(...)`, Bash will place the output of these commands (i.e., the cgroup path) at this point.
-- The third line outputs the contents of a file (`cat`). The path of this file starts with `/sys/fs/cgroup`, which is a location where the Linux kernel exports all the cgroups v2 information as files.
+- The third line outputs the contents of a file (`cat`). The path of this file starts with `/sys/fs/cgroup`, which is a location where the Linux kernel exports all the cgroups v2 information as files, followed by the cgroup path of our job in the `CGROUPPATH` variable.
 - The final part of the path is the information we actually want from the cgroup. In our case, we are interested in `memory.peak`, which contains the peak memory consumption of the cgroup. 
 
 When you submit your job and look at the output once it finishes, you will find a line like this:
