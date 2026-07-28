@@ -310,7 +310,7 @@ The `CPU Utilized` line shows us how much CPU time our job has used. This is cal
 
 Finally, `Memory utilized` line shows the peak memory consumption that your job had at any point during its runtime, while `Memory Efficiency` is the ratio between this peak value and the requested amount of memory for the allocation. As we will see later, this value has to be taken with a grain of salt.
 
-Starting from the set of parameters that successfully run our program, we can now try to reduce the amount of requested resources. As is good scientific practice, we should only vary one parameter at a time and observe the result. Let's start by reducing the time limit. There is often a bit of variation in the time needed to run a job since not all nodes are perfectly identical, so you should add a arbitrarily scaled safety margin of maybe 10 percent. According to the time reported by `seff`, seven minutes should therefore be a good time limit. If your cluster is faster, you might reduce this even further. 
+Starting from the set of parameters that successfully run our program, we can now try to reduce the amount of requested resources. As is good scientific practice, we should only vary one parameter at a time and observe the result. Let's start by reducing the time limit. There is often a bit of variation in the time needed to run a job since not all nodes are perfectly identical, so you should add an arbitrarily chosen safety margin of maybe 10 percent. According to the time reported by `seff`, seven minutes should therefore be a good time limit. If your cluster is faster, you might reduce this even further. 
 
 ```bash
 #SBATCH --time=00:07:00
