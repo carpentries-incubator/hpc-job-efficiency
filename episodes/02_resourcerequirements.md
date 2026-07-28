@@ -239,7 +239,7 @@ We define job resource requirements through the following `#SBATCH` directives (
 - 1 GB of memory per node
 - A timelimit of 1 minute
 
-The last two `#SBATCH` directives redirect the jobs output to the file `snowman-stdout.log` and assign the name "snowman" to the job.
+The last two `#SBATCH` directives redirect the jobs output to the file `snowman-stdout-<job id>.log` and assign the name "snowman" to the job.
 
 ::: callout
 
