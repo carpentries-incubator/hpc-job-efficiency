@@ -259,12 +259,8 @@
 <li><a href="#multiple-cooks-openmp">Multiple cooks: OpenMP</a></li>
 <li><a href="#multiple-kitchens-mpi">Multiple kitchens: MPI</a></li>
 <li><a href="#multiple-cooks-kitchens-openmp-mpi">Multiple cooks + kitchens: OpenMP + MPI</a></li>
+<li><a href="#managing-the-kitchen-the-linux-scheduler">Managing the kitchen: The Linux scheduler</a></li>
 <li><a href="#binding-1-cpu-affinity">Binding 1: CPU affinity</a></li>
-<li><a href="#how-to-investigate">How to investigate?</a></li>
-<li><a href="#how-to-achieve">How to achieve?</a></li>
-<li><a href="#exercise-understanding-process-and-thread-binding">Exercise: Understanding Process and Thread Binding</a></li>
-<li><a href="#best-practices-for-mpi-process-and-thread-pinning">Best Practices for MPI Process and Thread Pinning</a></li>
-<li><a href="#mapping-vs.-binding-analogy">Mapping vs. Binding Analogy</a></li>
 <li><a href="#non-uniform-memory-access-numa">Non-Uniform Memory Access (NUMA)</a></li>
 <li><a href="#binding-2-memory-affinity">Binding 2: Memory affinity</a></li>
 <li><a href="#before-pinning-understand-slurms-configuration">Before pinning, understand Slurm’s configuration</a></li>
@@ -911,11 +907,11 @@ to set the thread count.</p>
 </div>
 </div>
 </div>
-<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD ## Managing the kitchen: The Linux
-scheduler By now, we have gained some decent understanding about tasks
-and threads and how they make up a parallel run. So we are almost ready
-to see how to control CPU alignment in parallel runs via pinning. There
-is one more thing useful to know about.</p>
+</section><section><h2 class="section-heading" id="managing-the-kitchen-the-linux-scheduler">Managing the kitchen: The Linux scheduler<a class="anchor" aria-label="anchor" href="#managing-the-kitchen-the-linux-scheduler"></a></h2>
+<hr class="half-width"><p>By now, we have gained some decent understanding about tasks and
+threads and how they make up a parallel run. So we are almost ready to
+see how to control CPU alignment in parallel runs via pinning. There is
+one more thing useful to know about.</p>
 <p>In our kitchen analogy, we referred to Slurm as the event manager,
 who takes care of the whole catering job without getting involved with
 the cooks (CPUs) inside the kitchen(s). However, on the lower kitchen
@@ -988,231 +984,12 @@ to the Slurm CPUs allocated to it. On systems without
 SMT/Hyperthreading, these CPUs correspond to physical cores. For
 example, suppose the above run allocated CPUs 48-50. Then Slurm will
 create an <em>affinity mask</em> like:
-<code>Allowed CPUs = {48,49,50}</code> for that task. ======= ##
-Motivation :::::::::::::::::::::::::: challenge ## Exercise Case 1: 1
-thread per rank
-<code>mpirun -n 8 ./raytracer -width=512 -height=512 -spp=128 -threads=1 -alloc_mode=3 -png=snowman.png</code></p>
-<p>Case 2: 2 thread per rank
-<code>mpirun -n 8 ./raytracer -width=512 -height=512 -spp=128 -threads=2 -alloc_mode=3 -png=snowman.png</code></p>
-<p>Questions: - Do you notice any difference in runtime between the two
-cases? - Is the increase in threads providing a speedup as expected?</p>
-<div id="accordionSolution5" class="accordion challenge-accordion accordion-flush">
-<div class="accordion-item">
-<button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution5" aria-expanded="false" aria-controls="collapseSolution5">
-  <h4 class="accordion-header" id="headingSolution5"> Show me the solution </h4>
-</button>
-<div id="collapseSolution5" class="accordion-collapse collapse" aria-labelledby="headingSolution5" data-bs-parent="#accordionSolution5">
-<div class="accordion-body">
-<ul><li>Observation: The computation times are almost the same.</li>
-<li>Expected behavior: Increasing threads should ideally reduce
-runtime.</li>
-<li>Hypothesis: Additional threads do not contribute.</li>
-</ul></div>
-</div>
-</div>
-</div>
-<p>::::::::::::::::::::::::::::::::::::</p>
-</section><section><h2 class="section-heading" id="how-to-investigate">How to investigate?<a class="anchor" aria-label="anchor" href="#how-to-investigate"></a></h2>
-<hr class="half-width"><p>You can verify the actual core usage in two ways: 1. Use
-<code>--report-bindings</code> with <code>mpirun</code> 2. Use
-<code>htop</code>command on the compute node</p>
-
-<div id="exercise" class="callout challenge">
+<code>Allowed CPUs = {48,49,50}</code> for that task.</p>
+<div id="displaying-information-about-the-cpu-architecture-lscpu" class="callout challenge">
 <div class="callout-square">
 <i class="callout-icon" data-feather="zap"></i>
 </div>
 <span class="callout-header">Challenge</span>
-<div id="exercise" class="callout-inner">
-<h3 class="callout-title">Exercise</h3>
-<div class="callout-content">
-<p>Follow any one of the option above and run for 2 threads per rank
-<code>mpirun -n 8 ./raytracer -width=512 -height=512 -spp=128 -threads=2 -alloc_mode=3 -png=snowman.png</code></p>
-<p>Questions: - Did you find any justification for the hypothesis we
-made?</p>
-</div>
-</div>
-</div>
-<div id="accordionSolution6" class="accordion challenge-accordion accordion-flush">
-<div class="accordion-item">
-<button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution6" aria-expanded="false" aria-controls="collapseSolution6">
-  <h4 class="accordion-header" id="headingSolution6"> Show me the solution </h4>
-</button>
-<div id="collapseSolution6" class="accordion-collapse collapse" aria-labelledby="headingSolution6" data-bs-parent="#accordionSolution6">
-<div class="accordion-body">
-<p>Only 8 cores are active instead of 16</p>
-</div>
-</div>
-</div>
-</div>
-<p>Explanation:</p>
-<ul><li>Eventhough we requested 2 threads per MPI rank, both threads are
-pinned to the same core.</li>
-<li>The second thread waits for the first thread to finish, so no actual
-thread-level parallelization is achieved.</li>
-</ul></section><section><h2 class="section-heading" id="how-to-achieve">How to achieve?<a class="anchor" aria-label="anchor" href="#how-to-achieve"></a></h2>
-<hr class="half-width"></section><section><h2 class="section-heading" id="exercise-understanding-process-and-thread-binding">Exercise: Understanding Process and Thread Binding<a class="anchor" aria-label="anchor" href="#exercise-understanding-process-and-thread-binding"></a></h2>
-<hr class="half-width"><p>Pinning (or binding) means locking a process or thread to a specific
-hardware resource such as a CPU core, socket, or NUMA region. Without
-pinning, the operating system may move tasks between cores, which can
-reduce cache reuse and increase memory latency, directly diminishes
-performance.</p>
-<p>In this exercise we will explore how MPI process and thread binding
-works. We will try binding to <strong>core</strong>,
-<strong>socket</strong>, and <strong>numa</strong>, and observe timings
-and bindings.</p>
-
-<div id="exercise-1" class="callout challenge">
-<div class="callout-square">
-<i class="callout-icon" data-feather="zap"></i>
-</div>
-<span class="callout-header">Challenge</span>
-<div id="exercise-1" class="callout-inner">
-<h3 class="callout-title">Exercise</h3>
-<div class="callout-content">
-<p>Case 1: <code>--bind-to numa</code>
-<code>mpirun -n 8 --bind-to numa ./raytracer -width=512 -height=512 -spp=128 -threads=12 -alloc_mode=3 -png=snowman.png</code></p>
-<p>Case 2: <code>--bind-to socket</code>
-<code>mpirun -n 4 --bind-to socket /raytracer -width=512 -height=512 -spp=128 -threads=48 -alloc_mode=3 -png=snowman.png</code></p>
-<p>Questions: - What is difference between Case 1 and Case 2. Any
-difference in performance? How many workers? - How could you adjust
-process/thread counts to better utilize the hardware in Case 2?</p>
-</div>
-</div>
-</div>
-<div id="accordionSolution7" class="accordion challenge-accordion accordion-flush">
-<div class="accordion-item">
-<button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution7" aria-expanded="false" aria-controls="collapseSolution7">
-  <h4 class="accordion-header" id="headingSolution7"> Show me the solution </h4>
-</button>
-<div id="collapseSolution7" class="accordion-collapse collapse" aria-labelledby="headingSolution7" data-bs-parent="#accordionSolution7">
-<div class="accordion-body">
-<ul><li>MPI and thread pinning is hardware-aware.</li>
-<li>If the number of processes matches the number of domains (socket or
-NUMA), then the number of threads should equal the cores per domain to
-fully utilize the node.</li>
-<li>No speedup in Case 2: Oversubscription occurs because we requested 4
-processes on a system with only 2 sockets.</li>
-<li>Threads compete for the same cores → OpenMPI queues threads and
-waits until other processes finish.</li>
-</ul></div>
-</div>
-</div>
-</div>
-</section><section><h2 class="section-heading" id="best-practices-for-mpi-process-and-thread-pinning">Best Practices for MPI Process and Thread Pinning<a class="anchor" aria-label="anchor" href="#best-practices-for-mpi-process-and-thread-pinning"></a></h2>
-<hr class="half-width"><div class="section level3">
-<h3 id="difference-between-binding-and-mapping">Difference between Binding and Mapping<a class="anchor" aria-label="anchor" href="#difference-between-binding-and-mapping"></a></h3>
-<p><strong>Mapping</strong> is about distributing MPI ranks across
-hardware hierarchy which tells where your processes will be placed.</p>
-<p>**Binding* is locking your MPI processes/threads to a specific
-resource which prevents from moving it around from one to another.</p>
-</div>
-</section><section><h2 class="section-heading" id="mapping-vs--binding-analogy">Mapping vs. Binding Analogy<a class="anchor" aria-label="anchor" href="#mapping-vs--binding-analogy"></a></h2>
-<hr class="half-width"><p>Think of running MPI processes and threads like booking seats for a
-group of friends:</p>
-<ul><li>
-<strong>Mapping</strong> is like planning where your group will sit
-in the theatre or on a flight.
-<ul><li>Example: You decide some friends sit in Economy, some in Premium
-Economy, and some in Business.<br></li>
-<li>Similarly, <code>--map-by</code> distributes MPI ranks across nodes,
-sockets, or NUMA regions.</li>
-</ul></li>
-<li>
-<strong>Binding</strong> is like reserving the exact seats for each
-friend in the planned area.
-<ul><li>Example: Once the seating area is chosen, you assign specific seat
-numbers to each friend.<br></li>
-<li>Similarly, <code>--bind-to</code> pins each MPI process or thread to
-a specific core or hardware unit to avoid movement.</li>
-</ul></li>
-</ul><p>This analogy helps illustrate why <strong>mapping defines
-placement</strong> and <strong>binding enforces it</strong>.</p>
-<p>We will use <code>--bind-to core</code> (the smallest hardware unit)
-and <code>--map-by</code> to distribute MPI processes across sockets or
-NUMA or node regions efficiently.</p>
-<div class="section level3">
-<h3 id="choosing-the-smallest-hardware-unit">Choosing the Smallest Hardware Unit<a class="anchor" aria-label="anchor" href="#choosing-the-smallest-hardware-unit"></a></h3>
-<p>Binding processes to the smallest unit (core) is recommended
-because:</p>
-<ol style="list-style-type: decimal"><li><p><strong>Exclusive use of resources</strong><br>
-Each process or thread is pinned to its own core, preventing multiple
-threads or processes from competing for the same CPU.</p></li>
-<li><p><strong>Predictable performance</strong><br>
-When processes share cores, execution times can fluctuate due to
-scheduling conflicts. Binding to cores ensures consistent timing across
-runs.</p></li>
-</ol><ul><li>Best practice: Always bind processes to the smallest unit (core) and
-spread processes evenly across the available hardware using
-<code>--map-by</code>.</li>
-<li>Example options:
-<ul><li>
-<code>--bind-to core</code> → binds each process to a dedicated core
-(avoids oversubscription).<br></li>
-<li>
-<code>--map-by socket:PE=&lt;threads&gt;</code> → spreads given
-number of threads as a processing element across the socket</li>
-<li>
-<code>--map-by numa:PE=&lt;threads&gt;</code> → spreads processes
-across NUMA domains, assigning <code>&lt;threads&gt;</code> cores per
-process.</li>
-<li>similarly <code>--map-by numa:PE=&lt;threads&gt;</code>
-</li>
-<li>
-<code>--cpus-per-rank &lt;n&gt;</code>→ Assigns
-<code>&lt;n&gt;</code> cores (hardware threads) to each MPI rank -
-ensuring that all threads within a rank occupy separate cores.</li>
-</ul></li>
-</ul><div id="exercise-2" class="callout challenge">
-<div class="callout-square">
-<i class="callout-icon" data-feather="zap"></i>
-</div>
-<span class="callout-header">Challenge</span>
-<div id="exercise-2" class="callout-inner">
-<h3 class="callout-title">Exercise</h3>
-<div class="callout-content">
-<p>Use the given best practices above for case 1: <code>-n 8</code>,
-<code>-threads=1</code> and case 2: <code>-n 8</code>,
-<code>-threads=4</code> and answer following questions</p>
-<p>Questions: - How many cores does the both jobs use? - Did you get
-more workers than you requested? - Did you see the scaling when running
-with 4 threads?</p>
-</div>
-</div>
-</div>
-<div id="accordionSolution8" class="accordion challenge-accordion accordion-flush">
-<div class="accordion-item">
-<button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution8" aria-expanded="false" aria-controls="collapseSolution8">
-  <h4 class="accordion-header" id="headingSolution8"> Show me the solution </h4>
-</button>
-<div id="collapseSolution8" class="accordion-collapse collapse" aria-labelledby="headingSolution8" data-bs-parent="#accordionSolution8">
-<div class="accordion-body">
-<ul><li>8 and 32</li>
-<li>No.</li>
-<li>Yes</li>
-</ul></div>
-</div>
-</div>
-</div>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<p>origin/pinning</p>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-<div id="displaying-information-about-the-cpu-architecture-lscpu" class="callout discussion">
-<div class="callout-square">
-<i class="callout-icon" data-feather="message-circle"></i>
-</div>
-<span class="callout-header">Discussion</span>
 <div id="displaying-information-about-the-cpu-architecture-lscpu" class="callout-inner">
 <h3 class="callout-title">Displaying information about the CPU
 architecture: <code>lscpu</code>
@@ -1222,18 +999,29 @@ architecture: <code>lscpu</code>
 Give it a try and see how many CPUs are reported. The end of the output
 will show something about “NUMA”. Can you figure out the number of NUMA
 nodes on your system? Any idea what this is?</p>
-<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD :::: hint <code>lscpu</code> will
-first report the CPU architecture, then number of CPUs. You will see
-that CPUs are grouped into “NUMA nodes”.</p>
 </div>
 </div>
 </div>
-<div id="accordionSolution9" class="accordion challenge-accordion accordion-flush">
+<div id="accordionHint5" class="accordion challenge-accordion accordion-flush">
 <div class="accordion-item">
-<button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution9" aria-expanded="false" aria-controls="collapseSolution9">
-  <h4 class="accordion-header" id="headingSolution9"> Show me the solution </h4>
+<button class="accordion-button hint-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHint5" aria-expanded="false" aria-controls="collapseHint5">
+  <h4 class="accordion-header" id="headingHint5"> Give me a hint </h4>
 </button>
-<div id="collapseSolution9" class="accordion-collapse collapse" aria-labelledby="headingSolution9" data-bs-parent="#accordionSolution9">
+<div id="collapseHint5" class="accordion-collapse collapse" aria-labelledby="headingHint5" data-bs-parent="#accordionHint5">
+<div class="accordion-body">
+<p><code>lscpu</code> will first report the CPU architecture, then
+number of CPUs. You will see that CPUs are grouped into “NUMA
+nodes”.</p>
+</div>
+</div>
+</div>
+</div>
+<div id="accordionSolution5" class="accordion challenge-accordion accordion-flush">
+<div class="accordion-item">
+<button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution5" aria-expanded="false" aria-controls="collapseSolution5">
+  <h4 class="accordion-header" id="headingSolution5"> Show me the solution </h4>
+</button>
+<div id="collapseSolution5" class="accordion-collapse collapse" aria-labelledby="headingSolution5" data-bs-parent="#accordionSolution5">
 <div class="accordion-body">
 <p>An example output of <code>lscpu</code> is as follows (some output
 truncated):</p>
@@ -1270,8 +1058,6 @@ entirety.</p>
 </div>
 </div>
 </div>
-</div>
-<p>:::::::::::::</p>
 </div>
 </section><section><h2 class="section-heading" id="non-uniform-memory-access-numa">Non-Uniform Memory Access (NUMA)<a class="anchor" aria-label="anchor" href="#non-uniform-memory-access-numa"></a></h2>
 <hr class="half-width"><p><em>Non-Uniform Memory Access</em> (NUMA) is a computer memory design
@@ -1562,12 +1348,12 @@ case, which one is smaller and why?</p>
 </div>
 </div>
 </div>
-<div id="accordionHint5" class="accordion challenge-accordion accordion-flush">
+<div id="accordionHint6" class="accordion challenge-accordion accordion-flush">
 <div class="accordion-item">
-<button class="accordion-button hint-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHint5" aria-expanded="false" aria-controls="collapseHint5">
-  <h4 class="accordion-header" id="headingHint5"> Give me a hint </h4>
+<button class="accordion-button hint-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHint6" aria-expanded="false" aria-controls="collapseHint6">
+  <h4 class="accordion-header" id="headingHint6"> Give me a hint </h4>
 </button>
-<div id="collapseHint5" class="accordion-collapse collapse" aria-labelledby="headingHint5" data-bs-parent="#accordionHint5">
+<div id="collapseHint6" class="accordion-collapse collapse" aria-labelledby="headingHint6" data-bs-parent="#accordionHint6">
 <div class="accordion-body">
 <p>CPU-binding to node 0 is done using the option
 <code>--cpunodebind=0</code>.</p>
@@ -1575,12 +1361,12 @@ case, which one is smaller and why?</p>
 </div>
 </div>
 </div>
-<div id="accordionSolution10" class="accordion challenge-accordion accordion-flush">
+<div id="accordionSolution6" class="accordion challenge-accordion accordion-flush">
 <div class="accordion-item">
-<button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution10" aria-expanded="false" aria-controls="collapseSolution10">
-  <h4 class="accordion-header" id="headingSolution10"> Show me the solution </h4>
+<button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution6" aria-expanded="false" aria-controls="collapseSolution6">
+  <h4 class="accordion-header" id="headingSolution6"> Show me the solution </h4>
 </button>
-<div id="collapseSolution10" class="accordion-collapse collapse" aria-labelledby="headingSolution10" data-bs-parent="#accordionSolution10">
+<div id="collapseSolution6" class="accordion-collapse collapse" aria-labelledby="headingSolution6" data-bs-parent="#accordionSolution6">
 <div class="accordion-body">
 <p>CPU-binding to node 0, without worrying about memory-binding, is done
 via</p>
@@ -1620,12 +1406,12 @@ would you explain differences?</p>
 </div>
 </div>
 </div>
-<div id="accordionHint6" class="accordion challenge-accordion accordion-flush">
+<div id="accordionHint7" class="accordion challenge-accordion accordion-flush">
 <div class="accordion-item">
-<button class="accordion-button hint-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHint6" aria-expanded="false" aria-controls="collapseHint6">
-  <h4 class="accordion-header" id="headingHint6"> Give me a hint </h4>
+<button class="accordion-button hint-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHint7" aria-expanded="false" aria-controls="collapseHint7">
+  <h4 class="accordion-header" id="headingHint7"> Give me a hint </h4>
 </button>
-<div id="collapseHint6" class="accordion-collapse collapse" aria-labelledby="headingHint6" data-bs-parent="#accordionHint6">
+<div id="collapseHint7" class="accordion-collapse collapse" aria-labelledby="headingHint7" data-bs-parent="#accordionHint7">
 <div class="accordion-body">
 <p>The most distant node <em>N</em> probably corresponds to the maximum
 node number. Either <code>lscpu</code> or
@@ -1634,12 +1420,12 @@ node number. Either <code>lscpu</code> or
 </div>
 </div>
 </div>
-<div id="accordionSolution11" class="accordion challenge-accordion accordion-flush">
+<div id="accordionSolution7" class="accordion challenge-accordion accordion-flush">
 <div class="accordion-item">
-<button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution11" aria-expanded="false" aria-controls="collapseSolution11">
-  <h4 class="accordion-header" id="headingSolution11"> Show me the solution </h4>
+<button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution7" aria-expanded="false" aria-controls="collapseSolution7">
+  <h4 class="accordion-header" id="headingSolution7"> Show me the solution </h4>
 </button>
-<div id="collapseSolution11" class="accordion-collapse collapse" aria-labelledby="headingSolution11" data-bs-parent="#accordionSolution11">
+<div id="collapseSolution7" class="accordion-collapse collapse" aria-labelledby="headingSolution7" data-bs-parent="#accordionSolution7">
 <div class="accordion-body">
 <p>Assuming that <em>N</em>=7, launch one run on node 0 and the second
 on node 7.</p>

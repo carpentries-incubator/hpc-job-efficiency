@@ -781,42 +781,6 @@ performance?</li>
 placement.</li>
 </ul>
 <hr>
-<br><h3 id="06_pinning-headingInstructor2">
-<a href="06_pinning.html#headingInstructor2">Note: Login to the compute job</a><a class="anchor" aria-label="anchor" href="#06_pinning-headingInstructor2"></a>
-</h3>
-<p>This is cluster specific. It can possibly be done in two ways: 1.
-<code>srun --pty --overlap --jobid=&lt;jobid&gt; /bin/bash</code> 2.
-Check on which node job runs and login to the node via SSH</p>
-<hr>
-<br><h3 id="06_pinning-headingInstructor3">
-<a href="06_pinning.html#headingInstructor3">TODO: Show an animation</a><a class="anchor" aria-label="anchor" href="#06_pinning-headingInstructor3"></a>
-</h3>
-<ul>
-<li>current behavior with overlapping threads on the same core.</li>
-<li>Expected behavior when threads are pinned to separate cores.</li>
-</ul>
-<hr>
-<br><h3 id="06_pinning-headingInstructor4">
-<a href="06_pinning.html#headingInstructor4">Note</a><a class="anchor" aria-label="anchor" href="#06_pinning-headingInstructor4"></a>
-</h3>
-<ul>
-<li>This exercise assumes the following hardware setup:
-<ul>
-<li>Dual-socket system (2 sockets, 48 cores per socket, 8 NUMA regions,
-96 cores total).<br>
-</li>
-<li>Each MPI process can use multiple threads (<code>-threads</code>)
-for parallel execution.</li>
-</ul>
-</li>
-<li>The idea is to <strong>demonstrate oversubscription</strong> by
-giving more MPI processes than available sockets or NUMA regions, or by
-over-allocating threads per domain.<br>
-</li>
-<li>You are free to adjust <code>-n</code> and <code>-threads</code>
-based on your cluster.</li>
-</ul>
-<hr>
 <br></section><section id="08_accelerators"><h2 class="section-heading"><a href="08_accelerators.html">Performance of Accelerators</a></h2>
 <hr class="half-width">
 <h3 id="08_accelerators-headingInstructor1">
