@@ -94,6 +94,11 @@ Throughout this lesson, we will examine common inefficiencies in computational
 jobs while continuing to use the air-travel analogy to build intuition about
 resource utilization and performance optimization.
 
+Before we can improve the efficiency of a computational workload, we first need
+a way to measure it. One of the simplest and most informative performance metrics
+is the runtime of a program. The `time` command provides a convenient way to obtain
+this measurement.
+
 ### Measuring `sleep` with `time`
 
 Let's look at the `sleep` command.
@@ -141,51 +146,103 @@ reported *user* and *sys* times remain close to zero.
 
 :::::::::::::::::::::::::: spoiler
 
-### Shell keyword vs executable: `time` and `/usr/bin/time`
+### Why does `time` sometimes produce different output?
 
-The `time` command exists both as a shell keyword built into the Bash shell and as
-a standalone executable, usually residing under `/usr/bin/time`. While they behave similarly,
-they are not exactly the same. Shell keywords take precedence during shell command
-resolution, including over executables resolved through the user's `PATH`, so preceding
-a command with `time` invokes the shell keyword.
-Therefore, if you want to explicitly invoke `/usr/bin/time`, you can use
+You may notice that the output of `time` on your system looks different from the examples
+shown in this lesson. This is because `time` exists both as a **shell keyword**
+provided by your shell (such as Bash or zsh) and as a standalone executable, usually
+located at `/usr/bin/time`. When you run `time <command>`, the shell normally executes
+its own `time` keyword rather than the GNU executable. You can verify this with
 
 ```bash
-# Explicitly invoking `/usr/bin/time`
+$ which -a time
+/usr/bin/time
+$ type -a time
+time is a shell keyword
+time is /usr/bin/time
+```
+
+Notice that `which` only locates executables available through the user's `$PATH`, whereas
+`type` also reports shell keywords and built-in commands. This makes `type` the more useful
+command for determining what will actually be executed.
+
+If you specifically want to use the GNU implementation, invoke it by specifying its full path:
+
+```bash
 $ /usr/bin/time sleep 2
 0.00user 0.00system 0:02.00elapsed 0%CPU (0avgtext+0avgdata 2176maxresident)k
 0inputs+0outputs (0major+90minor)pagefaults 0swaps
+```
 
-# Compare the output to the Bash built-in:
+The GNU implementation can also produce a more detailed report using the `-v` ("verbose")
+option:
+
+```bash
+$ /usr/bin/time -v sleep 2
+	Command being timed: "sleep 2"
+	User time (seconds): 0.00
+	System time (seconds): 0.00
+	Percent of CPU this job got: 0%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:02.00
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 1920
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 105
+	Voluntary context switches: 10
+	Involuntary context switches: 1
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 0
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+```
+
+For comparison, the Bash shell keyword produces a much shorter summary:
+
+```bash
 $ time sleep 2
 
 real    0m2.003s
 user    0m0.001s
 sys     0m0.003s
+```
 
-# Yet another example output of `time` in zsh, an alternative shell implementation to Bash
+Different shells may format their output differently. For example, the `time` keyword
+in `zsh` reports:
+
+```bash
 $ time sleep 2
 sleep 2  0.00s user 0.00s system 0% cpu 2.003 total
 ```
 
-Notice the different output formatting.
-All tools provide similar insight, but the formatting and exact information may differ.
-So, if you saw something that looks different from the Bash built-in command, this may be why!
+Although the formatting differs, all of these implementations report broadly the same
+runtime information. The main differences are the output format and, in the case of
+GNU `/usr/bin/time`, the amount of detail that is available.
 
-On HPC systems, different login shells or environment configurations may produce slightly
-different `time` output formats. This can become important when runtime information is
-parsed automatically in benchmarking or profiling workflows.
+For HPC users this distinction is occasionally important. Different HPC systems may
+use different login shells, shell versions, or software environments. As a result, the
+format of the output produced by `time` may differ between clusters even when the
+measured quantities are the same. This is particularly relevant when benchmarking
+or profiling workflows automatically parse the output of `time`, since different
+implementations may produce different field names or output formats.
 
 ### Benchmarking and profiling
 
 Runtime measurements are often collected automatically during performance studies.
 
-- **Benchmarking** measures how application performance changes under different execution
-conditions, such as varying the number of CPU cores, nodes, threads, problem sizes, or
-hardware configurations.
+- **Benchmarking** measures how application performance changes under different
+execution conditions, such as varying the number of CPU cores, nodes, threads,
+problem sizes, or hardware configurations.
 - **Profiling** collects detailed information about how a program uses computational
-resources during execution. This may include where execution time is spent, memory usage,
-communication overhead, I/O activity, or other performance-related metrics.
+resources during execution. Typical profiling metrics include execution time, memory usage,
+communication overhead, I/O activity, and other performance-related measurements.
 
 Because such workflows often process timing data automatically, differences in the
 output format produced by `time` may require special handling.
@@ -193,10 +250,22 @@ output format produced by `time` may require special handling.
 Benchmarking and profiling are commonly used to identify performance bottlenecks and
 evaluate optimization strategies for HPC applications.
 
-It is also worth noting that shell keyword documentation is invoked via `help <KEYWORD>`,
-for example `help time`, while most executables have manual pages, e.g., `man time`.
-Finally, you can prefix the command with a backslash to force Bash to invoke the external
-executable, so `\time sleep 2` will invoke the external `/usr/bin/time` executable.
+Shell keywords and executables are documented differently. Shell keywords
+provide built-in help through `help`, for example
+
+```bash
+help time
+```
+
+whereas executables typically provide manual pages:
+
+```bash
+man time
+```
+
+Knowing which implementation you are using can help explain differences in reported runtime
+statistics across systems.
+
 ::::::::::::::::::::::::::
 
 ::: callout
@@ -239,37 +308,62 @@ $ echo "$SHELL"
 
 ### Time for a `date`
 
-The `date` command, as described in its manual page (`man date`), prints or sets the
+The `time` command measures the runtime of an entire command. Sometimes, however, we
+want to measure only part of a workflow or record timestamps inside a shell script.
+In these situations, the `date` command provides a simple way to obtain precise timestamps.
+
+As described in its manual page (`man date`), the `date` command prints or sets the
 system date and time.
 It can also be used as a lightweight source of high-resolution timestamps:
 
 ```bash
 date +%s.%N
 ```
-This reports the current point in time as the number of seconds elapsed since a fixed
-reference point.
+
+```output
+1785152285.376560875
+```
+
+The exact output will vary each time the command is run.
+
+The timestamp is expressed as the number of seconds elapsed since a fixed reference point.
+
+Unlike `time`, which measures an entire command, recording timestamps with `date` allows
+us to measure selected parts of workflows or multiple commands within shell scripts.
 
 :::: spoiler
 ### Epoch time
 
-Such a referenced point in time is commonly referred to as *Epoch time*.
-According to the `date` manual page, the default reference point is
-`1970-01-01 00:00:00 UTC`, commonly known as the Unix epoch.
+To calculate elapsed time, timestamps must share a common reference point.
+Such a reference point is commonly called the *epoch*.
+
+According to the `date` manual page, the default reference point used by `date` is
+`1970-01-01T00:00:00+00:00`, commonly known as the **Unix epoch**.
+
+```bash
+date -u -d @0 --iso-8601=seconds
+```
+
+```output
+1970-01-01T00:00:00+00:00
+```
+
 ::::
 
-The format specifier `%s` prints the elapsed time in seconds since the Unix epoch,
+The format specifier `%s` prints the number of elapsed seconds since the Unix epoch,
 while `%N` appends the fractional nanosecond component.
 
-Running the command multiple times will therefore produce large floating-point numbers
-with nanosecond-resolution timestamps, although the actual timer precision depends on
-the operating system, kernel, and underlying hardware.
+Running the command repeatedly therefore produces large floating-point numbers
+representing successive timestamps. Although `%N` prints nanoseconds, the actual
+timer precision depends on the operating system, kernel, and underlying hardware.
 
 ::::::::::::: challenge
 
-### An accurate stopwatch using `date`
+### Building a stopwatch with `date`
 
-You can use the construct `date +%s.%N` on the command line or in a Bash script 
-to store start and end timestamps in variables:
+Once we can record timestamps, we can build our own stopwatch.
+
+Store the current timestamp before and after running a command:
 
 ```bash
 start=$(date +%s.%N)
@@ -279,14 +373,12 @@ start=$(date +%s.%N)
 end=$(date +%s.%N)
 ```
 
-This effectively creates a simple stopwatch:
-you record a start timestamp, execute one or more commands, and then record an end
-timestamp. The elapsed runtime can then be computed by subtracting the start time
-from the end time.
+This creates a simple stopwatch. The elapsed runtime is obtained by subtracting the
+start timestamp from the end timestamp.
 Try this using the `sleep` command between the two timestamps.
 
 :::: hint
-Subtracting floating-point numbers can be done using the `bc` calculator tool:
+Floating-point subtraction can be performed using the `bc` calculator:
 
 ```bash
 echo "$end - $start" | bc -l
@@ -589,12 +681,12 @@ numbers of lightweight operations in parallel. The number of GPU cores varies gr
 depending on the hardware model, ranging from a few hundred cores in low-end devices to
 many thousands in modern accelerator hardware.
 
-### Measuring parallel runtime: core hours
+### Measuring parallel runtime: core-hours
 
 Because HPC applications often execute in parallel, resource usage is commonly measured
 using units that account for both runtime and the number of utilized processing cores.
 
-The unit **core hour** (**core-h**) represents the usage of one CPU core for one hour.
+The unit **core-hour** (**core-h**) represents the usage of one CPU core for one hour.
 Resource consumption therefore scales approximately linearly with the number of allocated
 cores and the runtime of the application.
 For example, assume you have a monthly allocation of $500$ core-h, with additional usage
@@ -670,7 +762,7 @@ The additional energy consumption caused by the workload is therefore approximat
 \]
 
 ::::::::::::: challenge
-### How many core hours does this job involve?
+### How many core-hours does this job involve?
 
 HPC centers often provide different job *queues* for different classes of workloads.
 For example, a queue named *big-jobs* may be reserved for jobs exceeding a certain
@@ -696,7 +788,7 @@ The total number of tasks is therefore approximately:
 \text{cores per node}  \times \text{number of nodes}
 \]
 
-Total core hours are then computed as:
+Total core-hours are then computed as:
 \[
 \text{task count} \times \text{runtime in hours}
 \]
@@ -710,7 +802,7 @@ The total number of tasks is
 \]
 which places the job into the `medium-jobs` queue.
 
-The total number of core hours is
+The total number of core-hours is
 \[
 64 \times 12 \times 12 = 9216 \text{ core-h}
 \]
@@ -831,7 +923,7 @@ more efficiently.
 :::::::::::::::::::::::::::::::::::::: keypoints
 - Runtime can be measured using tools such as `time` and `date`.
 - Repeated process creation can dominate runtime.
-- HPC resource usage is commonly measured in core-hours.
+- HPC resource usage is commonly measured in core-hours and GPU-hours.
 - Computational workloads may be compute-bound, memory-bound, or I/O bound.
 - Efficient jobs reduce both resource consumption and energy use.
 - Implementation choices can affect both runtime and numerical accuracy.
