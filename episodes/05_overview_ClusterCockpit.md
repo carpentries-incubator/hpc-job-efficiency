@@ -7,6 +7,8 @@ exercises: 0
 ::: questions 
 - Is job wall-time the only way to study job performance?
 - What are commonly used metrics and perspectives on job performance?
+- What are common workflows to evaluate performance?
+- How can I find the bottlenecks in a given job?
 :::
 
 ::: objectives
@@ -15,6 +17,7 @@ After completing this episode, participants should be able to …
 - Create a comprehensive performance overview through dedicated tools.
 - Explain the difference between sampling and tracing.
 - Measure utilization and the impact of underlying hardware components.
+- Determine if their job is affected by a typical performance bottleneck pattern.
 :::
 
 
@@ -383,6 +386,36 @@ Maybe not the best questions, also missing something for accelerators.
 7. I/O (disk)
 :::
 ::::
+
+
+## How to identify a bottleneck?
+
+:::::::::::::::::::::::::: instructor
+## Intention: Uncover one or two issues in the application
+
+What we're doing here:
+
+- Where does our system choke?
+- What's a bottleneck?
+- How can we identify a bottleneck?
+- "Online" and "after the fact" workflows of performance measurements (trace, accumulated results, attached to the process (live), or after it ran)
+- Point to additional resources of common performance/bottleneck issues, e.g. on hpc-wiki
+
+Maybe something like this already occurred before in 4. Scaling Study, or 5. Performance Overview
+
+Summary could be:
+- General advice on the workflow 
+- Performance reports may provide an automated summary with recommendations
+- Performance metrics can be categorized by the underlying hardware, e.g. CPU, memory, I/O, accelerators.
+- Bottlenecks can appear by metrics being saturated at the physical limits of the hardware or indirectly by other metrics being far from what the physical limits are.
+- Interpreting bottlenecks is closely related to what the application is supposed to do.
+- Relative measurements (baseline vs. change)
+   - system is quiescent, fixed CPU freq + affinity, warmups, ...
+   - Reproducibility -> link to git course?
+- Scanning results for smoking guns
+- Any best practices etc.
+
+:::::::::::::::::::::::::::::::::::::
 
 
 ## Summary
