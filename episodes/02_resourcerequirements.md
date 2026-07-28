@@ -166,7 +166,7 @@ Users are typically not limited to the average per-user resources that we've cal
 In reality, we observe:
 
 - The average is over a long periods of time. Short term you can usually use much more.
-- Users are in different phases of their projects, some may require computational resources now Others are still in preparation and need them later.
+- Users are in different phases of their projects, some may require computational resources while others are still in preparation and need them later.
 - Many users do not use their full share of resources, which leaves room for others to use more.
 - Not all users are equal. For example, if some research groups have contributed to the funding of the cluster, they should also get more resources than those who did not.
 - The world is not perfectly fair. Especially on larger clusters, HPC resources have to be requested via project proposals. Those who write more / better proposals can use more resources.
