@@ -116,7 +116,7 @@ with the contents below.
 # Only one example, consult your cluster documentation or ask the instructor or your HPC support
 module load 2025 GCC/13.2.0 OpenMPI/4.1.6 Boost/1.83.0 CMake/3.27.6 libpng/1.6.40 buildenv/default
 
-mpirun -n 4 ./raytracer -width=800 -height=800 -spp=128 -threads=1 -png=snowman.png
+mpirun -np 4 ./raytracer -width=800 -height=800 -spp=128 -threads=1 -png=snowman.png
 ```
 
 Submit the job using `sbatch`. While the job is running, we can monitor its progress
@@ -330,7 +330,9 @@ For the challenge, ask the learners and answer after the exercise:
 
 ::::::::::::::::::: challenge
 
-Request the metrics discussed above from `sacct`, including `JobID`.
+# What does the accounting `sacct` tool inspect?
+
+Use `sacct --format` to display the metrics discussed above, including `JobID`.
 Note that the `--format` flag takes a comma separated list. Also note that
 the result shows that more data is read than written, even though
 the program generates and writes an image, and reads no data at all.
@@ -456,6 +458,13 @@ system has to read the program itself and its dependencies to execute it.
 
 :::
 
+So far, we have used `sacct` to inspect the accounting information collected for completed
+jobs. While `sacct` lets us examine individual accounting fields, interpreting all of these
+metrics can take some effort. Rather than displaying those accounting fields individually,
+`seff` summarizes the same accounting information into a concise report highlighting CPU
+utilization, memory usage, wall-clock time, and other key efficiency metrics.
+Like `sacct`, it uses a completed job's ID to retrieve its accounting summary.
+
 ## Interpret the efficiency of the submitted jobs using `seff` tool
 
 ::: instructor
@@ -472,187 +481,218 @@ Don't forget to change the example output of all `sacct`s in the following examp
 
 :::
 
-The `seff` command can be used to learn about how efficiently your job
-has run. The `seff` command takes the job identifier as an argument
-to select which job it displays information about. That means we need
-to run a job first to get a job identifier we can query SLURM about.
-Then we can ask about the efficiency of the job.
-
 ::: callout
 
 # `seff` may not be available
 
-`seff` is an optional SLURM tool for more convenient access to `saact`. It does not come standard with every SLURM installation.
-Your particular HPC system may or may not provide it. Check for it's availability on your login nodes, or consult your cluster documentation or support staff.
+`seff` is an optional SLURM tool for more convenient access to `sacct`. It does not come
+standard with every SLURM installation. Your particular HPC system may or may not provide
+it. Check for its availability on your login nodes, or consult your cluster documentation
+or support staff.
 
-Other third party alternatives, e.g. [reportseff](https://github.com/troycomi/reportseff/), can be installed with default user permissions.
+Other third party alternatives, e.g. [reportseff](https://github.com/troycomi/reportseff/),
+can be installed with default user permissions.
 
 :::::::::::
 
+Let's summarize the same job we inspected with `sacct` using its job ID (`21271983`).
 
 ```bash
-jobid=$(sbatch --parsable render_snowman.sbatch)
-seff $jobid
+seff 21271983
 ```
 
 ```output
-Job ID: 309489
-Cluster: bigiron
-User/Group: usr123/grp123
+Job ID: 21271983
+Cluster: pleiades
+User/Group: <user>/<usrgrp>
 State: COMPLETED (exit code 0)
 Nodes: 1
 Cores per node: 4
-CPU Utilized: 00:07:43
-CPU Efficiency: 98.93% of 00:07:48 core-walltime
-Job Wall-clock time: 00:01:57
-Memory Utilized: 35.75 MB
-Memory Efficiency: 0.20% of 17.58 GB (4.39 GB/core)
+CPU Utilized: 00:02:02
+CPU Efficiency: 84.72% of 00:02:24 core-walltime
+Job Wall-clock time: 00:00:36
+Memory Utilized: 602.19 MB
+Memory Efficiency: 3.96% of 14.84 GB
 ```
 
-The job script we created asks for 4 CPUs for an hour. After submitting
-the job script we need to wait until the job has finished as `seff` can
-only report sensible statistics after the job is completed. The report
-from `seff` shows basic statistics about the job, such as
+The report combines several accounting fields into a concise overview of the resources
+allocated to the job and how effectively they were used. Rather than inspecting
+individual accounting fields, we can quickly identify whether the requested wall-clock
+time and memory were appropriate.
 
-- The resources the job was given
-  * the number of nodes
-  * the number of cores per node
-  * the amount of memory per core
-- The amount of resources used
-  * `CPU Utilized` the aggregate CPU time (the time the job took times the number of CPUs allocated)
-  * `CPU Efficiency` the actual CPU usage as a percentage of the total available CPU capacity
-  * `Job Wall-clock time` the time the job took from start to finish
-  * `Memory Utilized` the aggregate memory usage
-  * `Memory Efficiency` the actual memory usage as a percentage of the total avaialable memory
+The report summarizes three types of information:
 
+- Resources allocated
+    - Number of nodes
+    - Cores per node
+    - Allocated memory
 
-::: instructor
+- Resources used
+    - CPU utilized
+    - Job wall-clock time
+    - Memory utilized
 
-# Todo: give clear recommendation of what to aim for?
-Maybe 80% of job time?
+- Efficiency
+    - CPU Efficiency
+    - Memory Efficiency
 
-::::::::::::::
+The allocated resources describe what the scheduler reserved for the job. The resource
+usage describes what the application actually consumed. The efficiency metrics
+compare the allocated resources with the resources that were actually used.
 
-Looking at the `Job Wall-clock time` it shows that the job took just under 2
-minutes. Therefore this job took a lot less time
-than the one hour we asked for. This can be problematic as the scheduler looks
-for time windows when it can fit a job in. Long running jobs cannot be squeezed
-in as easily as short running jobs. As a result, jobs that request a long time
-to complete typically have to wait longer before they can be started. Therefore
-asking for more than 10 times as much time as the job really needs, simply
-means that you will have to wait longer for the job to start. On the other hand
-you do not want to ask for too little time. Few things are more annoying than
-waiting for a long running calculation to finish, just to see the job being
-killed right before the end because it would have needed a couple of minutes more
-than you asked for. So the best approach is to ask for more time than
-the job needs, but not go overboard here. As the job elapse time depends on
-many machine conditions, including congestion in the data communication, disk
-access, operating system jitter, and so on, you might want to ask for a
-substantial buffer. Nevertheless, asking for more than twice as much time as
-job is expected to need, usually doesn't make sense.
+We can use the summary reported by `seff` for the job ID `21271983` to evaluate
+whether the requested resources were appropriate and identify opportunities to improve
+future job submissions. Looking at the `Job Wall-clock time`, we see that the job
+completed in approximately 36 seconds, even though we requested one hour. Requesting
+substantially more time than a job actually needs can increase the time it spends
+waiting in the queue because the scheduler must find a sufficiently large time window in
+which to run it. Shorter jobs are often easier for the scheduler to fit into the
+schedule than longer ones.
 
-Another thing is that SLURM by default reserves a certain amount of memory per
-core. In this case the actual memory usage is just a fraction of that amount.
-We could reduce the memory allocation by explicitly asking for less
-by modifying the `render_snowman.sbatch` job script.
+On the other hand, requesting too little risks the job being terminated before it
+finishes. The goal is therefore to request enough time for the job to complete reliably
+while avoiding an unnecessarily large safety margin. Because a job's running time depends
+on many machine factors–including network communication, disk access, operating system
+jitter, and system load–it is sensible to include a modest buffer once you have a good
+estimate of the expected wall-clock time. Nevertheless, requesting more than twice the
+expected running time rarely makes sense.
+
+The memory utilization reported by `seff` shows that the job used only a small fraction
+of the allocated memory. By default, SLURM reserves a certain amount of memory per CPU
+core, so in this case the default allocation was much larger than the application
+required, resulting in a memory efficiency of only about 4%. We could reduce the requested
+memory by explicitly specifying a smaller memory allocation in the `render_snowman.sbatch`
+job script.
 
 ::: instructor
 
 # Todo: potential issue?
 
-Running this on our cluster and adding a module load command resulted in 600MB of memory required.
-My guess is, this is due to cgroups_v2 and Page caches being counted towards the job as well, so loading the modules might spike the resource requirements as well?
+Running this on our cluster and adding a module load command resulted in 600MB of memory
+required. My guess is, this is due to `cgroups_v2` and Page caches being counted towards
+the job as well, so loading the modules might spike the resource requirements as well?
 
 Maybe we should play it safe and use a larger value in the following exercise.
-But we also want to teach not overdoing it, so it'd be good if we can find a useful but generic compromise here
+But we also want to teach not overdoing it, so it'd be good if we can find a useful but
+generic compromise here
 
 ::::::::::::::
 
 :::::::::::::::::::: challenge
 
+# Does the memory usage efficiency improve?
+
 Edit the batch file to reduce the amount of memory requested for the
-job. Note that the amount of memory per node can be requested with the
-`--mem=` argument. The amount of memory is specified by a number followed by
-a unit. The units can represent kilobtytes (KB), megabytes (MB),
-gigabytes (GB). For the calculations we are doing here 100 megabytes per
-node is more than sufficient. Submit the job, and inspect the efficiency
-with `seff`. What is the memory usage efficiency you get?
+job. Note that the amount of memory requested per CPU core can be specified with the
+`--mem-per-cpu=` option.
+
+Memory amounts may be specified using the following suffixes:
+
+- `K` or `k` for kilobytes
+- `M` or `m` for megabytes
+- `G` or `g` for gigabytes
+- `T` or `t` for terabytes
+
+For this example, requesting 160 MB per CPU core is more than sufficient. Submit the job,
+and inspect the efficiency with `seff`. How does the memory efficiency compare with the
+previous submission?
 
 :::::::: solution
 
-The batch file after adding the memory request becomes.
+The modified batch script becomes:
 
-```input
+```bash
 #!/usr/bin/bash
+#SBATCH --job-name=render-snowman
 #SBATCH --time=01:00:00
 #SBATCH --nodes=1
 #SBATCH --tasks-per-node=4
-#SBATCH --mem=100MB
+#SBATCH --mem-per-cpu=160MB
 
-# Possibly a "module load ..." command to load required libraries
-# Depends on your particular HPC system
+# Only one example, consult your cluster documentation or ask the instructor or your HPC support
+module load 2025 GCC/13.2.0 OpenMPI/4.1.6 Boost/1.83.0 CMake/3.27.6 libpng/1.6.40 buildenv/default
 
-mpirun -np 4 raytracer -width=800 -height=800 -spp=128 -alloc_mode=3
+mpirun -np 4 ./raytracer -width=800 -height=800 -spp=128 -threads=1 -png=snowman.png
 ```
 
-Submit this jobscript, as before, with the following command.
+Submit the modified jobscript as shown before with the following command:
 
 ```bash
-jobid=$(sbatch --parsable render_snowman.sbatch)
-seff $jobid
+sbatch render_snowman.sbatch
+```
+
+Check the status of the job using `squeue --me`.
+
+```output
+             JOBID PARTITION     NAME     USER ST       TIME  NODES NODELIST(REASON)
+          21295177     short render-s     user  R       0:15      1 wn21231
+```
+
+Once the job is completed, execute the following command:
+
+```bash
+seff 21295177
 ```
 
 ```output
-Job ID: 310002
-Cluster: bigiron
-User/Group: usr123/grp123
+Job ID: 21295177
+Cluster: pleiades
+User/Group: <user>/<usrgrp>
 State: COMPLETED (exit code 0)
 Nodes: 1
 Cores per node: 4
-CPU Utilized: 00:07:43
-CPU Efficiency: 98.09% of 00:07:52 core-walltime
-Job Wall-clock time: 00:01:58
-Memory Utilized: 50.35 MB
-Memory Efficiency: 50.35% of 100.00 MB (100.00 MB/node)
+CPU Utilized: 00:02:11
+CPU Efficiency: 86.18% of 00:02:32 core-walltime
+Job Wall-clock time: 00:00:38
+Memory Utilized: 602.53 MB
+Memory Efficiency: 94.14% of 640.00 MB
 ```
 
-The output of `seff` shows that about 50% of requested memory
-was used.
+The output of `seff` shows that approximately 94% of the requested memory was used.
 
 ::::::::::::::::::::::::::
 
 :::::::::::::::::::::::::::::::
 
-Now we see that a much larger fraction of the allocated memory has been
-used. Normally you would not worry too much about the memory request. Lately
-HPC clusters are used more for machine learning work loads which tend to require
-a lot of memory. Their memory requirements per core might actually be so large
-that they cannot use all the cores in a node. So there may be spare cores
-available for jobs that need little memory. In such a scenario tightening the
-memory allocation up could allow the scheduler to start your job early. How
-much milage you might get from this depends on the job mix at the HPC site where
-you run your calculations.
+Now we see that a much larger fraction of the allocated memory has been used. This means
+that the requested memory is now much closer to what the application actually requires.
+In practice, modestly overestimating memory is often not a major concern. However, requesting
+only the memory your application needs gives the scheduler more flexibility when placing
+jobs on the available compute nodes, which may reduce the time your job spends waiting
+in the queue.
 
-Note that the CPU utilization is reported as almost 100%, but this just means
-that the CPU was busy with your job 100% of the time. It does not mean that this
-time was well spent. For example, every parallel program has some serial parts
-to the code.
-Typically those parts are executed redundantly on all cores, which is wasteful
-but not reflected in the CPU efficiency. Also, this number does not reflect
-how well the capabilities of the CPU are used. If your CPU offers vector
-instructions, for example, but your code does not use them then your code will
-just run slow. The CPU efficiency will still show that the CPU was busy 100% of
-the time even though the program is just running at a fraction of the speed
-it could achieve if it fully exploited the hardware capabilities. It is worth
-keeping these limitations of `seff` in mind.
+This can be particularly beneficial on systems running many memory-intensive workloads,
+such as machine learning applications. These jobs may require so much memory per CPU core
+that they cannot use every core on a node, leaving some cores idle. Jobs with smaller
+memory requirements can sometimes make use of these otherwise unavailable resources
+and therefore start sooner. How much benefit this provides depends on the workload
+mix and scheduling policies of the HPC system where you run your calculations.
+
+The CPU efficiency reported by `seff` is close to 100%, indicating that the allocated
+CPU cores spent almost all of their time executing your job rather than sitting idle.
+However, this does not necessarily mean that the application is making efficient use of
+the available hardware or running as fast as possible.
+
+For example, every parallel application contains some serial sections that cannot be
+parallelized. During these periods, CPU cores may remain busy even though the application
+is not making the most effective use of the available CPU resources. Likewise,
+CPU efficiency does not indicate how well an application exploits the capabilities of
+the CPU. If a processor supports vector instructions but the application does not use
+them, the CPUs may still appear fully utilized even though the application is running
+significantly slower than it could.
+
+`seff` therefore provides a useful summary of how busy the allocated CPU resources were,
+but it cannot determine whether the application is making efficient use of the underlying
+hardware. It is therefore important to keep these limitations in mind when interpreting
+the CPU efficiency reported by `seff`.
 
 ::: callout
 
-# Good utilization does not imply efficiency
-Measuring close to 100% CPU utilization does not say anything about how useful the calculations are.
-It's merely stating, that the CPU was mostly busy with calculations, instead of waiting for data or running idle, waiting for other conditions to occur.
+# High CPU utilization does not imply efficient execution
 
-Good CPU utilization is only efficient, if it runs only "useful" calculations that contribute with new results towards an intended goal.
+High CPU utilization indicates that the CPU spent most of its time performing computations
+rather than sitting idle. It does not necessarily mean that the application used the
+hardware efficiently or that it produced useful work as efficiently as possible.
 
 :::::::::::
 
@@ -660,28 +700,9 @@ The `seff` command cannot give you any information about the I/O performance of
 your job. You have to use other approaches for that, and `sacct` may be one of them.
 
 
-## Shortcomings
-
-While `seff` and `sacct` provide a lot of information it is still incomplete. For
-example, the information is accumulated for the entire calculation. Variations in the
-metrics as a function of time throughout the job are not available.
-Communication between different MPI processes is not recorded. The collection
-of the energy consumption depends on the hardware and system configuration
-at the HPC center and might not be available. We are also often missing reliable measurements
-for I/O via the interconnect between nodes and the parallel file system.
-
-So while we might be able to
-glean some indications for different types of performance problems, for a
-proper analysis more detailed information is needed.
-
-## Summary
-
-This episode introduced the SLURM tools `seff` and `sacct` to get a high
-level perspective on a job's performance. As these tools just use the statistics
-that SLURM collected on a job as it ran, they can always be used without
-any special preparation.
-
 ::::::::::::::::::::::: challenge
+
+# This challenge needs correction
 
 So far we have considered our initial calculation using 4 cores.
 To run the calculation faster we could consider using more cores.
@@ -786,13 +807,42 @@ is responsible for the majority of data written.
 
 :::::::::::::::::::::::
 
+## Shortcomings
+
+The accounting information provided by `sacct` and `seff` gives a useful summary
+of how a job used the resources allocated by the scheduler. However, it is intended
+to provide a high-level overview rather than a detailed performance analysis.
+
+For example, the reported metrics summarize the entire execution of a job. They do not
+show how resource usage changes over time, making it difficult to identify different
+execution phases or short-lived performance problems.
+
+Likewise, scheduler accounting does not record communication between MPI processes. Reliable
+measurements of I/O between the compute nodes and the parallel file system are also
+often unavailable. Some hardware-specific metrics, such as energy consumption, depend
+on the capabilities and configuration of the HPC system and may not be collected.
+
+The information reported by `sacct` and `seff` can therefore help identify potential
+performance issues and improve future resource requests. However, a detailed performance
+analysis requires more specialized profiling and performance analysis tools.
+
+## Summary
+
+In this episode, we used SLURM tools `sacct` and `seff` to inspect completed jobs and
+interpret the accounting information collected by the scheduler. We learned how to use
+this information to evaluate wall-clock time, memory usage, and CPU utilization,
+helping us determine whether the requested resources were appropriate and identify
+opportunities to improve future job submissions.
+
+Because these tools use accounting information collected automatically while a job runs,
+they can be used to analyze any completed job without requiring special preparation or
+instrumentation.
+
 :::::::::::::::::::::::::::::::::::::: keypoints
 
-- Schedulers provide tools for a high level view on our jobs, e.g. `sacct` and `seff`
-- Important basic performance metrics we can gather this way are:
-  - **CPU Utilization**, often as fraction of `time where CPU was active`/`elapsed time of the job`
-  - **Memory utilization**, often measured as *Resident Set Size* (RSS) and number of *Pages*
-- `sacct` can also provide metrics about disk I/O and energy consumption 
-- Metrics through `sacct` are accumulated for the whole job runtime and may be too broad for more specific insight
+- `sacct` provides detailed accounting information for completed jobs, while `seff` summarizes it.
+- Scheduler accounting helps evaluate wall-clock time, memory usage, and CPU utilization.
+- Scheduler accounting can be used to improve future resource requests.
+- Scheduler accounting provides a high-level summary; detailed performance analysis requires specialized profiling tools.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
