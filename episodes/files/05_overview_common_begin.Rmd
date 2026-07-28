@@ -1,0 +1,82 @@
+::: questions 
+- Is job wall-time the only way to study job performance?
+- What are commonly used metrics and perspectives on job performance?
+- What are common workflows to evaluate performance?
+- How can I find the bottlenecks in a given job?
+:::
+
+::: objectives
+After completing this episode, participants should be able to …
+
+- Create a comprehensive performance overview through dedicated tools.
+- Explain the difference between sampling and tracing.
+- Measure utilization and the impact of underlying hardware components.
+- Determine if their job is affected by a typical performance bottleneck pattern.
+:::
+
+
+::: instructor
+## Intention: Introduce third party tools for performance reports
+
+Narrative:
+
+- Scaling study, scheduler tools, project proposal is written and handed in
+- Maybe I can squeeze out more from my current system by trying to understand better how it behaves
+- Another colleague told us about performance measurement tools
+- We are learning more about our application
+- Aha, there IS room to optimize! Compile with vectorization
+
+
+What we're doing here:
+
+- Get a complete picture
+- Introduce additional metrics / definitions, and popular representations of data, e.g. Roofline
+- Relate to hardware on the same level of detail
+:::
+
+
+Wall-time measurements with `time` do not tell us why exactly an application is slower than expected.
+To learn more about the *why*, we have to measure our applications behavior in more detail and capture the utilization of underlying hardware.
+Broadly categorized, a jobs performance is mostly dependent on
+
+- **CPU utilization**, e.g. how quickly instructions can be send to the processor, how quickly and how much data can be read from memory, and the raw calculation capabilities of the CPU.
+- **Memory utilization** may vary in terms of how much data is stored in memory, how often data in memory is written or read, and how quickly the data can be read and written to.
+- **Disk input and output** affects jobs that work with amounts of data that exceed available memory capacities.
+- **Network input and output** affects applications that rely on remote data, e.g. MPI applications that regularly share results between processes on multiple worker nodes.
+
+
+![The underlying hardware frames any performance analysis.
+Calculations are performed in multiple cores, potentially multiple threads per core, and even in vectorized instructions where a single operation is applied to multiple sets of data in a single instruction.
+Data moves through the data hierarchy to CPU cores, where each level "closer" to the CPU has a smaller storage capacity, but larger bandwidth and smaller latencies, improving access performance.](fig/JobEfficiency.drawio.png){alt='Diagram to visualize the data hierarchy of CPU architectures. Network, local disks, memory, and CPU caches have decreasing amounts of storage capacity, but increasing bandwidths and shorter latencies. Calculations occur in CPUs, possibly in multiple CPU cores, which may have multiple threads each, and even apply vectorized instructions.'}
+
+::: discussion
+# Want to share an example?
+
+Every job is limited by a contention point in the hardware.
+Resolving one issue, e.g. too slow reading of data from disk, just shifts the contention point to a different location, e.g. waiting for calculations to finish in the CPU cores.
+The absolute performance of the application is improved, but it will be always "slowed down" somewhere.
+
+Did you experience a situation, where an application was clearly slowed down in some way?
+:::
+
+
+## Measurement Workflows
+To learn how applications utilize the computers hardware, we employ third party tools that read usage metrics from *performance counters*, often implemented either in the operating system kernels (software) or in hardware.
+
+Dedicated performance measurement tools often employ similar methods and rely on the same sources of information, but they my focus on different issues and use different data processing and visualization methods.
+
+In general there are two approaches to performance measurements:
+
+1. **Sampling**: Read out performance counters and the application state at regular intervals during execution
+1. **Tracing**: Record every event and operation that occurs
+
+*Tracing* is exact and allows for a very detailed analysis.
+On the other hand, it results in very large amounts of measurement data that even affects the applications performance during data collection.
+It may be impractical in some situations.
+
+*Sampling* on the other hand is less exact and results in a statistical description of the applications behavior.
+Sampling has a smaller *measurement overhead*, but may suffer from, for example, slight mis-attributions of measurements to wrong sections of the code and fluctuating results between repeated measurements.
+
+Measurement results are either stored and analysed in a *timeline*, or aggregated into a final measurement, often called a *profile*.
+
+
