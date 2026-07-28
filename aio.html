@@ -397,7 +397,7 @@
         
 <section id="aio-01_introduction"><p>Content from <a href="01_introduction.html">Introduction</a></p>
 <hr>
-<p>Last updated on 2026-07-03 |
+<p>Last updated on 2026-07-28 |
 
         <a href="https://github.com/stderr-enst/jobefficiency/edit/main/episodes/01_introduction.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <div class="text-end">
@@ -466,6 +466,10 @@ Throughout this lesson, we will examine common inefficiencies in
 computational jobs while continuing to use the air-travel analogy to
 build intuition about resource utilization and performance
 optimization.</p>
+<p>Before we can improve the efficiency of a computational workload, we
+first need a way to measure it. One of the simplest and most informative
+performance metrics is the runtime of a program. The <code>time</code>
+command provides a convenient way to obtain this measurement.</p>
 <div class="section level3">
 <h3 id="measuring-sleep-with-time">Measuring <code>sleep</code> with <code>time</code>
 <a class="anchor" aria-label="anchor" href="#measuring-sleep-with-time"></a>
@@ -531,45 +535,102 @@ times remain close to zero.</p>
 <div id="accordionSpoiler1" class="accordion spoiler-accordion accordion-flush">
 <div class="accordion-item">
 <button class="accordion-button spoiler-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSpoiler1" aria-expanded="false" aria-controls="collapseSpoiler1">
-  <h3 class="accordion-header" id="headingSpoiler1">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="eye"></i></div> Shell keyword vs executable: time and /usr/bin/time </h3>
+  <h3 class="accordion-header" id="headingSpoiler1">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="eye"></i></div> Why does time sometimes produce different output? </h3>
 </button>
 <div id="collapseSpoiler1" class="accordion-collapse collapse" aria-labelledby="headingSpoiler1" data-bs-parent="#accordionSpoiler1">
 <div class="accordion-body">
-<p>The <code>time</code> command exists both as a shell keyword built
-into the Bash shell and as a standalone executable, usually residing
-under <code>/usr/bin/time</code>. While they behave similarly, they are
-not exactly the same. Shell keywords take precedence during shell
-command resolution, including over executables resolved through the
-user’s <code>PATH</code>, so preceding a command with <code>time</code>
-invokes the shell keyword. Therefore, if you want to explicitly invoke
-<code>/usr/bin/time</code>, you can use</p>
+<p>You may notice that the output of <code>time</code> on your system
+looks different from the examples shown in this lesson. This is because
+<code>time</code> exists both as a <strong>shell keyword</strong>
+provided by your shell (such as Bash or zsh) and as a standalone
+executable, usually located at <code>/usr/bin/time</code>. When you run
+<code>time &lt;command&gt;</code>, the shell normally executes its own
+<code>time</code> keyword rather than the GNU executable. You can verify
+this with</p>
 <div class="codewrapper sourceCode" id="cb4">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" tabindex="-1" aria-label="code-block-4-1"></a><span class="co"># Explicitly invoking `/usr/bin/time`</span></span>
-<span id="cb4-2"><a href="#cb4-2" tabindex="-1" aria-label="code-block-4-2"></a><span class="ex">$</span> /usr/bin/time sleep 2</span>
-<span id="cb4-3"><a href="#cb4-3" tabindex="-1" aria-label="code-block-4-3"></a><span class="ex">0.00user</span> 0.00system 0:02.00elapsed 0%CPU <span class="er">(</span><span class="ex">0avgtext+0avgdata</span> 2176maxresident<span class="kw">)</span><span class="ex">k</span></span>
-<span id="cb4-4"><a href="#cb4-4" tabindex="-1" aria-label="code-block-4-4"></a><span class="ex">0inputs+0outputs</span> <span class="er">(</span><span class="ex">0major+90minor</span><span class="kw">)</span><span class="ex">pagefaults</span> 0swaps</span>
-<span id="cb4-5"><a href="#cb4-5" tabindex="-1" aria-label="code-block-4-5"></a></span>
-<span id="cb4-6"><a href="#cb4-6" tabindex="-1" aria-label="code-block-4-6"></a><span class="co"># Compare the output to the Bash built-in:</span></span>
-<span id="cb4-7"><a href="#cb4-7" tabindex="-1" aria-label="code-block-4-7"></a><span class="ex">$</span> time sleep 2</span>
-<span id="cb4-8"><a href="#cb4-8" tabindex="-1" aria-label="code-block-4-8"></a></span>
-<span id="cb4-9"><a href="#cb4-9" tabindex="-1" aria-label="code-block-4-9"></a><span class="ex">real</span>    0m2.003s</span>
-<span id="cb4-10"><a href="#cb4-10" tabindex="-1" aria-label="code-block-4-10"></a><span class="ex">user</span>    0m0.001s</span>
-<span id="cb4-11"><a href="#cb4-11" tabindex="-1" aria-label="code-block-4-11"></a><span class="ex">sys</span>     0m0.003s</span>
-<span id="cb4-12"><a href="#cb4-12" tabindex="-1" aria-label="code-block-4-12"></a></span>
-<span id="cb4-13"><a href="#cb4-13" tabindex="-1" aria-label="code-block-4-13"></a><span class="co"># Yet another example output of `time` in zsh, an alternative shell implementation to Bash</span></span>
-<span id="cb4-14"><a href="#cb4-14" tabindex="-1" aria-label="code-block-4-14"></a><span class="ex">$</span> time sleep 2</span>
-<span id="cb4-15"><a href="#cb4-15" tabindex="-1" aria-label="code-block-4-15"></a><span class="fu">sleep</span> 2  0.00s user 0.00s system 0% cpu 2.003 total</span></code></pre>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" tabindex="-1" aria-label="code-block-4-1"></a><span class="ex">$</span> which <span class="at">-a</span> time</span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1" aria-label="code-block-4-2"></a><span class="ex">/usr/bin/time</span></span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1" aria-label="code-block-4-3"></a><span class="ex">$</span> type <span class="at">-a</span> time</span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1" aria-label="code-block-4-4"></a><span class="bu">time</span> is a shell keyword</span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1" aria-label="code-block-4-5"></a><span class="bu">time</span> is /usr/bin/time</span></code></pre>
 </div>
-<p>Notice the different output formatting. All tools provide similar
-insight, but the formatting and exact information may differ. So, if you
-saw something that looks different from the Bash built-in command, this
-may be why!</p>
-<p>On HPC systems, different login shells or environment configurations
-may produce slightly different <code>time</code> output formats. This
-can become important when runtime information is parsed automatically in
-benchmarking or profiling workflows.</p>
+<p>Notice that <code>which</code> only locates executables available
+through the user’s <code>$PATH</code>, whereas <code>type</code> also
+reports shell keywords and built-in commands. This makes
+<code>type</code> the more useful command for determining what will
+actually be executed.</p>
+<p>If you specifically want to use the GNU implementation, invoke it by
+specifying its full path:</p>
+<div class="codewrapper sourceCode" id="cb5">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" tabindex="-1" aria-label="code-block-5-1"></a><span class="ex">$</span> /usr/bin/time sleep 2</span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1" aria-label="code-block-5-2"></a><span class="ex">0.00user</span> 0.00system 0:02.00elapsed 0%CPU <span class="er">(</span><span class="ex">0avgtext+0avgdata</span> 2176maxresident<span class="kw">)</span><span class="ex">k</span></span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1" aria-label="code-block-5-3"></a><span class="ex">0inputs+0outputs</span> <span class="er">(</span><span class="ex">0major+90minor</span><span class="kw">)</span><span class="ex">pagefaults</span> 0swaps</span></code></pre>
+</div>
+<p>The GNU implementation can also produce a more detailed report using
+the <code>-v</code> (“verbose”) option:</p>
+<div class="codewrapper sourceCode" id="cb6">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" tabindex="-1" aria-label="code-block-6-1"></a><span class="ex">$</span> /usr/bin/time <span class="at">-v</span> sleep 2</span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1" aria-label="code-block-6-2"></a>	<span class="ex">Command</span> being timed: <span class="st">"sleep 2"</span></span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1" aria-label="code-block-6-3"></a>	<span class="ex">User</span> time <span class="er">(</span><span class="ex">seconds</span><span class="kw">)</span><span class="bu">:</span> 0.00</span>
+<span id="cb6-4"><a href="#cb6-4" tabindex="-1" aria-label="code-block-6-4"></a>	<span class="ex">System</span> time <span class="er">(</span><span class="ex">seconds</span><span class="kw">)</span><span class="bu">:</span> 0.00</span>
+<span id="cb6-5"><a href="#cb6-5" tabindex="-1" aria-label="code-block-6-5"></a>	<span class="ex">Percent</span> of CPU this job got: 0%</span>
+<span id="cb6-6"><a href="#cb6-6" tabindex="-1" aria-label="code-block-6-6"></a>	<span class="ex">Elapsed</span> <span class="er">(</span><span class="fu">wall</span> clock<span class="kw">)</span> <span class="bu">time</span> <span class="er">(</span><span class="ex">h:mm:ss</span> or m:ss<span class="kw">)</span><span class="bu">:</span> 0:02.00</span>
+<span id="cb6-7"><a href="#cb6-7" tabindex="-1" aria-label="code-block-6-7"></a>	<span class="ex">Average</span> shared text size <span class="er">(</span><span class="ex">kbytes</span><span class="kw">)</span><span class="bu">:</span> 0</span>
+<span id="cb6-8"><a href="#cb6-8" tabindex="-1" aria-label="code-block-6-8"></a>	<span class="ex">Average</span> unshared data size <span class="er">(</span><span class="ex">kbytes</span><span class="kw">)</span><span class="bu">:</span> 0</span>
+<span id="cb6-9"><a href="#cb6-9" tabindex="-1" aria-label="code-block-6-9"></a>	<span class="ex">Average</span> stack size <span class="er">(</span><span class="ex">kbytes</span><span class="kw">)</span><span class="bu">:</span> 0</span>
+<span id="cb6-10"><a href="#cb6-10" tabindex="-1" aria-label="code-block-6-10"></a>	<span class="ex">Average</span> total size <span class="er">(</span><span class="ex">kbytes</span><span class="kw">)</span><span class="bu">:</span> 0</span>
+<span id="cb6-11"><a href="#cb6-11" tabindex="-1" aria-label="code-block-6-11"></a>	<span class="ex">Maximum</span> resident set size <span class="er">(</span><span class="ex">kbytes</span><span class="kw">)</span><span class="bu">:</span> 1920</span>
+<span id="cb6-12"><a href="#cb6-12" tabindex="-1" aria-label="code-block-6-12"></a>	<span class="ex">Average</span> resident set size <span class="er">(</span><span class="ex">kbytes</span><span class="kw">)</span><span class="bu">:</span> 0</span>
+<span id="cb6-13"><a href="#cb6-13" tabindex="-1" aria-label="code-block-6-13"></a>	<span class="ex">Major</span> <span class="er">(</span><span class="ex">requiring</span> I/O<span class="kw">)</span> <span class="ex">page</span> faults: 0</span>
+<span id="cb6-14"><a href="#cb6-14" tabindex="-1" aria-label="code-block-6-14"></a>	<span class="ex">Minor</span> <span class="er">(</span><span class="ex">reclaiming</span> a frame<span class="kw">)</span> <span class="ex">page</span> faults: 105</span>
+<span id="cb6-15"><a href="#cb6-15" tabindex="-1" aria-label="code-block-6-15"></a>	<span class="ex">Voluntary</span> context switches: 10</span>
+<span id="cb6-16"><a href="#cb6-16" tabindex="-1" aria-label="code-block-6-16"></a>	<span class="ex">Involuntary</span> context switches: 1</span>
+<span id="cb6-17"><a href="#cb6-17" tabindex="-1" aria-label="code-block-6-17"></a>	<span class="ex">Swaps:</span> 0</span>
+<span id="cb6-18"><a href="#cb6-18" tabindex="-1" aria-label="code-block-6-18"></a>	<span class="ex">File</span> system inputs: 0</span>
+<span id="cb6-19"><a href="#cb6-19" tabindex="-1" aria-label="code-block-6-19"></a>	<span class="ex">File</span> system outputs: 0</span>
+<span id="cb6-20"><a href="#cb6-20" tabindex="-1" aria-label="code-block-6-20"></a>	<span class="ex">Socket</span> messages sent: 0</span>
+<span id="cb6-21"><a href="#cb6-21" tabindex="-1" aria-label="code-block-6-21"></a>	<span class="ex">Socket</span> messages received: 0</span>
+<span id="cb6-22"><a href="#cb6-22" tabindex="-1" aria-label="code-block-6-22"></a>	<span class="ex">Signals</span> delivered: 0</span>
+<span id="cb6-23"><a href="#cb6-23" tabindex="-1" aria-label="code-block-6-23"></a>	<span class="ex">Page</span> size <span class="er">(</span><span class="ex">bytes</span><span class="kw">)</span><span class="bu">:</span> 4096</span>
+<span id="cb6-24"><a href="#cb6-24" tabindex="-1" aria-label="code-block-6-24"></a>	<span class="ex">Exit</span> status: 0</span></code></pre>
+</div>
+<p>For comparison, the Bash shell keyword produces a much shorter
+summary:</p>
+<div class="codewrapper sourceCode" id="cb7">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" tabindex="-1" aria-label="code-block-7-1"></a><span class="ex">$</span> time sleep 2</span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1" aria-label="code-block-7-2"></a></span>
+<span id="cb7-3"><a href="#cb7-3" tabindex="-1" aria-label="code-block-7-3"></a><span class="ex">real</span>    0m2.003s</span>
+<span id="cb7-4"><a href="#cb7-4" tabindex="-1" aria-label="code-block-7-4"></a><span class="ex">user</span>    0m0.001s</span>
+<span id="cb7-5"><a href="#cb7-5" tabindex="-1" aria-label="code-block-7-5"></a><span class="ex">sys</span>     0m0.003s</span></code></pre>
+</div>
+<p>Different shells may format their output differently. For example,
+the <code>time</code> keyword in <code>zsh</code> reports:</p>
+<div class="codewrapper sourceCode" id="cb8">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" tabindex="-1" aria-label="code-block-8-1"></a><span class="ex">$</span> time sleep 2</span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1" aria-label="code-block-8-2"></a><span class="fu">sleep</span> 2  0.00s user 0.00s system 0% cpu 2.003 total</span></code></pre>
+</div>
+<p>Although the formatting differs, all of these implementations report
+broadly the same runtime information. The main differences are the
+output format and, in the case of GNU <code>/usr/bin/time</code>, the
+amount of detail that is available.</p>
+<p>For HPC users this distinction is occasionally important. Different
+HPC systems may use different login shells, shell versions, or software
+environments. As a result, the format of the output produced by
+<code>time</code> may differ between clusters even when the measured
+quantities are the same. This is particularly relevant when benchmarking
+or profiling workflows automatically parse the output of
+<code>time</code>, since different implementations may produce different
+field names or output formats.</p>
 <div class="section level3">
 <h3 id="benchmarking-and-profiling">Benchmarking and profiling<a class="anchor" aria-label="anchor" href="#benchmarking-and-profiling"></a>
 </h3>
@@ -583,9 +644,9 @@ of CPU cores, nodes, threads, problem sizes, or hardware
 configurations.</li>
 <li>
 <strong>Profiling</strong> collects detailed information about how a
-program uses computational resources during execution. This may include
-where execution time is spent, memory usage, communication overhead, I/O
-activity, or other performance-related metrics.</li>
+program uses computational resources during execution. Typical profiling
+metrics include execution time, memory usage, communication overhead,
+I/O activity, and other performance-related measurements.</li>
 </ul>
 <p>Because such workflows often process timing data automatically,
 differences in the output format produced by <code>time</code> may
@@ -593,13 +654,22 @@ require special handling.</p>
 <p>Benchmarking and profiling are commonly used to identify performance
 bottlenecks and evaluate optimization strategies for HPC
 applications.</p>
-<p>It is also worth noting that shell keyword documentation is invoked
-via <code>help &lt;KEYWORD&gt;</code>, for example
-<code>help time</code>, while most executables have manual pages, e.g.,
-<code>man time</code>. Finally, you can prefix the command with a
-backslash to force Bash to invoke the external executable, so
-<code>\time sleep 2</code> will invoke the external
-<code>/usr/bin/time</code> executable.</p>
+<p>Shell keywords and executables are documented differently. Shell
+keywords provide built-in help through <code>help</code>, for
+example</p>
+<div class="codewrapper sourceCode" id="cb9">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" tabindex="-1" aria-label="code-block-9-1"></a><span class="bu">help</span> time</span></code></pre>
+</div>
+<p>whereas executables typically provide manual pages:</p>
+<div class="codewrapper sourceCode" id="cb10">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" tabindex="-1" aria-label="code-block-10-1"></a><span class="fu">man</span> time</span></code></pre>
+</div>
+<p>Knowing which implementation you are using can help explain
+differences in reported runtime statistics across systems.</p>
 </div>
 </div>
 </div>
@@ -614,10 +684,10 @@ backslash to force Bash to invoke the external executable, so
 <div class="callout-content">
 <p>Different HPC systems may provide different default login shells or
 environment configurations. You can inspect available shells using:</p>
-<div class="codewrapper sourceCode" id="cb5">
+<div class="codewrapper sourceCode" id="cb11">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" tabindex="-1" aria-label="code-block-5-1"></a><span class="ex">$</span> cat /etc/shells</span></code></pre>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" tabindex="-1" aria-label="code-block-11-1"></a><span class="ex">$</span> cat /etc/shells</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -638,10 +708,10 @@ environment configurations. You can inspect available shells using:</p>
 /usr/bin/rksh</code></pre>
 </div>
 <p>To determine your currently active shell, you can use:</p>
-<div class="codewrapper sourceCode" id="cb7">
+<div class="codewrapper sourceCode" id="cb13">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" tabindex="-1" aria-label="code-block-7-1"></a><span class="ex">$</span> echo <span class="st">"</span><span class="va">$SHELL</span><span class="st">"</span></span></code></pre>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" tabindex="-1" aria-label="code-block-13-1"></a><span class="ex">$</span> echo <span class="st">"</span><span class="va">$SHELL</span><span class="st">"</span></span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -656,16 +726,31 @@ environment configurations. You can inspect available shells using:</p>
 <h3 id="time-for-a-date">Time for a <code>date</code>
 <a class="anchor" aria-label="anchor" href="#time-for-a-date"></a>
 </h3>
-<p>The <code>date</code> command, as described in its manual page
-(<code>man date</code>), prints or sets the system date and time. It can
-also be used as a lightweight source of high-resolution timestamps:</p>
-<div class="codewrapper sourceCode" id="cb9">
+<p>The <code>time</code> command measures the runtime of an entire
+command. Sometimes, however, we want to measure only part of a workflow
+or record timestamps inside a shell script. In these situations, the
+<code>date</code> command provides a simple way to obtain precise
+timestamps.</p>
+<p>As described in its manual page (<code>man date</code>), the
+<code>date</code> command prints or sets the system date and time. It
+can also be used as a lightweight source of high-resolution
+timestamps:</p>
+<div class="codewrapper sourceCode" id="cb15">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" tabindex="-1" aria-label="code-block-9-1"></a><span class="fu">date</span> +%s.%N</span></code></pre>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" tabindex="-1" aria-label="code-block-15-1"></a><span class="fu">date</span> +%s.%N</span></code></pre>
 </div>
-<p>This reports the current point in time as the number of seconds
-elapsed since a fixed reference point.</p>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code><span><span class="fl">1785152285.376560875</span></span></code></pre>
+</div>
+<p>The exact output will vary each time the command is run.</p>
+<p>The timestamp is expressed as the number of seconds elapsed since a
+fixed reference point.</p>
+<p>Unlike <code>time</code>, which measures an entire command, recording
+timestamps with <code>date</code> allows us to measure selected parts of
+workflows or multiple commands within shell scripts.</p>
 <div id="accordionSpoiler2" class="accordion spoiler-accordion accordion-flush">
 <div class="accordion-item">
 <button class="accordion-button spoiler-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSpoiler2" aria-expanded="false" aria-controls="collapseSpoiler2">
@@ -673,48 +758,57 @@ elapsed since a fixed reference point.</p>
 </button>
 <div id="collapseSpoiler2" class="accordion-collapse collapse" aria-labelledby="headingSpoiler2" data-bs-parent="#accordionSpoiler2">
 <div class="accordion-body">
-<p>Such a referenced point in time is commonly referred to as <em>Epoch
-time</em>. According to the <code>date</code> manual page, the default
-reference point is <code>1970-01-01 00:00:00 UTC</code>, commonly known
-as the Unix epoch.</p>
+<p>To calculate elapsed time, timestamps must share a common reference
+point. Such a reference point is commonly called the <em>epoch</em>.</p>
+<p>According to the <code>date</code> manual page, the default reference
+point used by <code>date</code> is
+<code>1970-01-01T00:00:00+00:00</code>, commonly known as the
+<strong>Unix epoch</strong>.</p>
+<div class="codewrapper sourceCode" id="cb17">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" tabindex="-1" aria-label="code-block-17-1"></a><span class="fu">date</span> <span class="at">-u</span> <span class="at">-d</span> @0 <span class="at">--iso-8601</span><span class="op">=</span>seconds</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>1970-01-01T00:00:00+00:00</code></pre>
 </div>
 </div>
 </div>
 </div>
-<p>The format specifier <code>%s</code> prints the elapsed time in
+</div>
+<p>The format specifier <code>%s</code> prints the number of elapsed
 seconds since the Unix epoch, while <code>%N</code> appends the
 fractional nanosecond component.</p>
-<p>Running the command multiple times will therefore produce large
-floating-point numbers with nanosecond-resolution timestamps, although
-the actual timer precision depends on the operating system, kernel, and
-underlying hardware.</p>
-<div id="an-accurate-stopwatch-using-date" class="callout challenge">
+<p>Running the command repeatedly therefore produces large
+floating-point numbers representing successive timestamps. Although
+<code>%N</code> prints nanoseconds, the actual timer precision depends
+on the operating system, kernel, and underlying hardware.</p>
+<div id="building-a-stopwatch-with-date" class="callout challenge">
 <div class="callout-square">
 <i class="callout-icon" data-feather="zap"></i>
 </div>
 <span class="callout-header">Challenge</span>
-<div id="an-accurate-stopwatch-using-date" class="callout-inner">
-<h3 class="callout-title">An accurate stopwatch using
+<div id="building-a-stopwatch-with-date" class="callout-inner">
+<h3 class="callout-title">Building a stopwatch with
 <code>date</code>
 </h3>
 <div class="callout-content">
-<p>You can use the construct <code>date +%s.%N</code> on the command
-line or in a Bash script to store start and end timestamps in
-variables:</p>
-<div class="codewrapper sourceCode" id="cb10">
+<p>Once we can record timestamps, we can build our own stopwatch.</p>
+<p>Store the current timestamp before and after running a command:</p>
+<div class="codewrapper sourceCode" id="cb19">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" tabindex="-1" aria-label="code-block-10-1"></a><span class="va">start</span><span class="op">=</span><span class="va">$(</span><span class="fu">date</span> +%s.%N<span class="va">)</span></span>
-<span id="cb10-2"><a href="#cb10-2" tabindex="-1" aria-label="code-block-10-2"></a></span>
-<span id="cb10-3"><a href="#cb10-3" tabindex="-1" aria-label="code-block-10-3"></a><span class="co"># ... run some command(s) ...</span></span>
-<span id="cb10-4"><a href="#cb10-4" tabindex="-1" aria-label="code-block-10-4"></a></span>
-<span id="cb10-5"><a href="#cb10-5" tabindex="-1" aria-label="code-block-10-5"></a><span class="va">end</span><span class="op">=</span><span class="va">$(</span><span class="fu">date</span> +%s.%N<span class="va">)</span></span></code></pre>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1" tabindex="-1" aria-label="code-block-19-1"></a><span class="va">start</span><span class="op">=</span><span class="va">$(</span><span class="fu">date</span> +%s.%N<span class="va">)</span></span>
+<span id="cb19-2"><a href="#cb19-2" tabindex="-1" aria-label="code-block-19-2"></a></span>
+<span id="cb19-3"><a href="#cb19-3" tabindex="-1" aria-label="code-block-19-3"></a><span class="co"># ... run some command(s) ...</span></span>
+<span id="cb19-4"><a href="#cb19-4" tabindex="-1" aria-label="code-block-19-4"></a></span>
+<span id="cb19-5"><a href="#cb19-5" tabindex="-1" aria-label="code-block-19-5"></a><span class="va">end</span><span class="op">=</span><span class="va">$(</span><span class="fu">date</span> +%s.%N<span class="va">)</span></span></code></pre>
 </div>
-<p>This effectively creates a simple stopwatch: you record a start
-timestamp, execute one or more commands, and then record an end
-timestamp. The elapsed runtime can then be computed by subtracting the
-start time from the end time. Try this using the <code>sleep</code>
-command between the two timestamps.</p>
+<p>This creates a simple stopwatch. The elapsed runtime is obtained by
+subtracting the start timestamp from the end timestamp. Try this using
+the <code>sleep</code> command between the two timestamps.</p>
 </div>
 </div>
 </div>
@@ -725,12 +819,12 @@ command between the two timestamps.</p>
 </button>
 <div id="collapseHint1" class="accordion-collapse collapse" aria-labelledby="headingHint1" data-bs-parent="#accordionHint1">
 <div class="accordion-body">
-<p>Subtracting floating-point numbers can be done using the
-<code>bc</code> calculator tool:</p>
-<div class="codewrapper sourceCode" id="cb11">
+<p>Floating-point subtraction can be performed using the <code>bc</code>
+calculator:</p>
+<div class="codewrapper sourceCode" id="cb20">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" tabindex="-1" aria-label="code-block-11-1"></a><span class="bu">echo</span> <span class="st">"</span><span class="va">$end</span><span class="st"> - </span><span class="va">$start</span><span class="st">"</span> <span class="kw">|</span> <span class="fu">bc</span> <span class="at">-l</span></span></code></pre>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1" tabindex="-1" aria-label="code-block-20-1"></a><span class="bu">echo</span> <span class="st">"</span><span class="va">$end</span><span class="st"> - </span><span class="va">$start</span><span class="st">"</span> <span class="kw">|</span> <span class="fu">bc</span> <span class="at">-l</span></span></code></pre>
 </div>
 </div>
 </div>
@@ -743,16 +837,16 @@ command between the two timestamps.</p>
 </button>
 <div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
 <div class="accordion-body">
-<div class="codewrapper sourceCode" id="cb12">
+<div class="codewrapper sourceCode" id="cb21">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" tabindex="-1" aria-label="code-block-12-1"></a><span class="co">#!/usr/bin/env bash</span></span>
-<span id="cb12-2"><a href="#cb12-2" tabindex="-1" aria-label="code-block-12-2"></a></span>
-<span id="cb12-3"><a href="#cb12-3" tabindex="-1" aria-label="code-block-12-3"></a><span class="va">start</span><span class="op">=</span><span class="va">$(</span><span class="fu">date</span> +%s.%N<span class="va">)</span></span>
-<span id="cb12-4"><a href="#cb12-4" tabindex="-1" aria-label="code-block-12-4"></a><span class="fu">sleep</span> 2</span>
-<span id="cb12-5"><a href="#cb12-5" tabindex="-1" aria-label="code-block-12-5"></a><span class="va">end</span><span class="op">=</span><span class="va">$(</span><span class="fu">date</span> +%s.%N<span class="va">)</span></span>
-<span id="cb12-6"><a href="#cb12-6" tabindex="-1" aria-label="code-block-12-6"></a></span>
-<span id="cb12-7"><a href="#cb12-7" tabindex="-1" aria-label="code-block-12-7"></a><span class="bu">echo</span> <span class="st">"</span><span class="va">$end</span><span class="st"> - </span><span class="va">$start</span><span class="st">"</span> <span class="kw">|</span> <span class="fu">bc</span> <span class="at">-l</span></span></code></pre>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb21-1"><a href="#cb21-1" tabindex="-1" aria-label="code-block-21-1"></a><span class="co">#!/usr/bin/env bash</span></span>
+<span id="cb21-2"><a href="#cb21-2" tabindex="-1" aria-label="code-block-21-2"></a></span>
+<span id="cb21-3"><a href="#cb21-3" tabindex="-1" aria-label="code-block-21-3"></a><span class="va">start</span><span class="op">=</span><span class="va">$(</span><span class="fu">date</span> +%s.%N<span class="va">)</span></span>
+<span id="cb21-4"><a href="#cb21-4" tabindex="-1" aria-label="code-block-21-4"></a><span class="fu">sleep</span> 2</span>
+<span id="cb21-5"><a href="#cb21-5" tabindex="-1" aria-label="code-block-21-5"></a><span class="va">end</span><span class="op">=</span><span class="va">$(</span><span class="fu">date</span> +%s.%N<span class="va">)</span></span>
+<span id="cb21-6"><a href="#cb21-6" tabindex="-1" aria-label="code-block-21-6"></a></span>
+<span id="cb21-7"><a href="#cb21-7" tabindex="-1" aria-label="code-block-21-7"></a><span class="bu">echo</span> <span class="st">"</span><span class="va">$end</span><span class="st"> - </span><span class="va">$start</span><span class="st">"</span> <span class="kw">|</span> <span class="fu">bc</span> <span class="at">-l</span></span></code></pre>
 </div>
 </div>
 </div>
@@ -766,33 +860,33 @@ command between the two timestamps.</p>
 efficiency of a small script that performs a slightly more demanding
 workload than the <code>sleep</code> command. Have a look at the
 following short Bash script.</p>
-<div class="codewrapper sourceCode" id="cb13">
+<div class="codewrapper sourceCode" id="cb22">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" tabindex="-1" aria-label="code-block-13-1"></a><span class="co">#!/usr/bin/env bash</span></span>
-<span id="cb13-2"><a href="#cb13-2" tabindex="-1" aria-label="code-block-13-2"></a></span>
-<span id="cb13-3"><a href="#cb13-3" tabindex="-1" aria-label="code-block-13-3"></a><span class="va">sum</span><span class="op">=</span>0</span>
-<span id="cb13-4"><a href="#cb13-4" tabindex="-1" aria-label="code-block-13-4"></a></span>
-<span id="cb13-5"><a href="#cb13-5" tabindex="-1" aria-label="code-block-13-5"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="va">$(</span><span class="fu">seq</span> 1 1000<span class="va">)</span></span>
-<span id="cb13-6"><a href="#cb13-6" tabindex="-1" aria-label="code-block-13-6"></a><span class="cf">do</span></span>
-<span id="cb13-7"><a href="#cb13-7" tabindex="-1" aria-label="code-block-13-7"></a>  <span class="va">val</span><span class="op">=</span><span class="va">$(</span><span class="bu">echo</span> <span class="st">"e(2 * l(</span><span class="va">${i}</span><span class="st">))"</span> <span class="kw">|</span> <span class="fu">bc</span> <span class="at">-l</span><span class="va">)</span></span>
-<span id="cb13-8"><a href="#cb13-8" tabindex="-1" aria-label="code-block-13-8"></a>  <span class="va">sum</span><span class="op">=</span><span class="va">$(</span><span class="bu">echo</span> <span class="st">"</span><span class="va">$sum</span><span class="st"> + </span><span class="va">$val</span><span class="st">"</span> <span class="kw">|</span> <span class="fu">bc</span> <span class="at">-l</span><span class="va">)</span></span>
-<span id="cb13-9"><a href="#cb13-9" tabindex="-1" aria-label="code-block-13-9"></a><span class="cf">done</span></span>
-<span id="cb13-10"><a href="#cb13-10" tabindex="-1" aria-label="code-block-13-10"></a></span>
-<span id="cb13-11"><a href="#cb13-11" tabindex="-1" aria-label="code-block-13-11"></a><span class="bu">echo</span> Sum=<span class="va">$sum</span></span></code></pre>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb22-1"><a href="#cb22-1" tabindex="-1" aria-label="code-block-22-1"></a><span class="co">#!/usr/bin/env bash</span></span>
+<span id="cb22-2"><a href="#cb22-2" tabindex="-1" aria-label="code-block-22-2"></a></span>
+<span id="cb22-3"><a href="#cb22-3" tabindex="-1" aria-label="code-block-22-3"></a><span class="va">sum</span><span class="op">=</span>0</span>
+<span id="cb22-4"><a href="#cb22-4" tabindex="-1" aria-label="code-block-22-4"></a></span>
+<span id="cb22-5"><a href="#cb22-5" tabindex="-1" aria-label="code-block-22-5"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="va">$(</span><span class="fu">seq</span> 1 1000<span class="va">)</span></span>
+<span id="cb22-6"><a href="#cb22-6" tabindex="-1" aria-label="code-block-22-6"></a><span class="cf">do</span></span>
+<span id="cb22-7"><a href="#cb22-7" tabindex="-1" aria-label="code-block-22-7"></a>  <span class="va">val</span><span class="op">=</span><span class="va">$(</span><span class="bu">echo</span> <span class="st">"e(2 * l(</span><span class="va">${i}</span><span class="st">))"</span> <span class="kw">|</span> <span class="fu">bc</span> <span class="at">-l</span><span class="va">)</span></span>
+<span id="cb22-8"><a href="#cb22-8" tabindex="-1" aria-label="code-block-22-8"></a>  <span class="va">sum</span><span class="op">=</span><span class="va">$(</span><span class="bu">echo</span> <span class="st">"</span><span class="va">$sum</span><span class="st"> + </span><span class="va">$val</span><span class="st">"</span> <span class="kw">|</span> <span class="fu">bc</span> <span class="at">-l</span><span class="va">)</span></span>
+<span id="cb22-9"><a href="#cb22-9" tabindex="-1" aria-label="code-block-22-9"></a><span class="cf">done</span></span>
+<span id="cb22-10"><a href="#cb22-10" tabindex="-1" aria-label="code-block-22-10"></a></span>
+<span id="cb22-11"><a href="#cb22-11" tabindex="-1" aria-label="code-block-22-11"></a><span class="bu">echo</span> Sum=<span class="va">$sum</span></span></code></pre>
 </div>
 <p>Copy this into a file called <code>sum.bash</code>, or download it
 directly:</p>
-<div class="codewrapper sourceCode" id="cb14">
+<div class="codewrapper sourceCode" id="cb23">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" tabindex="-1" aria-label="code-block-14-1"></a><span class="ex">curl</span> <span class="at">-L</span> <span class="at">-o</span> sum.bash https://raw.githubusercontent.com/carpentries-incubator/hpc-job-efficiency/main/learners/data/sum.bash</span></code></pre>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb23-1"><a href="#cb23-1" tabindex="-1" aria-label="code-block-23-1"></a><span class="ex">curl</span> <span class="at">-L</span> <span class="at">-o</span> sum.bash https://raw.githubusercontent.com/carpentries-incubator/hpc-job-efficiency/main/learners/data/sum.bash</span></code></pre>
 </div>
 <p>Then make it executable:</p>
-<div class="codewrapper sourceCode" id="cb15">
+<div class="codewrapper sourceCode" id="cb24">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" tabindex="-1" aria-label="code-block-15-1"></a><span class="fu">chmod</span> u+x sum.bash</span></code></pre>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb24-1"><a href="#cb24-1" tabindex="-1" aria-label="code-block-24-1"></a><span class="fu">chmod</span> u+x sum.bash</span></code></pre>
 </div>
 <p>The main part of this shell script is a <code>for</code> loop that
 computes the sum of all squares <span class="math inline">\(i^2\)</span>
@@ -909,44 +1003,44 @@ chained together.</p>
 <div id="collapseSolution3" class="accordion-collapse collapse" aria-labelledby="headingSolution3" data-bs-parent="#accordionSolution3">
 <div class="accordion-body">
 <p>A straightforward approach is</p>
-<div class="codewrapper sourceCode" id="cb16">
+<div class="codewrapper sourceCode" id="cb25">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" tabindex="-1" aria-label="code-block-16-1"></a><span class="bu">time</span> ./sum.bash</span></code></pre>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb25-1"><a href="#cb25-1" tabindex="-1" aria-label="code-block-25-1"></a><span class="bu">time</span> ./sum.bash</span></code></pre>
 </div>
 <p>Alternatively, <code>date</code> and <code>&amp;&amp;</code> can be
 combined into a wrapper command that measures the runtime of
 <code>sum.bash</code> externally:</p>
-<div class="codewrapper sourceCode" id="cb17">
+<div class="codewrapper sourceCode" id="cb26">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" tabindex="-1" aria-label="code-block-17-1"></a><span class="va">start</span><span class="op">=</span><span class="va">$(</span><span class="fu">date</span> +%s.%N<span class="va">)</span> <span class="kw">&amp;&amp;</span> <span class="ex">./sum.bash</span> <span class="kw">&amp;&amp;</span> <span class="va">end</span><span class="op">=</span><span class="va">$(</span><span class="fu">date</span> +%s.%N<span class="va">)</span> <span class="kw">&amp;&amp;</span> <span class="bu">echo</span> <span class="st">"</span><span class="va">$end</span><span class="st"> - </span><span class="va">$start</span><span class="st">"</span> <span class="kw">|</span> <span class="fu">bc</span> <span class="at">-l</span></span></code></pre>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb26-1"><a href="#cb26-1" tabindex="-1" aria-label="code-block-26-1"></a><span class="va">start</span><span class="op">=</span><span class="va">$(</span><span class="fu">date</span> +%s.%N<span class="va">)</span> <span class="kw">&amp;&amp;</span> <span class="ex">./sum.bash</span> <span class="kw">&amp;&amp;</span> <span class="va">end</span><span class="op">=</span><span class="va">$(</span><span class="fu">date</span> +%s.%N<span class="va">)</span> <span class="kw">&amp;&amp;</span> <span class="bu">echo</span> <span class="st">"</span><span class="va">$end</span><span class="st"> - </span><span class="va">$start</span><span class="st">"</span> <span class="kw">|</span> <span class="fu">bc</span> <span class="at">-l</span></span></code></pre>
 </div>
 <p>Another option is to place the timestamp measurements directly inside
 the <code>sum.bash</code> script, or download it directly:</p>
-<div class="codewrapper sourceCode" id="cb18">
+<div class="codewrapper sourceCode" id="cb27">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" tabindex="-1" aria-label="code-block-18-1"></a><span class="ex">curl</span> <span class="at">-L</span> <span class="at">-o</span> sum_with_date.bash https://raw.githubusercontent.com/carpentries-incubator/hpc-job-efficiency/main/learners/data/sum_with_date.bash</span></code></pre>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb27-1"><a href="#cb27-1" tabindex="-1" aria-label="code-block-27-1"></a><span class="ex">curl</span> <span class="at">-L</span> <span class="at">-o</span> sum_with_date.bash https://raw.githubusercontent.com/carpentries-incubator/hpc-job-efficiency/main/learners/data/sum_with_date.bash</span></code></pre>
 </div>
-<div class="codewrapper sourceCode" id="cb19">
+<div class="codewrapper sourceCode" id="cb28">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1" tabindex="-1" aria-label="code-block-19-1"></a><span class="co">#!/usr/bin/env bash</span></span>
-<span id="cb19-2"><a href="#cb19-2" tabindex="-1" aria-label="code-block-19-2"></a></span>
-<span id="cb19-3"><a href="#cb19-3" tabindex="-1" aria-label="code-block-19-3"></a><span class="va">start</span><span class="op">=</span><span class="va">$(</span><span class="fu">date</span> +%s.%N<span class="va">)</span> <span class="co"># store start timestamp</span></span>
-<span id="cb19-4"><a href="#cb19-4" tabindex="-1" aria-label="code-block-19-4"></a></span>
-<span id="cb19-5"><a href="#cb19-5" tabindex="-1" aria-label="code-block-19-5"></a><span class="va">sum</span><span class="op">=</span>0</span>
-<span id="cb19-6"><a href="#cb19-6" tabindex="-1" aria-label="code-block-19-6"></a></span>
-<span id="cb19-7"><a href="#cb19-7" tabindex="-1" aria-label="code-block-19-7"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="va">$(</span><span class="fu">seq</span> 1 1000<span class="va">)</span></span>
-<span id="cb19-8"><a href="#cb19-8" tabindex="-1" aria-label="code-block-19-8"></a><span class="cf">do</span></span>
-<span id="cb19-9"><a href="#cb19-9" tabindex="-1" aria-label="code-block-19-9"></a>  <span class="va">val</span><span class="op">=</span><span class="va">$(</span><span class="bu">echo</span> <span class="st">"e(2 * l(</span><span class="va">${i}</span><span class="st">))"</span> <span class="kw">|</span> <span class="fu">bc</span> <span class="at">-l</span><span class="va">)</span></span>
-<span id="cb19-10"><a href="#cb19-10" tabindex="-1" aria-label="code-block-19-10"></a>  <span class="va">sum</span><span class="op">=</span><span class="va">$(</span><span class="bu">echo</span> <span class="st">"</span><span class="va">$sum</span><span class="st"> + </span><span class="va">$val</span><span class="st">"</span> <span class="kw">|</span> <span class="fu">bc</span> <span class="at">-l</span><span class="va">)</span></span>
-<span id="cb19-11"><a href="#cb19-11" tabindex="-1" aria-label="code-block-19-11"></a><span class="cf">done</span></span>
-<span id="cb19-12"><a href="#cb19-12" tabindex="-1" aria-label="code-block-19-12"></a></span>
-<span id="cb19-13"><a href="#cb19-13" tabindex="-1" aria-label="code-block-19-13"></a><span class="va">end</span><span class="op">=</span><span class="va">$(</span><span class="fu">date</span> +%s.%N<span class="va">)</span> <span class="co"># store end timestamp</span></span>
-<span id="cb19-14"><a href="#cb19-14" tabindex="-1" aria-label="code-block-19-14"></a></span>
-<span id="cb19-15"><a href="#cb19-15" tabindex="-1" aria-label="code-block-19-15"></a><span class="bu">echo</span> Sum=<span class="va">$sum</span> runtime=<span class="va">$(</span><span class="bu">echo</span> <span class="st">"</span><span class="va">$end</span><span class="st"> - </span><span class="va">$start</span><span class="st">"</span> <span class="kw">|</span> <span class="fu">bc</span> <span class="at">-l</span><span class="va">)</span>s</span></code></pre>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb28-1"><a href="#cb28-1" tabindex="-1" aria-label="code-block-28-1"></a><span class="co">#!/usr/bin/env bash</span></span>
+<span id="cb28-2"><a href="#cb28-2" tabindex="-1" aria-label="code-block-28-2"></a></span>
+<span id="cb28-3"><a href="#cb28-3" tabindex="-1" aria-label="code-block-28-3"></a><span class="va">start</span><span class="op">=</span><span class="va">$(</span><span class="fu">date</span> +%s.%N<span class="va">)</span> <span class="co"># store start timestamp</span></span>
+<span id="cb28-4"><a href="#cb28-4" tabindex="-1" aria-label="code-block-28-4"></a></span>
+<span id="cb28-5"><a href="#cb28-5" tabindex="-1" aria-label="code-block-28-5"></a><span class="va">sum</span><span class="op">=</span>0</span>
+<span id="cb28-6"><a href="#cb28-6" tabindex="-1" aria-label="code-block-28-6"></a></span>
+<span id="cb28-7"><a href="#cb28-7" tabindex="-1" aria-label="code-block-28-7"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="va">$(</span><span class="fu">seq</span> 1 1000<span class="va">)</span></span>
+<span id="cb28-8"><a href="#cb28-8" tabindex="-1" aria-label="code-block-28-8"></a><span class="cf">do</span></span>
+<span id="cb28-9"><a href="#cb28-9" tabindex="-1" aria-label="code-block-28-9"></a>  <span class="va">val</span><span class="op">=</span><span class="va">$(</span><span class="bu">echo</span> <span class="st">"e(2 * l(</span><span class="va">${i}</span><span class="st">))"</span> <span class="kw">|</span> <span class="fu">bc</span> <span class="at">-l</span><span class="va">)</span></span>
+<span id="cb28-10"><a href="#cb28-10" tabindex="-1" aria-label="code-block-28-10"></a>  <span class="va">sum</span><span class="op">=</span><span class="va">$(</span><span class="bu">echo</span> <span class="st">"</span><span class="va">$sum</span><span class="st"> + </span><span class="va">$val</span><span class="st">"</span> <span class="kw">|</span> <span class="fu">bc</span> <span class="at">-l</span><span class="va">)</span></span>
+<span id="cb28-11"><a href="#cb28-11" tabindex="-1" aria-label="code-block-28-11"></a><span class="cf">done</span></span>
+<span id="cb28-12"><a href="#cb28-12" tabindex="-1" aria-label="code-block-28-12"></a></span>
+<span id="cb28-13"><a href="#cb28-13" tabindex="-1" aria-label="code-block-28-13"></a><span class="va">end</span><span class="op">=</span><span class="va">$(</span><span class="fu">date</span> +%s.%N<span class="va">)</span> <span class="co"># store end timestamp</span></span>
+<span id="cb28-14"><a href="#cb28-14" tabindex="-1" aria-label="code-block-28-14"></a></span>
+<span id="cb28-15"><a href="#cb28-15" tabindex="-1" aria-label="code-block-28-15"></a><span class="bu">echo</span> Sum=<span class="va">$sum</span> runtime=<span class="va">$(</span><span class="bu">echo</span> <span class="st">"</span><span class="va">$end</span><span class="st"> - </span><span class="va">$start</span><span class="st">"</span> <span class="kw">|</span> <span class="fu">bc</span> <span class="at">-l</span><span class="va">)</span>s</span></code></pre>
 </div>
 </div>
 </div>
@@ -968,10 +1062,10 @@ multiple bags.</p>
 <p>This reduction in process-management overhead can be achieved by
 replacing the external shell loop with a loop executed internally by
 <code>bc</code>:</p>
-<div class="codewrapper sourceCode" id="cb20">
+<div class="codewrapper sourceCode" id="cb29">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1" tabindex="-1" aria-label="code-block-20-1"></a><span class="bu">echo</span> <span class="st">"s=0; for(i=1; i&lt;=1000; i++) s+=i^2; s"</span> <span class="kw">|</span> <span class="fu">bc</span> <span class="at">-l</span></span></code></pre>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb29-1"><a href="#cb29-1" tabindex="-1" aria-label="code-block-29-1"></a><span class="bu">echo</span> <span class="st">"s=0; for(i=1; i&lt;=1000; i++) s+=i^2; s"</span> <span class="kw">|</span> <span class="fu">bc</span> <span class="at">-l</span></span></code></pre>
 </div>
 <p>In this approach, which we will call the <em>one-liner</em>, the
 loop, arithmetic, and accumulation are executed inside a single
@@ -1015,11 +1109,11 @@ runtime difference.</p>
 <div id="collapseSolution4" class="accordion-collapse collapse" aria-labelledby="headingSolution4" data-bs-parent="#accordionSolution4">
 <div class="accordion-body">
 <p>You can use <code>time</code> for both summation methods:</p>
-<div class="codewrapper sourceCode" id="cb21">
+<div class="codewrapper sourceCode" id="cb30">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb21-1"><a href="#cb21-1" tabindex="-1" aria-label="code-block-21-1"></a><span class="bu">time</span> ./sum.bash</span>
-<span id="cb21-2"><a href="#cb21-2" tabindex="-1" aria-label="code-block-21-2"></a><span class="bu">time</span> echo <span class="st">"s=0; for(i=1; i&lt;=1000; i++) s+=i^2; s"</span> <span class="kw">|</span> <span class="fu">bc</span> <span class="at">-l</span></span></code></pre>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb30-1"><a href="#cb30-1" tabindex="-1" aria-label="code-block-30-1"></a><span class="bu">time</span> ./sum.bash</span>
+<span id="cb30-2"><a href="#cb30-2" tabindex="-1" aria-label="code-block-30-2"></a><span class="bu">time</span> echo <span class="st">"s=0; for(i=1; i&lt;=1000; i++) s+=i^2; s"</span> <span class="kw">|</span> <span class="fu">bc</span> <span class="at">-l</span></span></code></pre>
 </div>
 </div>
 </div>
@@ -1103,12 +1197,12 @@ cores in low-end devices to many thousands in modern accelerator
 hardware.</p>
 </div>
 <div class="section level3">
-<h3 id="measuring-parallel-runtime-core-hours">Measuring parallel runtime: core hours<a class="anchor" aria-label="anchor" href="#measuring-parallel-runtime-core-hours"></a>
+<h3 id="measuring-parallel-runtime-core-hours">Measuring parallel runtime: core-hours<a class="anchor" aria-label="anchor" href="#measuring-parallel-runtime-core-hours"></a>
 </h3>
 <p>Because HPC applications often execute in parallel, resource usage is
 commonly measured using units that account for both runtime and the
 number of utilized processing cores.</p>
-<p>The unit <strong>core hour</strong> (<strong>core-h</strong>)
+<p>The unit <strong>core-hour</strong> (<strong>core-h</strong>)
 represents the usage of one CPU core for one hour. Resource consumption
 therefore scales approximately linearly with the number of allocated
 cores and the runtime of the application. For example, assume you have a
@@ -1204,7 +1298,7 @@ approximately</p>
 </div>
 <span class="callout-header">Challenge</span>
 <div id="how-many-core-hours-does-this-job-involve" class="callout-inner">
-<h3 class="callout-title">How many core hours does this job
+<h3 class="callout-title">How many core-hours does this job
 involve?</h3>
 <div class="callout-content">
 <p>HPC centers often provide different job <em>queues</em> for different
@@ -1242,7 +1336,7 @@ cents)?</p>
 total number of tasks is therefore approximately: <span class="math display">\[
 \text{cores per node}  \times \text{number of nodes}
 \]</span></p>
-<p>Total core hours are then computed as: <span class="math display">\[
+<p>Total core-hours are then computed as: <span class="math display">\[
 \text{task count} \times \text{runtime in hours}
 \]</span></p>
 </div>
@@ -1260,7 +1354,7 @@ total number of tasks is therefore approximately: <span class="math display">\[
 \text{cores per node} \times \text{number of nodes} = 64 \times 12 = 768
 \]</span> which places the job into the <code>medium-jobs</code>
 queue.</p>
-<p>The total number of core hours is <span class="math display">\[
+<p>The total number of core-hours is <span class="math display">\[
 64 \times 12 \times 12 = 9216 \text{ core-h}
 \]</span></p>
 <p>At a billing rate of 1 cent per core-h, the total cost becomes <span class="math display">\[
@@ -1407,7 +1501,8 @@ more efficiently.</p>
 <li>Runtime can be measured using tools such as <code>time</code> and
 <code>date</code>.</li>
 <li>Repeated process creation can dominate runtime.</li>
-<li>HPC resource usage is commonly measured in core-hours.</li>
+<li>HPC resource usage is commonly measured in core-hours and
+GPU-hours.</li>
 <li>Computational workloads may be compute-bound, memory-bound, or I/O
 bound.</li>
 <li>Efficient jobs reduce both resource consumption and energy use.</li>
@@ -1441,18 +1536,18 @@ which makes them computationally expensive - an ideal HPC use case.</p>
 <h3 class="callout-title">Submit your first raytracer job with
 Slurm</h3>
 <div class="callout-content">
-<div class="codewrapper sourceCode" id="cb22">
+<div class="codewrapper sourceCode" id="cb31">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb22-1"><a href="#cb22-1" tabindex="-1" aria-label="code-block-22-1"></a><span class="co">#!/usr/bin/env bash</span></span>
-<span id="cb22-2"><a href="#cb22-2" tabindex="-1" aria-label="code-block-22-2"></a><span class="co">#SBATCH --job-name=first-script-Snowman</span></span>
-<span id="cb22-3"><a href="#cb22-3" tabindex="-1" aria-label="code-block-22-3"></a><span class="co">#SBATCH --time=01:00:00</span></span>
-<span id="cb22-4"><a href="#cb22-4" tabindex="-1" aria-label="code-block-22-4"></a><span class="co">#SBATCH --nodes=1</span></span>
-<span id="cb22-5"><a href="#cb22-5" tabindex="-1" aria-label="code-block-22-5"></a><span class="co">#SBATCH --tasks-per-node=4</span></span>
-<span id="cb22-6"><a href="#cb22-6" tabindex="-1" aria-label="code-block-22-6"></a></span>
-<span id="cb22-7"><a href="#cb22-7" tabindex="-1" aria-label="code-block-22-7"></a><span class="co"># Put in the same "module load ..." command when building the raytracer program</span></span>
-<span id="cb22-8"><a href="#cb22-8" tabindex="-1" aria-label="code-block-22-8"></a></span>
-<span id="cb22-9"><a href="#cb22-9" tabindex="-1" aria-label="code-block-22-9"></a><span class="bu">time</span> mpirun <span class="at">-np</span> 4 raytracer <span class="at">-width</span><span class="op">=</span>800 <span class="at">-height</span><span class="op">=</span>800 <span class="at">-spp</span><span class="op">=</span>128</span></code></pre>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb31-1"><a href="#cb31-1" tabindex="-1" aria-label="code-block-31-1"></a><span class="co">#!/usr/bin/env bash</span></span>
+<span id="cb31-2"><a href="#cb31-2" tabindex="-1" aria-label="code-block-31-2"></a><span class="co">#SBATCH --job-name=first-script-Snowman</span></span>
+<span id="cb31-3"><a href="#cb31-3" tabindex="-1" aria-label="code-block-31-3"></a><span class="co">#SBATCH --time=01:00:00</span></span>
+<span id="cb31-4"><a href="#cb31-4" tabindex="-1" aria-label="code-block-31-4"></a><span class="co">#SBATCH --nodes=1</span></span>
+<span id="cb31-5"><a href="#cb31-5" tabindex="-1" aria-label="code-block-31-5"></a><span class="co">#SBATCH --tasks-per-node=4</span></span>
+<span id="cb31-6"><a href="#cb31-6" tabindex="-1" aria-label="code-block-31-6"></a></span>
+<span id="cb31-7"><a href="#cb31-7" tabindex="-1" aria-label="code-block-31-7"></a><span class="co"># Put in the same "module load ..." command when building the raytracer program</span></span>
+<span id="cb31-8"><a href="#cb31-8" tabindex="-1" aria-label="code-block-31-8"></a></span>
+<span id="cb31-9"><a href="#cb31-9" tabindex="-1" aria-label="code-block-31-9"></a><span class="bu">time</span> mpirun <span class="at">-np</span> 4 raytracer <span class="at">-width</span><span class="op">=</span>800 <span class="at">-height</span><span class="op">=</span>800 <span class="at">-spp</span><span class="op">=</span>128</span></code></pre>
 </div>
 </div>
 </div>
@@ -1599,7 +1694,7 @@ cluster:</p>
 <button class="accordion-button spoiler-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSpoiler1" aria-expanded="false" aria-controls="collapseSpoiler1">
   <h3 class="accordion-header" id="headingSpoiler1">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="eye"></i></div> Show details </h3>
 </button>
-<div id="collapseSpoiler1" class="accordion-collapse collapse" aria-labelledby="headingSpoiler1" data-bs-parent="#accordionSpoiler1">
+<div id="collapseSpoiler1" class="accordion-collapse collapse" data-bs-parent="#accordionSpoiler1" aria-labelledby="headingSpoiler1">
 <div class="accordion-body">
 <p>Here is a (simplified) example output for the command above:</p>
 <pre><code>PARTITION           NODES               CPUS                MEMORY              GRES                TIMELIMIT
@@ -1638,7 +1733,7 @@ partition is based on the resources it contains?</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
 <div class="accordion-body">
 <p>For our example output above we can make some educated guesses on
 what the partitions are supposed to be used for:</p>
@@ -1705,7 +1800,7 @@ or on your local machine.</p>
 <button class="accordion-button spoiler-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSpoiler2" aria-expanded="false" aria-controls="collapseSpoiler2">
   <h3 class="accordion-header" id="headingSpoiler2">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="eye"></i></div> Show details </h3>
 </button>
-<div id="collapseSpoiler2" class="accordion-collapse collapse" aria-labelledby="headingSpoiler2" data-bs-parent="#accordionSpoiler2">
+<div id="collapseSpoiler2" class="accordion-collapse collapse" data-bs-parent="#accordionSpoiler2" aria-labelledby="headingSpoiler2">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb4">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1738,7 +1833,7 @@ you can use</p>
 <button class="accordion-button spoiler-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSpoiler3" aria-expanded="false" aria-controls="collapseSpoiler3">
   <h3 class="accordion-header" id="headingSpoiler3">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="eye"></i></div> Show details </h3>
 </button>
-<div id="collapseSpoiler3" class="accordion-collapse collapse" aria-labelledby="headingSpoiler3" data-bs-parent="#accordionSpoiler3">
+<div id="collapseSpoiler3" class="accordion-collapse collapse" data-bs-parent="#accordionSpoiler3" aria-labelledby="headingSpoiler3">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb7">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1821,7 +1916,7 @@ idle nodes and CPU cores.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
   <h4 class="accordion-header" id="headingSolution2"> Show me the solution </h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb9">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -2239,7 +2334,7 @@ this?</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution3" aria-expanded="false" aria-controls="collapseSolution3">
   <h4 class="accordion-header" id="headingSolution3"> Show me the solution </h4>
 </button>
-<div id="collapseSolution3" class="accordion-collapse collapse" aria-labelledby="headingSolution3" data-bs-parent="#accordionSolution3">
+<div id="collapseSolution3" class="accordion-collapse collapse" data-bs-parent="#accordionSolution3" aria-labelledby="headingSolution3">
 <div class="accordion-body">
 <p>We can see that the CPU utilization time and the walltime are
 virtually identical to the MPI version of our job, while the memory
@@ -2304,7 +2399,7 @@ depending on the number of threads.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution4" aria-expanded="false" aria-controls="collapseSolution4">
   <h4 class="accordion-header" id="headingSolution4"> Show me the solution </h4>
 </button>
-<div id="collapseSolution4" class="accordion-collapse collapse" aria-labelledby="headingSolution4" data-bs-parent="#accordionSolution4">
+<div id="collapseSolution4" class="accordion-collapse collapse" data-bs-parent="#accordionSolution4" aria-labelledby="headingSolution4">
 <div class="accordion-body">
 <p>You can see that the CPU utilization of each <code>raytracer</code>
 thread goes down as the number of threads increases. This means, each
@@ -2365,7 +2460,7 @@ default to this behavior?</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution5" aria-expanded="false" aria-controls="collapseSolution5">
   <h4 class="accordion-header" id="headingSolution5"> Show me the solution </h4>
 </button>
-<div id="collapseSolution5" class="accordion-collapse collapse" aria-labelledby="headingSolution5" data-bs-parent="#accordionSolution5">
+<div id="collapseSolution5" class="accordion-collapse collapse" data-bs-parent="#accordionSolution5" aria-labelledby="headingSolution5">
 <div class="accordion-body">
 <p>In this case we have a <em>CPU bound</em> application, i.e., the work
 done by the CPU is the limiting factor and thus dividing this work into
@@ -2778,7 +2873,7 @@ efficiency you get?</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
 <div class="accordion-body">
 <p>The batch file after adding the memory request becomes.</p>
 <pre class="input"><code>#!/usr/bin/bash
@@ -3058,7 +3153,7 @@ would that be?</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
   <h4 class="accordion-header" id="headingSolution2"> Show me the solution </h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
 <div class="accordion-body">
 <p>To query all of the above variable run</p>
 <div class="codewrapper sourceCode" id="cb15">
@@ -3132,7 +3227,7 @@ changes.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution3" aria-expanded="false" aria-controls="collapseSolution3">
   <h4 class="accordion-header" id="headingSolution3"> Show me the solution </h4>
 </button>
-<div id="collapseSolution3" class="accordion-collapse collapse" aria-labelledby="headingSolution3" data-bs-parent="#accordionSolution3">
+<div id="collapseSolution3" class="accordion-collapse collapse" data-bs-parent="#accordionSolution3" aria-labelledby="headingSolution3">
 <div class="accordion-body">
 <p>The machine these calculations have been run on has 112 core per
 node. So we can double the number of cores from 4 until 64 and stay
@@ -4123,7 +4218,7 @@ pixels and <code>-spp=512</code>.</p>
 </button>
 </div>
 </nav><div id="nav-tabContent-1" class="tab-content">
-<div id="nav-tabpanel-1-ClusterCockpit" class="tab-pane show active" role="tabpanel" aria-labelledby="nav-tab-1-ClusterCockpit">
+<div id="nav-tabpanel-1-ClusterCockpit" class="tab-pane show active" aria-labelledby="nav-tab-1-ClusterCockpit" role="tabpanel">
 <ol style="list-style-type: decimal">
 <li>Submit a job that runs for at least <span class="math inline">\(5\)</span> minutes, so it is picked up by cluster
 cockpit. The job script could look like this:</li>
@@ -4151,7 +4246,7 @@ job id, once it is available</li>
 see a list of the jobs associated to your account.</div>
 </figure>
 </div>
-<div id="nav-tabpanel-1-PerformanceReports" class="tab-pane" role="tabpanel" aria-labelledby="nav-tab-1-PerformanceReports">
+<div id="nav-tabpanel-1-PerformanceReports" class="tab-pane" aria-labelledby="nav-tab-1-PerformanceReports" role="tabpanel">
 <ol style="list-style-type: decimal">
 <li>Check your cluster documentation and/or module system if the Linaro
 Forge software suite is available</li>
@@ -4176,7 +4271,7 @@ Forge software suite is available</li>
 <code>.txt</code> files next to the regular Slurm logs.</li>
 </ol>
 </div>
-<div id="nav-tabpanel-1-TBD" class="tab-pane" role="tabpanel" aria-labelledby="nav-tab-1-TBD">
+<div id="nav-tabpanel-1-TBD" class="tab-pane" aria-labelledby="nav-tab-1-TBD" role="tabpanel">
 <p>N/A</p>
 </div>
 </div>
@@ -4216,7 +4311,7 @@ component?</li>
 </button>
 </div>
 </nav><div id="nav-tabContent-2" class="tab-content">
-<div id="nav-tabpanel-2-ClusterCockpit" class="tab-pane show active" role="tabpanel" aria-labelledby="nav-tab-2-ClusterCockpit">
+<div id="nav-tabpanel-2-ClusterCockpit" class="tab-pane show active" aria-labelledby="nav-tab-2-ClusterCockpit" role="tabpanel">
 <p>The job view of a particular job in ClusterCockpit begins with three
 summary panels for the job.</p>
 <figure><img src="fig/cc/job_metadata.png" alt="ClusterCockpit Job Info panel" class="figure mx-auto d-block"></figure><p>The <em>Job Info</em> panel summarizes Slurm metadata about the job,
@@ -4267,7 +4362,7 @@ the case here.</p>
 <figure><img src="fig/cc/job_select_metrics.png" alt="Select Metrics button in the ClusterCockpit job view" class="figure mx-auto d-block"></figure><p>More detailed plots for each individual metric are available and can
 be configured through the <em>Select Metrics</em> button.</p>
 </div>
-<div id="nav-tabpanel-2-PerformanceReports" class="tab-pane" role="tabpanel" aria-labelledby="nav-tab-2-PerformanceReports">
+<div id="nav-tabpanel-2-PerformanceReports" class="tab-pane" aria-labelledby="nav-tab-2-PerformanceReports" role="tabpanel">
 <p>Linaro Forge <code>perf-report</code> results are stored in a HTML or
 <code>.txt</code> format, for example:</p>
 <ul>
@@ -4289,7 +4384,7 @@ and accompanied with suggestions of further investigation.</p>
 Any performance optimization has to focus on improving calculations in
 the CPU.</p>
 </div>
-<div id="nav-tabpanel-2-TBD" class="tab-pane" role="tabpanel" aria-labelledby="nav-tab-2-TBD">
+<div id="nav-tabpanel-2-TBD" class="tab-pane" aria-labelledby="nav-tab-2-TBD" role="tabpanel">
 <p>N/A</p>
 </div>
 </div>
@@ -4338,7 +4433,7 @@ computational intensity.</p>
 </button>
 </div>
 </nav><div id="nav-tabContent-3" class="tab-content">
-<div id="nav-tabpanel-3-ClusterCockpit" class="tab-pane show active" role="tabpanel" aria-labelledby="nav-tab-3-ClusterCockpit">
+<div id="nav-tabpanel-3-ClusterCockpit" class="tab-pane show active" aria-labelledby="nav-tab-3-ClusterCockpit" role="tabpanel">
 <p>ClusterCockpit captures many dedicated CPU metrics and provides a
 timeline visualization for each.</p>
 <figure><img src="fig/cc/job_cpu_load_core.png" alt="ClusterCockpit cpu load per core" class="figure mx-auto d-block"></figure><p>The <code>cpu_load_core</code> shows the load of each individual core
@@ -4363,7 +4458,7 @@ clock. CPUs are capable of executing more than one instruction per clock
 tick, so a value of about <span class="math inline">\(2.25\)</span>
 indicates that the CPU is “busy enough”.</p>
 </div>
-<div id="nav-tabpanel-3-PerformanceReports" class="tab-pane" role="tabpanel" aria-labelledby="nav-tab-3-PerformanceReports">
+<div id="nav-tabpanel-3-PerformanceReports" class="tab-pane" aria-labelledby="nav-tab-3-PerformanceReports" role="tabpanel">
 <p>Performance Reports summarizes multiple CPU-related measurements.</p>
 <figure><img src="fig/linaro/linaro_cpu.png" alt="" class="figure mx-auto d-block"></figure><p>The raytracer spends 99.5% of its time in CPU-related operations.
 This breaks down into scalar numeric operations (25.2%) and memory
@@ -4378,7 +4473,7 @@ visualized. The 8 MPI processes of the example job should be explicitly
 mapped (pinned) to 8 cores of the job. Here, the thread affinity is not
 measured correctly, due to a bug in the underlying software.</p>
 </div>
-<div id="nav-tabpanel-3-TBD" class="tab-pane" role="tabpanel" aria-labelledby="nav-tab-3-TBD">
+<div id="nav-tabpanel-3-TBD" class="tab-pane" aria-labelledby="nav-tab-3-TBD" role="tabpanel">
 <p>N/A</p>
 </div>
 </div>
@@ -4408,7 +4503,7 @@ bandwidth and access latencies.</p>
 </button>
 </div>
 </nav><div id="nav-tabContent-4" class="tab-content">
-<div id="nav-tabpanel-4-ClusterCockpit" class="tab-pane show active" role="tabpanel" aria-labelledby="nav-tab-4-ClusterCockpit">
+<div id="nav-tabpanel-4-ClusterCockpit" class="tab-pane show active" aria-labelledby="nav-tab-4-ClusterCockpit" role="tabpanel">
 <figure><img src="fig/cc/job_mem_used.png" alt="" class="figure mx-auto d-block"></figure><p>The <code>job_mem_used</code> metric measures the memory capacity of
 a given job at sampled intervals as reported by the Slurm system. A job
 is limited to the maximum requested amount of memory and this limit
@@ -4424,7 +4519,7 @@ the roofline plot has not been populated.</p>
 critical measurement jobs with <code>--exclusive</code> to not be
 affected by other jobs on shared worker nodes.</p>
 </div>
-<div id="nav-tabpanel-4-PerformanceReports" class="tab-pane" role="tabpanel" aria-labelledby="nav-tab-4-PerformanceReports">
+<div id="nav-tabpanel-4-PerformanceReports" class="tab-pane" aria-labelledby="nav-tab-4-PerformanceReports" role="tabpanel">
 <figure><img src="fig/linaro/linaro_mem.png" alt="" class="figure mx-auto d-block"></figure><p>Performance Reports summarizes the memory utilization as a peak and
 mean measurement for all MPI processes. Here, the results suggest a
 possible imbalance between MPI processes, since some have significantly
@@ -4435,7 +4530,7 @@ this correlates with unevenly busy MPI processes.</p>
 <p>The memory usage over all is very small, so we may be committing too
 many resources to the amount of calculations in the job.</p>
 </div>
-<div id="nav-tabpanel-4-TBD" class="tab-pane" role="tabpanel" aria-labelledby="nav-tab-4-TBD">
+<div id="nav-tabpanel-4-TBD" class="tab-pane" aria-labelledby="nav-tab-4-TBD" role="tabpanel">
 <p>N/A</p>
 </div>
 </div>
@@ -4463,7 +4558,7 @@ many resources to the amount of calculations in the job.</p>
 </button>
 </div>
 </nav><div id="nav-tabContent-5" class="tab-content">
-<div id="nav-tabpanel-5-ClusterCockpit" class="tab-pane show active" role="tabpanel" aria-labelledby="nav-tab-5-ClusterCockpit">
+<div id="nav-tabpanel-5-ClusterCockpit" class="tab-pane show active" aria-labelledby="nav-tab-5-ClusterCockpit" role="tabpanel">
 <figure><img src="fig/cc/job_energy.png" alt="" class="figure mx-auto d-block"></figure><p>Depending on the ClusterCockpit configuration, an energy demand is
 displayed below the job info panels. This measurement is highly
 dependent on hardware configurations of your HPC systems, so the
@@ -4476,7 +4571,7 @@ get a more accurate estimate.</p>
 components and cooling of the clusters. Nevertheless, the estimate is a
 great tool to identify the scale of the jobs energy demand.</p>
 </div>
-<div id="nav-tabpanel-5-PerformanceReports" class="tab-pane" role="tabpanel" aria-labelledby="nav-tab-5-PerformanceReports">
+<div id="nav-tabpanel-5-PerformanceReports" class="tab-pane" aria-labelledby="nav-tab-5-PerformanceReports" role="tabpanel">
 <figure><img src="fig/linaro/linaro_energy.png" alt="" class="figure mx-auto d-block"></figure><p>In cases where Performance Reports has user access to energy counters
 of the operating system, it can also summarize the CPUs and systems
 energy expenditure. Here, we are unfortunately missing the required
@@ -4485,7 +4580,7 @@ access to the systems “RAPL” interface.</p>
 e.g. for exclusive jobs. Consult your clusters documentation or support
 for more information.</p>
 </div>
-<div id="nav-tabpanel-5-TBD" class="tab-pane" role="tabpanel" aria-labelledby="nav-tab-5-TBD">
+<div id="nav-tabpanel-5-TBD" class="tab-pane" aria-labelledby="nav-tab-5-TBD" role="tabpanel">
 <p>N/A</p>
 </div>
 </div>
@@ -4515,11 +4610,11 @@ available for each tool.</p>
 </button>
 </div>
 </nav><div id="nav-tabContent-6" class="tab-content">
-<div id="nav-tabpanel-6-ClusterCockpit" class="tab-pane show active" role="tabpanel" aria-labelledby="nav-tab-6-ClusterCockpit">
+<div id="nav-tabpanel-6-ClusterCockpit" class="tab-pane show active" aria-labelledby="nav-tab-6-ClusterCockpit" role="tabpanel">
 <figure><img src="fig/cc/job_table.png" alt="" class="figure mx-auto d-block"></figure><p>ClusterCockpit provides a detailed statistics table to all
 measurements involved with a job.</p>
 </div>
-<div id="nav-tabpanel-6-PerformanceReports" class="tab-pane" role="tabpanel" aria-labelledby="nav-tab-6-PerformanceReports">
+<div id="nav-tabpanel-6-PerformanceReports" class="tab-pane" aria-labelledby="nav-tab-6-PerformanceReports" role="tabpanel">
 <p><img src="fig/linaro/linaro_mpi.png" alt="" class="figure"> Performance Reports
 also summarizes the applications behavior in terms of MPI calls,
 e.g. time spent in collective calls involving all processors, or
@@ -4533,7 +4628,7 @@ summarizes measurements of interactions with the local file systems.
 Here, no I/O operations are affecting the applications performance at
 all.</p>
 </div>
-<div id="nav-tabpanel-6-TBD" class="tab-pane" role="tabpanel" aria-labelledby="nav-tab-6-TBD">
+<div id="nav-tabpanel-6-TBD" class="tab-pane" aria-labelledby="nav-tab-6-TBD" role="tabpanel">
 <p>N/A</p>
 </div>
 </div>
