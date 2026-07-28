@@ -27,14 +27,6 @@ Look at your cluster documentation or talk to your HPC support staff.
 If something covered in this episode isn't available or looks different on your cluster, check your cluster documentation or ask your HPC support staff.
 :::
 
-::: instructor
-## TODO: Discuss requirements in more detail?
-```
-cap_perfmon,cap_sys_ptrace,cap_syslog=ep
-kernel.perf_event_paranoid
-```
-:::
-
 Let us set up our performance measurement tool by running an example job with 8 cores.
 To give the job enough work to be worth measuring, let's go with $2263 \times 2263$ pixels and `-spp=512`.
 
@@ -56,6 +48,10 @@ perf-report mpirun -- ./build/raytracer -width=2263 -height=2263 -spp=512 -threa
 ```
 3. Performance Report results are created as `.html` and `.txt` files next to the regular Slurm logs.
 
+
+
+```{r si, child="files/05_overview_common_architecture.Rmd"}
+```
 
 ## General Report
 
