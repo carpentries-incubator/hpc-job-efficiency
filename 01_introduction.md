@@ -691,6 +691,7 @@ Resource consumption therefore scales approximately linearly with the number of 
 cores and the runtime of the application.
 For example, assume you have a monthly allocation of $500$ core-h, with additional usage
 incurring extra cost. In that case, you could run:
+
 - a parallel job using $500$ CPU cores for $1$ hour, or
 - a single-core job for $500$ hours.
 
@@ -745,6 +746,7 @@ For comparison, a household coffee machine typically consumes between 800 W and 
 while operating.
 
 Assume our example HPC job uses the following resources:
+
 - 12 compute nodes running in parallel,
 - 64 CPU cores per node (e.g., Intel® Xeon® 6774P or AMD® EPYC® 9534),
 - 12 hours of sustained high utilization (realistic for many scientific simulations),
@@ -777,6 +779,7 @@ Assume the following queues are available, all with identical memory configurati
 - `big-jobs`: total task count 1024 or more.
 
 When submitting the example HPC workload from the previous section:
+
 1. Into which queue would the job be placed?
 2. If the allocation cost is 1 cent per core-h, what would be the total cost in euros
    (€1 = 100 cents)?
