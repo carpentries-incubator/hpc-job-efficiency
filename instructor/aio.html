@@ -434,7 +434,7 @@ usage.</li>
 <button class="accordion-button instructor-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseInstructor1" aria-expanded="false" aria-controls="collapseInstructor1">
   <h3 class="accordion-header" id="headingInstructor1">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="edit-2"></i></div> Intention: Step into the narrative </h3>
 </button>
-<div id="collapseInstructor1" class="accordion-collapse collapse" data-bs-parent="#accordionInstructor1" aria-labelledby="headingInstructor1">
+<div id="collapseInstructor1" class="accordion-collapse collapse" aria-labelledby="headingInstructor1" data-bs-parent="#accordionInstructor1">
 <div class="accordion-body">
 <p>Set up narrative:</p>
 <ul>
@@ -468,7 +468,7 @@ system</li>
 <button class="accordion-button instructor-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseInstructor2" aria-expanded="false" aria-controls="collapseInstructor2">
   <h3 class="accordion-header" id="headingInstructor2">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="edit-2"></i></div> Instructor Note </h3>
 </button>
-<div id="collapseInstructor2" class="accordion-collapse collapse" data-bs-parent="#accordionInstructor2" aria-labelledby="headingInstructor2">
+<div id="collapseInstructor2" class="accordion-collapse collapse" aria-labelledby="headingInstructor2" data-bs-parent="#accordionInstructor2">
 <div class="accordion-body">
 <p>Ask learners: “Why should you care about efficiency?”</p>
 <p>After the answers, address the learners with efficient jobs, they can
@@ -578,7 +578,7 @@ times remain close to zero.</p>
 <button class="accordion-button spoiler-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSpoiler1" aria-expanded="false" aria-controls="collapseSpoiler1">
   <h3 class="accordion-header" id="headingSpoiler1">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="eye"></i></div> Why does time sometimes produce different output? </h3>
 </button>
-<div id="collapseSpoiler1" class="accordion-collapse collapse" data-bs-parent="#accordionSpoiler1" aria-labelledby="headingSpoiler1">
+<div id="collapseSpoiler1" class="accordion-collapse collapse" aria-labelledby="headingSpoiler1" data-bs-parent="#accordionSpoiler1">
 <div class="accordion-body">
 <p>You may notice that the output of <code>time</code> on your system
 looks different from the examples shown in this lesson. This is because
@@ -797,7 +797,7 @@ workflows or multiple commands within shell scripts.</p>
 <button class="accordion-button spoiler-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSpoiler2" aria-expanded="false" aria-controls="collapseSpoiler2">
   <h3 class="accordion-header" id="headingSpoiler2">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="eye"></i></div> Epoch time </h3>
 </button>
-<div id="collapseSpoiler2" class="accordion-collapse collapse" data-bs-parent="#accordionSpoiler2" aria-labelledby="headingSpoiler2">
+<div id="collapseSpoiler2" class="accordion-collapse collapse" aria-labelledby="headingSpoiler2" data-bs-parent="#accordionSpoiler2">
 <div class="accordion-body">
 <p>To calculate elapsed time, timestamps must share a common reference
 point. Such a reference point is commonly called the <em>epoch</em>.</p>
@@ -858,7 +858,7 @@ the <code>sleep</code> command between the two timestamps.</p>
 <button class="accordion-button hint-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHint1" aria-expanded="false" aria-controls="collapseHint1">
   <h4 class="accordion-header" id="headingHint1"> Give me a hint </h4>
 </button>
-<div id="collapseHint1" class="accordion-collapse collapse" data-bs-parent="#accordionHint1" aria-labelledby="headingHint1">
+<div id="collapseHint1" class="accordion-collapse collapse" aria-labelledby="headingHint1" data-bs-parent="#accordionHint1">
 <div class="accordion-body">
 <p>Floating-point subtraction can be performed using the <code>bc</code>
 calculator:</p>
@@ -876,7 +876,7 @@ calculator:</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb21">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -902,7 +902,7 @@ calculator:</p>
 <button class="accordion-button instructor-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseInstructor3" aria-expanded="false" aria-controls="collapseInstructor3">
   <h3 class="accordion-header" id="headingInstructor3">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="edit-2"></i></div> Instructor Note </h3>
 </button>
-<div id="collapseInstructor3" class="accordion-collapse collapse" data-bs-parent="#accordionInstructor3" aria-labelledby="headingInstructor3">
+<div id="collapseInstructor3" class="accordion-collapse collapse" aria-labelledby="headingInstructor3" data-bs-parent="#accordionInstructor3">
 <div class="accordion-body">
 <p>Ask learners to run the script with <code>time</code> and estimate
 what it might be doing before revealing the source code of
@@ -980,7 +980,7 @@ slow. Why might that be the case?</p>
 <button class="accordion-button hint-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHint2" aria-expanded="false" aria-controls="collapseHint2">
   <h4 class="accordion-header" id="headingHint2"> Give me a hint </h4>
 </button>
-<div id="collapseHint2" class="accordion-collapse collapse" data-bs-parent="#accordionHint2" aria-labelledby="headingHint2">
+<div id="collapseHint2" class="accordion-collapse collapse" aria-labelledby="headingHint2" data-bs-parent="#accordionHint2">
 <div class="accordion-body">
 <p>Each statement of the form <code>echo ... | bc -l</code> launches a
 new <code>bc</code> process through a pipe and subshell.</p>
@@ -993,7 +993,7 @@ new <code>bc</code> process through a pipe and subshell.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
   <h4 class="accordion-header" id="headingSolution2"> Show me the solution </h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
 <div class="accordion-body">
 <p>The construct <code>echo ... | bc -l</code> launches a new
 <code>bc</code> process for every invocation. In this script, each loop
@@ -1042,7 +1042,7 @@ script far more than the mathematical calculations themselves.</p>
 <button class="accordion-button hint-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHint3" aria-expanded="false" aria-controls="collapseHint3">
   <h4 class="accordion-header" id="headingHint3"> Give me a hint </h4>
 </button>
-<div id="collapseHint3" class="accordion-collapse collapse" data-bs-parent="#accordionHint3" aria-labelledby="headingHint3">
+<div id="collapseHint3" class="accordion-collapse collapse" aria-labelledby="headingHint3" data-bs-parent="#accordionHint3">
 <div class="accordion-body">
 <p>You can prepend almost any command with <code>time</code>. If you
 want to use <code>date</code>, remember that
@@ -1058,7 +1058,7 @@ chained together.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution3" aria-expanded="false" aria-controls="collapseSolution3">
   <h4 class="accordion-header" id="headingSolution3"> Show me the solution </h4>
 </button>
-<div id="collapseSolution3" class="accordion-collapse collapse" data-bs-parent="#accordionSolution3" aria-labelledby="headingSolution3">
+<div id="collapseSolution3" class="accordion-collapse collapse" aria-labelledby="headingSolution3" data-bs-parent="#accordionSolution3">
 <div class="accordion-body">
 <p>A straightforward approach is</p>
 <div class="codewrapper sourceCode" id="cb25">
@@ -1151,7 +1151,7 @@ and the one-liner.</p>
 <button class="accordion-button hint-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHint4" aria-expanded="false" aria-controls="collapseHint4">
   <h4 class="accordion-header" id="headingHint4"> Give me a hint </h4>
 </button>
-<div id="collapseHint4" class="accordion-collapse collapse" data-bs-parent="#accordionHint4" aria-labelledby="headingHint4">
+<div id="collapseHint4" class="accordion-collapse collapse" aria-labelledby="headingHint4" data-bs-parent="#accordionHint4">
 <div class="accordion-body">
 <p>The Bash keyword <code>time</code> is sufficient to observe the
 runtime difference.</p>
@@ -1164,7 +1164,7 @@ runtime difference.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution4" aria-expanded="false" aria-controls="collapseSolution4">
   <h4 class="accordion-header" id="headingSolution4"> Show me the solution </h4>
 </button>
-<div id="collapseSolution4" class="accordion-collapse collapse" data-bs-parent="#accordionSolution4" aria-labelledby="headingSolution4">
+<div id="collapseSolution4" class="accordion-collapse collapse" aria-labelledby="headingSolution4" data-bs-parent="#accordionSolution4">
 <div class="accordion-body">
 <p>You can use <code>time</code> for both summation methods:</p>
 <div class="codewrapper sourceCode" id="cb30">
@@ -1193,7 +1193,7 @@ occupancy, and energy usage.</p>
 <button class="accordion-button spoiler-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSpoiler3" aria-expanded="false" aria-controls="collapseSpoiler3">
   <h3 class="accordion-header" id="headingSpoiler3">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="eye"></i></div> CPU-bound versus memory-bound </h3>
 </button>
-<div id="collapseSpoiler3" class="accordion-collapse collapse" data-bs-parent="#accordionSpoiler3" aria-labelledby="headingSpoiler3">
+<div id="collapseSpoiler3" class="accordion-collapse collapse" aria-labelledby="headingSpoiler3" data-bs-parent="#accordionSpoiler3">
 <div class="accordion-body">
 <p>The runtime comparisons above primarily measure computational
 performance. When the execution speed of a program is mainly limited by
@@ -1239,7 +1239,7 @@ in later episodes.</p>
 <button class="accordion-button instructor-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseInstructor4" aria-expanded="false" aria-controls="collapseInstructor4">
   <h3 class="accordion-header" id="headingInstructor4">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="edit-2"></i></div> Instructor Note </h3>
 </button>
-<div id="collapseInstructor4" class="accordion-collapse collapse" data-bs-parent="#accordionInstructor4" aria-labelledby="headingInstructor4">
+<div id="collapseInstructor4" class="accordion-collapse collapse" aria-labelledby="headingInstructor4" data-bs-parent="#accordionInstructor4">
 <div class="accordion-body">
 <p>Ask learners: - How do HPC centers measure resource usage? - How do
 users know how much of their allocation they have consumed?</p>
@@ -1296,7 +1296,7 @@ usage through units such as <strong>GPU-hours</strong>.</p>
 <button class="accordion-button spoiler-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSpoiler4" aria-expanded="false" aria-controls="collapseSpoiler4">
   <h3 class="accordion-header" id="headingSpoiler4">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="eye"></i></div> Other HPC resource types </h3>
 </button>
-<div id="collapseSpoiler4" class="accordion-collapse collapse" data-bs-parent="#accordionSpoiler4" aria-labelledby="headingSpoiler4">
+<div id="collapseSpoiler4" class="accordion-collapse collapse" aria-labelledby="headingSpoiler4" data-bs-parent="#accordionSpoiler4">
 <div class="accordion-body">
 <p>So far, the focus has been on CPU/GPU core counts and runtime as
 primary HPC resource allocations. However, HPC workloads also depend
@@ -1418,7 +1418,7 @@ cost in euros (€1 = 100 cents)?</li>
 <button class="accordion-button hint-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHint5" aria-expanded="false" aria-controls="collapseHint5">
   <h4 class="accordion-header" id="headingHint5"> Give me a hint </h4>
 </button>
-<div id="collapseHint5" class="accordion-collapse collapse" data-bs-parent="#accordionHint5" aria-labelledby="headingHint5">
+<div id="collapseHint5" class="accordion-collapse collapse" aria-labelledby="headingHint5" data-bs-parent="#accordionHint5">
 <div class="accordion-body">
 <p>For this example, assume one task is assigned to each CPU core. The
 total number of tasks is therefore approximately: <span class="math display">\[
@@ -1436,7 +1436,7 @@ total number of tasks is therefore approximately: <span class="math display">\[
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution5" aria-expanded="false" aria-controls="collapseSolution5">
   <h4 class="accordion-header" id="headingSolution5"> Show me the solution </h4>
 </button>
-<div id="collapseSolution5" class="accordion-collapse collapse" data-bs-parent="#accordionSolution5" aria-labelledby="headingSolution5">
+<div id="collapseSolution5" class="accordion-collapse collapse" aria-labelledby="headingSolution5" data-bs-parent="#accordionSolution5">
 <div class="accordion-body">
 <p>The total number of tasks is <span class="math display">\[
 \text{cores per node} \times \text{number of nodes} = 64 \times 12 = 768
@@ -1483,7 +1483,7 @@ h \approx \frac{86.4 \times 3.6 \times 10^6}{6000 \times 9.81} \approx
 <button class="accordion-button spoiler-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSpoiler5" aria-expanded="false" aria-controls="collapseSpoiler5">
   <h3 class="accordion-header" id="headingSpoiler5">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="eye"></i></div> Power-consuming hardware pieces </h3>
 </button>
-<div id="collapseSpoiler5" class="accordion-collapse collapse" data-bs-parent="#accordionSpoiler5" aria-labelledby="headingSpoiler5">
+<div id="collapseSpoiler5" class="accordion-collapse collapse" aria-labelledby="headingSpoiler5" data-bs-parent="#accordionSpoiler5">
 <div class="accordion-body">
 <p>Note that the focus so far has been on <strong>additional</strong>
 power consumption caused by computational load beyond a system’s idle
@@ -1619,7 +1619,7 @@ which makes them computationally expensive - an ideal HPC use case.</p>
 <button class="accordion-button instructor-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseInstructor5" aria-expanded="false" aria-controls="collapseInstructor5">
   <h3 class="accordion-header" id="headingInstructor5">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="edit-2"></i></div> Instructor Note </h3>
 </button>
-<div id="collapseInstructor5" class="accordion-collapse collapse" data-bs-parent="#accordionInstructor5" aria-labelledby="headingInstructor5">
+<div id="collapseInstructor5" class="accordion-collapse collapse" aria-labelledby="headingInstructor5" data-bs-parent="#accordionInstructor5">
 <div class="accordion-body">
 <p>Encourage learners to estimate the ratio between <code>user</code>
 and <code>real</code> before discussing the meaning of the
@@ -1635,7 +1635,7 @@ will be introduced in the following episodes.</p>
 <button class="accordion-button instructor-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseInstructor6" aria-expanded="false" aria-controls="collapseInstructor6">
   <h3 class="accordion-header" id="headingInstructor6">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="edit-2"></i></div> Slurm Reservation and specific Hardware? </h3>
 </button>
-<div id="collapseInstructor6" class="accordion-collapse collapse" data-bs-parent="#accordionInstructor6" aria-labelledby="headingInstructor6">
+<div id="collapseInstructor6" class="accordion-collapse collapse" aria-labelledby="headingInstructor6" data-bs-parent="#accordionInstructor6">
 <div class="accordion-body">
 <p>You may need to reserve a set of resources for the course, such that
 enough resources for the following exercises are available. This is
@@ -1679,7 +1679,7 @@ Slurm</h3>
 <button class="accordion-button hint-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHint6" aria-expanded="false" aria-controls="collapseHint6">
   <h4 class="accordion-header" id="headingHint6"> Give me a hint </h4>
 </button>
-<div id="collapseHint6" class="accordion-collapse collapse" data-bs-parent="#accordionHint6" aria-labelledby="headingHint6">
+<div id="collapseHint6" class="accordion-collapse collapse" aria-labelledby="headingHint6" data-bs-parent="#accordionHint6">
 <div class="accordion-body">
 <p>Compare the <code>real</code> and <code>user</code> times reported at
 the end of the job’s output file (named something like
@@ -1694,7 +1694,7 @@ the end of the job’s output file (named something like
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution6" aria-expanded="false" aria-controls="collapseSolution6">
   <h4 class="accordion-header" id="headingSolution6"> Show me the solution </h4>
 </button>
-<div id="collapseSolution6" class="accordion-collapse collapse" data-bs-parent="#accordionSolution6" aria-labelledby="headingSolution6">
+<div id="collapseSolution6" class="accordion-collapse collapse" aria-labelledby="headingSolution6" data-bs-parent="#accordionSolution6">
 <div class="accordion-body">
 <p>Notice that the reported <em>user</em> time is substantially larger
 than the elapsed <em>real</em> time.</p>
@@ -1749,7 +1749,7 @@ any links that you are not going to use.
 <p>Last updated on 2026-08-13 |
 
         <a href="https://github.com/stderr-enst/jobefficiency/edit/main/episodes/02_resourcerequirements.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
-<p>Estimated time: <i aria-hidden="true" data-feather="clock"></i> 10 minutes</p>
+<p>Estimated time: <i aria-hidden="true" data-feather="clock"></i> 100 minutes</p>
 <div class="text-end">
           <button role="button" aria-pressed="false" tabindex="0" id="expand-code" class="pull-right" data-expand="Expand All Solutions " data-collapse="Collapse All Solutions "> Expand All Solutions <i aria-hidden="true" data-feather="plus"></i></button>
         </div>
@@ -1761,10 +1761,10 @@ any links that you are not going to use.
 <div class="inner">
 <h3 class="card-title">Questions</h3>
 <ul>
+<li>How large is my HPC cluster?</li>
 <li>How many resources should I request initially?</li>
 <li>What scheduler options exist to request resources?</li>
 <li>How do I know if they are used well?</li>
-<li>How large is my HPC cluster?</li>
 </ul>
 </div>
 </div>
@@ -1776,7 +1776,7 @@ any links that you are not going to use.
 <p>After completing this episode, participants should be able to …</p>
 <ul>
 <li>Identify the size of their jobs in relation to the HPC system.</li>
-<li>Request a good amount of resources from the scheduler.</li>
+<li>Request the proper amount of resources from the scheduler.</li>
 <li>Change the parameters to see how the execution time changes.</li>
 </ul>
 </div>
@@ -1787,14 +1787,16 @@ any links that you are not going to use.
 <p>When you run a program on your local workstation or laptop, you
 typically don’t plan out the usage of computing resources like memory or
 core-hours. Your applications simply take as much as they need and if
-your computer runs out of resources, you can just a few. However, unless
-you are very rich, you probably don’t have a dedicated HPC cluster just
-to yourself and instead you have to share one with your colleagues. In
-such a scenario greedily consuming as many resources as possible is very
-impolite, so we need to restrain ourselves and carefully allocate just
-as many resources as needed. These resource constraints are then
-enforced by the cluster’s scheduling system so that you cannot
-accidentally use more resources than you think.</p>
+your computer runs out of resources, you can close unneeded applications
+and wait.</p>
+<p>However, unless you are very rich, you probably don’t have a
+dedicated HPC cluster just to yourself. Instead you have to share one
+with your colleagues. In such a scenario, greedily consuming as many
+resources as possible is very impolite. It’s necessary to carefully
+allocate only as many resources as needed for the task at hand. These
+resource constraints are then enforced by the clusters scheduling
+system, such that your application can’t consume more resources than
+specified by your job.</p>
 <section><h2 class="section-heading" id="getting-a-feel-for-the-size-of-your-cluster">Getting a feel for the size of your cluster<a class="anchor" aria-label="anchor" href="#getting-a-feel-for-the-size-of-your-cluster"></a>
 </h2>
 <hr class="half-width">
@@ -1803,8 +1805,8 @@ first get a feeling for the size of the cluster available to you. For
 example, if your cluster has tens of thousands of CPU cores and you use
 only 10 of them, you are far away from what would be considered
 excessive usage of resources. However, if your calculation utilizes GPUs
-and your cluster has only a handful of them, you should really make sure
-to use only the minimum amount necessary to get your work done.</p>
+and your cluster has only a handful of them, you should aim at using as
+few as possible in your jobs.</p>
 <p>Let’s start by getting an overview of the partitions of your
 cluster:</p>
 <div class="codewrapper sourceCode" id="cb1">
@@ -1812,15 +1814,10 @@ cluster:</p>
 </h3>
 <pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" tabindex="-1" aria-label="code-block-1-1"></a><span class="ex">sinfo</span> <span class="at">-O</span> PartitionName,Nodes,CPUs,Memory,Gres,Time</span></code></pre>
 </div>
-<div id="accordionSpoiler1" class="accordion spoiler-accordion accordion-flush">
-<div class="accordion-item">
-<button class="accordion-button spoiler-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSpoiler1" aria-expanded="false" aria-controls="collapseSpoiler1">
-  <h3 class="accordion-header" id="headingSpoiler1">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="eye"></i></div> Show details </h3>
-</button>
-<div id="collapseSpoiler1" class="accordion-collapse collapse" aria-labelledby="headingSpoiler1" data-bs-parent="#accordionSpoiler1">
-<div class="accordion-body">
-<p>Here is a (simplified) example output for the command above:</p>
-<pre><code>PARTITION           NODES               CPUS                MEMORY              GRES                TIMELIMIT
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>PARTITION           NODES               CPUS                MEMORY              GRES                TIMELIMIT
 normal              223                 36                  95000+              (null)              1-00:00:00
 long                90                  36                  192000              (null)              7-00:00:00
 express             6                   36                  95000+              (null)              2:00:00
@@ -1829,15 +1826,39 @@ gpuexpress          1                   32                  240000              
 gpu4090             8                   32                  360448              gpu:rtx4090:6       7-00:00:00
 gpuh200             4                   128                 1547843             gpu:h200:8          7-00:00:00</code></pre>
 </div>
-</div>
-</div>
-</div>
 <p>In the output, we see the name of each partition, the number of nodes
 in this partition, the number of CPU cores per node, the amount of
-memory per node (in Megabytes <span style="color: red">(or
-Mebibytes?)</span>), the number of <em>generic resources</em> (typically
-GPUs) per node and finally the maximum amount of time any job is allowed
-to take.</p>
+memory per node in Mebibytes, the number of <em>generic resources</em>
+(typically GPUs) per node and finally the maximum amount of time any job
+is allowed to take.</p>
+<div id="available-partitions-depend-on-the-hpc-system" class="callout">
+<div class="callout-square">
+<i class="callout-icon" data-feather="bell"></i>
+</div>
+<span class="callout-header">Callout</span>
+<div id="available-partitions-depend-on-the-hpc-system" class="callout-inner">
+<h3 class="callout-title">Available partitions depend on the HPC
+system</h3>
+<div class="callout-content">
+<p>Partitions often represent usage policies and you should read your
+clusters documentation about their names, underlying hardware, potential
+access restrictions, and so on.</p>
+<p>Some examples:</p>
+<ul>
+<li>A partition with a high number of cores large amounts of memory per
+node is probably intended for shared memory processing.</li>
+<li>A partition with a lot of nodes that each have only a (relatively)
+small number of cores and memory is probably intended for MPI
+calculations.</li>
+<li>A partition with powerful GPUs, but only a small amount of CPU cores
+is likely intended for jobs where the majority of the work is offloaded
+to the GPUs.</li>
+<li>A partition with less powerful GPUs but more CPU cores and memory is
+likely intended for hybrid workloads.</li>
+</ul>
+</div>
+</div>
+</div>
 <div id="discussion1" class="callout discussion">
 <div class="callout-square">
 <i class="callout-icon" data-feather="message-circle"></i>
@@ -1866,13 +1887,13 @@ memory and limits jobs to at most one day, but has by far the most
 nodes. This partition is probably designed for small- to medium-sized
 jobs. Since there are no <code>GRES</code> in this partition, only CPU
 computations can be performed here. Also, as the number of cores per
-node is (relatively) small, this partition only allowd multithreading up
-to 36 threads and requires MPI for a higher degree of parallelism.</li>
+node is (relatively) small, this partition only allows multithreading up
+to 36 threads on the same node. MPI is required for a higher degree of
+parallelism across multiple nodes.</li>
 <li>The <code>long</code> partition has double the memory compared to
-the <code>normal</code> partition, but less than half the number of
-nodes. It also allows for much longer running jobs. This partition is
-likely intended for jobs that are too big for the <code>normal</code>
-partition.</li>
+the <code>normal</code> partition, but considerably fewer nodes. It
+allows for much longer running jobs. This partition is likely intended
+for jobs that are too big for the <code>normal</code> partition.</li>
 <li>
 <code>express</code> is a very small partition with a similar
 configuration to <code>normal</code>, but a very short time limit of
@@ -1907,101 +1928,63 @@ is the low number of nodes in this partition.</li>
 </div>
 </div>
 </div>
-<div id="accordionInstructor1" class="accordion instructor-note accordion-flush">
-<div class="accordion-item">
-<button class="accordion-button instructor-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseInstructor1" aria-expanded="false" aria-controls="collapseInstructor1">
-  <h3 class="accordion-header" id="headingInstructor1">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="edit-2"></i></div> Instructor Note </h3>
-</button>
-<div id="collapseInstructor1" class="accordion-collapse collapse" aria-labelledby="headingInstructor1" data-bs-parent="#accordionInstructor1">
-<div class="accordion-body">
-<p>This discussion highly depends on the management philosophy of the
-cluster available to the learners. Some examples:</p>
-<ul>
-<li>A partition with a high number of cores large amounts of memory per
-node is probably intended for SMP calculations.</li>
-<li>A partition with a lot of nodes that each have only a (relatively)
-small number of cores and memory is probably intended for MPI
-calculations.</li>
-<li>A partition with powerful GPUs, but only a small amount of CPU cores
-is likely intended for jobs where the majority of the work is offloaded
-to the GPUs.</li>
-<li>A partition with less powerful GPUs but more CPU cores and memory is
-likely intended for hybrid workloads.</li>
-</ul>
-</div>
-</div>
-</div>
-</div>
 <p>To get a point of reference, you can also compare the total number of
 cores in the entire cluster to the number of CPU cores on the login node
 or on your local machine.</p>
 <div class="codewrapper sourceCode" id="cb3">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" tabindex="-1" aria-label="code-block-3-1"></a><span class="ex">lscpu</span> <span class="kw">|</span> <span class="fu">grep</span> <span class="st">"CPU(s):"</span></span>
-<span id="cb3-2"><a href="#cb3-2" tabindex="-1" aria-label="code-block-3-2"></a><span class="co"># If lscpu is not available on your machine, you can also use this command</span></span>
-<span id="cb3-3"><a href="#cb3-3" tabindex="-1" aria-label="code-block-3-3"></a><span class="fu">cat</span> /proc/cpuinfo <span class="kw">|</span> <span class="fu">grep</span> <span class="st">"core id"</span> <span class="kw">|</span> <span class="fu">wc</span> <span class="at">-l</span></span></code></pre>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" tabindex="-1" aria-label="code-block-3-1"></a><span class="ex">lscpu</span> <span class="kw">|</span> <span class="fu">grep</span> <span class="st">"CPU(s):"</span></span></code></pre>
 </div>
-<div id="accordionSpoiler2" class="accordion spoiler-accordion accordion-flush">
-<div class="accordion-item">
-<button class="accordion-button spoiler-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSpoiler2" aria-expanded="false" aria-controls="collapseSpoiler2">
-  <h3 class="accordion-header" id="headingSpoiler2">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="eye"></i></div> Show details </h3>
-</button>
-<div id="collapseSpoiler2" class="accordion-collapse collapse" aria-labelledby="headingSpoiler2" data-bs-parent="#accordionSpoiler2">
-<div class="accordion-body">
-<div class="codewrapper sourceCode" id="cb4">
-<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" tabindex="-1" aria-label="code-block-4-1"></a><span class="ex">$</span> lscpu <span class="kw">|</span> <span class="fu">grep</span> <span class="st">"CPU(s):"</span></span>
-<span id="cb4-2"><a href="#cb4-2" tabindex="-1" aria-label="code-block-4-2"></a><span class="ex">CPU</span><span class="er">(</span><span class="ex">s</span><span class="kw">)</span><span class="bu">:</span>                               192</span>
-<span id="cb4-3"><a href="#cb4-3" tabindex="-1" aria-label="code-block-4-3"></a><span class="ex">NUMA</span> node0 CPU<span class="er">(</span><span class="ex">s</span><span class="kw">)</span><span class="bu">:</span>                    0-191</span></code></pre>
+<pre class="output" tabindex="0"><code>CPU(s):                               192
+NUMA node0 CPU(s):                    0-191</code></pre>
 </div>
+<p>If <code>lscpu</code> is not available on your machine, you can also
+use</p>
 <div class="codewrapper sourceCode" id="cb5">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" tabindex="-1" aria-label="code-block-5-1"></a><span class="ex">$</span> cat /proc/cpuinfo <span class="kw">|</span> <span class="fu">grep</span> <span class="st">"core id"</span> <span class="kw">|</span> <span class="fu">wc</span> <span class="at">-l</span></span>
-<span id="cb5-2"><a href="#cb5-2" tabindex="-1" aria-label="code-block-5-2"></a><span class="ex">192</span></span></code></pre>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" tabindex="-1" aria-label="code-block-5-1"></a><span class="fu">cat</span> /proc/cpuinfo <span class="kw">|</span> <span class="fu">grep</span> <span class="st">"core id"</span> <span class="kw">|</span> <span class="fu">wc</span> <span class="at">-l</span></span></code></pre>
 </div>
-</div>
-</div>
-</div>
-</div>
-<p>As you can see, your cluster likely has <em>multiple orders of
-magnitude</em> more cores in total than the login node or your local
-machine. To see the amount of memory on the machine you are logged into
-you can use</p>
-<div class="codewrapper sourceCode" id="cb6">
-<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" tabindex="-1" aria-label="code-block-6-1"></a><span class="fu">cat</span> /proc/meminfo <span class="kw">|</span> <span class="fu">grep</span> <span class="st">"MemTotal"</span></span></code></pre>
+<pre class="output" tabindex="0"><code><span><span class="fl">192</span></span></code></pre>
 </div>
-<div id="accordionSpoiler3" class="accordion spoiler-accordion accordion-flush">
-<div class="accordion-item">
-<button class="accordion-button spoiler-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSpoiler3" aria-expanded="false" aria-controls="collapseSpoiler3">
-  <h3 class="accordion-header" id="headingSpoiler3">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="eye"></i></div> Show details </h3>
-</button>
-<div id="collapseSpoiler3" class="accordion-collapse collapse" aria-labelledby="headingSpoiler3" data-bs-parent="#accordionSpoiler3">
-<div class="accordion-body">
+<p>With <span class="math inline">\(223\ \text{nodes} \times 36\
+\text{cores}(+ \text{other partitions})\)</span> CPU cores, the cluster
+has <em>multiple orders of magnitude</em> more cores in total than the
+login node or your local machine.</p>
+<p>To see the amount of memory on the machine you are logged into you
+can use</p>
 <div class="codewrapper sourceCode" id="cb7">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" tabindex="-1" aria-label="code-block-7-1"></a><span class="ex">$</span> cat /proc/meminfo <span class="kw">|</span> <span class="fu">grep</span> <span class="st">"MemTotal"</span></span>
-<span id="cb7-2"><a href="#cb7-2" tabindex="-1" aria-label="code-block-7-2"></a><span class="ex">MemTotal:</span>       395695636 kB</span></code></pre>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" tabindex="-1" aria-label="code-block-7-1"></a><span class="fu">cat</span> /proc/meminfo <span class="kw">|</span> <span class="fu">grep</span> <span class="st">"MemTotal"</span></span></code></pre>
 </div>
-</div>
-</div>
-</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>MemTotal:       395695636 kB</code></pre>
 </div>
 <p>Again, the total memory of the cluster is going to be much, much
 larger than the memory of any individual machine.</p>
-<p>All of these cores and all of that memory are shared between you and
-all the other users of your cluster. To get a feeling for the amount of
+<p>All of the CPU cores and memory are shared between you and all the
+other users of your cluster. To get a feeling for the amount of
 resources per user, let’s try to get an estimate for how many users
 there are by counting the number of home directories.</p>
-<div class="codewrapper sourceCode" id="cb8">
+<div class="codewrapper sourceCode" id="cb9">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" tabindex="-1" aria-label="code-block-8-1"></a><span class="fu">find</span> /home <span class="at">-maxdepth</span> 1 <span class="at">-mindepth</span> 1 <span class="at">-type</span> d <span class="kw">|</span> <span class="fu">wc</span> <span class="at">-l</span></span></code></pre>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" tabindex="-1" aria-label="code-block-9-1"></a><span class="fu">find</span> /home <span class="at">-maxdepth</span> 1 <span class="at">-mindepth</span> 1 <span class="at">-type</span> d <span class="kw">|</span> <span class="fu">wc</span> <span class="at">-l</span></span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code><span><span class="fl">700</span></span></code></pre>
 </div>
 <div id="caution1" class="callout caution">
 <div class="callout-square">
@@ -2025,7 +2008,60 @@ well.</p>
 </div>
 <p>By dividing the total number of cores / the total memory by the
 amount of users, you get an estimate of how many resources each user has
-available in a perfectly fair world.</p>
+available if resources were equally distributed world. For example, for
+700 users we would approximately get:</p>
+<table class="table">
+<thead><tr>
+<th>Partition</th>
+<th>CPU Cores / user</th>
+<th>Memory / user</th>
+<th>GRES / user</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>normal</code></td>
+<td>32</td>
+<td>85 GiB</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>long</code></td>
+<td>13</td>
+<td>69 GiB</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>express</code></td>
+<td>1</td>
+<td>2 GiB</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>zen4</code></td>
+<td>35</td>
+<td>141 GiB</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>gpuexpress</code></td>
+<td>0.128</td>
+<td>1 GiB</td>
+<td>0.028</td>
+</tr>
+<tr>
+<td><code>gpu4090</code></td>
+<td>1</td>
+<td>12 GiB</td>
+<td>0.192</td>
+</tr>
+<tr>
+<td><code>gpuh200</code></td>
+<td>2</td>
+<td>25 GiB</td>
+<td>0.128</td>
+</tr>
+</tbody>
+</table>
 <div id="discussion2" class="callout discussion">
 <div class="callout-square">
 <i class="callout-icon" data-feather="message-circle"></i>
@@ -2033,25 +2069,28 @@ available in a perfectly fair world.</p>
 <span class="callout-header">Discussion</span>
 <div class="callout-inner">
 <div class="callout-content">
-<p>Does this mean you can never use more than this amount of
+<p>Do the per-user limits mean we can never use more than this amount of
 resources?</p>
 </div>
 </div>
 </div>
-<div id="accordionInstructor2" class="accordion instructor-note accordion-flush">
+<div id="accordionSolution2" class="accordion challenge-accordion accordion-flush">
 <div class="accordion-item">
-<button class="accordion-button instructor-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseInstructor2" aria-expanded="false" aria-controls="collapseInstructor2">
-  <h3 class="accordion-header" id="headingInstructor2">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="edit-2"></i></div> Instructor Note </h3>
+<button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
+  <h4 class="accordion-header" id="headingSolution2"> Show me the solution </h4>
 </button>
-<div id="collapseInstructor2" class="accordion-collapse collapse" aria-labelledby="headingInstructor2" data-bs-parent="#accordionInstructor2">
+<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
 <div class="accordion-body">
-<p>The learners should realize that the per-user average they calculate
-here is very synthetic:</p>
+<p>Users are typically not limited to the average per-user resources
+that we’ve calculated here. In reality, we observe:</p>
 <ul>
+<li>The average is over a long periods of time. Short term you can
+usually use much more.</li>
+<li>Users are in different phases of their projects, some may require
+computational resources while others are still in preparation and need
+them later.</li>
 <li>Many users do not use their full share of resources, which leaves
 room for others to use more.</li>
-<li>The average we calculate is only an average over long periods of
-time. Short term you can usually use much more.</li>
 <li>Not all users are equal. For example, if some research groups have
 contributed to the funding of the cluster, they should also get more
 resources than those who did not.</li>
@@ -2059,6 +2098,10 @@ resources than those who did not.</li>
 resources have to be requested via project proposals. Those who write
 more / better proposals can use more resources.</li>
 </ul>
+<p>In practice it is really difficult to “saturate” your own share of
+the cluster with calculations over a long period of time. This is one of
+the reasons why a large and shared HPC system can be more efficient than
+individual computing resources.</p>
 </div>
 </div>
 </div>
@@ -2082,25 +2125,25 @@ idle nodes and CPU cores.</p>
 </div>
 </div>
 </div>
-<div id="accordionSolution2" class="accordion challenge-accordion accordion-flush">
+<div id="accordionSolution3" class="accordion challenge-accordion accordion-flush">
 <div class="accordion-item">
-<button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
-  <h4 class="accordion-header" id="headingSolution2"> Show me the solution </h4>
+<button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution3" aria-expanded="false" aria-controls="collapseSolution3">
+  <h4 class="accordion-header" id="headingSolution3"> Show me the solution </h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
+<div id="collapseSolution3" class="accordion-collapse collapse" aria-labelledby="headingSolution3" data-bs-parent="#accordionSolution3">
 <div class="accordion-body">
-<div class="codewrapper sourceCode" id="cb9">
+<div class="codewrapper sourceCode" id="cb11">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" tabindex="-1" aria-label="code-block-9-1"></a><span class="ex">$</span> sinfo <span class="at">-O</span> Partition,CPUsState,NodeAIOT</span>
-<span id="cb9-2"><a href="#cb9-2" tabindex="-1" aria-label="code-block-9-2"></a><span class="ex">PARTITION</span>           CPUS<span class="er">(</span><span class="ex">A/I/O/T</span><span class="kw">)</span>       <span class="ex">NODES</span><span class="er">(</span><span class="ex">A/I/O/T</span><span class="kw">)</span></span>
-<span id="cb9-3"><a href="#cb9-3" tabindex="-1" aria-label="code-block-9-3"></a><span class="ex">normal*</span>             6336/720/972/8028   196/0/27/223</span>
-<span id="cb9-4"><a href="#cb9-4" tabindex="-1" aria-label="code-block-9-4"></a><span class="ex">long</span>                2205/351/684/3240   71/0/19/90</span>
-<span id="cb9-5"><a href="#cb9-5" tabindex="-1" aria-label="code-block-9-5"></a><span class="ex">express</span>             44/172/0/216        3/3/0/6</span>
-<span id="cb9-6"><a href="#cb9-6" tabindex="-1" aria-label="code-block-9-6"></a><span class="ex">zen4</span>                7532/1108/192/8832  44/1/1/46</span>
-<span id="cb9-7"><a href="#cb9-7" tabindex="-1" aria-label="code-block-9-7"></a><span class="ex">gpuexpress</span>          0/32/0/32           0/1/0/1</span>
-<span id="cb9-8"><a href="#cb9-8" tabindex="-1" aria-label="code-block-9-8"></a><span class="ex">gpu4090</span>             177/35/44/256       7/0/1/8</span>
-<span id="cb9-9"><a href="#cb9-9" tabindex="-1" aria-label="code-block-9-9"></a><span class="ex">gpuh200</span>             90/166/256/512      2/0/2/4</span></code></pre>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" tabindex="-1" aria-label="code-block-11-1"></a><span class="ex">$</span> sinfo <span class="at">-O</span> Partition,CPUsState,NodeAIOT</span>
+<span id="cb11-2"><a href="#cb11-2" tabindex="-1" aria-label="code-block-11-2"></a><span class="ex">PARTITION</span>           CPUS<span class="er">(</span><span class="ex">A/I/O/T</span><span class="kw">)</span>       <span class="ex">NODES</span><span class="er">(</span><span class="ex">A/I/O/T</span><span class="kw">)</span></span>
+<span id="cb11-3"><a href="#cb11-3" tabindex="-1" aria-label="code-block-11-3"></a><span class="ex">normal*</span>             6336/720/972/8028   196/0/27/223</span>
+<span id="cb11-4"><a href="#cb11-4" tabindex="-1" aria-label="code-block-11-4"></a><span class="ex">long</span>                2205/351/684/3240   71/0/19/90</span>
+<span id="cb11-5"><a href="#cb11-5" tabindex="-1" aria-label="code-block-11-5"></a><span class="ex">express</span>             44/172/0/216        3/3/0/6</span>
+<span id="cb11-6"><a href="#cb11-6" tabindex="-1" aria-label="code-block-11-6"></a><span class="ex">zen4</span>                7532/1108/192/8832  44/1/1/46</span>
+<span id="cb11-7"><a href="#cb11-7" tabindex="-1" aria-label="code-block-11-7"></a><span class="ex">gpuexpress</span>          0/32/0/32           0/1/0/1</span>
+<span id="cb11-8"><a href="#cb11-8" tabindex="-1" aria-label="code-block-11-8"></a><span class="ex">gpu4090</span>             177/35/44/256       7/0/1/8</span>
+<span id="cb11-9"><a href="#cb11-9" tabindex="-1" aria-label="code-block-11-9"></a><span class="ex">gpuh200</span>             90/166/256/512      2/0/2/4</span></code></pre>
 </div>
 </div>
 </div>
@@ -2111,69 +2154,70 @@ idle nodes and CPU cores.</p>
 <hr class="half-width">
 <p>The resources required by your jobs primarily depend on the
 application you want to run and are thus very specific to your
-particular HPC use case. While it is tempting to just wildly
-overestimate the resource requirements of your application to make sure
-it cannot possibly run out, this is not a good strategy. Not only would
-you have to face the wrath of your cluster administrators (and the other
-users!) for being inefficient, but you would also be punished by the
-scheduler itself: In most cluster configurations, your scheduling
-priority decreases faster if you request more resources and larger jobs
-often need to wait longer until a suitable slot becomes free. Thus, if
-you want to get your calculations done faster, you should request just
-enough resources for your application to work.</p>
-<p>Finding this amount of resources is often a matter of trial and error
-as many applications do not have precisely predictable resource
+particular HPC use case.</p>
+<p>Generously over-allocating resource requirements as a strategy to
+ensure job completion is usually counterproductive. Not only might you
+face the wrath of your cluster administrators (and other users!) for
+being overly greedy, but you may also be punished by the scheduler
+itself: large jobs have to wait longer for the resources to free up,
+while small jobs can be “squeezed” into the gaps between larger jobs.
+Also, you should remember that you are billed for the amount of
+resources you requested from the scheduler and not how much you actually
+use. In short, capping resource requests at actual job requirements
+helps reduce queue times and conserves your compute budget.</p>
+<p>Finding the right amount of resources is often a matter of trial and
+error as many applications do not have precisely predictable resource
 requirements. Let’s try this for our snowman renderer. Put the following
 in a file named <code>snowman.job</code>:</p>
-<div class="codewrapper sourceCode" id="cb10">
+<div class="codewrapper sourceCode" id="cb12">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" tabindex="-1" aria-label="code-block-10-1"></a><span class="co">#!/bin/bash</span></span>
-<span id="cb10-2"><a href="#cb10-2" tabindex="-1" aria-label="code-block-10-2"></a><span class="co">#SBATCH --nodes=1</span></span>
-<span id="cb10-3"><a href="#cb10-3" tabindex="-1" aria-label="code-block-10-3"></a><span class="co">#SBATCH --partition=&lt;put your partition here&gt;</span></span>
-<span id="cb10-4"><a href="#cb10-4" tabindex="-1" aria-label="code-block-10-4"></a><span class="co">#SBATCH --ntasks=4</span></span>
-<span id="cb10-5"><a href="#cb10-5" tabindex="-1" aria-label="code-block-10-5"></a><span class="co">#SBATCH --cpus-per-task=1</span></span>
-<span id="cb10-6"><a href="#cb10-6" tabindex="-1" aria-label="code-block-10-6"></a><span class="co">#SBATCH --mem=1G</span></span>
-<span id="cb10-7"><a href="#cb10-7" tabindex="-1" aria-label="code-block-10-7"></a><span class="co">#SBATCH --time=00:01:00</span></span>
-<span id="cb10-8"><a href="#cb10-8" tabindex="-1" aria-label="code-block-10-8"></a><span class="co">#SBATCH --output=snowman-stdout.log</span></span>
-<span id="cb10-9"><a href="#cb10-9" tabindex="-1" aria-label="code-block-10-9"></a><span class="co">#SBATCH --job-name=snowman</span></span>
-<span id="cb10-10"><a href="#cb10-10" tabindex="-1" aria-label="code-block-10-10"></a></span>
-<span id="cb10-11"><a href="#cb10-11" tabindex="-1" aria-label="code-block-10-11"></a><span class="co"># Always a good idea to purge modules first to start with a clean module environment</span></span>
-<span id="cb10-12"><a href="#cb10-12" tabindex="-1" aria-label="code-block-10-12"></a><span class="ex">module</span> purge</span>
-<span id="cb10-13"><a href="#cb10-13" tabindex="-1" aria-label="code-block-10-13"></a><span class="co"># &lt;put the module load commands for your cluster here&gt;</span></span>
-<span id="cb10-14"><a href="#cb10-14" tabindex="-1" aria-label="code-block-10-14"></a></span>
-<span id="cb10-15"><a href="#cb10-15" tabindex="-1" aria-label="code-block-10-15"></a><span class="co"># Start the raytracer</span></span>
-<span id="cb10-16"><a href="#cb10-16" tabindex="-1" aria-label="code-block-10-16"></a><span class="ex">mpirun</span> <span class="at">-n</span> 4 ./SnowmanRaytracer/build/raytracer <span class="at">-width</span><span class="op">=</span>1024 <span class="at">-height</span><span class="op">=</span>1024 <span class="at">-spp</span><span class="op">=</span>256 <span class="at">-threads</span><span class="op">=</span>1 <span class="at">-alloc_mode</span><span class="op">=</span>3 <span class="at">-png</span><span class="op">=</span>snowman.png</span></code></pre>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" tabindex="-1" aria-label="code-block-12-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb12-2"><a href="#cb12-2" tabindex="-1" aria-label="code-block-12-2"></a><span class="co">#SBATCH --nodes=1</span></span>
+<span id="cb12-3"><a href="#cb12-3" tabindex="-1" aria-label="code-block-12-3"></a><span class="co">#SBATCH --partition=&lt;put your partition here&gt;</span></span>
+<span id="cb12-4"><a href="#cb12-4" tabindex="-1" aria-label="code-block-12-4"></a><span class="co">#SBATCH --ntasks=4</span></span>
+<span id="cb12-5"><a href="#cb12-5" tabindex="-1" aria-label="code-block-12-5"></a><span class="co">#SBATCH --cpus-per-task=1</span></span>
+<span id="cb12-6"><a href="#cb12-6" tabindex="-1" aria-label="code-block-12-6"></a><span class="co">#SBATCH --mem=1G</span></span>
+<span id="cb12-7"><a href="#cb12-7" tabindex="-1" aria-label="code-block-12-7"></a><span class="co">#SBATCH --time=00:01:00</span></span>
+<span id="cb12-8"><a href="#cb12-8" tabindex="-1" aria-label="code-block-12-8"></a><span class="co">#SBATCH --output=snowman-stdout-%j.log</span></span>
+<span id="cb12-9"><a href="#cb12-9" tabindex="-1" aria-label="code-block-12-9"></a><span class="co">#SBATCH --job-name=snowman</span></span>
+<span id="cb12-10"><a href="#cb12-10" tabindex="-1" aria-label="code-block-12-10"></a></span>
+<span id="cb12-11"><a href="#cb12-11" tabindex="-1" aria-label="code-block-12-11"></a><span class="co"># Always a good idea to purge modules first to start with a clean module environment</span></span>
+<span id="cb12-12"><a href="#cb12-12" tabindex="-1" aria-label="code-block-12-12"></a><span class="ex">module</span> purge</span>
+<span id="cb12-13"><a href="#cb12-13" tabindex="-1" aria-label="code-block-12-13"></a><span class="co"># &lt;put the module load commands for your cluster here&gt;</span></span>
+<span id="cb12-14"><a href="#cb12-14" tabindex="-1" aria-label="code-block-12-14"></a></span>
+<span id="cb12-15"><a href="#cb12-15" tabindex="-1" aria-label="code-block-12-15"></a><span class="co"># Start the raytracer</span></span>
+<span id="cb12-16"><a href="#cb12-16" tabindex="-1" aria-label="code-block-12-16"></a><span class="ex">mpirun</span> <span class="at">-n</span> 4 ./SnowmanRaytracer/build/raytracer <span class="at">-width</span><span class="op">=</span>1024 <span class="at">-height</span><span class="op">=</span>1024 <span class="at">-spp</span><span class="op">=</span>256 <span class="at">-threads</span><span class="op">=</span>1 <span class="at">-alloc_mode</span><span class="op">=</span>3 <span class="at">-png</span><span class="op">=</span>snowman.png</span></code></pre>
 </div>
-<p>The <code>#SBATCH</code> directives assign our job the following
-resources (line-by-line):</p>
+<p>We define job resource requirements through the following
+<code>#SBATCH</code> directives (line-by-line):</p>
 <ul>
-<li>1 node…</li>
+<li>1 node …</li>
 <li>… from the partition
 <code>&lt;put your partition here&gt;</code>
 </li>
-<li>4 MPI tasks…</li>
+<li>4 MPI tasks …</li>
 <li>… each of which uses one CPU core (so 4 cores in total)</li>
-<li>1 GB of memory</li>
+<li>1 GB of memory per node</li>
 <li>A timelimit of 1 minute</li>
 </ul>
-<p>The last two <code>#SBATCH</code> directives specifiy that we want
-the output of our job to be captures in the file
-<code>snowman-stdout.log</code> and that the job should appear under the
-name <code>snowman</code>.</p>
-<div id="callout1" class="callout">
+<p>The last two <code>#SBATCH</code> directives redirect the jobs output
+to the file <code>snowman-stdout-&lt;job id&gt;.log</code> and assign
+the name “snowman” to the job.</p>
+<div id="how-much---mem-do-i-get" class="callout">
 <div class="callout-square">
 <i class="callout-icon" data-feather="bell"></i>
 </div>
 <span class="callout-header">Callout</span>
-<div class="callout-inner">
+<div id="how-much---mem-do-i-get" class="callout-inner">
+<h3 class="callout-title">How much <code>--mem</code> do I get?</h3>
 <div class="callout-content">
-<p>The <code>--mem</code> directive is somewhat unfortunately named as
-it does not define the total amount of memory of your job, but the total
-amount of memory <em>per node</em>. Here, this distinction does not
-matter as we only use one node, but you should keep in mind that
-changing the number of nodes often implies that you need to adapt the
-<code>--mem</code> value as well. Alternatively, you can also use the
+<p>The <code>--mem</code> directive can be confusing as it does not
+define the total amount of memory of your job, but the total amount of
+memory <em>per node</em>. Here, this distinction does not matter as we
+only use one node, but you should keep in mind that changing the number
+of nodes often implies that you need to adapt the <code>--mem</code>
+value as well. Alternatively, you can also use the
 <code>--mem-per-cpu</code> directive such that the memory allocation
 automatically scales with the number of cores. However, even in this
 case you need to verify that your memory consumption actually scales
@@ -2183,73 +2227,71 @@ linearly with the number of cores for your application!</p>
 </div>
 <p>To test if our estimate works, you have to submit the job to the
 scheduler:</p>
-<div class="codewrapper sourceCode" id="cb11">
+<div class="codewrapper sourceCode" id="cb13">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" tabindex="-1" aria-label="code-block-11-1"></a><span class="ex">sbatch</span> snowman.job</span></code></pre>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" tabindex="-1" aria-label="code-block-13-1"></a><span class="ex">sbatch</span> snowman.job</span></code></pre>
 </div>
 <p>This command will also print the ID of the job, so we can observe
 what is happening with it. Wait a bit and have a look at how your job is
 doing:</p>
-<div class="codewrapper sourceCode" id="cb12">
-<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" tabindex="-1" aria-label="code-block-12-1"></a><span class="ex">sacct</span> <span class="at">-X</span> <span class="at">-j</span> <span class="op">&lt;</span>jobid of your job<span class="op">&gt;</span></span></code></pre>
-</div>
-<p>After a while, you will see that the status of your job is given as
-<code>TIMEOUT</code>.</p>
-<div id="callout2" class="callout">
-<div class="callout-square">
-<i class="callout-icon" data-feather="bell"></i>
-</div>
-<span class="callout-header">Callout</span>
-<div class="callout-inner">
-<div class="callout-content">
-<p>You might wonder what the <code>-X</code> flag does in the the
-<code>sacct</code> call above. This option instructs Slurm to not output
-information on the “job steps” associated with your job. Since we don’t
-care about these right now, we set this flag to make the output more
-concise.</p>
-</div>
-</div>
-</div>
-<p>Check the file <code>snowman-stdout.log</code> as well. Near the
-bottom you will see a line like this:</p>
-<pre class="text"><code>slurmstepd: error: *** JOB 1234567 ON somenode CANCELLED AT 2025-04-01T13:37:00 DUE TO TIME LIMIT ***</code></pre>
-<p>Evidently our job was aborted because it did not finish within the
-time limit of one minute that we set above. Let’s try giving our job a
-time limit of 10 minutes instead.</p>
 <div class="codewrapper sourceCode" id="cb14">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" tabindex="-1" aria-label="code-block-14-1"></a><span class="co">#SBATCH --time=00:10:00</span></span></code></pre>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" tabindex="-1" aria-label="code-block-14-1"></a><span class="ex">sacct</span> <span class="at">-X</span> <span class="at">-j</span> <span class="op">&lt;</span>jobid of your job<span class="op">&gt;</span></span></code></pre>
+</div>
+<p>We use the flag <code>-X</code> to only show a single summarising
+line per job. After a while, you will see that the status of your job is
+given as <code>TIMEOUT</code>.</p>
+<p>Check the file <code>snowman-stdout.log</code> as well. Near the
+bottom you will see a line like this:</p>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>slurmstepd: error: *** JOB 1234567 ON somenode CANCELLED AT 2025-04-01T13:37:00 DUE TO TIME LIMIT ***</code></pre>
+</div>
+<p>Evidently, our job was aborted because it did not finish within the
+time limit of one minute that we set above. Let’s try giving our job a
+time limit of 10 minutes instead.</p>
+<div class="codewrapper sourceCode" id="cb16">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" tabindex="-1" aria-label="code-block-16-1"></a><span class="co">#SBATCH --time=00:10:00</span></span></code></pre>
 </div>
 <p>This time the job should succeed and show a status of “COMPLETED” in
 <code>sacct</code>. We can check the resources actually needed by our
 job with the help of <code>seff</code>:</p>
-<div class="codewrapper sourceCode" id="cb15">
+<div class="codewrapper sourceCode" id="cb17">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" tabindex="-1" aria-label="code-block-15-1"></a><span class="ex">seff</span> <span class="op">&lt;</span>jobid of your job<span class="op">&gt;</span></span></code></pre>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" tabindex="-1" aria-label="code-block-17-1"></a><span class="ex">seff</span> <span class="op">&lt;</span>jobid of your job<span class="op">&gt;</span></span></code></pre>
 </div>
 <p>The output of <code>seff</code> contains many useful bits of
 information for sizing our job. In particular, let’s look at these
 lines:</p>
-<pre class="text"><code>[...]
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>[...]
 CPU Utilized: 00:21:34
 CPU Efficiency: 98.93% of 00:21:48 core-walltime
 Job Wall-clock time: 00:05:27
 Memory Utilized: 367.28 MB
 Memory Efficiency: 35.87% of 1.00 GB</code></pre>
-<div id="callout3" class="callout">
+</div>
+<div id="measurements-are-hardware-dependent" class="callout">
 <div class="callout-square">
 <i class="callout-icon" data-feather="bell"></i>
 </div>
 <span class="callout-header">Callout</span>
-<div class="callout-inner">
+<div id="measurements-are-hardware-dependent" class="callout-inner">
+<h3 class="callout-title">Measurements are hardware dependent!</h3>
 <div class="callout-content">
 <p>The exact numbers here depend a lot on the hardware and software of
-your local cluster.</p>
+your local cluster. Differences between two HPC systems or even
+different partitions on the same HPC system may be caused by different
+CPU generations, larger or smaller memory bandwidths, file system and
+network technologies, etc.</p>
 </div>
 </div>
 </div>
@@ -2269,28 +2311,26 @@ consumption that your job had at any point during its runtime, while
 the requested amount of memory for the allocation. As we will see later,
 this value has to be taken with a grain of salt.</p>
 <p>Starting from the set of parameters that successfully run our
-program, we can now try to reduce the amout of requested resources. As
+program, we can now try to reduce the amount of requested resources. As
 is good scientific practice, we should only vary one parameter at a time
 and observe the result. Let’s start by reducing the time limit. There is
-often a bit of jitter in the time needed to run a job since not all
-nodes are perfectly identical, so you should add a safety margin of 10
-to 20 percent <span style="color:red">(completely arbitrary choice of
-numbers here; does everyone agree on the order of magnitude?)</span>
-According to the time reported by <code>seff</code>, seven minutes
-should therefore be a good time limit. If your cluster is faster, you
-might reduce this even further.</p>
-<div class="codewrapper sourceCode" id="cb17">
+often a bit of variation in the time needed to run a job since not all
+nodes are perfectly identical, so you should add an arbitrarily chosen
+safety margin of maybe 10 percent. According to the time reported by
+<code>seff</code>, seven minutes should therefore be a good time limit.
+If your cluster is faster, you might reduce this even further.</p>
+<div class="codewrapper sourceCode" id="cb19">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" tabindex="-1" aria-label="code-block-17-1"></a><span class="co">#SBATCH --time=00:07:00</span></span></code></pre>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1" tabindex="-1" aria-label="code-block-19-1"></a><span class="co">#SBATCH --time=00:07:00</span></span></code></pre>
 </div>
 <p>As you can see, your job will still complete successfully.</p>
-<div id="accordionInstructor3" class="accordion instructor-note accordion-flush">
+<div id="accordionInstructor1" class="accordion instructor-note accordion-flush">
 <div class="accordion-item">
-<button class="accordion-button instructor-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseInstructor3" aria-expanded="false" aria-controls="collapseInstructor3">
-  <h3 class="accordion-header" id="headingInstructor3">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="edit-2"></i></div> Instructor Note </h3>
+<button class="accordion-button instructor-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseInstructor1" aria-expanded="false" aria-controls="collapseInstructor1">
+  <h3 class="accordion-header" id="headingInstructor1">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="edit-2"></i></div> Instructor Note </h3>
 </button>
-<div id="collapseInstructor3" class="accordion-collapse collapse" aria-labelledby="headingInstructor3" data-bs-parent="#accordionInstructor3">
+<div id="collapseInstructor1" class="accordion-collapse collapse" aria-labelledby="headingInstructor1" data-bs-parent="#accordionInstructor1">
 <div class="accordion-body">
 <p>For the next section, the exact memory requirements depend on the
 cluster configuration (e.g., the MPI backends used). You might have to
@@ -2300,13 +2340,16 @@ behavior.</p>
 </div>
 </div>
 </div>
-<p>Next, we can optimize our memory allocation. According to SLURM, we
+<div class="section level3">
+<h3 id="sizing-your-jobs-memory">Sizing your jobs: Memory<a class="anchor" aria-label="anchor" href="#sizing-your-jobs-memory"></a>
+</h3>
+<p>Next, we can optimize our memory allocation. According to Slurm, we
 used 367.28 MB of memory in our last run, so let’s set the memory limit
 to 500 MB.</p>
-<div class="codewrapper sourceCode" id="cb18">
+<div class="codewrapper sourceCode" id="cb20">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" tabindex="-1" aria-label="code-block-18-1"></a><span class="co">#SBATCH --mem=500M</span></span></code></pre>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1" tabindex="-1" aria-label="code-block-20-1"></a><span class="co">#SBATCH --mem=500M</span></span></code></pre>
 </div>
 <p>After submitting the job with the lowered memory allocation
 everything seems fine for a while. But then, right at the end of the
@@ -2314,13 +2357,13 @@ computation, our job will crash. Checking the job status with
 <code>sacct</code> will reveal that the job status is
 <code>OUT_OF_MEMORY</code> meaning that our job exceeded its memory
 limit and was terminated by the scheduler.</p>
-<p>This behavior seems contradictory at first: SLURM reported previously
+<p>This behavior seems contradictory at first: Slurm reported previously
 that our job only used around 367 MB of memory at most, which is well
 below the 500 MB limit we set. The explanation for this discrepancy lies
-in the fact that SLURM measures the peak memory consumption of jobs by
+in the fact that Slurm measures the peak memory consumption of jobs by
 <em>polling</em>, i.e., by periodically sampling how much memory the job
 currently uses. Unfortunately, if the program has spikes in memory
-consumption that are small enough to fit between two samples, SLURM will
+consumption that are small enough to fit between two samples, Slurm will
 miss them and report an incorrect peak memory value. Spikes in memory
 usage are quite common, for example if your application uses short-lived
 subprocesses. Most annoyingly, many programs allocate a large chunk of
@@ -2328,14 +2371,14 @@ memory right at the end of the computation to write out the results. In
 the case of the snowman raytracer, we encode the raw pixel data into a
 PNG at the end, which means we temporarily keep both the raw image and
 the PNG data in memory.</p>
-<figure><img src="../fig/slurm-memory-sampling.svg" class="figure mx-auto d-block"></figure><div id="caution2" class="callout caution">
+<figure><img src="../fig/slurm-memory-sampling.svg" alt="A graph plotting memory consumption of a job over time. The curve has an upwards trend with intermittent spikes. The periodic sampling of Slurm are shown as vertical lines intersecting the graph in regular intervals. While one of the memory spikes coincides with a sampling point, two others do not. One of them is near the start of the execution time and falls between two sample points. The other is at the very end of the execution time and occurs after the last sample point." class="figure mx-auto d-block"></figure><div id="caution2" class="callout caution">
 <div class="callout-square">
 <i class="callout-icon" data-feather="alert-triangle"></i>
 </div>
 <span class="callout-header">Caution</span>
 <div class="callout-inner">
 <div class="callout-content">
-<p>SLURM determines memory consuption by <em>polling</em>, i.e.,
+<p>Slurm determines memory consuption by <em>polling</em>, i.e.,
 periodically checking on the memory consumption of your job. If you job
 has a memory allocation profile with short spikes in memory usage, the
 value reported by <code>seff</code> can be incorrect. In particular, if
@@ -2347,76 +2390,103 @@ too low.</p>
 </div>
 <p>So how big is the peak memory consumption of our process
 <em>really</em>? Luckily, the Linux kernel keeps track of this for us,
-if SLURM is configured to use the so-called “cgroups v2” mechanism to
+if Slurm is configured to use the so-called “cgroups v2” mechanism to
 enforce resource limits (which many HPC systems are). Let’s use this
 system to find out how much memory the raytracer actually needs. First,
 we set the memory limit back to 1 GB, i.e., to a configuration that is
 known to work.</p>
-<div class="codewrapper sourceCode" id="cb19">
+<div class="codewrapper sourceCode" id="cb21">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1" tabindex="-1" aria-label="code-block-19-1"></a><span class="co">#SBATCH --mem=1G</span></span></code></pre>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb21-1"><a href="#cb21-1" tabindex="-1" aria-label="code-block-21-1"></a><span class="co">#SBATCH --mem=1G</span></span></code></pre>
 </div>
 <p>Next, add these lines at the end of your job script:</p>
-<div class="codewrapper sourceCode" id="cb20">
+<div class="codewrapper sourceCode" id="cb22">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1" tabindex="-1" aria-label="code-block-20-1"></a><span class="bu">echo</span> <span class="at">-n</span> <span class="st">"Total amount of memory used (in bytes): "</span></span>
-<span id="cb20-2"><a href="#cb20-2" tabindex="-1" aria-label="code-block-20-2"></a><span class="fu">cat</span> /sys/fs/cgroup/<span class="va">$(</span><span class="fu">cat</span> /proc/self/cgroup <span class="kw">|</span> <span class="fu">awk</span> <span class="at">-F</span> <span class="st">':'</span> <span class="st">'{print $3}'</span><span class="va">)</span>/memory.peak</span></code></pre>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb22-1"><a href="#cb22-1" tabindex="-1" aria-label="code-block-22-1"></a><span class="bu">echo</span> <span class="at">-n</span> <span class="st">"Total amount of memory used (in bytes): "</span></span>
+<span id="cb22-2"><a href="#cb22-2" tabindex="-1" aria-label="code-block-22-2"></a><span class="va">CGROUPPATH</span><span class="op">=</span><span class="st">"</span><span class="va">$(</span><span class="fu">cat</span> /proc/self/cgroup <span class="kw">|</span> <span class="fu">awk</span> <span class="at">-F</span> <span class="st">':'</span> <span class="st">'{print $3}'</span><span class="va">)</span><span class="st">"</span></span>
+<span id="cb22-3"><a href="#cb22-3" tabindex="-1" aria-label="code-block-22-3"></a><span class="fu">cat</span> /sys/fs/cgroup/<span class="va">${CGROUPPATH}</span>/memory.peak</span></code></pre>
 </div>
-<div id="callout4" class="callout">
-<div class="callout-square">
-<i class="callout-icon" data-feather="bell"></i>
-</div>
-<span class="callout-header">Callout</span>
-<div class="callout-inner">
-<div class="callout-content">
-<p>Let’s break down what these lines do:</p>
+<p>Let’s break down what each line does:</p>
 <ul>
 <li>The first line prints out a nice label for our peak memory output.
 We use <code>-n</code> to omit the usual newline that <code>echo</code>
 adds at the end of its output.</li>
-<li>The second line outputs the contents of a file (<code>cat</code>).
+<li>For the next part we need the so-called “cgroup path” of our job. To
+find out this path, we can use the <code>/proc/self/cgroup</code> file,
+which contains this path as the third entry of a colon-separated list.
+Therefore, we read the contents of this file (<code>cat</code>) and
+extract the third entry of the colon-separated list
+(<code>awk -F ':' '{print $3}'</code>). Since we do this in
+<code>$(...)</code>, Bash will place the output of these commands (i.e.,
+the cgroup path) in the variable <code>CGROUPPATH</code>.</li>
+<li>The third line outputs the contents of a file (<code>cat</code>).
 The path of this file starts with <code>/sys/fs/cgroup</code>, which is
 a location where the Linux kernel exports all the cgroups v2 information
-as files.</li>
-<li>For the next part of the path we need the so-called “cgroup path” of
-our job. To find out this path, we can use the
-<code>/proc/self/cgroup</code> file, which contains this path as the
-third entry of a colon-separated list. Therefore, we read the contents
-of this file (<code>cat</code>) and extract the third entry of the colon
-separated list (<code>awk -F ':' '{print $3}'</code>). Since we do this
-in <code>$(...)</code>, Bash will place the output of these commands
-(i.e., the cgroup path) at this point.</li>
+as files, followed by the cgroup path of our job in the
+<code>CGROUPPATH</code> variable.</li>
 <li>The final part of the path is the information we actually want from
-the cgroup. In out case, we are interested in <code>memory.peak</code>,
+the cgroup. In our case, we are interested in <code>memory.peak</code>,
 which contains the peak memory consumption of the cgroup.</li>
 </ul>
-</div>
-</div>
-</div>
 <p>When you submit your job and look at the output once it finishes, you
 will find a line like this:</p>
-<pre class="text"><code>[...]
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>[...]
 Total amount of memory used (in bytes): 579346432
 [...]</code></pre>
-<p>So even though SLURM reported our job to only use 367.28 MB of
+</div>
+<p>So even though Slurm reported our job to only use 367.28 MB of
 memory, we actually used nearly 600 MB! With this measurement we can
 make an informed decision on how to set the memory limit for our
 job:</p>
-<div class="codewrapper sourceCode" id="cb22">
+<div class="codewrapper sourceCode" id="cb24">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb22-1"><a href="#cb22-1" tabindex="-1" aria-label="code-block-22-1"></a><span class="co">#SBATCH --mem=700M</span></span></code></pre>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb24-1"><a href="#cb24-1" tabindex="-1" aria-label="code-block-24-1"></a><span class="co">#SBATCH --mem=700M</span></span></code></pre>
 </div>
 <p>Run your job again with this limit to verify that it completes
 successfully.</p>
-<div id="accordionInstructor4" class="accordion instructor-note accordion-flush">
+<div id="accordionInstructor2" class="accordion instructor-note accordion-flush">
 <div class="accordion-item">
-<button class="accordion-button instructor-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseInstructor4" aria-expanded="false" aria-controls="collapseInstructor4">
-  <h3 class="accordion-header" id="headingInstructor4">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="edit-2"></i></div> Instructor Note </h3>
+<button class="accordion-button instructor-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseInstructor2" aria-expanded="false" aria-controls="collapseInstructor2">
+  <h3 class="accordion-header" id="headingInstructor2">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="edit-2"></i></div> Todo: Can we demonstrate the callout below? </h3>
 </button>
-<div id="collapseInstructor4" class="accordion-collapse collapse" aria-labelledby="headingInstructor4" data-bs-parent="#accordionInstructor4">
+<div id="collapseInstructor2" class="accordion-collapse collapse" aria-labelledby="headingInstructor2" data-bs-parent="#accordionInstructor2">
+<div class="accordion-body">
+<p>How can too tight memory limits in Slurm + cgroupsv2 cause cache
+thrashing?</p>
+</div>
+</div>
+</div>
+</div>
+<div id="too-tight-memory-limits-can-reduce-performance" class="callout">
+<div class="callout-square">
+<i class="callout-icon" data-feather="bell"></i>
+</div>
+<span class="callout-header">Callout</span>
+<div id="too-tight-memory-limits-can-reduce-performance" class="callout-inner">
+<h3 class="callout-title">Too tight memory limits can reduce
+performance!</h3>
+<div class="callout-content">
+<p>Slurm enforces memory limits for all processes in a job. Besides the
+applications memory demand (RSS - resident set size), this also includes
+caching mechanism of the Linux Kernel, e.g. for file I/O.</p>
+<p>Too tight memory limits can cause too small caches next to the
+applications memory demand. This in turn can severely reduce the jobs
+performance in some cases.</p>
+</div>
+</div>
+</div>
+<div id="accordionInstructor3" class="accordion instructor-note accordion-flush">
+<div class="accordion-item">
+<button class="accordion-button instructor-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseInstructor3" aria-expanded="false" aria-controls="collapseInstructor3">
+  <h3 class="accordion-header" id="headingInstructor3">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="edit-2"></i></div> Instructor Note </h3>
+</button>
+<div id="collapseInstructor3" class="accordion-collapse collapse" aria-labelledby="headingInstructor3" data-bs-parent="#accordionInstructor3">
 <div class="accordion-body">
 <p>At this point you might want to point out to your audience that for
 certain applications it can be disastrous for performance to set the
@@ -2435,45 +2505,53 @@ in and out of system memory and thus slows down to a crawl.</p>
 </div>
 </div>
 </div>
+</div>
+<div class="section level3">
+<h3 id="sizing-your-jobs-cpu-cores">Sizing your jobs: CPU Cores<a class="anchor" aria-label="anchor" href="#sizing-your-jobs-cpu-cores"></a>
+</h3>
 <p>So far we have tuned the time and memory limits of our job. Now let
-us have a look at the CPU core limit. This limit works slightly
-differently than the ones we looked at so far in the sense that your job
-is not getting terminated if you try to use more cores than you have
-allocated. Instead, the scheduler exploits the fact that multitasking
-operating systems can switch out the process a given CPU core is working
-on. If you have more active processes in your job than you have CPU
-cores (i.e., <em>CPU oversubscription</em>), the operating system will
-simply switch processes in and out while trying to ensure that each
-process gets an equal amount of CPU time. This happens very fast, so you
-can’t see the switching directly, but tools like <code>htop</code> will
-show your processes running at less than 100% CPU utilization. Below you
-can see a situation of four processes running on three CPU cores, which
-results in each process running only 75% of the time.</p>
-<figure><img src="../fig/cpu-oversubscription.svg" class="figure mx-auto d-block"></figure><div id="caution3" class="callout caution">
+us have a look at the CPU core limit.</p>
+<p>This limit works slightly differently than the ones we looked at so
+far in the sense that your job is not getting terminated if you try to
+use more cores than you have allocated. Instead, the scheduler exploits
+the fact that multitasking operating systems can switch out the process
+a given CPU core is working on. If you have more active processes in
+your job than you have CPU cores (i.e., <em>CPU oversubscription</em>),
+the operating system will simply switch processes in and out while
+trying to ensure that each process gets an equal amount of CPU time.
+This happens very fast, so you can’t see the switching directly, but
+tools like <code>top</code> will show your processes running at less
+than 100% CPU utilization.</p>
+<p>Below you can see a situation of four processes running on three CPU
+cores, which results in each process running only 75% of the time.</p>
+<figure><img src="../fig/cpu-oversubscription.svg" alt="Depicted is a situation of four processes running on three CPU cores, which results in each process running only 75% of the time." class="figure mx-auto d-block"></figure><div id="caution3" class="callout caution">
 <div class="callout-square">
 <i class="callout-icon" data-feather="alert-triangle"></i>
 </div>
 <span class="callout-header">Caution</span>
 <div class="callout-inner">
 <div class="callout-content">
-<p>CPU oversubscription can even be harmful to performance as all the
-switching between processes by the operating system can cost a
-non-trivial amount of CPU time itself.</p>
+<p>CPU oversubscription can be harmful to performance as switching
+between processes by the operating system can cost a significant amount
+of CPU time itself.</p>
 </div>
 </div>
 </div>
 <p>Let’s try reducing the number of cores we allocate by reducing the
 number of MPI tasks we request in our job script:</p>
-<div class="codewrapper sourceCode" id="cb23">
+<div class="codewrapper sourceCode" id="cb25">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb23-1"><a href="#cb23-1" tabindex="-1" aria-label="code-block-23-1"></a><span class="co">#SBATCH --ntasks=2</span></span></code></pre>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb25-1"><a href="#cb25-1" tabindex="-1" aria-label="code-block-25-1"></a><span class="co">#SBATCH --ntasks=2</span></span></code></pre>
 </div>
 <p>Now we have a mismatch between the number of tasks we request and the
 number of tasks we use in <code>mpirun</code>. However, MPI catches our
 folly and prevents us from accidentally oversubscribing our CPU cores.
 In the output file you see the full explanation</p>
-<pre class="text"><code>There are not enough slots available in the system to satisfy the 4
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>There are not enough slots available in the system to satisfy the 4
 slots that were requested by the application:
 
   ./SnowmanRaytracer/build/raytracer
@@ -2489,7 +2567,7 @@ environment in which PRRTE processes are run:
      processor cores if not provided)
   2. The --host command line parameter, via a ":N" suffix on the
      hostname (N defaults to 1 if not provided)
-  3. Resource manager (e.g., SLURM, PBS/Torque, LSF, etc.)
+  3. Resource manager (e.g., Slurm, PBS/Torque, LSF, etc.)
   4. If none of a hostfile, the --host command line parameter, or an
      RM is present, PRRTE defaults to the number of processor cores
 
@@ -2500,12 +2578,13 @@ of hardware threads instead of the number of processor cores, use the
 Alternatively, you can use the --map-by :OVERSUBSCRIBE option to ignore the
 number of available slots when deciding the number of processes to
 launch.</code></pre>
-<div id="accordionInstructor5" class="accordion instructor-note accordion-flush">
+</div>
+<div id="accordionInstructor4" class="accordion instructor-note accordion-flush">
 <div class="accordion-item">
-<button class="accordion-button instructor-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseInstructor5" aria-expanded="false" aria-controls="collapseInstructor5">
-  <h3 class="accordion-header" id="headingInstructor5">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="edit-2"></i></div> Instructor Note </h3>
+<button class="accordion-button instructor-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseInstructor4" aria-expanded="false" aria-controls="collapseInstructor4">
+  <h3 class="accordion-header" id="headingInstructor4">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="edit-2"></i></div> Instructor Note </h3>
 </button>
-<div id="collapseInstructor5" class="accordion-collapse collapse" aria-labelledby="headingInstructor5" data-bs-parent="#accordionInstructor5">
+<div id="collapseInstructor4" class="accordion-collapse collapse" aria-labelledby="headingInstructor4" data-bs-parent="#accordionInstructor4">
 <div class="accordion-body">
 <p>This error message was generated with OpenMPI. Other MPI
 implementations might produce different messages.</p>
@@ -2516,24 +2595,28 @@ implementations might produce different messages.</p>
 <p>If we actually want to see oversubscription in action, we need to
 switch from MPI to multithreading. First, let us try without
 oversubscribing the CPU cores:</p>
-<div class="codewrapper sourceCode" id="cb25">
+<div class="codewrapper sourceCode" id="cb27">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb25-1"><a href="#cb25-1" tabindex="-1" aria-label="code-block-25-1"></a><span class="co">#SBATCH --ntasks=1</span></span>
-<span id="cb25-2"><a href="#cb25-2" tabindex="-1" aria-label="code-block-25-2"></a><span class="co">#SBATCH --cpus-per-task=4</span></span>
-<span id="cb25-3"><a href="#cb25-3" tabindex="-1" aria-label="code-block-25-3"></a></span>
-<span id="cb25-4"><a href="#cb25-4" tabindex="-1" aria-label="code-block-25-4"></a><span class="co"># [...]</span></span>
-<span id="cb25-5"><a href="#cb25-5" tabindex="-1" aria-label="code-block-25-5"></a></span>
-<span id="cb25-6"><a href="#cb25-6" tabindex="-1" aria-label="code-block-25-6"></a><span class="ex">./SnowmanRaytracer/build/raytracer</span> <span class="at">-width</span><span class="op">=</span>1024 <span class="at">-height</span><span class="op">=</span>1024 <span class="at">-spp</span><span class="op">=</span>256 <span class="at">-threads</span><span class="op">=</span>4 <span class="at">-alloc_mode</span><span class="op">=</span>3 <span class="at">-png</span><span class="op">=</span>snowman.png</span></code></pre>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb27-1"><a href="#cb27-1" tabindex="-1" aria-label="code-block-27-1"></a><span class="co">#SBATCH --ntasks=1</span></span>
+<span id="cb27-2"><a href="#cb27-2" tabindex="-1" aria-label="code-block-27-2"></a><span class="co">#SBATCH --cpus-per-task=4</span></span>
+<span id="cb27-3"><a href="#cb27-3" tabindex="-1" aria-label="code-block-27-3"></a></span>
+<span id="cb27-4"><a href="#cb27-4" tabindex="-1" aria-label="code-block-27-4"></a><span class="co"># [...]</span></span>
+<span id="cb27-5"><a href="#cb27-5" tabindex="-1" aria-label="code-block-27-5"></a></span>
+<span id="cb27-6"><a href="#cb27-6" tabindex="-1" aria-label="code-block-27-6"></a><span class="ex">./SnowmanRaytracer/build/raytracer</span> <span class="at">-width</span><span class="op">=</span>1024 <span class="at">-height</span><span class="op">=</span>1024 <span class="at">-spp</span><span class="op">=</span>256 <span class="at">-threads</span><span class="op">=</span>4 <span class="at">-alloc_mode</span><span class="op">=</span>3 <span class="at">-png</span><span class="op">=</span>snowman.png</span></code></pre>
 </div>
-<p>This works and if we look at the output of <code>seff</code> again we
-get a baseline for our multithreaded job</p>
-<pre class="text"><code>[...]
+<p>We use the output of <code>seff</code> as a baseline for our
+multithreaded job:</p>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>[...]
 CPU Utilized: 00:21:32
 CPU Efficiency: 99.08% of 00:21:44 core-walltime
 Job Wall-clock time: 00:05:26
 Memory Utilized: 90.85 MB
 Memory Efficiency: 12.11% of 750.00 MB</code></pre>
+</div>
 <div id="discussion4" class="callout discussion">
 <div class="callout-square">
 <i class="callout-icon" data-feather="message-circle"></i>
@@ -2549,12 +2632,12 @@ this?</p>
 </div>
 </div>
 </div>
-<div id="accordionSolution3" class="accordion challenge-accordion accordion-flush">
+<div id="accordionSolution4" class="accordion challenge-accordion accordion-flush">
 <div class="accordion-item">
-<button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution3" aria-expanded="false" aria-controls="collapseSolution3">
-  <h4 class="accordion-header" id="headingSolution3"> Show me the solution </h4>
+<button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution4" aria-expanded="false" aria-controls="collapseSolution4">
+  <h4 class="accordion-header" id="headingSolution4"> Show me the solution </h4>
 </button>
-<div id="collapseSolution3" class="accordion-collapse collapse" aria-labelledby="headingSolution3" data-bs-parent="#accordionSolution3">
+<div id="collapseSolution4" class="accordion-collapse collapse" aria-labelledby="headingSolution4" data-bs-parent="#accordionSolution4">
 <div class="accordion-body">
 <p>We can see that the CPU utilization time and the walltime are
 virtually identical to the MPI version of our job, while the memory
@@ -2567,8 +2650,8 @@ This is why it does not matter much for CPU utilization whether we use
 MPI or threads as long as both can keep the same number of CPU cores
 busy.</li>
 <li>MPI typically incurs an overhead in CPU usage and memory due to the
-need to communicate between the tasks (in comparison, threads can just
-share a block of memory without communication). In our raytracer, this
+need to communicate between the tasks (in comparison, threads can share
+a block of memory without communication). In our raytracer, this
 overhead for CPU usage is negligible (hence the same CPU utilization
 time metrics), but there is a significant memory overhead.</li>
 </ul>
@@ -2579,10 +2662,10 @@ time metrics), but there is a significant memory overhead.</li>
 <p>Now let’s see what happens when we oversubscribe our CPU by doubling
 the number of threads without increasing the number of allocated cores
 in our job script:</p>
-<div class="codewrapper sourceCode" id="cb27">
+<div class="codewrapper sourceCode" id="cb29">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb27-1"><a href="#cb27-1" tabindex="-1" aria-label="code-block-27-1"></a><span class="ex">./SnowmanRaytracer/build/raytracer</span> <span class="at">-width</span><span class="op">=</span>1024 <span class="at">-height</span><span class="op">=</span>1024 <span class="at">-spp</span><span class="op">=</span>256 <span class="at">-threads</span><span class="op">=</span>8 <span class="at">-alloc_mode</span><span class="op">=</span>3 <span class="at">-png</span><span class="op">=</span>snowman.png</span></code></pre>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb29-1"><a href="#cb29-1" tabindex="-1" aria-label="code-block-29-1"></a><span class="ex">./SnowmanRaytracer/build/raytracer</span> <span class="at">-width</span><span class="op">=</span>1024 <span class="at">-height</span><span class="op">=</span>1024 <span class="at">-spp</span><span class="op">=</span>256 <span class="at">-threads</span><span class="op">=</span>8 <span class="at">-alloc_mode</span><span class="op">=</span>3 <span class="at">-png</span><span class="op">=</span>snowman.png</span></code></pre>
 </div>
 <div id="discussion5" class="callout discussion">
 <div class="callout-square">
@@ -2595,31 +2678,27 @@ in our job script:</p>
 <p>If you cluster allows direct access to the compute nodes, try logging
 into the node your job is running on and watch the CPU utilization live
 using</p>
-<div class="codewrapper sourceCode" id="cb28">
+<div class="codewrapper sourceCode" id="cb30">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb28-1"><a href="#cb28-1" tabindex="-1" aria-label="code-block-28-1"></a><span class="ex">htop</span> <span class="at">-u</span> <span class="op">&lt;</span>your username<span class="op">&gt;</span></span></code></pre>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb30-1"><a href="#cb30-1" tabindex="-1" aria-label="code-block-30-1"></a><span class="ex">top</span> <span class="at">-u</span> <span class="op">&lt;</span>your username<span class="op">&gt;</span></span></code></pre>
 </div>
-<p>(Note: Sometimes <code>htop</code> hides threads to make the process
-list easier to read. This option can be changed by pressing F2, using
-the arrow keys to navigate to the “Hide userlang process threads”,
-toggling with the return key and then applying the change with F10.)</p>
 <p>Compare the CPU utilization of the <code>raytracter</code> threads
 with different total numbers of threads.</p>
-<p>In the top right of <code>htop</code> you can also see a metric
-called <em>load average</em>. Simplified, this is the number of
-processes / threads that are currently either running or could run if a
-CPU core was free. Compare the amount of load you generate with your job
-depending on the number of threads.</p>
+<p>In the top right of <code>top</code> you can also see a metric called
+<em>load average</em>. Simplified, this is the number of processes /
+threads that are currently either running or could run if a CPU core was
+free. Compare the amount of load you generate with your job depending on
+the number of threads.</p>
 </div>
 </div>
 </div>
-<div id="accordionSolution4" class="accordion challenge-accordion accordion-flush">
+<div id="accordionSolution5" class="accordion challenge-accordion accordion-flush">
 <div class="accordion-item">
-<button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution4" aria-expanded="false" aria-controls="collapseSolution4">
-  <h4 class="accordion-header" id="headingSolution4"> Show me the solution </h4>
+<button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution5" aria-expanded="false" aria-controls="collapseSolution5">
+  <h4 class="accordion-header" id="headingSolution5"> Show me the solution </h4>
 </button>
-<div id="collapseSolution4" class="accordion-collapse collapse" aria-labelledby="headingSolution4" data-bs-parent="#accordionSolution4">
+<div id="collapseSolution5" class="accordion-collapse collapse" aria-labelledby="headingSolution5" data-bs-parent="#accordionSolution5">
 <div class="accordion-body">
 <p>You can see that the CPU utilization of each <code>raytracer</code>
 thread goes down as the number of threads increases. This means, each
@@ -2637,28 +2716,36 @@ local admin.</p>
 </div>
 <p>Despite using twice the amount of threads, we barely see any
 difference in the output of <code>seff</code>:</p>
-<pre class="text"><code>CPU Utilized: 00:21:29
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>CPU Utilized: 00:21:29
 CPU Efficiency: 98.85% of 00:21:44 core-walltime
 Job Wall-clock time: 00:05:26
 Memory Utilized: 93.32 MB
 Memory Efficiency: 12.44% of 750.00 MB</code></pre>
+</div>
 <p>This shows that despite having more threads, the CPU cores are not
 performing more work. Instead, the operating system periodically rotates
 the threads running on each allocated core, making sure every thread
 gets a time slice to make progress.</p>
 <p>Let’s see what happens when we increase the thread count to extreme
 levels:</p>
-<div class="codewrapper sourceCode" id="cb30">
+<div class="codewrapper sourceCode" id="cb32">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb30-1"><a href="#cb30-1" tabindex="-1" aria-label="code-block-30-1"></a><span class="ex">./SnowmanRaytracer/build/raytracer</span> <span class="at">-width</span><span class="op">=</span>1024 <span class="at">-height</span><span class="op">=</span>1024 <span class="at">-spp</span><span class="op">=</span>256 <span class="at">-threads</span><span class="op">=</span>1024 <span class="at">-alloc_mode</span><span class="op">=</span>3 <span class="at">-png</span><span class="op">=</span>snowman.png</span></code></pre>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb32-1"><a href="#cb32-1" tabindex="-1" aria-label="code-block-32-1"></a><span class="ex">./SnowmanRaytracer/build/raytracer</span> <span class="at">-width</span><span class="op">=</span>1024 <span class="at">-height</span><span class="op">=</span>1024 <span class="at">-spp</span><span class="op">=</span>256 <span class="at">-threads</span><span class="op">=</span>1024 <span class="at">-alloc_mode</span><span class="op">=</span>3 <span class="at">-png</span><span class="op">=</span>snowman.png</span></code></pre>
 </div>
 <p>With this setting, <code>seff</code> yields</p>
-<pre class="text"><code>CPU Utilized: 00:26:45
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>CPU Utilized: 00:26:45
 CPU Efficiency: 99.07% of 00:27:00 core-walltime
 Job Wall-clock time: 00:06:45
 Memory Utilized: 113.29 MB
 Memory Efficiency: 15.11% of 750.00 MB</code></pre>
+</div>
 <p>As we can see, our job is actually getting slowed down from all the
 switching between threads. This means, that for our raytracer
 application CPU oversubscription is either pointless or actively harmful
@@ -2670,26 +2757,29 @@ regarding performance.</p>
 <span class="callout-header">Discussion</span>
 <div class="callout-inner">
 <div class="callout-content">
-<p>If CPU oversubscription is so bad, then why do most operating systems
-default to this behavior?</p>
+<p>Can you imagine a situation where CPU oversubscription might be
+sensible (perhaps also outside the HPC context)?</p>
 </div>
 </div>
 </div>
-<div id="accordionSolution5" class="accordion challenge-accordion accordion-flush">
+<div id="accordionSolution6" class="accordion challenge-accordion accordion-flush">
 <div class="accordion-item">
-<button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution5" aria-expanded="false" aria-controls="collapseSolution5">
-  <h4 class="accordion-header" id="headingSolution5"> Show me the solution </h4>
+<button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution6" aria-expanded="false" aria-controls="collapseSolution6">
+  <h4 class="accordion-header" id="headingSolution6"> Show me the solution </h4>
 </button>
-<div id="collapseSolution5" class="accordion-collapse collapse" aria-labelledby="headingSolution5" data-bs-parent="#accordionSolution5">
+<div id="collapseSolution6" class="accordion-collapse collapse" aria-labelledby="headingSolution6" data-bs-parent="#accordionSolution6">
 <div class="accordion-body">
-<p>In this case we have a <em>CPU bound</em> application, i.e., the work
+<p>On HPC we often have a <em>CPU bound</em> application, i.e., the work
 done by the CPU is the limiting factor and thus dividing this work into
-smaller chunks does not help with performance. However, there are also
-applications bound by other resources. For these applications it makes
-sense to assign the CPU core elsewhere while the process is waiting,
-e.g., on a storage medium. Also, in most systems it is desireable to
-have more programs running than your computer has CPU cores since often
-only a few of them are active at the same time.</p>
+smaller chunks does not help with performance.</p>
+<p>However, there are also applications bound by other resources. For
+these applications it makes sense to assign the CPU core elsewhere while
+the process is waiting, e.g., on a storage medium.</p>
+<p>Also, on many systems it is desirable to have more programs running
+than your computer has CPU cores since often only a few of them are
+active at the same time. One common example is your everyday computer
+with multiple programs running at the same time.</p>
+</div>
 </div>
 </div>
 </div>
@@ -2701,37 +2791,39 @@ only a few of them are active at the same time.</p>
 advantage of MPI as a parallelism scheme is the fact that not all MPI
 tasks need to run on the same node. Let’s try this with our Snowman
 raytracer example:</p>
-<div class="codewrapper sourceCode" id="cb32">
+<div class="codewrapper sourceCode" id="cb34">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb32-1"><a href="#cb32-1" tabindex="-1" aria-label="code-block-32-1"></a><span class="co">#!/bin/bash</span></span>
-<span id="cb32-2"><a href="#cb32-2" tabindex="-1" aria-label="code-block-32-2"></a><span class="co">#SBATCH --nodes=2</span></span>
-<span id="cb32-3"><a href="#cb32-3" tabindex="-1" aria-label="code-block-32-3"></a><span class="co">#SBATCH --partition=&lt;put your partition here&gt;</span></span>
-<span id="cb32-4"><a href="#cb32-4" tabindex="-1" aria-label="code-block-32-4"></a><span class="co">#SBATCH --ntasks=4</span></span>
-<span id="cb32-5"><a href="#cb32-5" tabindex="-1" aria-label="code-block-32-5"></a><span class="co">#SBATCH --cpus-per-task=1</span></span>
-<span id="cb32-6"><a href="#cb32-6" tabindex="-1" aria-label="code-block-32-6"></a><span class="co">#SBATCH --mem=700M</span></span>
-<span id="cb32-7"><a href="#cb32-7" tabindex="-1" aria-label="code-block-32-7"></a><span class="co">#SBATCH --time=00:07:00</span></span>
-<span id="cb32-8"><a href="#cb32-8" tabindex="-1" aria-label="code-block-32-8"></a><span class="co">#SBATCH --output=snowman-stdout.log</span></span>
-<span id="cb32-9"><a href="#cb32-9" tabindex="-1" aria-label="code-block-32-9"></a><span class="co">#SBATCH --job-name=snowman</span></span>
-<span id="cb32-10"><a href="#cb32-10" tabindex="-1" aria-label="code-block-32-10"></a></span>
-<span id="cb32-11"><a href="#cb32-11" tabindex="-1" aria-label="code-block-32-11"></a><span class="co"># Always a good idea to purge modules first to start with a clean module environment</span></span>
-<span id="cb32-12"><a href="#cb32-12" tabindex="-1" aria-label="code-block-32-12"></a><span class="ex">module</span> purge</span>
-<span id="cb32-13"><a href="#cb32-13" tabindex="-1" aria-label="code-block-32-13"></a><span class="co"># &lt;put the module load commands for your cluster here&gt;</span></span>
-<span id="cb32-14"><a href="#cb32-14" tabindex="-1" aria-label="code-block-32-14"></a></span>
-<span id="cb32-15"><a href="#cb32-15" tabindex="-1" aria-label="code-block-32-15"></a><span class="ex">mpirun</span> <span class="at">--</span> ./SnowmanRaytracer/build/raytracer <span class="at">-width</span><span class="op">=</span>1024 <span class="at">-height</span><span class="op">=</span>1024 <span class="at">-spp</span><span class="op">=</span>256 <span class="at">-threads</span><span class="op">=</span>1 <span class="at">-alloc_mode</span><span class="op">=</span>3 <span class="at">-png</span><span class="op">=</span>snowman.png</span>
-<span id="cb32-16"><a href="#cb32-16" tabindex="-1" aria-label="code-block-32-16"></a></span>
-<span id="cb32-17"><a href="#cb32-17" tabindex="-1" aria-label="code-block-32-17"></a><span class="bu">echo</span> <span class="at">-n</span> <span class="st">"Total amount of memory used (in bytes): "</span></span>
-<span id="cb32-18"><a href="#cb32-18" tabindex="-1" aria-label="code-block-32-18"></a><span class="fu">cat</span> /sys/fs/cgroup<span class="va">$(</span><span class="fu">cat</span> /proc/self/cgroup <span class="kw">|</span> <span class="fu">awk</span> <span class="at">-F</span> <span class="st">':'</span> <span class="st">'{print $3}'</span><span class="va">)</span>/memory.peak</span></code></pre>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb34-1"><a href="#cb34-1" tabindex="-1" aria-label="code-block-34-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb34-2"><a href="#cb34-2" tabindex="-1" aria-label="code-block-34-2"></a><span class="co">#SBATCH --nodes=2</span></span>
+<span id="cb34-3"><a href="#cb34-3" tabindex="-1" aria-label="code-block-34-3"></a><span class="co">#SBATCH --partition=&lt;put your partition here&gt;</span></span>
+<span id="cb34-4"><a href="#cb34-4" tabindex="-1" aria-label="code-block-34-4"></a><span class="co">#SBATCH --ntasks=4</span></span>
+<span id="cb34-5"><a href="#cb34-5" tabindex="-1" aria-label="code-block-34-5"></a><span class="co">#SBATCH --cpus-per-task=1</span></span>
+<span id="cb34-6"><a href="#cb34-6" tabindex="-1" aria-label="code-block-34-6"></a><span class="co">#SBATCH --mem=700M</span></span>
+<span id="cb34-7"><a href="#cb34-7" tabindex="-1" aria-label="code-block-34-7"></a><span class="co">#SBATCH --time=00:07:00</span></span>
+<span id="cb34-8"><a href="#cb34-8" tabindex="-1" aria-label="code-block-34-8"></a><span class="co">#SBATCH --output=snowman-stdout.log</span></span>
+<span id="cb34-9"><a href="#cb34-9" tabindex="-1" aria-label="code-block-34-9"></a><span class="co">#SBATCH --job-name=snowman</span></span>
+<span id="cb34-10"><a href="#cb34-10" tabindex="-1" aria-label="code-block-34-10"></a></span>
+<span id="cb34-11"><a href="#cb34-11" tabindex="-1" aria-label="code-block-34-11"></a><span class="co"># Always a good idea to purge modules first to start with a clean module environment</span></span>
+<span id="cb34-12"><a href="#cb34-12" tabindex="-1" aria-label="code-block-34-12"></a><span class="ex">module</span> purge</span>
+<span id="cb34-13"><a href="#cb34-13" tabindex="-1" aria-label="code-block-34-13"></a><span class="co"># &lt;put the module load commands for your cluster here&gt;</span></span>
+<span id="cb34-14"><a href="#cb34-14" tabindex="-1" aria-label="code-block-34-14"></a></span>
+<span id="cb34-15"><a href="#cb34-15" tabindex="-1" aria-label="code-block-34-15"></a><span class="ex">mpirun</span> <span class="at">--</span> ./SnowmanRaytracer/build/raytracer <span class="at">-width</span><span class="op">=</span>1024 <span class="at">-height</span><span class="op">=</span>1024 <span class="at">-spp</span><span class="op">=</span>256 <span class="at">-threads</span><span class="op">=</span>1 <span class="at">-alloc_mode</span><span class="op">=</span>3 <span class="at">-png</span><span class="op">=</span>snowman.png</span>
+<span id="cb34-16"><a href="#cb34-16" tabindex="-1" aria-label="code-block-34-16"></a></span>
+<span id="cb34-17"><a href="#cb34-17" tabindex="-1" aria-label="code-block-34-17"></a><span class="bu">echo</span> <span class="at">-n</span> <span class="st">"Total amount of memory used (in bytes): "</span></span>
+<span id="cb34-18"><a href="#cb34-18" tabindex="-1" aria-label="code-block-34-18"></a><span class="va">CGROUPPATH</span><span class="op">=</span><span class="st">"</span><span class="va">$(</span><span class="fu">cat</span> /proc/self/cgroup <span class="kw">|</span> <span class="fu">awk</span> <span class="at">-F</span> <span class="st">':'</span> <span class="st">'{print $3}'</span><span class="va">)</span><span class="st">"</span></span>
+<span id="cb34-19"><a href="#cb34-19" tabindex="-1" aria-label="code-block-34-19"></a><span class="fu">cat</span> /sys/fs/cgroup/<span class="va">${CGROUPPATH}</span>/memory.peak</span></code></pre>
 </div>
 <p>The important change here compared to the MPI jobs before is the
 <code>--nodes=2</code> directive, which instructs Slurm to distribute
 the 4 tasks across exactly two nodes.</p>
-<div id="callout5" class="callout">
+<div id="slurm-accepts-ranges" class="callout">
 <div class="callout-square">
 <i class="callout-icon" data-feather="bell"></i>
 </div>
 <span class="callout-header">Callout</span>
-<div class="callout-inner">
+<div id="slurm-accepts-ranges" class="callout-inner">
+<h3 class="callout-title">Slurm accepts ranges</h3>
 <div class="callout-content">
 <p>You can also leave the decision of how many nodes to use up to Slurm
 by specifying a minimum and a maximum number of nodes, e.g.,</p>
@@ -2742,7 +2834,10 @@ nodes.</p>
 </div>
 </div>
 <p>Let’s look at the <code>seff</code> report of our job once again:</p>
-<pre class="text"><code>[...]
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>[...]
 Nodes: 2
 Cores per node: 2
 CPU Utilized: 00:21:32
@@ -2750,6 +2845,7 @@ CPU Efficiency: 98.78% of 00:21:48 core-walltime
 Job Wall-clock time: 00:05:27
 Memory Utilized: 280.80 MB
 Memory Efficiency: 20.06% of 1.37 GB</code></pre>
+</div>
 <p>We can see that Slurm did indeed split up the job such that each of
 the two nodes is running two tasks. We can also see that the walltime
 and CPU time of our job are basically the same as before. Considering
@@ -2769,69 +2865,24 @@ communication overhead is therefore vanishingly small.</p>
 <span class="callout-header">Callout</span>
 <div class="callout-inner">
 <div class="callout-content">
-<p>How well your program scales as you increase the number of nodes
-depends strongly on the amount of communication in your program.</p>
+<p>How well your program makes use of a larger number of nodes depends
+strongly on the amount of communication in your program.</p>
 </div>
 </div>
 </div>
 <p>We can also look at the memory consumption:</p>
-<pre class="text"><code>[...]
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>[...]
 Total amount of memory used (in bytes): 464834560
 [...]</code></pre>
+</div>
 <p>As we can see, there was indeed less memory consumed on the node
 running our submit script compared to before (470 MB vs 580 MB).
-However, our method of measuring peak memory consumption does not tell
-us about the memory consumption of the second node and we have to use
-slightly more sophisticated tooling to find out how much memory we
-actually use.</p>
-<p>In the course material is a directory
-<code>mpi-cgroups-memory-report</code> that can help us out here, but we
-need to compile it first:</p>
-<div class="codewrapper sourceCode" id="cb36">
-<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb36-1"><a href="#cb36-1" tabindex="-1" aria-label="code-block-36-1"></a><span class="bu">cd</span> mpi-cgroups-memory-report</span>
-<span id="cb36-2"><a href="#cb36-2" tabindex="-1" aria-label="code-block-36-2"></a><span class="fu">make</span> mpi-mem-report.so</span>
-<span id="cb36-3"><a href="#cb36-3" tabindex="-1" aria-label="code-block-36-3"></a><span class="bu">cd</span> ..</span></code></pre>
-</div>
-<div id="caution4" class="callout caution">
-<div class="callout-square">
-<i class="callout-icon" data-feather="alert-triangle"></i>
-</div>
-<span class="callout-header">Caution</span>
-<div class="callout-inner">
-<div class="callout-content">
-<p>Make sure you have a working MPI C Compiler (check with
-<code>which mpicc</code>). It is part of the same modules that you need
-to run the example raytracer application.</p>
-</div>
-</div>
-</div>
-<p>The memory reporting tool works by hooking itself into the
-<code>MPI_Finalize</code> function that needs to be called at the very
-end of every MPI program. Then, it does basically the same thing as we
-did in the script before and checks the <code>memory.peak</code> value
-from cgroups v2. To apply the hook to a program, you need to add the
-path to the <code>mpi-mem-report.so</code> file we just created to the
-environment variable <code>LD_PRELOAD</code>:</p>
-<div class="codewrapper sourceCode" id="cb37">
-<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb37-1"><a href="#cb37-1" tabindex="-1" aria-label="code-block-37-1"></a><span class="va">LD_PRELOAD</span><span class="op">=</span><span class="va">$(</span><span class="bu">pwd</span><span class="va">)</span>/mpi-cgroups-memory-report/mpi-mem-report.so <span class="ex">mpirun</span> <span class="at">--</span> ./SnowmanRaytracer/build/raytracer <span class="at">-width</span><span class="op">=</span>1024 <span class="at">-height</span><span class="op">=</span>1024 <span class="at">-spp</span><span class="op">=</span>256 <span class="at">-threads</span><span class="op">=</span>1 <span class="at">-alloc_mode</span><span class="op">=</span>3 <span class="at">-png</span><span class="op">=</span>snowman.png</span></code></pre>
-</div>
-<p>After submitting this job and waiting for it to complete, we can
-check the output log:</p>
-<pre><code>[...]
-[MPI Memory Reporting Hook]: Node r05n10 has used 464564224 bytes of memory (peak value)
-[MPI Memory Reporting Hook]: Node r07n04 has used 151105536 bytes of memory (peak value)
-[...]</code></pre>
-<p>The memory consumption of the first node matches our previous result,
-but we can now also see the memory consumption of the second node.
-Compared to the first node the second node uses much less memory,
-however in total both nodes use slightly more memory than running all
-four tasks on a single node (610 MB vs 580 MB). This memory imbalance
-between the nodes is an interesting observation that we should keep in
-mind when it comes to estimating how much memory we need per node.</p>
+However, our method of measuring peak memory consumption does not
+account for the second node. So let’s reach deeper into the toolbox to
+find out how much memory we actually use.</p>
 </section><section><h2 class="section-heading" id="tips-for-job-submission">Tips for job submission<a class="anchor" aria-label="anchor" href="#tips-for-job-submission"></a>
 </h2>
 <hr class="half-width">
@@ -2866,12 +2917,12 @@ terms of scheduling.</li>
 you can check with
 <code>scontrol show job 35749406 | grep StartTime</code>.</li>
 </ul>
-<div id="accordionInstructor6" class="accordion instructor-note accordion-flush">
+<div id="accordionInstructor5" class="accordion instructor-note accordion-flush">
 <div class="accordion-item">
-<button class="accordion-button instructor-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseInstructor6" aria-expanded="false" aria-controls="collapseInstructor6">
-  <h3 class="accordion-header" id="headingInstructor6">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="edit-2"></i></div> Instructor Note </h3>
+<button class="accordion-button instructor-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseInstructor5" aria-expanded="false" aria-controls="collapseInstructor5">
+  <h3 class="accordion-header" id="headingInstructor5">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="edit-2"></i></div> Instructor Note </h3>
 </button>
-<div id="collapseInstructor6" class="accordion-collapse collapse" aria-labelledby="headingInstructor6" data-bs-parent="#accordionInstructor6">
+<div id="collapseInstructor5" class="accordion-collapse collapse" aria-labelledby="headingInstructor5" data-bs-parent="#accordionInstructor5">
 <div class="accordion-body">
 <p>At this point you can present some scheduling strategies specific to
 your cluster. For the sake of time, you have likely reserved some
@@ -2883,8 +2934,6 @@ part of using an HPC cluster is waiting for your jobs to start.</p>
 </div>
 </div>
 </div>
-<p><span style="color:red">I’m not sure if this is the right section to
-discuss this…</span></p>
 <div id="keypoints1" class="callout keypoints">
 <div class="callout-square">
 <i class="callout-icon" data-feather="key"></i>
@@ -2959,7 +3008,7 @@ metrics of their jobs.</li>
 <button class="accordion-button instructor-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseInstructor1" aria-expanded="false" aria-controls="collapseInstructor1">
   <h3 class="accordion-header" id="headingInstructor1">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="edit-2"></i></div> Intention: Introduce more basic performance metrics </h3>
 </button>
-<div id="collapseInstructor1" class="accordion-collapse collapse" aria-labelledby="headingInstructor1" data-bs-parent="#accordionInstructor1">
+<div id="collapseInstructor1" class="accordion-collapse collapse" data-bs-parent="#accordionInstructor1" aria-labelledby="headingInstructor1">
 <div class="accordion-body">
 <p>Narrative:</p>
 <ul>
@@ -3103,7 +3152,7 @@ percentage of the total avaialable memory</li>
 <button class="accordion-button instructor-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseInstructor2" aria-expanded="false" aria-controls="collapseInstructor2">
   <h3 class="accordion-header" id="headingInstructor2">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="edit-2"></i></div> Todo: give clear recommendation of what to aim for? </h3>
 </button>
-<div id="collapseInstructor2" class="accordion-collapse collapse" aria-labelledby="headingInstructor2" data-bs-parent="#accordionInstructor2">
+<div id="collapseInstructor2" class="accordion-collapse collapse" data-bs-parent="#accordionInstructor2" aria-labelledby="headingInstructor2">
 <div class="accordion-body">
 <p>Maybe 80% of job time?</p>
 </div>
@@ -3139,7 +3188,7 @@ script.</p>
 <button class="accordion-button instructor-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseInstructor3" aria-expanded="false" aria-controls="collapseInstructor3">
   <h3 class="accordion-header" id="headingInstructor3">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="edit-2"></i></div> Todo: potential issue? </h3>
 </button>
-<div id="collapseInstructor3" class="accordion-collapse collapse" aria-labelledby="headingInstructor3" data-bs-parent="#accordionInstructor3">
+<div id="collapseInstructor3" class="accordion-collapse collapse" data-bs-parent="#accordionInstructor3" aria-labelledby="headingInstructor3">
 <div class="accordion-body">
 <p>Running this on our cluster and adding a module load command resulted
 in 600MB of memory required. My guess is, this is due to cgroups_v2 and
@@ -3176,7 +3225,7 @@ efficiency you get?</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
 <div class="accordion-body">
 <p>The batch file after adding the memory request becomes.</p>
 <pre class="input"><code>#!/usr/bin/bash
@@ -3271,7 +3320,7 @@ that, and <code>sacct</code> may be one of them.</p>
 <button class="accordion-button instructor-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseInstructor4" aria-expanded="false" aria-controls="collapseInstructor4">
   <h3 class="accordion-header" id="headingInstructor4">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="edit-2"></i></div> Instructor Note </h3>
 </button>
-<div id="collapseInstructor4" class="accordion-collapse collapse" aria-labelledby="headingInstructor4" data-bs-parent="#accordionInstructor4">
+<div id="collapseInstructor4" class="accordion-collapse collapse" data-bs-parent="#accordionInstructor4" aria-labelledby="headingInstructor4">
 <div class="accordion-body">
 <p>Note that the information <code>sacct</code> can provide depends on
 the information that SLURM stores on a given machine. By default this
@@ -3389,7 +3438,7 @@ evaluate what the most relevant items are.</p>
 <button class="accordion-button instructor-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseInstructor5" aria-expanded="false" aria-controls="collapseInstructor5">
   <h3 class="accordion-header" id="headingInstructor5">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="edit-2"></i></div> Todo: extend the following list and examples to include CPU </h3>
 </button>
-<div id="collapseInstructor5" class="accordion-collapse collapse" aria-labelledby="headingInstructor5" data-bs-parent="#accordionInstructor5">
+<div id="collapseInstructor5" class="accordion-collapse collapse" data-bs-parent="#accordionInstructor5" aria-labelledby="headingInstructor5">
 <div class="accordion-body">
 <p>To reconstruct the CPU utilization reported by <code>seff</code>: -
 <code>TotalCPU</code>/<code>CPUTime</code> should give the percentage -
@@ -3495,7 +3544,7 @@ would that be?</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
   <h4 class="accordion-header" id="headingSolution2"> Show me the solution </h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
 <div class="accordion-body">
 <p>To query all of the above variable run</p>
 <div class="codewrapper sourceCode" id="cb15">
@@ -3528,7 +3577,7 @@ dependencies to execute it.</p>
 <button class="accordion-button instructor-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseInstructor6" aria-expanded="false" aria-controls="collapseInstructor6">
   <h3 class="accordion-header" id="headingInstructor6">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="edit-2"></i></div> Give more insight in the collected sacct metrics </h3>
 </button>
-<div id="collapseInstructor6" class="accordion-collapse collapse" aria-labelledby="headingInstructor6" data-bs-parent="#accordionInstructor6">
+<div id="collapseInstructor6" class="accordion-collapse collapse" data-bs-parent="#accordionInstructor6" aria-labelledby="headingInstructor6">
 <div class="accordion-body">
 <ul>
 <li>
@@ -3593,7 +3642,7 @@ changes.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution3" aria-expanded="false" aria-controls="collapseSolution3">
   <h4 class="accordion-header" id="headingSolution3"> Show me the solution </h4>
 </button>
-<div id="collapseSolution3" class="accordion-collapse collapse" aria-labelledby="headingSolution3" data-bs-parent="#accordionSolution3">
+<div id="collapseSolution3" class="accordion-collapse collapse" data-bs-parent="#accordionSolution3" aria-labelledby="headingSolution3">
 <div class="accordion-body">
 <p>The machine these calculations have been run on has 112 core per
 node. So we can double the number of cores from 4 until 64 and stay
@@ -3762,7 +3811,7 @@ resources?</li>
 <button class="accordion-button instructor-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseInstructor1" aria-expanded="false" aria-controls="collapseInstructor1">
   <h3 class="accordion-header" id="headingInstructor1">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="edit-2"></i></div> Intention: Introduce/Recollect concept of Speedup and do a simple scaling study </h3>
 </button>
-<div id="collapseInstructor1" class="accordion-collapse collapse" aria-labelledby="headingInstructor1" data-bs-parent="#accordionInstructor1">
+<div id="collapseInstructor1" class="accordion-collapse collapse" data-bs-parent="#accordionInstructor1" aria-labelledby="headingInstructor1">
 <div class="accordion-body">
 <p>Narrative:</p>
 <ul>
@@ -3810,7 +3859,7 @@ processors.</p>
 <button class="accordion-button instructor-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseInstructor2" aria-expanded="false" aria-controls="collapseInstructor2">
   <h3 class="accordion-header" id="headingInstructor2">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="edit-2"></i></div> Todo: Unify MPI and modules across examples </h3>
 </button>
-<div id="collapseInstructor2" class="accordion-collapse collapse" aria-labelledby="headingInstructor2" data-bs-parent="#accordionInstructor2">
+<div id="collapseInstructor2" class="accordion-collapse collapse" data-bs-parent="#accordionInstructor2" aria-labelledby="headingInstructor2">
 <div class="accordion-body">
 <p>We should address the various ways to start MPI programs at first use
 and choose a single way. Preparing the software is also cluster-specific
@@ -3944,7 +3993,7 @@ the parallel raytracer?</p>
 <button class="accordion-button hint-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHint1" aria-expanded="false" aria-controls="collapseHint1">
   <h4 class="accordion-header" id="headingHint1"> Give me a hint </h4>
 </button>
-<div id="collapseHint1" class="accordion-collapse collapse" aria-labelledby="headingHint1" data-bs-parent="#accordionHint1">
+<div id="collapseHint1" class="accordion-collapse collapse" data-bs-parent="#accordionHint1" aria-labelledby="headingHint1">
 <div class="accordion-body">
 <p>You can use <code>sinfo</code> to find out the node names of your
 particular Slurm partition. Then use <code>scontrol</code> to show all
@@ -3959,7 +4008,7 @@ number of CPU (cores) available on that node.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
 <div class="accordion-body">
 <pre class="csv"><code>ntasks,time
 1,127.218
@@ -3989,7 +4038,7 @@ and the overhead starts to dominate.</p>
 <button class="accordion-button instructor-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseInstructor3" aria-expanded="false" aria-controls="collapseInstructor3">
   <h3 class="accordion-header" id="headingInstructor3">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="edit-2"></i></div> Todo: show, don’t tell </h3>
 </button>
-<div id="collapseInstructor3" class="accordion-collapse collapse" aria-labelledby="headingInstructor3" data-bs-parent="#accordionInstructor3">
+<div id="collapseInstructor3" class="accordion-collapse collapse" data-bs-parent="#accordionInstructor3" aria-labelledby="headingInstructor3">
 <div class="accordion-body">
 <p>info dump below in this section</p>
 <p>Maybe be more specific about which overheads and how we can see
@@ -4129,7 +4178,7 @@ and <span class="math inline">\(128\)</span> samples per pixel?</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
   <h4 class="accordion-header" id="headingSolution2"> Show me the solution </h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
 <div class="accordion-body">
 <p>For all of our measurements, the speedup and efficiencies are</p>
 <pre class="csv"><code>ntasks,time,speedup,efficiency
@@ -4176,7 +4225,7 @@ at larger numbers of parallel processors/threads?</p>
 <button class="accordion-button spoiler-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSpoiler1" aria-expanded="false" aria-controls="collapseSpoiler1">
   <h3 class="accordion-header" id="headingSpoiler1">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="eye"></i></div> (Optional) plotting our .csv </h3>
 </button>
-<div id="collapseSpoiler1" class="accordion-collapse collapse" aria-labelledby="headingSpoiler1" data-bs-parent="#accordionSpoiler1">
+<div id="collapseSpoiler1" class="accordion-collapse collapse" data-bs-parent="#accordionSpoiler1" aria-labelledby="headingSpoiler1">
 <div class="accordion-body">
 <p>If you have experience with python, you can use our <a href="../files/plot_scaling_from_csvs.py">python script</a> to create the
 same plots as above, but for your own data. It depends on
@@ -4250,7 +4299,7 @@ hardware and corresponding waiting times.</p>
 <button class="accordion-button instructor-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseInstructor4" aria-expanded="false" aria-controls="collapseInstructor4">
   <h3 class="accordion-header" id="headingInstructor4">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="edit-2"></i></div> When should we stop adding CPU cores? </h3>
 </button>
-<div id="collapseInstructor4" class="accordion-collapse collapse" aria-labelledby="headingInstructor4" data-bs-parent="#accordionInstructor4">
+<div id="collapseInstructor4" class="accordion-collapse collapse" data-bs-parent="#accordionInstructor4" aria-labelledby="headingInstructor4">
 <div class="accordion-body">
 <p>The learners should realize there is a point of diminishing returns.
 Where exactly to draw the line is debatable, but in the previous example
@@ -4339,7 +4388,7 @@ for two processors we need a height and a width of <span class="math inline">\(\
 <button class="accordion-button spoiler-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSpoiler2" aria-expanded="false" aria-controls="collapseSpoiler2">
   <h3 class="accordion-header" id="headingSpoiler2">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="eye"></i></div> Different ways of scaling workloads: spp </h3>
 </button>
-<div id="collapseSpoiler2" class="accordion-collapse collapse" aria-labelledby="headingSpoiler2" data-bs-parent="#accordionSpoiler2">
+<div id="collapseSpoiler2" class="accordion-collapse collapse" data-bs-parent="#accordionSpoiler2" aria-labelledby="headingSpoiler2">
 <div class="accordion-body">
 <p>In each scaling study, it is crucial to identify which application
 parameters affect the execution time. There are often multiple ways.</p>
@@ -4431,7 +4480,7 @@ costs?</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution3" aria-expanded="false" aria-controls="collapseSolution3">
   <h4 class="accordion-header" id="headingSolution3"> Show me the solution </h4>
 </button>
-<div id="collapseSolution3" class="accordion-collapse collapse" aria-labelledby="headingSolution3" data-bs-parent="#accordionSolution3">
+<div id="collapseSolution3" class="accordion-collapse collapse" data-bs-parent="#accordionSolution3" aria-labelledby="headingSolution3">
 <div class="accordion-body">
 <pre class="csv"><code>ntasks, pixel,    time, speedup, efficiency
      1,   800, 123.162,    1.00,       1.00
@@ -4512,7 +4561,7 @@ communication, output size on disk, and so on.</p>
 <button class="accordion-button spoiler-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSpoiler3" aria-expanded="false" aria-controls="collapseSpoiler3">
   <h3 class="accordion-header" id="headingSpoiler3">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="eye"></i></div> Automating Scaling Studies </h3>
 </button>
-<div id="collapseSpoiler3" class="accordion-collapse collapse" aria-labelledby="headingSpoiler3" data-bs-parent="#accordionSpoiler3">
+<div id="collapseSpoiler3" class="accordion-collapse collapse" data-bs-parent="#accordionSpoiler3" aria-labelledby="headingSpoiler3">
 <div class="accordion-body">
 <p>If you find yourself repeating similar measurements over and over
 again, you may be interested in an automation approach. This can be done
@@ -5430,7 +5479,7 @@ performance.</li>
 <button class="accordion-button instructor-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseInstructor1" aria-expanded="false" aria-controls="collapseInstructor1">
   <h3 class="accordion-header" id="headingInstructor1">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="edit-2"></i></div> Intention: Go deeper in performance and hardware relationship </h3>
 </button>
-<div id="collapseInstructor1" class="accordion-collapse collapse" aria-labelledby="headingInstructor1" data-bs-parent="#accordionInstructor1">
+<div id="collapseInstructor1" class="accordion-collapse collapse" data-bs-parent="#accordionInstructor1" aria-labelledby="headingInstructor1">
 <div class="accordion-body">
 <p>Narrative:</p>
 <ul>
@@ -5596,7 +5645,7 @@ threads Slurm allocates.</li>
 <button class="accordion-button spoiler-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSpoiler1" aria-expanded="false" aria-controls="collapseSpoiler1">
   <h3 class="accordion-header" id="headingSpoiler1">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="eye"></i></div> Show details </h3>
 </button>
-<div id="collapseSpoiler1" class="accordion-collapse collapse" aria-labelledby="headingSpoiler1" data-bs-parent="#accordionSpoiler1">
+<div id="collapseSpoiler1" class="accordion-collapse collapse" data-bs-parent="#accordionSpoiler1" aria-labelledby="headingSpoiler1">
 <div class="accordion-body">
 <p>Historically, CPU refers to the <em>physical processor chip</em>. For
 example, a compute node might have two <em>CPU sockets</em> (two
@@ -5677,7 +5726,7 @@ add ,triad). Why are these not identical?</p>
 <button class="accordion-button hint-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHint1" aria-expanded="false" aria-controls="collapseHint1">
   <h4 class="accordion-header" id="headingHint1"> Give me a hint </h4>
 </button>
-<div id="collapseHint1" class="accordion-collapse collapse" aria-labelledby="headingHint1" data-bs-parent="#accordionHint1">
+<div id="collapseHint1" class="accordion-collapse collapse" data-bs-parent="#accordionHint1" aria-labelledby="headingHint1">
 <div class="accordion-body">
 <p>As in the kitchen analogy, the two tasks (kitchens) run
 independently, that is, they do not even know about each other.</p>
@@ -5690,7 +5739,7 @@ independently, that is, they do not even know about each other.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
 <div class="accordion-body">
 <p>The two <code>stream</code> tasks denote two independent processes
 that may also occupy different (Slurm-)CPU resources. Hence, with
@@ -5718,7 +5767,7 @@ manager. It manages the resources you requested, which may be one
 <button class="accordion-button spoiler-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSpoiler2" aria-expanded="false" aria-controls="collapseSpoiler2">
   <h3 class="accordion-header" id="headingSpoiler2">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="eye"></i></div> Show details </h3>
 </button>
-<div id="collapseSpoiler2" class="accordion-collapse collapse" aria-labelledby="headingSpoiler2" data-bs-parent="#accordionSpoiler2">
+<div id="collapseSpoiler2" class="accordion-collapse collapse" data-bs-parent="#accordionSpoiler2" aria-labelledby="headingSpoiler2">
 <div class="accordion-body">
 <p>Slurm uses the term “task” because it is a scheduler concept rather
 than an operating-system concept. While in most HPC applications, one
@@ -5789,7 +5838,7 @@ thread number can be set via the environment variable
 <button class="accordion-button spoiler-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSpoiler3" aria-expanded="false" aria-controls="collapseSpoiler3">
   <h3 class="accordion-header" id="headingSpoiler3">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="eye"></i></div> Show details </h3>
 </button>
-<div id="collapseSpoiler3" class="accordion-collapse collapse" aria-labelledby="headingSpoiler3" data-bs-parent="#accordionSpoiler3">
+<div id="collapseSpoiler3" class="accordion-collapse collapse" data-bs-parent="#accordionSpoiler3" aria-labelledby="headingSpoiler3">
 <div class="accordion-body">
 <p>The Slurm option <code>--cpus-per-task</code> determines how many
 CPUs Slurm allocates, while <code>OMP_NUM_THREADS</code> determines how
@@ -5836,7 +5885,7 @@ Threads”.</p>
 <button class="accordion-button hint-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHint2" aria-expanded="false" aria-controls="collapseHint2">
   <h4 class="accordion-header" id="headingHint2"> Give me a hint </h4>
 </button>
-<div id="collapseHint2" class="accordion-collapse collapse" aria-labelledby="headingHint2" data-bs-parent="#accordionHint2">
+<div id="collapseHint2" class="accordion-collapse collapse" data-bs-parent="#accordionHint2" aria-labelledby="headingHint2">
 <div class="accordion-body">
 <p>Remember that <code>stream</code> is an OpenMP-parallel program.</p>
 </div>
@@ -5848,7 +5897,7 @@ Threads”.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
   <h4 class="accordion-header" id="headingSolution2"> Show me the solution </h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
 <div class="accordion-body">
 <p>The count is likely reported as
 <code>Number of Threads counted = 4</code>. Since <code>stream</code> is
@@ -5884,7 +5933,7 @@ more</h3>
 <button class="accordion-button hint-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHint3" aria-expanded="false" aria-controls="collapseHint3">
   <h4 class="accordion-header" id="headingHint3"> Give me a hint </h4>
 </button>
-<div id="collapseHint3" class="accordion-collapse collapse" aria-labelledby="headingHint3" data-bs-parent="#accordionHint3">
+<div id="collapseHint3" class="accordion-collapse collapse" data-bs-parent="#accordionHint3" aria-labelledby="headingHint3">
 <div class="accordion-body">
 <p>In the previous challenge you set <code>OMP_NUM_THREADS</code>. What
 happened to it?</p>
@@ -5897,7 +5946,7 @@ happened to it?</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution3" aria-expanded="false" aria-controls="collapseSolution3">
   <h4 class="accordion-header" id="headingSolution3"> Show me the solution </h4>
 </button>
-<div id="collapseSolution3" class="accordion-collapse collapse" aria-labelledby="headingSolution3" data-bs-parent="#accordionSolution3">
+<div id="collapseSolution3" class="accordion-collapse collapse" data-bs-parent="#accordionSolution3" aria-labelledby="headingSolution3">
 <div class="accordion-body">
 <p>Your earlier setting <code>export OMP_NUM_THREADS=4</code> is still
 active, unless you have changed the terminal. Hence, the count is still
@@ -5966,7 +6015,7 @@ submitting an <code>srun</code> command for this?</p>
 <button class="accordion-button hint-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHint4" aria-expanded="false" aria-controls="collapseHint4">
   <h4 class="accordion-header" id="headingHint4"> Give me a hint </h4>
 </button>
-<div id="collapseHint4" class="accordion-collapse collapse" aria-labelledby="headingHint4" data-bs-parent="#accordionHint4">
+<div id="collapseHint4" class="accordion-collapse collapse" data-bs-parent="#accordionHint4" aria-labelledby="headingHint4">
 <div class="accordion-body">
 <p>Remember that a process is almost always equivalent to a Slurm task.
 Also, OpenMP uses the environment variable <code>OMP_NUM_THREADS</code>
@@ -5980,7 +6029,7 @@ to set the thread count.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution4" aria-expanded="false" aria-controls="collapseSolution4">
   <h4 class="accordion-header" id="headingSolution4"> Show me the solution </h4>
 </button>
-<div id="collapseSolution4" class="accordion-collapse collapse" aria-labelledby="headingSolution4" data-bs-parent="#accordionSolution4">
+<div id="collapseSolution4" class="accordion-collapse collapse" data-bs-parent="#accordionSolution4" aria-labelledby="headingSolution4">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb17">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -6017,7 +6066,7 @@ the performance of a single process.</p>
 <button class="accordion-button spoiler-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSpoiler4" aria-expanded="false" aria-controls="collapseSpoiler4">
   <h3 class="accordion-header" id="headingSpoiler4">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="eye"></i></div> Show details </h3>
 </button>
-<div id="collapseSpoiler4" class="accordion-collapse collapse" aria-labelledby="headingSpoiler4" data-bs-parent="#accordionSpoiler4">
+<div id="collapseSpoiler4" class="accordion-collapse collapse" data-bs-parent="#accordionSpoiler4" aria-labelledby="headingSpoiler4">
 <div class="accordion-body">
 <p>How can we observe thread migration? Let’s first create another
 version of our benchmark. This is a version that will run a bit
@@ -6099,7 +6148,7 @@ nodes on your system? Any idea what this is?</p>
 <button class="accordion-button hint-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHint5" aria-expanded="false" aria-controls="collapseHint5">
   <h4 class="accordion-header" id="headingHint5"> Give me a hint </h4>
 </button>
-<div id="collapseHint5" class="accordion-collapse collapse" aria-labelledby="headingHint5" data-bs-parent="#accordionHint5">
+<div id="collapseHint5" class="accordion-collapse collapse" data-bs-parent="#accordionHint5" aria-labelledby="headingHint5">
 <div class="accordion-body">
 <p><code>lscpu</code> will first report the CPU architecture, then
 number of CPUs. You will see that CPUs are grouped into “NUMA
@@ -6113,7 +6162,7 @@ nodes”.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution5" aria-expanded="false" aria-controls="collapseSolution5">
   <h4 class="accordion-header" id="headingSolution5"> Show me the solution </h4>
 </button>
-<div id="collapseSolution5" class="accordion-collapse collapse" aria-labelledby="headingSolution5" data-bs-parent="#accordionSolution5">
+<div id="collapseSolution5" class="accordion-collapse collapse" data-bs-parent="#accordionSolution5" aria-labelledby="headingSolution5">
 <div class="accordion-body">
 <p>An example output of <code>lscpu</code> is as follows (some output
 truncated):</p>
@@ -6192,7 +6241,7 @@ about minimizing memory access <em>latency</em>.</p>
 <button class="accordion-button spoiler-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSpoiler5" aria-expanded="false" aria-controls="collapseSpoiler5">
   <h3 class="accordion-header" id="headingSpoiler5">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="eye"></i></div> Show details </h3>
 </button>
-<div id="collapseSpoiler5" class="accordion-collapse collapse" aria-labelledby="headingSpoiler5" data-bs-parent="#accordionSpoiler5">
+<div id="collapseSpoiler5" class="accordion-collapse collapse" data-bs-parent="#accordionSpoiler5" aria-labelledby="headingSpoiler5">
 <div class="accordion-body">
 <p>Latency in computing refers to the time delay between the initiation
 of an action and the resulting output or response. Therefore, it
@@ -6339,7 +6388,7 @@ a third one without hints:</p>
 <button class="accordion-button spoiler-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSpoiler6" aria-expanded="false" aria-controls="collapseSpoiler6">
   <h3 class="accordion-header" id="headingSpoiler6">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="eye"></i></div> Show details </h3>
 </button>
-<div id="collapseSpoiler6" class="accordion-collapse collapse" aria-labelledby="headingSpoiler6" data-bs-parent="#accordionSpoiler6">
+<div id="collapseSpoiler6" class="accordion-collapse collapse" data-bs-parent="#accordionSpoiler6" aria-labelledby="headingSpoiler6">
 <div class="accordion-body">
 <p>On most HPC systems, the default Slurm configuration already keeps
 tasks reasonably close to their memory. Therefore, there may be only
@@ -6402,7 +6451,7 @@ pairs.</p>
 <button class="accordion-button spoiler-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSpoiler7" aria-expanded="false" aria-controls="collapseSpoiler7">
   <h3 class="accordion-header" id="headingSpoiler7">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="eye"></i></div> Show details </h3>
 </button>
-<div id="collapseSpoiler7" class="accordion-collapse collapse" aria-labelledby="headingSpoiler7" data-bs-parent="#accordionSpoiler7">
+<div id="collapseSpoiler7" class="accordion-collapse collapse" data-bs-parent="#accordionSpoiler7" aria-labelledby="headingSpoiler7">
 <div class="accordion-body">
 <p>When you run <code>numactl --hardware</code>, the node distance
 matrix lets you select two nodes given by a row-column pair, and find
@@ -6474,7 +6523,7 @@ case, which one is smaller and why?</p>
 <button class="accordion-button hint-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHint6" aria-expanded="false" aria-controls="collapseHint6">
   <h4 class="accordion-header" id="headingHint6"> Give me a hint </h4>
 </button>
-<div id="collapseHint6" class="accordion-collapse collapse" aria-labelledby="headingHint6" data-bs-parent="#accordionHint6">
+<div id="collapseHint6" class="accordion-collapse collapse" data-bs-parent="#accordionHint6" aria-labelledby="headingHint6">
 <div class="accordion-body">
 <p>CPU-binding to node 0 is done using the option
 <code>--cpunodebind=0</code>.</p>
@@ -6487,7 +6536,7 @@ case, which one is smaller and why?</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution6" aria-expanded="false" aria-controls="collapseSolution6">
   <h4 class="accordion-header" id="headingSolution6"> Show me the solution </h4>
 </button>
-<div id="collapseSolution6" class="accordion-collapse collapse" aria-labelledby="headingSolution6" data-bs-parent="#accordionSolution6">
+<div id="collapseSolution6" class="accordion-collapse collapse" data-bs-parent="#accordionSolution6" aria-labelledby="headingSolution6">
 <div class="accordion-body">
 <p>CPU-binding to node 0, without worrying about memory-binding, is done
 via</p>
@@ -6534,7 +6583,7 @@ would you explain differences?</p>
 <button class="accordion-button hint-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHint7" aria-expanded="false" aria-controls="collapseHint7">
   <h4 class="accordion-header" id="headingHint7"> Give me a hint </h4>
 </button>
-<div id="collapseHint7" class="accordion-collapse collapse" aria-labelledby="headingHint7" data-bs-parent="#accordionHint7">
+<div id="collapseHint7" class="accordion-collapse collapse" data-bs-parent="#accordionHint7" aria-labelledby="headingHint7">
 <div class="accordion-body">
 <p>The most distant node <em>N</em> probably corresponds to the maximum
 node number. Either <code>lscpu</code> or
@@ -6548,7 +6597,7 @@ node number. Either <code>lscpu</code> or
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution7" aria-expanded="false" aria-controls="collapseSolution7">
   <h4 class="accordion-header" id="headingSolution7"> Show me the solution </h4>
 </button>
-<div id="collapseSolution7" class="accordion-collapse collapse" aria-labelledby="headingSolution7" data-bs-parent="#accordionSolution7">
+<div id="collapseSolution7" class="accordion-collapse collapse" data-bs-parent="#accordionSolution7" aria-labelledby="headingSolution7">
 <div class="accordion-body">
 <p>Assuming that <em>N</em>=7, launch one run on node 0 and the second
 on node 7.</p>

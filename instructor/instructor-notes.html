@@ -476,49 +476,19 @@ single node and when the scaling study goes beyond a single node.</p>
 <h3 id="02_resourcerequirements-headingInstructor1">
 <a href="02_resourcerequirements.html#headingInstructor1">Instructor Note</a><a class="anchor" aria-label="anchor" href="#02_resourcerequirements-headingInstructor1"></a>
 </h3>
-<p>This discussion highly depends on the management philosophy of the
-cluster available to the learners. Some examples:</p>
-<ul>
-<li>A partition with a high number of cores large amounts of memory per
-node is probably intended for SMP calculations.</li>
-<li>A partition with a lot of nodes that each have only a (relatively)
-small number of cores and memory is probably intended for MPI
-calculations.</li>
-<li>A partition with powerful GPUs, but only a small amount of CPU cores
-is likely intended for jobs where the majority of the work is offloaded
-to the GPUs.</li>
-<li>A partition with less powerful GPUs but more CPU cores and memory is
-likely intended for hybrid workloads.</li>
-</ul>
-<hr>
-<br><h3 id="02_resourcerequirements-headingInstructor2">
-<a href="02_resourcerequirements.html#headingInstructor2">Instructor Note</a><a class="anchor" aria-label="anchor" href="#02_resourcerequirements-headingInstructor2"></a>
-</h3>
-<p>The learners should realize that the per-user average they calculate
-here is very synthetic:</p>
-<ul>
-<li>Many users do not use their full share of resources, which leaves
-room for others to use more.</li>
-<li>The average we calculate is only an average over long periods of
-time. Short term you can usually use much more.</li>
-<li>Not all users are equal. For example, if some research groups have
-contributed to the funding of the cluster, they should also get more
-resources than those who did not.</li>
-<li>The world is not perfectly fair. Especially on larger clusters, HPC
-resources have to be requested via project proposals. Those who write
-more / better proposals can use more resources.</li>
-</ul>
-<hr>
-<br><h3 id="02_resourcerequirements-headingInstructor3">
-<a href="02_resourcerequirements.html#headingInstructor3">Instructor Note</a><a class="anchor" aria-label="anchor" href="#02_resourcerequirements-headingInstructor3"></a>
-</h3>
 <p>For the next section, the exact memory requirements depend on the
 cluster configuration (e.g., the MPI backends used). You might have to
 adapt these numbers for your local cluster to see the out-of-memory
 behavior.</p>
 <hr>
-<br><h3 id="02_resourcerequirements-headingInstructor4">
-<a href="02_resourcerequirements.html#headingInstructor4">Instructor Note</a><a class="anchor" aria-label="anchor" href="#02_resourcerequirements-headingInstructor4"></a>
+<br><h3 id="02_resourcerequirements-headingInstructor2">
+<a href="02_resourcerequirements.html#headingInstructor2">Todo: Can we demonstrate the callout below?</a><a class="anchor" aria-label="anchor" href="#02_resourcerequirements-headingInstructor2"></a>
+</h3>
+<p>How can too tight memory limits in Slurm + cgroupsv2 cause cache
+thrashing?</p>
+<hr>
+<br><h3 id="02_resourcerequirements-headingInstructor3">
+<a href="02_resourcerequirements.html#headingInstructor3">Instructor Note</a><a class="anchor" aria-label="anchor" href="#02_resourcerequirements-headingInstructor3"></a>
 </h3>
 <p>At this point you might want to point out to your audience that for
 certain applications it can be disastrous for performance to set the
@@ -534,14 +504,14 @@ allocation is high, you can even run into a <em>cache thrashing</em>
 situation, where the job spends the majority of its time swapping data
 in and out of system memory and thus slows down to a crawl.</p>
 <hr>
-<br><h3 id="02_resourcerequirements-headingInstructor5">
-<a href="02_resourcerequirements.html#headingInstructor5">Instructor Note</a><a class="anchor" aria-label="anchor" href="#02_resourcerequirements-headingInstructor5"></a>
+<br><h3 id="02_resourcerequirements-headingInstructor4">
+<a href="02_resourcerequirements.html#headingInstructor4">Instructor Note</a><a class="anchor" aria-label="anchor" href="#02_resourcerequirements-headingInstructor4"></a>
 </h3>
 <p>This error message was generated with OpenMPI. Other MPI
 implementations might produce different messages.</p>
 <hr>
-<br><h3 id="02_resourcerequirements-headingInstructor6">
-<a href="02_resourcerequirements.html#headingInstructor6">Instructor Note</a><a class="anchor" aria-label="anchor" href="#02_resourcerequirements-headingInstructor6"></a>
+<br><h3 id="02_resourcerequirements-headingInstructor5">
+<a href="02_resourcerequirements.html#headingInstructor5">Instructor Note</a><a class="anchor" aria-label="anchor" href="#02_resourcerequirements-headingInstructor5"></a>
 </h3>
 <p>At this point you can present some scheduling strategies specific to
 your cluster. For the sake of time, you have likely reserved some
