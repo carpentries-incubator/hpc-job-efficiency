@@ -1,7 +1,7 @@
 ---
 title: "Resource Requirements"
-teaching: 40
-exercises: 40
+teaching: 70
+exercises: 30
 ---
 
 ::: questions 
@@ -135,7 +135,7 @@ To get a feeling for the amount of resources per user, let's try to get an estim
 find /home -maxdepth 1 -mindepth 1 -type d | wc -l
 ```
 ```output
-250
+700
 ```
 
 ::: caution
@@ -145,7 +145,7 @@ On some clusters, home directories are not placed directly in `/home`, but are s
 :::
 
 By dividing the total number of cores / the total memory by the amount of users, you get an estimate of how many resources each user has available if resources were equally distributed world.
-For example, for 250 users we would approximately get:
+For example, for 700 users we would approximately get:
 
 |Partition   |CPU Cores / user|Memory / user|GRES / user|
 |------------|----------------|-------------|-----------|
@@ -381,6 +381,14 @@ So even though Slurm reported our job to only use 367.28 MB of memory, we actual
 
 Run your job again with this limit to verify that it completes successfully.
 
+::: instructor
+
+# Todo: Can we demonstrate the callout below?
+
+How can too tight memory limits in Slurm + cgroupsv2 cause cache thrashing?
+
+:::
+
 ::: callout
 # Too tight memory limits can reduce performance!
 
@@ -402,7 +410,7 @@ At this point you might want to point out to your audience that for certain appl
 
 So far we have tuned the time and memory limits of our job. Now let us have a look at the CPU core limit.
 
-This limit works slightly differently than the ones we looked at so far in the sense that your job is not getting terminated if you try to use more cores than you have allocated. Instead, the scheduler exploits the fact that multitasking operating systems can switch out the process a given CPU core is working on. If you have more active processes in your job than you have CPU cores (i.e., *CPU oversubscription*), the operating system will simply switch processes in and out while trying to ensure that each process gets an equal amount of CPU time. This happens very fast, so you can't see the switching directly, but tools like `htop` will show your processes running at less than 100% CPU utilization.
+This limit works slightly differently than the ones we looked at so far in the sense that your job is not getting terminated if you try to use more cores than you have allocated. Instead, the scheduler exploits the fact that multitasking operating systems can switch out the process a given CPU core is working on. If you have more active processes in your job than you have CPU cores (i.e., *CPU oversubscription*), the operating system will simply switch processes in and out while trying to ensure that each process gets an equal amount of CPU time. This happens very fast, so you can't see the switching directly, but tools like `top` will show your processes running at less than 100% CPU utilization.
 
 Below you can see a situation of four processes running on three CPU cores, which results in each process running only 75% of the time.
 
@@ -510,14 +518,12 @@ Now let's see what happens when we oversubscribe our CPU by doubling the number 
 If you cluster allows direct access to the compute nodes, try logging into the node your job is running on and watch the CPU utilization live using 
 
 ```bash
-htop -u <your username>
+top -u <your username>
 ```
-
-(Note: Sometimes `htop` hides threads to make the process list easier to read. This option can be changed by pressing F2, using the arrow keys to navigate to the "Hide userlang process threads", toggling with the return key and then applying the change with F10.)
 
 Compare the CPU utilization of the `raytracter` threads with different total numbers of threads.
 
-In the top right of `htop` you can also see a metric called *load average*. Simplified, this is the number of processes / threads that are currently either running or could run if a CPU core was free. Compare the amount of load you generate with your job depending on the number of threads.
+In the top right of `top` you can also see a metric called *load average*. Simplified, this is the number of processes / threads that are currently either running or could run if a CPU core was free. Compare the amount of load you generate with your job depending on the number of threads.
 
 :::
 
@@ -562,13 +568,18 @@ As we can see, our job is actually getting slowed down from all the switching be
 
 ::: discussion
 
-If CPU oversubscription is so bad, then why do most operating systems default to this behavior?
+Can you imagine a situation where CPU oversubscription might be sensible (perhaps also outside the HPC context)?
 
 :::
 
 ::: solution
 
-In this case we have a *CPU bound* application, i.e., the work done by the CPU is the limiting factor and thus dividing this work into smaller chunks does not help with performance. However, there are also applications bound by other resources. For these applications it makes sense to assign the CPU core elsewhere while the process is waiting, e.g., on a storage medium. Also, in most systems it is desireable to have more programs running than your computer has CPU cores since often only a few of them are active at the same time.
+On HPC we often have a *CPU bound* application, i.e., the work done by the CPU is the limiting factor and thus dividing this work into smaller chunks does not help with performance.
+
+However, there are also applications bound by other resources. For these applications it makes sense to assign the CPU core elsewhere while the process is waiting, e.g., on a storage medium.
+
+Also, on many systems it is desirable to have more programs running than your computer has CPU cores since often only a few of them are active at the same time.
+One common example is your everyday computer with multiple programs running at the same time.
 
 :::
 
@@ -651,41 +662,6 @@ Total amount of memory used (in bytes): 464834560
 
 As we can see, there was indeed less memory consumed on the node running our submit script compared to before (470 MB vs 580 MB).
 However, our method of measuring peak memory consumption does not account for the second node. So let’s reach deeper into the toolbox to find out how much memory we actually use.
-
-In the course material is a directory `mpi-cgroups-memory-report` that can help us out here, but we need to compile it first:
-
-```bash
-cd mpi-cgroups-memory-report
-make mpi-mem-report.so
-cd ..
-```
-
-::: caution
-
-Make sure you have a working MPI C Compiler (check with `which mpicc`). It is part of the same modules that you need to run the example raytracer application.
-
-:::
-
-The memory reporting tool works by hooking itself into the `MPI_Finalize` function that needs to be called at the very end of every MPI program.
-Then, it does basically the same thing as we did in the script before and checks the `memory.peak` value from cgroups v2.
-To apply the hook to a program, you need to add the path to the `mpi-mem-report.so` file we just created to the environment variable `LD_PRELOAD`:
-
-```bash
-LD_PRELOAD=$(pwd)/mpi-cgroups-memory-report/mpi-mem-report.so mpirun -- ./SnowmanRaytracer/build/raytracer -width=1024 -height=1024 -spp=256 -threads=1 -alloc_mode=3 -png=snowman.png
-```
-
-After submitting this job and waiting for it to complete, we can check the output log:
-
-```
-[...]
-[MPI Memory Reporting Hook]: Node r05n10 has used 464564224 bytes of memory (peak value)
-[MPI Memory Reporting Hook]: Node r07n04 has used 151105536 bytes of memory (peak value)
-[...]
-```
-
-The memory consumption of the first node matches our previous result, but we can now also see the memory consumption of the second node.
-Compared to the first node the second node uses much less memory, however in total both nodes use slightly more memory than running all four tasks on a single node (610 MB vs 580 MB).
-This memory imbalance between the nodes is an interesting observation that we should keep in mind when it comes to estimating how much memory we need per node.
 
 ## Tips for job submission
 
