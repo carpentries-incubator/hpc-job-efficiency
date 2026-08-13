@@ -459,6 +459,18 @@ and <code>real</code> before discussing the meaning of the
 <p>The explanation of accumulated CPU time across multiple MPI processes
 will be introduced in the following episodes.</p>
 <hr>
+<br><h3 id="01_introduction-headingInstructor6">
+<a href="01_introduction.html#headingInstructor6">Slurm Reservation and specific Hardware?</a><a class="anchor" aria-label="anchor" href="#01_introduction-headingInstructor6"></a>
+</h3>
+<p>You may need to reserve a set of resources for the course, such that
+enough resources for the following exercises are available. This is
+especially important for <code>--exclusive</code> access.</p>
+<p>In that case, show how to use
+<code>--reservation=reservationname</code> to submit jobs.</p>
+<p>It may be a good idea to point out the particular hardware of your
+cluster / partition to emphasize how many cores are available on a
+single node and when the scaling study goes beyond a single node.</p>
+<hr>
 <br></section><section id="02_resourcerequirements"><h2 class="section-heading"><a href="02_resourcerequirements.html">Resource Requirements</a></h2>
 <hr class="half-width">
 <h3 id="02_resourcerequirements-headingInstructor1">
@@ -644,16 +656,13 @@ with an estimate of the resource demand</li>
 </ul>
 <hr>
 <br><h3 id="04_scalingstudy-headingInstructor2">
-<a href="04_scalingstudy.html#headingInstructor2">Slurm Reservation and specific Hardware?</a><a class="anchor" aria-label="anchor" href="#04_scalingstudy-headingInstructor2"></a>
+<a href="04_scalingstudy.html#headingInstructor2">Todo: Unify MPI and modules across examples</a><a class="anchor" aria-label="anchor" href="#04_scalingstudy-headingInstructor2"></a>
 </h3>
-<p>You may need to reserve a set of resources for the course, such that
-enough resources for the following exercises are available. This is
-especially important for <code>--exclusive</code> access.</p>
-<p>In that case, show how to use
-<code>--reservation=reservationname</code> to submit jobs.</p>
-<p>It may be a good idea to point out the particular hardware of your
-cluster / partition to emphasize how many cores are available on a
-single node and when the scaling study goes beyond a single node.</p>
+<p>We should address the various ways to start MPI programs at first use
+and choose a single way. Preparing the software is also cluster-specific
+(<code>module load ...</code>).</p>
+<p>In the mid-/long-term this may call for a site-specific
+implementation of the course, e.g. via the hpc-intro workbench.</p>
 <hr>
 <br><h3 id="04_scalingstudy-headingInstructor3">
 <a href="04_scalingstudy.html#headingInstructor3">Todo: show, don’t tell</a><a class="anchor" aria-label="anchor" href="#04_scalingstudy-headingInstructor3"></a>
@@ -661,6 +670,19 @@ single node and when the scaling study goes beyond a single node.</p>
 <p>info dump below in this section</p>
 <p>Maybe be more specific about which overheads and how we can see
 them?</p>
+<hr>
+<br><h3 id="04_scalingstudy-headingInstructor4">
+<a href="04_scalingstudy.html#headingInstructor4">When should we stop adding CPU cores?</a><a class="anchor" aria-label="anchor" href="#04_scalingstudy-headingInstructor4"></a>
+</h3>
+<p>The learners should realize there is a point of diminishing returns.
+Where exactly to draw the line is debatable, but in the previous example
+<span class="math inline">\(N=32\)</span> seems to be a sweet spot with
+the best Speedup and an efficiency <span class="math inline">\(&gt;50\)</span>%.</p>
+<p>There are many reasons why a large number of parallel processes may
+result in worse speedup. Among others, it may be due to I/O overhead,
+synchronization between threads, or a limited divisibility of the
+problem domain, where additional processors could not solve additional
+work.</p>
 <hr>
 <br></section><section id="05_overview_ClusterCockpit"><h2 class="section-heading"><a href="05_overview_ClusterCockpit.html">Performance Overview</a></h2>
 <hr class="half-width">
@@ -907,8 +929,8 @@ scientific results.</p>
   "url": "https://stderr-enst.github.io/jobefficiency/instructor/instructor-notes.html",
   "identifier": "https://stderr-enst.github.io/jobefficiency/instructor/instructor-notes.html",
   "dateCreated": "2025-03-28",
-  "dateModified": "2026-08-11",
-  "datePublished": "2026-08-11"
+  "dateModified": "2026-08-13",
+  "datePublished": "2026-08-13"
 }
 
   </script><script>

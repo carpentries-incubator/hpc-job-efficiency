@@ -387,7 +387,7 @@
         
 <section id="aio-01_introduction"><p>Content from <a href="01_introduction.html">Introduction</a></p>
 <hr>
-<p>Last updated on 2026-08-11 |
+<p>Last updated on 2026-08-13 |
 
         <a href="https://github.com/stderr-enst/jobefficiency/edit/main/episodes/01_introduction.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <p>Estimated time: <i aria-hidden="true" data-feather="clock"></i> 120 minutes</p>
@@ -1630,6 +1630,25 @@ will be introduced in the following episodes.</p>
 </div>
 </div>
 </div>
+<div id="accordionInstructor6" class="accordion instructor-note accordion-flush">
+<div class="accordion-item">
+<button class="accordion-button instructor-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseInstructor6" aria-expanded="false" aria-controls="collapseInstructor6">
+  <h3 class="accordion-header" id="headingInstructor6">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="edit-2"></i></div> Slurm Reservation and specific Hardware? </h3>
+</button>
+<div id="collapseInstructor6" class="accordion-collapse collapse" data-bs-parent="#accordionInstructor6" aria-labelledby="headingInstructor6">
+<div class="accordion-body">
+<p>You may need to reserve a set of resources for the course, such that
+enough resources for the following exercises are available. This is
+especially important for <code>--exclusive</code> access.</p>
+<p>In that case, show how to use
+<code>--reservation=reservationname</code> to submit jobs.</p>
+<p>It may be a good idea to point out the particular hardware of your
+cluster / partition to emphasize how many cores are available on a
+single node and when the scaling study goes beyond a single node.</p>
+</div>
+</div>
+</div>
+</div>
 <div id="submit-your-first-raytracer-job-with-slurm" class="callout challenge">
 <div class="callout-square">
 <i class="callout-icon" data-feather="zap"></i>
@@ -1727,7 +1746,7 @@ any links that you are not going to use.
  -->
 </section></section><section id="aio-02_resourcerequirements"><p>Content from <a href="02_resourcerequirements.html">Resource Requirements</a></p>
 <hr>
-<p>Last updated on 2026-08-11 |
+<p>Last updated on 2026-08-13 |
 
         <a href="https://github.com/stderr-enst/jobefficiency/edit/main/episodes/02_resourcerequirements.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <p>Estimated time: <i aria-hidden="true" data-feather="clock"></i> 10 minutes</p>
@@ -1798,7 +1817,7 @@ cluster:</p>
 <button class="accordion-button spoiler-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSpoiler1" aria-expanded="false" aria-controls="collapseSpoiler1">
   <h3 class="accordion-header" id="headingSpoiler1">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="eye"></i></div> Show details </h3>
 </button>
-<div id="collapseSpoiler1" class="accordion-collapse collapse" data-bs-parent="#accordionSpoiler1" aria-labelledby="headingSpoiler1">
+<div id="collapseSpoiler1" class="accordion-collapse collapse" aria-labelledby="headingSpoiler1" data-bs-parent="#accordionSpoiler1">
 <div class="accordion-body">
 <p>Here is a (simplified) example output for the command above:</p>
 <pre><code>PARTITION           NODES               CPUS                MEMORY              GRES                TIMELIMIT
@@ -1837,7 +1856,7 @@ partition is based on the resources it contains?</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
 <div class="accordion-body">
 <p>For our example output above we can make some educated guesses on
 what the partitions are supposed to be used for:</p>
@@ -1893,7 +1912,7 @@ is the low number of nodes in this partition.</li>
 <button class="accordion-button instructor-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseInstructor1" aria-expanded="false" aria-controls="collapseInstructor1">
   <h3 class="accordion-header" id="headingInstructor1">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="edit-2"></i></div> Instructor Note </h3>
 </button>
-<div id="collapseInstructor1" class="accordion-collapse collapse" data-bs-parent="#accordionInstructor1" aria-labelledby="headingInstructor1">
+<div id="collapseInstructor1" class="accordion-collapse collapse" aria-labelledby="headingInstructor1" data-bs-parent="#accordionInstructor1">
 <div class="accordion-body">
 <p>This discussion highly depends on the management philosophy of the
 cluster available to the learners. Some examples:</p>
@@ -1928,7 +1947,7 @@ or on your local machine.</p>
 <button class="accordion-button spoiler-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSpoiler2" aria-expanded="false" aria-controls="collapseSpoiler2">
   <h3 class="accordion-header" id="headingSpoiler2">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="eye"></i></div> Show details </h3>
 </button>
-<div id="collapseSpoiler2" class="accordion-collapse collapse" data-bs-parent="#accordionSpoiler2" aria-labelledby="headingSpoiler2">
+<div id="collapseSpoiler2" class="accordion-collapse collapse" aria-labelledby="headingSpoiler2" data-bs-parent="#accordionSpoiler2">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb4">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1961,7 +1980,7 @@ you can use</p>
 <button class="accordion-button spoiler-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSpoiler3" aria-expanded="false" aria-controls="collapseSpoiler3">
   <h3 class="accordion-header" id="headingSpoiler3">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="eye"></i></div> Show details </h3>
 </button>
-<div id="collapseSpoiler3" class="accordion-collapse collapse" data-bs-parent="#accordionSpoiler3" aria-labelledby="headingSpoiler3">
+<div id="collapseSpoiler3" class="accordion-collapse collapse" aria-labelledby="headingSpoiler3" data-bs-parent="#accordionSpoiler3">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb7">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -2024,7 +2043,7 @@ resources?</p>
 <button class="accordion-button instructor-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseInstructor2" aria-expanded="false" aria-controls="collapseInstructor2">
   <h3 class="accordion-header" id="headingInstructor2">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="edit-2"></i></div> Instructor Note </h3>
 </button>
-<div id="collapseInstructor2" class="accordion-collapse collapse" data-bs-parent="#accordionInstructor2" aria-labelledby="headingInstructor2">
+<div id="collapseInstructor2" class="accordion-collapse collapse" aria-labelledby="headingInstructor2" data-bs-parent="#accordionInstructor2">
 <div class="accordion-body">
 <p>The learners should realize that the per-user average they calculate
 here is very synthetic:</p>
@@ -2068,7 +2087,7 @@ idle nodes and CPU cores.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
   <h4 class="accordion-header" id="headingSolution2"> Show me the solution </h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb9">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -2271,7 +2290,7 @@ might reduce this even further.</p>
 <button class="accordion-button instructor-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseInstructor3" aria-expanded="false" aria-controls="collapseInstructor3">
   <h3 class="accordion-header" id="headingInstructor3">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="edit-2"></i></div> Instructor Note </h3>
 </button>
-<div id="collapseInstructor3" class="accordion-collapse collapse" data-bs-parent="#accordionInstructor3" aria-labelledby="headingInstructor3">
+<div id="collapseInstructor3" class="accordion-collapse collapse" aria-labelledby="headingInstructor3" data-bs-parent="#accordionInstructor3">
 <div class="accordion-body">
 <p>For the next section, the exact memory requirements depend on the
 cluster configuration (e.g., the MPI backends used). You might have to
@@ -2397,7 +2416,7 @@ successfully.</p>
 <button class="accordion-button instructor-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseInstructor4" aria-expanded="false" aria-controls="collapseInstructor4">
   <h3 class="accordion-header" id="headingInstructor4">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="edit-2"></i></div> Instructor Note </h3>
 </button>
-<div id="collapseInstructor4" class="accordion-collapse collapse" data-bs-parent="#accordionInstructor4" aria-labelledby="headingInstructor4">
+<div id="collapseInstructor4" class="accordion-collapse collapse" aria-labelledby="headingInstructor4" data-bs-parent="#accordionInstructor4">
 <div class="accordion-body">
 <p>At this point you might want to point out to your audience that for
 certain applications it can be disastrous for performance to set the
@@ -2486,7 +2505,7 @@ launch.</code></pre>
 <button class="accordion-button instructor-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseInstructor5" aria-expanded="false" aria-controls="collapseInstructor5">
   <h3 class="accordion-header" id="headingInstructor5">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="edit-2"></i></div> Instructor Note </h3>
 </button>
-<div id="collapseInstructor5" class="accordion-collapse collapse" data-bs-parent="#accordionInstructor5" aria-labelledby="headingInstructor5">
+<div id="collapseInstructor5" class="accordion-collapse collapse" aria-labelledby="headingInstructor5" data-bs-parent="#accordionInstructor5">
 <div class="accordion-body">
 <p>This error message was generated with OpenMPI. Other MPI
 implementations might produce different messages.</p>
@@ -2535,7 +2554,7 @@ this?</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution3" aria-expanded="false" aria-controls="collapseSolution3">
   <h4 class="accordion-header" id="headingSolution3"> Show me the solution </h4>
 </button>
-<div id="collapseSolution3" class="accordion-collapse collapse" data-bs-parent="#accordionSolution3" aria-labelledby="headingSolution3">
+<div id="collapseSolution3" class="accordion-collapse collapse" aria-labelledby="headingSolution3" data-bs-parent="#accordionSolution3">
 <div class="accordion-body">
 <p>We can see that the CPU utilization time and the walltime are
 virtually identical to the MPI version of our job, while the memory
@@ -2600,7 +2619,7 @@ depending on the number of threads.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution4" aria-expanded="false" aria-controls="collapseSolution4">
   <h4 class="accordion-header" id="headingSolution4"> Show me the solution </h4>
 </button>
-<div id="collapseSolution4" class="accordion-collapse collapse" data-bs-parent="#accordionSolution4" aria-labelledby="headingSolution4">
+<div id="collapseSolution4" class="accordion-collapse collapse" aria-labelledby="headingSolution4" data-bs-parent="#accordionSolution4">
 <div class="accordion-body">
 <p>You can see that the CPU utilization of each <code>raytracer</code>
 thread goes down as the number of threads increases. This means, each
@@ -2661,7 +2680,7 @@ default to this behavior?</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution5" aria-expanded="false" aria-controls="collapseSolution5">
   <h4 class="accordion-header" id="headingSolution5"> Show me the solution </h4>
 </button>
-<div id="collapseSolution5" class="accordion-collapse collapse" data-bs-parent="#accordionSolution5" aria-labelledby="headingSolution5">
+<div id="collapseSolution5" class="accordion-collapse collapse" aria-labelledby="headingSolution5" data-bs-parent="#accordionSolution5">
 <div class="accordion-body">
 <p>In this case we have a <em>CPU bound</em> application, i.e., the work
 done by the CPU is the limiting factor and thus dividing this work into
@@ -2852,7 +2871,7 @@ you can check with
 <button class="accordion-button instructor-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseInstructor6" aria-expanded="false" aria-controls="collapseInstructor6">
   <h3 class="accordion-header" id="headingInstructor6">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="edit-2"></i></div> Instructor Note </h3>
 </button>
-<div id="collapseInstructor6" class="accordion-collapse collapse" data-bs-parent="#accordionInstructor6" aria-labelledby="headingInstructor6">
+<div id="collapseInstructor6" class="accordion-collapse collapse" aria-labelledby="headingInstructor6" data-bs-parent="#accordionInstructor6">
 <div class="accordion-body">
 <p>At this point you can present some scheduling strategies specific to
 your cluster. For the sake of time, you have likely reserved some
@@ -2899,7 +2918,7 @@ any links that you are not going to use.
  -->
 </section></section><section id="aio-03_schedulertools"><p>Content from <a href="03_schedulertools.html">Scheduler Tools</a></p>
 <hr>
-<p>Last updated on 2026-08-11 |
+<p>Last updated on 2026-08-13 |
 
         <a href="https://github.com/stderr-enst/jobefficiency/edit/main/episodes/03_schedulertools.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <p>Estimated time: <i aria-hidden="true" data-feather="clock"></i> 10 minutes</p>
@@ -2940,7 +2959,7 @@ metrics of their jobs.</li>
 <button class="accordion-button instructor-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseInstructor1" aria-expanded="false" aria-controls="collapseInstructor1">
   <h3 class="accordion-header" id="headingInstructor1">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="edit-2"></i></div> Intention: Introduce more basic performance metrics </h3>
 </button>
-<div id="collapseInstructor1" class="accordion-collapse collapse" data-bs-parent="#accordionInstructor1" aria-labelledby="headingInstructor1">
+<div id="collapseInstructor1" class="accordion-collapse collapse" aria-labelledby="headingInstructor1" data-bs-parent="#accordionInstructor1">
 <div class="accordion-body">
 <p>Narrative:</p>
 <ul>
@@ -3084,7 +3103,7 @@ percentage of the total avaialable memory</li>
 <button class="accordion-button instructor-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseInstructor2" aria-expanded="false" aria-controls="collapseInstructor2">
   <h3 class="accordion-header" id="headingInstructor2">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="edit-2"></i></div> Todo: give clear recommendation of what to aim for? </h3>
 </button>
-<div id="collapseInstructor2" class="accordion-collapse collapse" data-bs-parent="#accordionInstructor2" aria-labelledby="headingInstructor2">
+<div id="collapseInstructor2" class="accordion-collapse collapse" aria-labelledby="headingInstructor2" data-bs-parent="#accordionInstructor2">
 <div class="accordion-body">
 <p>Maybe 80% of job time?</p>
 </div>
@@ -3120,7 +3139,7 @@ script.</p>
 <button class="accordion-button instructor-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseInstructor3" aria-expanded="false" aria-controls="collapseInstructor3">
   <h3 class="accordion-header" id="headingInstructor3">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="edit-2"></i></div> Todo: potential issue? </h3>
 </button>
-<div id="collapseInstructor3" class="accordion-collapse collapse" data-bs-parent="#accordionInstructor3" aria-labelledby="headingInstructor3">
+<div id="collapseInstructor3" class="accordion-collapse collapse" aria-labelledby="headingInstructor3" data-bs-parent="#accordionInstructor3">
 <div class="accordion-body">
 <p>Running this on our cluster and adding a module load command resulted
 in 600MB of memory required. My guess is, this is due to cgroups_v2 and
@@ -3157,7 +3176,7 @@ efficiency you get?</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
 <div class="accordion-body">
 <p>The batch file after adding the memory request becomes.</p>
 <pre class="input"><code>#!/usr/bin/bash
@@ -3252,7 +3271,7 @@ that, and <code>sacct</code> may be one of them.</p>
 <button class="accordion-button instructor-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseInstructor4" aria-expanded="false" aria-controls="collapseInstructor4">
   <h3 class="accordion-header" id="headingInstructor4">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="edit-2"></i></div> Instructor Note </h3>
 </button>
-<div id="collapseInstructor4" class="accordion-collapse collapse" data-bs-parent="#accordionInstructor4" aria-labelledby="headingInstructor4">
+<div id="collapseInstructor4" class="accordion-collapse collapse" aria-labelledby="headingInstructor4" data-bs-parent="#accordionInstructor4">
 <div class="accordion-body">
 <p>Note that the information <code>sacct</code> can provide depends on
 the information that SLURM stores on a given machine. By default this
@@ -3370,7 +3389,7 @@ evaluate what the most relevant items are.</p>
 <button class="accordion-button instructor-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseInstructor5" aria-expanded="false" aria-controls="collapseInstructor5">
   <h3 class="accordion-header" id="headingInstructor5">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="edit-2"></i></div> Todo: extend the following list and examples to include CPU </h3>
 </button>
-<div id="collapseInstructor5" class="accordion-collapse collapse" data-bs-parent="#accordionInstructor5" aria-labelledby="headingInstructor5">
+<div id="collapseInstructor5" class="accordion-collapse collapse" aria-labelledby="headingInstructor5" data-bs-parent="#accordionInstructor5">
 <div class="accordion-body">
 <p>To reconstruct the CPU utilization reported by <code>seff</code>: -
 <code>TotalCPU</code>/<code>CPUTime</code> should give the percentage -
@@ -3476,7 +3495,7 @@ would that be?</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
   <h4 class="accordion-header" id="headingSolution2"> Show me the solution </h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
 <div class="accordion-body">
 <p>To query all of the above variable run</p>
 <div class="codewrapper sourceCode" id="cb15">
@@ -3509,7 +3528,7 @@ dependencies to execute it.</p>
 <button class="accordion-button instructor-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseInstructor6" aria-expanded="false" aria-controls="collapseInstructor6">
   <h3 class="accordion-header" id="headingInstructor6">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="edit-2"></i></div> Give more insight in the collected sacct metrics </h3>
 </button>
-<div id="collapseInstructor6" class="accordion-collapse collapse" data-bs-parent="#accordionInstructor6" aria-labelledby="headingInstructor6">
+<div id="collapseInstructor6" class="accordion-collapse collapse" aria-labelledby="headingInstructor6" data-bs-parent="#accordionInstructor6">
 <div class="accordion-body">
 <ul>
 <li>
@@ -3574,7 +3593,7 @@ changes.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution3" aria-expanded="false" aria-controls="collapseSolution3">
   <h4 class="accordion-header" id="headingSolution3"> Show me the solution </h4>
 </button>
-<div id="collapseSolution3" class="accordion-collapse collapse" data-bs-parent="#accordionSolution3" aria-labelledby="headingSolution3">
+<div id="collapseSolution3" class="accordion-collapse collapse" aria-labelledby="headingSolution3" data-bs-parent="#accordionSolution3">
 <div class="accordion-body">
 <p>The machine these calculations have been run on has 112 core per
 node. So we can double the number of cores from 4 until 64 and stay
@@ -3700,7 +3719,7 @@ any links that you are not going to use.
  -->
 </section></section><section id="aio-04_scalingstudy"><p>Content from <a href="04_scalingstudy.html">Scaling Study</a></p>
 <hr>
-<p>Last updated on 2026-08-11 |
+<p>Last updated on 2026-08-13 |
 
         <a href="https://github.com/stderr-enst/jobefficiency/edit/main/episodes/04_scalingstudy.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <p>Estimated time: <i aria-hidden="true" data-feather="clock"></i> 70 minutes</p>
@@ -3717,6 +3736,8 @@ any links that you are not going to use.
 <ul>
 <li>How many resources should be requested for a given job?</li>
 <li>How does our application behave at different scales?</li>
+<li>Will the application benefit from requesting more computational
+resources?</li>
 </ul>
 </div>
 </div>
@@ -3741,7 +3762,7 @@ any links that you are not going to use.
 <button class="accordion-button instructor-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseInstructor1" aria-expanded="false" aria-controls="collapseInstructor1">
   <h3 class="accordion-header" id="headingInstructor1">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="edit-2"></i></div> Intention: Introduce/Recollect concept of Speedup and do a simple scaling study </h3>
 </button>
-<div id="collapseInstructor1" class="accordion-collapse collapse" data-bs-parent="#accordionInstructor1" aria-labelledby="headingInstructor1">
+<div id="collapseInstructor1" class="accordion-collapse collapse" aria-labelledby="headingInstructor1" data-bs-parent="#accordionInstructor1">
 <div class="accordion-body">
 <p>Narrative:</p>
 <ul>
@@ -3754,20 +3775,52 @@ with an estimate of the resource demand</li>
 </div>
 </div>
 </div>
-<p>The deadline is approaching way too fast and we may not finish our
-project in time. Maybe requesting more resources from our clusters
-scheduler does the trick? How could we know if it helps and by how
-much?</p>
+<p>At times, you may think: “The deadline is approaching too fast and we
+may not finish our project in time.” Maybe requesting more resources
+from our clusters scheduler does the trick? How could we know if it
+helps and by how much?</p>
+<p>Answering this question is often a formal requirement for compute
+time requests at larger HPC systems. They want to see good
+<em>scaling</em> behavior in an application, before they give access to
+a bigger chunk of their computational power. So, how well does your
+parallel application utilize larger number of resources? How well, does
+it <em>scale</em>?</p>
 <section><h2 class="section-heading" id="what-is-scaling">What is Scaling?<a class="anchor" aria-label="anchor" href="#what-is-scaling"></a>
 </h2>
 <hr class="half-width">
 <p>The execution time of parallel applications changes with the number
-of parallel processes or threads. In a <em>scaling study</em> we measure
-how much the execution time changes by scanning a reasonable range of
-number of processes. In a common phrasing, this approach answers how the
-execution time <em>scales</em> with the number of parallel
+of parallel processes or threads. For example, when keeping the
+<em>problem size</em> fixed, i.e. keep the same amount of calculations,
+running the application with more processes/threads typically results in
+shorter execution times. We will consider the problem size as fixed for
+the first sections of this episode and discuss the case of a varying
+problem size later.</p>
+<figure><img src="../fig/sketch_scaling.svg" alt="Sketched execution times for a perfectly and a 98% parallelized application. Doubling the number of parallel processors halves the execution time for the perfectly parallelized example, and a little bit less for the 98% parallelized version." class="figure mx-auto d-block"><div class="figcaption">Sketched execution times for a perfectly and a
+98% parallelized application. Doubling the number of parallel processors
+halves the execution time for the perfectly parallelized example, and a
+little bit less for the 98% parallelized version.</div>
+</figure><p>In a <em>scaling study</em> we measure how much a certain metric of
+an application, most commonly the execution time, changes with respect
+to the number of processes. In a common phrasing, this approach answers
+how the execution time <em>scales</em> with the number of parallel
 processors.</p>
 <p>Starting from the job script <code>render_snowman.sbatch</code>:</p>
+<div id="accordionInstructor2" class="accordion instructor-note accordion-flush">
+<div class="accordion-item">
+<button class="accordion-button instructor-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseInstructor2" aria-expanded="false" aria-controls="collapseInstructor2">
+  <h3 class="accordion-header" id="headingInstructor2">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="edit-2"></i></div> Todo: Unify MPI and modules across examples </h3>
+</button>
+<div id="collapseInstructor2" class="accordion-collapse collapse" aria-labelledby="headingInstructor2" data-bs-parent="#accordionInstructor2">
+<div class="accordion-body">
+<p>We should address the various ways to start MPI programs at first use
+and choose a single way. Preparing the software is also cluster-specific
+(<code>module load ...</code>).</p>
+<p>In the mid-/long-term this may call for a site-specific
+implementation of the course, e.g. via the hpc-intro workbench.</p>
+</div>
+</div>
+</div>
+</div>
 <div class="codewrapper sourceCode" id="cb1">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
@@ -3785,7 +3838,7 @@ processors.</p>
 In OpenMPI versions 4 and 5 the number of Slurm tasks is automatically
 picked up, so we do not set <code>-n</code> or <code>-np</code> of
 <code>mpirun</code>. We use <code>--</code> to separate the arguments of
-<code>mpirun</code> – none in this case – from the MPI application
+<code>mpirun</code> (none in this case) from the MPI application
 <code>raytracer</code> and its arguments. Otherwise you may experience
 errors in some versions of OpenMPI 5, where <code>mpirun</code>
 misinterprets the arguments of <code>raytracer</code> as its own.</p>
@@ -3801,9 +3854,9 @@ cores</h3>
 <p>When scaling the resources outside of the job script, e.g. with
 <code>sbatch --ntasks=X ...</code>, as done above, we make sure to scale
 other resource requirements with the number of parallel processors. In
-this case, <code>--mem-per-cpu=200MB</code> is necessary, since
-<code>--mem</code> results in a fixed memory limit, independent of the
-number of processes.</p>
+this case, <code>--mem-per-cpu=200MB</code> is necessary to scale the
+amount of memory with the number of processors. <code>--mem</code>
+requests a fixed amount of memory per node.</p>
 <p>For example, if each MPI process needs <span class="math inline">\(100\,\)</span>MB, requesting <span class="math inline">\(2\,\)</span>GB would only be enough for up to 20
 MPI processes.</p>
 <p>Forgetting a limit like this is a common pitfall in this
@@ -3812,25 +3865,6 @@ situation.</p>
 </div>
 </div>
 <p>Let’s start some measurements with <span class="math inline">\(1\)</span>, <span class="math inline">\(2\)</span>, <span class="math inline">\(4\)</span>, and <span class="math inline">\(8\)</span> tasks:</p>
-<div id="accordionInstructor2" class="accordion instructor-note accordion-flush">
-<div class="accordion-item">
-<button class="accordion-button instructor-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseInstructor2" aria-expanded="false" aria-controls="collapseInstructor2">
-  <h3 class="accordion-header" id="headingInstructor2">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="edit-2"></i></div> Slurm Reservation and specific Hardware? </h3>
-</button>
-<div id="collapseInstructor2" class="accordion-collapse collapse" data-bs-parent="#accordionInstructor2" aria-labelledby="headingInstructor2">
-<div class="accordion-body">
-<p>You may need to reserve a set of resources for the course, such that
-enough resources for the following exercises are available. This is
-especially important for <code>--exclusive</code> access.</p>
-<p>In that case, show how to use
-<code>--reservation=reservationname</code> to submit jobs.</p>
-<p>It may be a good idea to point out the particular hardware of your
-cluster / partition to emphasize how many cores are available on a
-single node and when the scaling study goes beyond a single node.</p>
-</div>
-</div>
-</div>
-</div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
@@ -3861,8 +3895,9 @@ to Slurms server resources.</p>
 </div>
 </div>
 </div>
-<p>Once the jobs are finished, we can use <code>grep</code> to get the
-wall clock time of all four jobs:</p>
+<p>Once the jobs are finished, we can use
+<code>grep "real" slurm-*.out</code> to get the wall clock time of all
+four jobs:</p>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
@@ -3871,9 +3906,9 @@ slurm-16142768.out:real       1m7.443s
 slurm-16142769.out:real       0m32.584s
 slurm-16142770.out:real       0m17.480s</code></pre>
 </div>
-<p>The real-time is decreasing significantly each time we double the
-number of Slurm tasks. From this, we feel that doubling the number of
-CPU cores really is a winning strategy!</p>
+<p>The <code>real</code>-time is decreasing significantly each time we
+double the number of Slurm tasks. From this, we feel that doubling the
+number of CPU cores really is a winning strategy!</p>
 <div id="exercise-continue-scaling-study-to-larger-values" class="callout challenge">
 <div class="callout-square">
 <i class="callout-icon" data-feather="zap"></i>
@@ -3909,7 +3944,7 @@ the parallel raytracer?</p>
 <button class="accordion-button hint-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHint1" aria-expanded="false" aria-controls="collapseHint1">
   <h4 class="accordion-header" id="headingHint1"> Give me a hint </h4>
 </button>
-<div id="collapseHint1" class="accordion-collapse collapse" data-bs-parent="#accordionHint1" aria-labelledby="headingHint1">
+<div id="collapseHint1" class="accordion-collapse collapse" aria-labelledby="headingHint1" data-bs-parent="#accordionHint1">
 <div class="accordion-body">
 <p>You can use <code>sinfo</code> to find out the node names of your
 particular Slurm partition. Then use <code>scontrol</code> to show all
@@ -3924,7 +3959,7 @@ number of CPU (cores) available on that node.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
 <div class="accordion-body">
 <pre class="csv"><code>ntasks,time
 1,127.218
@@ -3954,7 +3989,7 @@ and the overhead starts to dominate.</p>
 <button class="accordion-button instructor-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseInstructor3" aria-expanded="false" aria-controls="collapseInstructor3">
   <h3 class="accordion-header" id="headingInstructor3">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="edit-2"></i></div> Todo: show, don’t tell </h3>
 </button>
-<div id="collapseInstructor3" class="accordion-collapse collapse" data-bs-parent="#accordionInstructor3" aria-labelledby="headingInstructor3">
+<div id="collapseInstructor3" class="accordion-collapse collapse" aria-labelledby="headingInstructor3" data-bs-parent="#accordionInstructor3">
 <div class="accordion-body">
 <p>info dump below in this section</p>
 <p>Maybe be more specific about which overheads and how we can see
@@ -3978,7 +4013,12 @@ running everything.</p>
 <div class="callout-content">
 <p>Many overheads and when they show also depend on the underlying
 hardware. So the sweet spot may very well be different for different
-clusters, even if the application and configuration stays the same!</p>
+clusters, even if the application and configuration stays the same! For
+example, network communication always introduces latencies (short
+waiting times) for each connection and their bandwidth determines how
+long a communication takes. Here, clusters using different network
+architectures and technologies often exhibit different scaling behavior
+and configuration sweet spots for your applications.</p>
 <p>Another common issue lies within our measurements themself. We
 perform a single time measurement on a worker node that is possibly
 shared with other jobs at the same time. What if another user runs an
@@ -4007,14 +4047,15 @@ resources.</p>
 </div>
 </div>
 </div>
-<p>Scaling studies can be done with respect to different application and
-job parameters. For example, what is the execution time when we change
-the <em>workload</em>, e.g. a larger number of pixels, samples per
-pixels, or a more complex scene? How much does a communication overhead
-change, if we change the number of involved nodes while keeping the
-workload and number of tasks fixed, i.e. changing the <em>network
-communication surface</em>? Scaling studies like these can help identify
-pressure points that affect the applications performance.</p>
+<p>Scaling studies can also be done with respect to different
+application and job parameters. For example, what is the execution time
+when we change the <em>workload</em>, e.g. a larger number of pixels,
+samples per pixels, or a more complex scene? How much does a
+communication overhead change, if we change the number of involved nodes
+while keeping the workload and number of tasks fixed, i.e. changing the
+<em>network communication surface</em>? Scaling studies like these can
+help identify pressure points that affect the applications
+performance.</p>
 <p>Scaling studies typically occur in a <em>preparation phase</em> where
 the application is evaluated with a representative example workload.
 Once a good configuration is found, we know the application is running
@@ -4038,17 +4079,27 @@ different amounts of resources. It answers the question</p>
 the serial execution with <span class="math inline">\(1\)</span>
 process/thread)?</p>
 </blockquote>
-<p>It is defined by the comparison of wall times <span class="math inline">\(T(N)\)</span> of the application with <span class="math inline">\(N\)</span> parallel processes: <span class="math display">\[S(N) = \frac{T(1)}{T(N)}\]</span> Here, <span class="math inline">\(T(1)\)</span> is the wall time for a sequential
+<figure><img src="../fig/sketch_speedup.svg" alt="Sketched speedup for a perfectly and 98% parallelized application. Doubling the number of parallel processors makes the perfectly parallel application twice as fast. The 98% parallelized application does not speed up at the same rate." class="figure mx-auto d-block"><div class="figcaption">Sketched speedup for a perfectly and 98%
+parallelized application. Doubling the number of parallel processors
+makes the perfectly parallel application twice as fast. The 98%
+parallelized application does not speed up at the same rate.</div>
+</figure><p>Speedup is defined by the comparison of wall times <span class="math inline">\(T(N)\)</span> of the application with <span class="math inline">\(N\)</span> parallel processes: <span class="math display">\[S(N) = \frac{T(1)}{T(N)}\]</span> Here, <span class="math inline">\(T(1)\)</span> is the wall time for a sequential
 execution, and <span class="math inline">\(T(N)\)</span> is the
 execution with <span class="math inline">\(N\)</span> parallel
-processes. For <span class="math inline">\(2\)</span> processes, we
-observe a speedup of <span class="math inline">\(S(2) =
-\frac{127.218}{67.443} \approx 1.89\)</span></p>
-<p><em>Efficiency</em> in this context is defined as <span class="math display">\[\eta(N) = \frac{S(N)}{N}\]</span> with speedup
-<span class="math inline">\(S(N)\)</span> and describes by how much
-additional parallel processes, <span class="math inline">\(N\)</span>,
-deviate from the theoretical linear optimum.</p>
-<div id="exercise-calculate-speedup-and-efficency" class="callout challenge">
+processes. For our raytracer, with <span class="math inline">\(2\)</span> processes, we observe a speedup of
+<span class="math inline">\(S(2) = \frac{127.218}{67.443} \approx
+1.89\)</span> In reality, our application only got <span class="math inline">\(1.89\times\)</span> faster, for the <span class="math inline">\(2\)</span> parallel processes we have spent on it.
+Ideally, we would have expected a speedup of <span class="math inline">\(2\)</span>, so our application does not seem
+perfectly efficient in terms of <em>using</em> the additional parallel
+processes to be faster.</p>
+<p>We can calculate the <em>efficiency</em> with wich each additional
+parallel process contributes to the applications speedup: <span class="math display">\[\eta(N) = \frac{S(N)}{N}\]</span></p>
+<figure><img src="../fig/sketch_efficiency.svg" alt="Sketched efficiency for a perfectly and 98% parallelized application. For the perfectly scaling case, each additional parallel process contributes well to solving the calculations faster. For the 98% parallelized application, adding more parallel processes has diminishing returns." class="figure mx-auto d-block"><div class="figcaption">Sketched efficiency for a perfectly and 98%
+parallelized application. For the perfectly scaling case, each
+additional parallel process contributes well to solving the calculations
+faster. For the 98% parallelized application, adding more parallel
+processes has diminishing returns.</div>
+</figure><div id="exercise-calculate-speedup-and-efficency" class="callout challenge">
 <div class="callout-square">
 <i class="callout-icon" data-feather="zap"></i>
 </div>
@@ -4078,7 +4129,7 @@ and <span class="math inline">\(128\)</span> samples per pixel?</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
   <h4 class="accordion-header" id="headingSolution2"> Show me the solution </h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
 <div class="accordion-body">
 <p>For all of our measurements, the speedup and efficiencies are</p>
 <pre class="csv"><code>ntasks,time,speedup,efficiency
@@ -4104,12 +4155,28 @@ if their contribution to speedup is only 50% efficient or even less.</p>
 </div>
 </div>
 </div>
+<div id="discussion-why-does-the-speedup-efficiency-drop" class="callout discussion">
+<div class="callout-square">
+<i class="callout-icon" data-feather="message-circle"></i>
+</div>
+<span class="callout-header">Discussion</span>
+<div id="discussion-why-does-the-speedup-efficiency-drop" class="callout-inner">
+<h3 class="callout-title">Discussion: Why does the Speedup Efficiency
+drop?</h3>
+<div class="callout-content">
+<p>Adding more and more resources is not always speeding up our
+application. What may be possible reasons for worse speedup efficiency
+at larger numbers of parallel processors/threads?</p>
+<p>Briefly collect and discuss any reasons you can think of.</p>
+</div>
+</div>
+</div>
 <div id="accordionSpoiler1" class="accordion spoiler-accordion accordion-flush">
 <div class="accordion-item">
 <button class="accordion-button spoiler-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSpoiler1" aria-expanded="false" aria-controls="collapseSpoiler1">
-  <h3 class="accordion-header" id="headingSpoiler1">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="eye"></i></div> (Optional) plotting our .csvs </h3>
+  <h3 class="accordion-header" id="headingSpoiler1">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="eye"></i></div> (Optional) plotting our .csv </h3>
 </button>
-<div id="collapseSpoiler1" class="accordion-collapse collapse" data-bs-parent="#accordionSpoiler1" aria-labelledby="headingSpoiler1">
+<div id="collapseSpoiler1" class="accordion-collapse collapse" aria-labelledby="headingSpoiler1" data-bs-parent="#accordionSpoiler1">
 <div class="accordion-body">
 <p>If you have experience with python, you can use our <a href="../files/plot_scaling_from_csvs.py">python script</a> to create the
 same plots as above, but for your own data. It depends on
@@ -4141,14 +4208,24 @@ cores significantly reduces the execution time.</p>
 <h3 class="callout-title">Amdahls Law<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>
 </h3>
 <div class="callout-content">
-<p>The speedup of a program through parallelization is limited by the
+<figure><img src="../fig/amdahl_model.drawio.png" alt="The model behind Amdahls Law: Assume an application consists of serial sections, e.g. reading from a file, and parallelizable sections, e.g. calculations in a loop. Both fractions add up to the whole program, i.e. $s + p = 1$. Here, Speedup through parallelization is inherently limited by only speeding up the parallel sections." class="figure mx-auto d-block"><div class="figcaption">The model behind Amdahls Law: Assume an
+application consists of serial sections, e.g. reading from a file, and
+parallelizable sections, e.g. calculations in a loop. Both fractions add
+up to the whole program, i.e. <span class="math inline">\(s + p =
+1\)</span>. Here, Speedup through parallelization is inherently limited
+by only speeding up the parallel sections.</div>
+</figure><p>The speedup of a program through parallelization is limited by the
 execution time of the serial fraction that is not parallelizable. For a
 given execution time <span class="math inline">\(T(N) = s +
 \frac{p}{N}\)</span>, with <span class="math inline">\(s\)</span> the
-time for the serial fraction, and <span class="math inline">\(p\)</span>, the time for parallel fraction,
-speedup <span class="math inline">\(S\)</span> is defined as <span class="math display">\[S(N) = \frac{s+p}{s+\frac{p}{N}} = \frac{1}{s +
+serial fraction, and <span class="math inline">\(p\)</span>, the
+parallel fraction of the applications execution time, speedup <span class="math inline">\(S\)</span> is defined as <span class="math display">\[S(N) = \frac{T(1)}{T(N)} = \frac{1}{s +
 \frac{p}{N}} \Rightarrow \lim_{N\rightarrow \infty}  S(N) =
 \frac{1}{s}\]</span></p>
+<p>In other words, increasing the number of parallel processes <span class="math inline">\(N\)</span> for an application that only has a
+serial part that is taking up <span class="math inline">\(1\)</span>% of
+the execution time, will never exceed a speedup of <span class="math inline">\(\frac{1}{s} = \frac{1}{0.01} = 100\)</span>. No
+matter how many processes we will use!</p>
 </div>
 </div>
 </div>
@@ -4168,39 +4245,64 @@ hardware and corresponding waiting times.</p>
 </div>
 </div>
 </div>
+<div id="accordionInstructor4" class="accordion instructor-note accordion-flush">
+<div class="accordion-item">
+<button class="accordion-button instructor-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseInstructor4" aria-expanded="false" aria-controls="collapseInstructor4">
+  <h3 class="accordion-header" id="headingInstructor4">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="edit-2"></i></div> When should we stop adding CPU cores? </h3>
+</button>
+<div id="collapseInstructor4" class="accordion-collapse collapse" aria-labelledby="headingInstructor4" data-bs-parent="#accordionInstructor4">
+<div class="accordion-body">
+<p>The learners should realize there is a point of diminishing returns.
+Where exactly to draw the line is debatable, but in the previous example
+<span class="math inline">\(N=32\)</span> seems to be a sweet spot with
+the best Speedup and an efficiency <span class="math inline">\(&gt;50\)</span>%.</p>
+<p>There are many reasons why a large number of parallel processes may
+result in worse speedup. Among others, it may be due to I/O overhead,
+synchronization between threads, or a limited divisibility of the
+problem domain, where additional processors could not solve additional
+work.</p>
+</div>
+</div>
+</div>
+</div>
 </section><section><h2 class="section-heading" id="if-scaling-is-limited-why-are-there-larger-hpc-systems-weak-scaling-">If scaling is limited, why are there larger HPC systems? Weak
 scaling.<a class="anchor" aria-label="anchor" href="#if-scaling-is-limited-why-are-there-larger-hpc-systems-weak-scaling-"></a>
 </h2>
 <hr class="half-width">
 <p>For a fixed problem size, we observed that adding more parallel
 processors can only help up to a certain point. But what if the project
-benefits from increasing the workload size? Does a higher resolution,
-more accuracy, or more statistics, etc., improve our insights and
-results? If that is the case, the perspective on the issue changes and
-adding more parallel processors can become more feasible as well. For
-our raytracer example, increasing the workload corresponds to more
-pixels, more samples per pixel, and/or a more complex scene.</p>
+benefits from increasing the workload size, i.e. doing <em>more</em>
+calculations? For example, does a higher resolution, more accuracy, or
+more statistics, etc., improve our insights and results? In this case,
+our perspective on efficiency changes and we address a different
+optimization than before: Doing more calculations with an increasing
+number of parallel processors. For our raytracer example, increasing the
+workload corresponds to more pixels, more samples per pixel, and/or a
+more complex scene.</p>
 <p><em>Weak scaling</em> refers to the scaling behavior of an
 application for a fixed workload per parallel processing unit,
 e.g. increasing the number of pixels by the same amount as the number of
 parallel processors <span class="math inline">\(N\)</span>.</p>
-<div id="gustafsons-law" class="callout">
+<div id="the-difference-between-strong-and-weak-scaling" class="callout">
 <div class="callout-square">
 <i class="callout-icon" data-feather="bell"></i>
 </div>
 <span class="callout-header">Callout</span>
-<div id="gustafsons-law" class="callout-inner">
-<h3 class="callout-title">Gustafsons Law<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a>
-</h3>
+<div id="the-difference-between-strong-and-weak-scaling" class="callout-inner">
+<h3 class="callout-title">The difference between strong and weak
+scaling</h3>
 <div class="callout-content">
-<p>A program scales on <span class="math inline">\(N\)</span> parallel
-processors, if the problem size also scales with the number of
-processors. The speedup <span class="math inline">\(S\)</span> becomes
-<span class="math display">\[\text{S(N)} = \frac{s+pN}{s+p} = s+pN =
-N+s(1-N)\]</span> with <span class="math inline">\(N\)</span>
-processors, <span class="math inline">\(s\)</span> the time for the
-serial fraction, and <span class="math inline">\(p\)</span>, the time
-for parallel fraction:</p>
+<p>In the previous discussion about Amdahls Law we kept the total amount
+of calculations fixed and increased the number of parallel processors
+<span class="math inline">\(N\)</span>. Now, we are transitioning to a
+different perspective where we increase <em>both</em>, the number total
+amount of calculations and the number of parallel processors <span class="math inline">\(N\)</span>,</p>
+<p>In the former, we reach an absolute limit for moderate numbers of
+<span class="math inline">\(N\)</span> and would not benefit from
+increasing the number of parallel processes <span class="math inline">\(N\)</span>. In the later case, we may benefit
+solving more calculations and we hope to be back in the business of
+Supercomputers with an <span class="math inline">\(N\)</span> in the
+order of thousands!</p>
 </div>
 </div>
 </div>
@@ -4237,15 +4339,17 @@ for two processors we need a height and a width of <span class="math inline">\(\
 <button class="accordion-button spoiler-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSpoiler2" aria-expanded="false" aria-controls="collapseSpoiler2">
   <h3 class="accordion-header" id="headingSpoiler2">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="eye"></i></div> Different ways of scaling workloads: spp </h3>
 </button>
-<div id="collapseSpoiler2" class="accordion-collapse collapse" data-bs-parent="#accordionSpoiler2" aria-labelledby="headingSpoiler2">
+<div id="collapseSpoiler2" class="accordion-collapse collapse" aria-labelledby="headingSpoiler2" data-bs-parent="#accordionSpoiler2">
 <div class="accordion-body">
-<p>To scale the workload of the snowman raytracer, we can multiply the
-number of parallel MPI processes, <code>${SLURM_NTASKS}</code>, with the
-samples per pixel (starting from <code>-spp=128</code>). For a single
-process, the whole <span class="math inline">\(800 \times 800\)</span>
-pixel picture is calculated in a single MPI process with 128 per pixel.
-Running with two MPI processes, both have to calculate half the number
-of pixels, but twice the amount of samples per pixel.</p>
+<p>In each scaling study, it is crucial to identify which application
+parameters affect the execution time. There are often multiple ways.</p>
+<p>For the snowman raytracer, instead of changing the total number of
+pixels, we can multiply the number of parallel MPI processes
+(<code>${SLURM_NTASKS}</code>) with the samples per pixel (starting from
+<code>-spp=128</code>). For a single process, the whole <span class="math inline">\(800 \times 800\)</span> pixel picture is
+calculated in a single MPI process with 128 per pixel. Running with two
+MPI processes, both have to calculate half the number of pixels, but
+twice the amount of samples per pixel.</p>
 <div class="codewrapper sourceCode" id="cb9">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
@@ -4260,17 +4364,20 @@ of pixels, but twice the amount of samples per pixel.</p>
 <span id="cb9-9"><a href="#cb9-9" tabindex="-1" aria-label="code-block-9-9"></a></span>
 <span id="cb9-10"><a href="#cb9-10" tabindex="-1" aria-label="code-block-9-10"></a><span class="bu">time</span> mpirun <span class="at">--</span> ./build/raytracer <span class="at">-width</span><span class="op">=</span>800 <span class="at">-height</span><span class="op">=</span>800 <span class="at">-spp</span><span class="op">=</span><span class="va">${SPP}</span> <span class="at">-threads</span><span class="op">=</span>1 <span class="at">-png</span> <span class="st">"</span><span class="va">$(</span><span class="fu">date</span> +%Y-%m-%d_%H%M%S<span class="va">)</span><span class="st">.png"</span></span></code></pre>
 </div>
-<figure><img src="../fig/spp128.png" alt="Three snowmen in 800x800 with 128 samples per pixel" class="figure mx-auto d-block"><div class="figcaption">Three snowmen in 800x800 with 128 samples per
-pixel</div>
-</figure><figure><img src="../fig/spp8192.png" alt="Three snowmen in 800x800 with 8192 samples per pixel" class="figure mx-auto d-block"><div class="figcaption">Three snowmen in 800x800 with 8192 samples per
-pixel</div>
+<figure><img src="../fig/spp128.png" alt="Three snowmen in 800x800 with 128 samples per pixel" class="figure mx-auto d-block"><div class="figcaption">Figure 1: Three snowmen in 800x800 with 128
+samples per pixel</div>
+</figure><figure><img src="../fig/spp8192.png" alt="Three snowmen in 800x800 with 8192 samples per pixel" class="figure mx-auto d-block"><div class="figcaption">Figure 2: Three snowmen in 800x800 with 8192
+samples per pixel</div>
 </figure><p>In direct comparison, and zooming in really close, you can see more
-noise in the first image, e.g. in the shadows. One could argue that we
-passed the point of diminishing returns, though. Is a <span class="math inline">\(64\times\)</span> increase in computational cost
-worth the observed quality improvement? For the samples per pixel, we
-seem to not benefit much from weak scaling. Larger resolutions, by
-increasing the number of pixels, is the more useful dimension to
+noise in Figure 1, e.g. in the shadows, relative to Figure 2. One could
+argue that we passed the point of diminishing returns, though. Is a
+<span class="math inline">\(64\times\)</span> increase in computational
+cost worth the observed quality improvement? For the samples per pixel,
+we seem to not benefit much from weak scaling. Larger resolutions, by
+increasing the number of pixels, may be a more useful dimension to
 increase in this case.</p>
+<p>The usefulness of any computation can only be determined in the
+context of your scientific goals.</p>
 </div>
 </div>
 </div>
@@ -4280,9 +4387,9 @@ for a larger, more detailed picture. In practice, there is a cutoff,
 beyond which no reasonable improvement is to be expected. This is a
 question about accuracy, error margins, and overall quality, which can
 only be answered in the specific context of each research project. If
-there is no real improvement by increasing the workload, running a
-weakly scaling application is really just wasting valuable computational
-time and energy.</p>
+there is no tangible benefit of increasing the workload, running at a
+larger number of parallel processes does not serve a purpose, even if
+the application still exhibits good “weak scaling efficiency”.</p>
 <p>If we increase the workload at the rate as our number of parallel
 processes (<span class="math inline">\(N\)</span>) our speedup is
 defined as <span class="math display">\[S_{\text{weak}}(N) =
@@ -4306,11 +4413,11 @@ accordingly to study the raytracers weak scaling behavior.</p>
 <code>--exclusive</code> to ensure more reliable results.</li>
 <li>Create a <code>.csv</code> file and run the plotting script</li>
 </ul>
-<pre class="csv"><code>ntasks,pixel,time,speedup,efficiency
-1,800,123.162
-2,1131,122.562
-4,1600,124.522
-8,2263,125.606
+<pre class="csv"><code>ntasks, pixel,    time, speedup, efficiency
+     1,   800, 123.162,     ???,        ???
+     2,  1131, 122.562,     ???,        ???
+     4,  1600,     ???,     ???,        ???
+     8,  2263,     ???,     ???,        ???
 ...</code></pre>
 <p>How well does the application scale with an increasing workload size?
 Do you see a qualitative difference in the resulting <code>.png</code>
@@ -4324,16 +4431,16 @@ costs?</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution3" aria-expanded="false" aria-controls="collapseSolution3">
   <h4 class="accordion-header" id="headingSolution3"> Show me the solution </h4>
 </button>
-<div id="collapseSolution3" class="accordion-collapse collapse" data-bs-parent="#accordionSolution3" aria-labelledby="headingSolution3">
+<div id="collapseSolution3" class="accordion-collapse collapse" aria-labelledby="headingSolution3" data-bs-parent="#accordionSolution3">
 <div class="accordion-body">
-<pre class="csv"><code>ntasks,pixel,time,speedup,efficiency
-1,800,123.162
-2,1131,122.562
-4,1600,124.522
-8,2263,125.606
-16,3200,125.803
-32,4526,130.137
-64,6400,138.636</code></pre>
+<pre class="csv"><code>ntasks, pixel,    time, speedup, efficiency
+     1,   800, 123.162,    1.00,       1.00
+     2,  1131, 122.562,    2.01,       1.00
+     4,  1600, 124.522,    3.96,       0.99
+     8,  2263, 125.606,    7.84,       0.98
+    16,  3200, 125.803,   15.66,       0.98
+    32,  4526, 130.137,   30.28,       0.95
+    64,  6400, 138.636,   56.86,       0.89</code></pre>
 <p>The scaling behavior is reaching an asymptotic limit, where each
 additional processor is contributing with the same efficiency to the
 increased workload.</p>
@@ -4349,6 +4456,26 @@ resolution. However, going way beyond <span class="math inline">\(6400
 \times 6400\)</span> pixels is probably not very meaningful, unless you
 are trying to print the worlds largest ad boards or similar.</p>
 </div>
+</div>
+</div>
+</div>
+<div id="gustafsons-law" class="callout">
+<div class="callout-square">
+<i class="callout-icon" data-feather="bell"></i>
+</div>
+<span class="callout-header">Callout</span>
+<div id="gustafsons-law" class="callout-inner">
+<h3 class="callout-title">Gustafsons Law<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a>
+</h3>
+<div class="callout-content">
+<p>A program scales on <span class="math inline">\(N\)</span> parallel
+processors, if the problem size also scales with the number of
+processors. The speedup <span class="math inline">\(S\)</span> becomes
+<span class="math display">\[\text{S(N)} = \frac{s+pN}{s+p} = s+pN =
+s+(1-s)N\]</span> with <span class="math inline">\(N\)</span>
+processors, <span class="math inline">\(s\)</span> the serial fraction,
+and <span class="math inline">\(p\)</span> the parallel fraction of the
+execution time.</p>
 </div>
 </div>
 </div>
@@ -4385,7 +4512,7 @@ communication, output size on disk, and so on.</p>
 <button class="accordion-button spoiler-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSpoiler3" aria-expanded="false" aria-controls="collapseSpoiler3">
   <h3 class="accordion-header" id="headingSpoiler3">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="eye"></i></div> Automating Scaling Studies </h3>
 </button>
-<div id="collapseSpoiler3" class="accordion-collapse collapse" data-bs-parent="#accordionSpoiler3" aria-labelledby="headingSpoiler3">
+<div id="collapseSpoiler3" class="accordion-collapse collapse" aria-labelledby="headingSpoiler3" data-bs-parent="#accordionSpoiler3">
 <div class="accordion-body">
 <p>If you find yourself repeating similar measurements over and over
 again, you may be interested in an automation approach. This can be done
@@ -4438,7 +4565,7 @@ ACM, vol. 31, no. 5, pp. 532–533, May 1988, doi: 10.1145/42411.42415.<a href
 </ol>
 </div></section><section id="aio-05_overview_ClusterCockpit"><p>Content from <a href="05_overview_ClusterCockpit.html">Performance Overview</a></p>
 <hr>
-<p>Last updated on 2026-08-11 |
+<p>Last updated on 2026-08-13 |
 
         <a href="https://github.com/stderr-enst/jobefficiency/edit/main/episodes/05_overview_ClusterCockpit.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <p>Estimated time: <i aria-hidden="true" data-feather="clock"></i> 80 minutes</p>
@@ -4485,7 +4612,7 @@ bottleneck pattern.</li>
 <button class="accordion-button instructor-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseInstructor1" aria-expanded="false" aria-controls="collapseInstructor1">
   <h3 class="accordion-header" id="headingInstructor1">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="edit-2"></i></div> Intention: Introduce third party tools for performance reports </h3>
 </button>
-<div id="collapseInstructor1" class="accordion-collapse collapse" aria-labelledby="headingInstructor1" data-bs-parent="#accordionInstructor1">
+<div id="collapseInstructor1" class="accordion-collapse collapse" data-bs-parent="#accordionInstructor1" aria-labelledby="headingInstructor1">
 <div class="accordion-body">
 <p>Narrative:</p>
 <ul>
@@ -4513,7 +4640,7 @@ representations of data, e.g. Roofline</li>
 <button class="accordion-button instructor-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseInstructor2" aria-expanded="false" aria-controls="collapseInstructor2">
   <h3 class="accordion-header" id="headingInstructor2">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="edit-2"></i></div> TODO: Discuss requirements in more detail? </h3>
 </button>
-<div id="collapseInstructor2" class="accordion-collapse collapse" aria-labelledby="headingInstructor2" data-bs-parent="#accordionInstructor2">
+<div id="collapseInstructor2" class="accordion-collapse collapse" data-bs-parent="#accordionInstructor2" aria-labelledby="headingInstructor2">
 <div class="accordion-body">
 <p>Dependent on the cluster config, some of these may have to be
 addressed?</p>
@@ -4528,7 +4655,7 @@ kernel.perf_event_paranoid</code></pre>
 <button class="accordion-button instructor-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseInstructor3" aria-expanded="false" aria-controls="collapseInstructor3">
   <h3 class="accordion-header" id="headingInstructor3">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="edit-2"></i></div> Prepare a reservation! </h3>
 </button>
-<div id="collapseInstructor3" class="accordion-collapse collapse" aria-labelledby="headingInstructor3" data-bs-parent="#accordionInstructor3">
+<div id="collapseInstructor3" class="accordion-collapse collapse" data-bs-parent="#accordionInstructor3" aria-labelledby="headingInstructor3">
 <div class="accordion-body">
 <p>We’ll have to run a couple of 20 minutes long
 <code>--exclusive</code> jobs here, so make sure enough resources are
@@ -4546,7 +4673,7 @@ detail and capture the utilization of underlying hardware.</p>
 <button class="accordion-button instructor-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseInstructor4" aria-expanded="false" aria-controls="collapseInstructor4">
   <h3 class="accordion-header" id="headingInstructor4">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="edit-2"></i></div> Know your tool! </h3>
 </button>
-<div id="collapseInstructor4" class="accordion-collapse collapse" aria-labelledby="headingInstructor4" data-bs-parent="#accordionInstructor4">
+<div id="collapseInstructor4" class="accordion-collapse collapse" data-bs-parent="#accordionInstructor4" aria-labelledby="headingInstructor4">
 <div class="accordion-body">
 <p>We provide alternatives for this episode. Make sure to select the
 right one in your <code>config.yaml</code>.</p>
@@ -4647,7 +4774,7 @@ executable instead of <code>raytracer</code> — keep the resolution,
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
 <div class="accordion-body">
 <p>There are other binaries next to the <code>raytracer</code> example,
 called <code>raytracer_float4</code>, <code>_float8</code>,
@@ -5022,7 +5149,7 @@ different between them, and why?</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
   <h4 class="accordion-header" id="headingSolution2"> Show me the solution </h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
 <div class="accordion-body">
 <figure><img src="../fig/cc-new/vec-flops-any.png" alt="ClusterCockpit flops_any metric for job2" class="figure mx-auto d-block"></figure><p>In our measurements, <code>flops_any (avg)</code> per core is close
 to <span class="math inline">\(3\)</span> GF/s for job 1, and close to
@@ -5044,7 +5171,7 @@ issues far fewer instructions to do it, and each one accomplishes <span class="m
 <button class="accordion-button instructor-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseInstructor5" aria-expanded="false" aria-controls="collapseInstructor5">
   <h3 class="accordion-header" id="headingInstructor5">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="edit-2"></i></div> Demonstrating the Job 1 vs. Job 2 comparison </h3>
 </button>
-<div id="collapseInstructor5" class="accordion-collapse collapse" aria-labelledby="headingInstructor5" data-bs-parent="#accordionInstructor5">
+<div id="collapseInstructor5" class="accordion-collapse collapse" data-bs-parent="#accordionInstructor5" aria-labelledby="headingInstructor5">
 <div class="accordion-body">
 <p>Open Job 1 and Job 2 side by side in two browser tabs, and navigate
 both to the Roofline plot panel, to demonstrate the comparison live
@@ -5138,7 +5265,7 @@ configured for your ClusterCockpit deployment.</p>
 <button class="accordion-button instructor-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseInstructor6" aria-expanded="false" aria-controls="collapseInstructor6">
   <h3 class="accordion-header" id="headingInstructor6">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="edit-2"></i></div> Intention: Uncover one or two issues in the application </h3>
 </button>
-<div id="collapseInstructor6" class="accordion-collapse collapse" aria-labelledby="headingInstructor6" data-bs-parent="#accordionInstructor6">
+<div id="collapseInstructor6" class="accordion-collapse collapse" data-bs-parent="#accordionInstructor6" aria-labelledby="headingInstructor6">
 <div class="accordion-body">
 <p>What we’re doing here:</p>
 <ul>
@@ -5199,7 +5326,7 @@ accelerators.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution3" aria-expanded="false" aria-controls="collapseSolution3">
   <h4 class="accordion-header" id="headingSolution3"> Show me the solution </h4>
 </button>
-<div id="collapseSolution3" class="accordion-collapse collapse" aria-labelledby="headingSolution3" data-bs-parent="#accordionSolution3">
+<div id="collapseSolution3" class="accordion-collapse collapse" data-bs-parent="#accordionSolution3" aria-labelledby="headingSolution3">
 <div class="accordion-body">
 <ol style="list-style-type: decimal">
 <li>CPU (FLOPS), maybe the cache hierarchy if matrix elements do not
@@ -5259,7 +5386,7 @@ any links that you are not going to use.
  -->
 </section></section><section id="aio-06_pinning"><p>Content from <a href="06_pinning.html">Pinning</a></p>
 <hr>
-<p>Last updated on 2026-08-11 |
+<p>Last updated on 2026-08-13 |
 
         <a href="https://github.com/stderr-enst/jobefficiency/edit/main/episodes/06_pinning.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <p>Estimated time: <i aria-hidden="true" data-feather="clock"></i> 10 minutes</p>
@@ -5303,7 +5430,7 @@ performance.</li>
 <button class="accordion-button instructor-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseInstructor1" aria-expanded="false" aria-controls="collapseInstructor1">
   <h3 class="accordion-header" id="headingInstructor1">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="edit-2"></i></div> Intention: Go deeper in performance and hardware relationship </h3>
 </button>
-<div id="collapseInstructor1" class="accordion-collapse collapse" data-bs-parent="#accordionInstructor1" aria-labelledby="headingInstructor1">
+<div id="collapseInstructor1" class="accordion-collapse collapse" aria-labelledby="headingInstructor1" data-bs-parent="#accordionInstructor1">
 <div class="accordion-body">
 <p>Narrative:</p>
 <ul>
@@ -5469,7 +5596,7 @@ threads Slurm allocates.</li>
 <button class="accordion-button spoiler-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSpoiler1" aria-expanded="false" aria-controls="collapseSpoiler1">
   <h3 class="accordion-header" id="headingSpoiler1">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="eye"></i></div> Show details </h3>
 </button>
-<div id="collapseSpoiler1" class="accordion-collapse collapse" data-bs-parent="#accordionSpoiler1" aria-labelledby="headingSpoiler1">
+<div id="collapseSpoiler1" class="accordion-collapse collapse" aria-labelledby="headingSpoiler1" data-bs-parent="#accordionSpoiler1">
 <div class="accordion-body">
 <p>Historically, CPU refers to the <em>physical processor chip</em>. For
 example, a compute node might have two <em>CPU sockets</em> (two
@@ -5550,7 +5677,7 @@ add ,triad). Why are these not identical?</p>
 <button class="accordion-button hint-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHint1" aria-expanded="false" aria-controls="collapseHint1">
   <h4 class="accordion-header" id="headingHint1"> Give me a hint </h4>
 </button>
-<div id="collapseHint1" class="accordion-collapse collapse" data-bs-parent="#accordionHint1" aria-labelledby="headingHint1">
+<div id="collapseHint1" class="accordion-collapse collapse" aria-labelledby="headingHint1" data-bs-parent="#accordionHint1">
 <div class="accordion-body">
 <p>As in the kitchen analogy, the two tasks (kitchens) run
 independently, that is, they do not even know about each other.</p>
@@ -5563,7 +5690,7 @@ independently, that is, they do not even know about each other.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
 <div class="accordion-body">
 <p>The two <code>stream</code> tasks denote two independent processes
 that may also occupy different (Slurm-)CPU resources. Hence, with
@@ -5591,7 +5718,7 @@ manager. It manages the resources you requested, which may be one
 <button class="accordion-button spoiler-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSpoiler2" aria-expanded="false" aria-controls="collapseSpoiler2">
   <h3 class="accordion-header" id="headingSpoiler2">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="eye"></i></div> Show details </h3>
 </button>
-<div id="collapseSpoiler2" class="accordion-collapse collapse" data-bs-parent="#accordionSpoiler2" aria-labelledby="headingSpoiler2">
+<div id="collapseSpoiler2" class="accordion-collapse collapse" aria-labelledby="headingSpoiler2" data-bs-parent="#accordionSpoiler2">
 <div class="accordion-body">
 <p>Slurm uses the term “task” because it is a scheduler concept rather
 than an operating-system concept. While in most HPC applications, one
@@ -5662,7 +5789,7 @@ thread number can be set via the environment variable
 <button class="accordion-button spoiler-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSpoiler3" aria-expanded="false" aria-controls="collapseSpoiler3">
   <h3 class="accordion-header" id="headingSpoiler3">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="eye"></i></div> Show details </h3>
 </button>
-<div id="collapseSpoiler3" class="accordion-collapse collapse" data-bs-parent="#accordionSpoiler3" aria-labelledby="headingSpoiler3">
+<div id="collapseSpoiler3" class="accordion-collapse collapse" aria-labelledby="headingSpoiler3" data-bs-parent="#accordionSpoiler3">
 <div class="accordion-body">
 <p>The Slurm option <code>--cpus-per-task</code> determines how many
 CPUs Slurm allocates, while <code>OMP_NUM_THREADS</code> determines how
@@ -5709,7 +5836,7 @@ Threads”.</p>
 <button class="accordion-button hint-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHint2" aria-expanded="false" aria-controls="collapseHint2">
   <h4 class="accordion-header" id="headingHint2"> Give me a hint </h4>
 </button>
-<div id="collapseHint2" class="accordion-collapse collapse" data-bs-parent="#accordionHint2" aria-labelledby="headingHint2">
+<div id="collapseHint2" class="accordion-collapse collapse" aria-labelledby="headingHint2" data-bs-parent="#accordionHint2">
 <div class="accordion-body">
 <p>Remember that <code>stream</code> is an OpenMP-parallel program.</p>
 </div>
@@ -5721,7 +5848,7 @@ Threads”.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
   <h4 class="accordion-header" id="headingSolution2"> Show me the solution </h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
 <div class="accordion-body">
 <p>The count is likely reported as
 <code>Number of Threads counted = 4</code>. Since <code>stream</code> is
@@ -5757,7 +5884,7 @@ more</h3>
 <button class="accordion-button hint-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHint3" aria-expanded="false" aria-controls="collapseHint3">
   <h4 class="accordion-header" id="headingHint3"> Give me a hint </h4>
 </button>
-<div id="collapseHint3" class="accordion-collapse collapse" data-bs-parent="#accordionHint3" aria-labelledby="headingHint3">
+<div id="collapseHint3" class="accordion-collapse collapse" aria-labelledby="headingHint3" data-bs-parent="#accordionHint3">
 <div class="accordion-body">
 <p>In the previous challenge you set <code>OMP_NUM_THREADS</code>. What
 happened to it?</p>
@@ -5770,7 +5897,7 @@ happened to it?</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution3" aria-expanded="false" aria-controls="collapseSolution3">
   <h4 class="accordion-header" id="headingSolution3"> Show me the solution </h4>
 </button>
-<div id="collapseSolution3" class="accordion-collapse collapse" data-bs-parent="#accordionSolution3" aria-labelledby="headingSolution3">
+<div id="collapseSolution3" class="accordion-collapse collapse" aria-labelledby="headingSolution3" data-bs-parent="#accordionSolution3">
 <div class="accordion-body">
 <p>Your earlier setting <code>export OMP_NUM_THREADS=4</code> is still
 active, unless you have changed the terminal. Hence, the count is still
@@ -5839,7 +5966,7 @@ submitting an <code>srun</code> command for this?</p>
 <button class="accordion-button hint-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHint4" aria-expanded="false" aria-controls="collapseHint4">
   <h4 class="accordion-header" id="headingHint4"> Give me a hint </h4>
 </button>
-<div id="collapseHint4" class="accordion-collapse collapse" data-bs-parent="#accordionHint4" aria-labelledby="headingHint4">
+<div id="collapseHint4" class="accordion-collapse collapse" aria-labelledby="headingHint4" data-bs-parent="#accordionHint4">
 <div class="accordion-body">
 <p>Remember that a process is almost always equivalent to a Slurm task.
 Also, OpenMP uses the environment variable <code>OMP_NUM_THREADS</code>
@@ -5853,7 +5980,7 @@ to set the thread count.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution4" aria-expanded="false" aria-controls="collapseSolution4">
   <h4 class="accordion-header" id="headingSolution4"> Show me the solution </h4>
 </button>
-<div id="collapseSolution4" class="accordion-collapse collapse" data-bs-parent="#accordionSolution4" aria-labelledby="headingSolution4">
+<div id="collapseSolution4" class="accordion-collapse collapse" aria-labelledby="headingSolution4" data-bs-parent="#accordionSolution4">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb17">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -5890,7 +6017,7 @@ the performance of a single process.</p>
 <button class="accordion-button spoiler-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSpoiler4" aria-expanded="false" aria-controls="collapseSpoiler4">
   <h3 class="accordion-header" id="headingSpoiler4">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="eye"></i></div> Show details </h3>
 </button>
-<div id="collapseSpoiler4" class="accordion-collapse collapse" data-bs-parent="#accordionSpoiler4" aria-labelledby="headingSpoiler4">
+<div id="collapseSpoiler4" class="accordion-collapse collapse" aria-labelledby="headingSpoiler4" data-bs-parent="#accordionSpoiler4">
 <div class="accordion-body">
 <p>How can we observe thread migration? Let’s first create another
 version of our benchmark. This is a version that will run a bit
@@ -5972,7 +6099,7 @@ nodes on your system? Any idea what this is?</p>
 <button class="accordion-button hint-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHint5" aria-expanded="false" aria-controls="collapseHint5">
   <h4 class="accordion-header" id="headingHint5"> Give me a hint </h4>
 </button>
-<div id="collapseHint5" class="accordion-collapse collapse" data-bs-parent="#accordionHint5" aria-labelledby="headingHint5">
+<div id="collapseHint5" class="accordion-collapse collapse" aria-labelledby="headingHint5" data-bs-parent="#accordionHint5">
 <div class="accordion-body">
 <p><code>lscpu</code> will first report the CPU architecture, then
 number of CPUs. You will see that CPUs are grouped into “NUMA
@@ -5986,7 +6113,7 @@ nodes”.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution5" aria-expanded="false" aria-controls="collapseSolution5">
   <h4 class="accordion-header" id="headingSolution5"> Show me the solution </h4>
 </button>
-<div id="collapseSolution5" class="accordion-collapse collapse" data-bs-parent="#accordionSolution5" aria-labelledby="headingSolution5">
+<div id="collapseSolution5" class="accordion-collapse collapse" aria-labelledby="headingSolution5" data-bs-parent="#accordionSolution5">
 <div class="accordion-body">
 <p>An example output of <code>lscpu</code> is as follows (some output
 truncated):</p>
@@ -6065,7 +6192,7 @@ about minimizing memory access <em>latency</em>.</p>
 <button class="accordion-button spoiler-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSpoiler5" aria-expanded="false" aria-controls="collapseSpoiler5">
   <h3 class="accordion-header" id="headingSpoiler5">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="eye"></i></div> Show details </h3>
 </button>
-<div id="collapseSpoiler5" class="accordion-collapse collapse" data-bs-parent="#accordionSpoiler5" aria-labelledby="headingSpoiler5">
+<div id="collapseSpoiler5" class="accordion-collapse collapse" aria-labelledby="headingSpoiler5" data-bs-parent="#accordionSpoiler5">
 <div class="accordion-body">
 <p>Latency in computing refers to the time delay between the initiation
 of an action and the resulting output or response. Therefore, it
@@ -6212,7 +6339,7 @@ a third one without hints:</p>
 <button class="accordion-button spoiler-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSpoiler6" aria-expanded="false" aria-controls="collapseSpoiler6">
   <h3 class="accordion-header" id="headingSpoiler6">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="eye"></i></div> Show details </h3>
 </button>
-<div id="collapseSpoiler6" class="accordion-collapse collapse" data-bs-parent="#accordionSpoiler6" aria-labelledby="headingSpoiler6">
+<div id="collapseSpoiler6" class="accordion-collapse collapse" aria-labelledby="headingSpoiler6" data-bs-parent="#accordionSpoiler6">
 <div class="accordion-body">
 <p>On most HPC systems, the default Slurm configuration already keeps
 tasks reasonably close to their memory. Therefore, there may be only
@@ -6275,7 +6402,7 @@ pairs.</p>
 <button class="accordion-button spoiler-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSpoiler7" aria-expanded="false" aria-controls="collapseSpoiler7">
   <h3 class="accordion-header" id="headingSpoiler7">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="eye"></i></div> Show details </h3>
 </button>
-<div id="collapseSpoiler7" class="accordion-collapse collapse" data-bs-parent="#accordionSpoiler7" aria-labelledby="headingSpoiler7">
+<div id="collapseSpoiler7" class="accordion-collapse collapse" aria-labelledby="headingSpoiler7" data-bs-parent="#accordionSpoiler7">
 <div class="accordion-body">
 <p>When you run <code>numactl --hardware</code>, the node distance
 matrix lets you select two nodes given by a row-column pair, and find
@@ -6347,7 +6474,7 @@ case, which one is smaller and why?</p>
 <button class="accordion-button hint-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHint6" aria-expanded="false" aria-controls="collapseHint6">
   <h4 class="accordion-header" id="headingHint6"> Give me a hint </h4>
 </button>
-<div id="collapseHint6" class="accordion-collapse collapse" data-bs-parent="#accordionHint6" aria-labelledby="headingHint6">
+<div id="collapseHint6" class="accordion-collapse collapse" aria-labelledby="headingHint6" data-bs-parent="#accordionHint6">
 <div class="accordion-body">
 <p>CPU-binding to node 0 is done using the option
 <code>--cpunodebind=0</code>.</p>
@@ -6360,7 +6487,7 @@ case, which one is smaller and why?</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution6" aria-expanded="false" aria-controls="collapseSolution6">
   <h4 class="accordion-header" id="headingSolution6"> Show me the solution </h4>
 </button>
-<div id="collapseSolution6" class="accordion-collapse collapse" data-bs-parent="#accordionSolution6" aria-labelledby="headingSolution6">
+<div id="collapseSolution6" class="accordion-collapse collapse" aria-labelledby="headingSolution6" data-bs-parent="#accordionSolution6">
 <div class="accordion-body">
 <p>CPU-binding to node 0, without worrying about memory-binding, is done
 via</p>
@@ -6407,7 +6534,7 @@ would you explain differences?</p>
 <button class="accordion-button hint-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHint7" aria-expanded="false" aria-controls="collapseHint7">
   <h4 class="accordion-header" id="headingHint7"> Give me a hint </h4>
 </button>
-<div id="collapseHint7" class="accordion-collapse collapse" data-bs-parent="#accordionHint7" aria-labelledby="headingHint7">
+<div id="collapseHint7" class="accordion-collapse collapse" aria-labelledby="headingHint7" data-bs-parent="#accordionHint7">
 <div class="accordion-body">
 <p>The most distant node <em>N</em> probably corresponds to the maximum
 node number. Either <code>lscpu</code> or
@@ -6421,7 +6548,7 @@ node number. Either <code>lscpu</code> or
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution7" aria-expanded="false" aria-controls="collapseSolution7">
   <h4 class="accordion-header" id="headingSolution7"> Show me the solution </h4>
 </button>
-<div id="collapseSolution7" class="accordion-collapse collapse" data-bs-parent="#accordionSolution7" aria-labelledby="headingSolution7">
+<div id="collapseSolution7" class="accordion-collapse collapse" aria-labelledby="headingSolution7" data-bs-parent="#accordionSolution7">
 <div class="accordion-body">
 <p>Assuming that <em>N</em>=7, launch one run on node 0 and the second
 on node 7.</p>
@@ -6505,7 +6632,7 @@ any links that you are not going to use.
  -->
 </section></section><section id="aio-08_accelerators"><p>Content from <a href="08_accelerators.html">Performance of Accelerators</a></p>
 <hr>
-<p>Last updated on 2026-08-11 |
+<p>Last updated on 2026-08-13 |
 
         <a href="https://github.com/stderr-enst/jobefficiency/edit/main/episodes/08_accelerators.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <p>Estimated time: <i aria-hidden="true" data-feather="clock"></i> 10 minutes</p>
@@ -6634,7 +6761,7 @@ any links that you are not going to use.
  -->
 </section></section><section id="aio-09_nextsteps"><p>Content from <a href="09_nextsteps.html">Next Steps</a></p>
 <hr>
-<p>Last updated on 2026-08-11 |
+<p>Last updated on 2026-08-13 |
 
         <a href="https://github.com/stderr-enst/jobefficiency/edit/main/episodes/09_nextsteps.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <p>Estimated time: <i aria-hidden="true" data-feather="clock"></i> 10 minutes</p>
@@ -6675,7 +6802,7 @@ optimization.</li>
 <button class="accordion-button instructor-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseInstructor1" aria-expanded="false" aria-controls="collapseInstructor1">
   <h3 class="accordion-header" id="headingInstructor1">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="edit-2"></i></div> Intention: Provide a roadmap learners could follow </h3>
 </button>
-<div id="collapseInstructor1" class="accordion-collapse collapse" aria-labelledby="headingInstructor1" data-bs-parent="#accordionInstructor1">
+<div id="collapseInstructor1" class="accordion-collapse collapse" data-bs-parent="#accordionInstructor1" aria-labelledby="headingInstructor1">
 <div class="accordion-body">
 <p><strong>Most important:</strong> enable users to translate from
 example workload to their own code! Guide on how to translate learning
@@ -6717,7 +6844,7 @@ transistion into Numerical efficiency.</p>
 <button class="accordion-button instructor-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseInstructor2" aria-expanded="false" aria-controls="collapseInstructor2">
   <h3 class="accordion-header" id="headingInstructor2">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="edit-2"></i></div> Instructor Note </h3>
 </button>
-<div id="collapseInstructor2" class="accordion-collapse collapse" aria-labelledby="headingInstructor2" data-bs-parent="#accordionInstructor2">
+<div id="collapseInstructor2" class="accordion-collapse collapse" data-bs-parent="#accordionInstructor2" aria-labelledby="headingInstructor2">
 <div class="accordion-body">
 <p>Ask learners: - Can a calculation be fast but scientifically useless?
 - Can a calculation be extremely accurate but unnecessarily
@@ -6777,7 +6904,7 @@ value?</p>
 <button class="accordion-button hint-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHint1" aria-expanded="false" aria-controls="collapseHint1">
   <h4 class="accordion-header" id="headingHint1"> Give me a hint </h4>
 </button>
-<div id="collapseHint1" class="accordion-collapse collapse" aria-labelledby="headingHint1" data-bs-parent="#accordionHint1">
+<div id="collapseHint1" class="accordion-collapse collapse" data-bs-parent="#accordionHint1" aria-labelledby="headingHint1">
 <div class="accordion-body">
 <p>Think again about the airplane analogy. Which scenario is more prone
 to small losses accumulating over time? 1. Passengers repeatedly handle
@@ -6792,7 +6919,7 @@ in a single coordinated operation.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
 <div class="accordion-body">
 <p>The external loop implementation <code>sum.bash</code> and the
 internal <code>bc</code> one-liner may produce results similar to</p>
@@ -6906,8 +7033,8 @@ any links that you are not going to use.
   "url": "https://stderr-enst.github.io/jobefficiency/instructor/aio.html",
   "identifier": "https://stderr-enst.github.io/jobefficiency/instructor/aio.html",
   "dateCreated": "2025-03-28",
-  "dateModified": "2026-08-11",
-  "datePublished": "2026-08-11"
+  "dateModified": "2026-08-13",
+  "datePublished": "2026-08-13"
 }
 
   </script><script>
