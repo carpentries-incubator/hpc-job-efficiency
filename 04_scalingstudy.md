@@ -8,6 +8,7 @@ exercises: 40
 
 - How many resources should be requested for a given job?
 - How does our application behave at different scales?
+- Will the application benefit from requesting more computational resources?
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -33,16 +34,36 @@ Narrative:
 :::::::::::::::::::::::::::::::::::::
 
 
-The deadline is approaching way too fast and we may not finish our project in time.
+At times, you may think: "The deadline is approaching too fast and we may not finish our project in time."
 Maybe requesting more resources from our clusters scheduler does the trick?
 How could we know if it helps and by how much?
 
+Answering this question is often a formal requirement for compute time requests at larger HPC systems.
+They want to see good *scaling* behavior in an application, before they give access to a bigger chunk of their computational power.
+So, how well does your parallel application utilize larger number of resources?
+How well, does it *scale*?
+
 ## What is Scaling?
 The execution time of parallel applications changes with the number of parallel processes or threads.
-In a *scaling study* we measure how much the execution time changes by scanning a reasonable range of number of processes.
+For example, when keeping the *problem size* fixed, i.e. keep the same amount of calculations, running the application with more processes/threads typically results in shorter execution times.
+We will consider the problem size as fixed for the first sections of this episode and discuss the case of a varying problem size later.
+
+
+![Sketched execution times for a perfectly and a 98% parallelized application. Doubling the number of parallel processors halves the execution time for the perfectly parallelized example, and a little bit less for the 98% parallelized version.](fig/sketch_scaling.svg){alt="Sketched execution times for a perfectly and a 98% parallelized application. Doubling the number of parallel processors halves the execution time for the perfectly parallelized example, and a little bit less for the 98% parallelized version."}
+
+In a *scaling study* we measure how much a certain metric of an application, most commonly the  execution time, changes with respect to the number of processes.
 In a common phrasing, this approach answers how the execution time *scales* with the number of parallel processors.
 
 Starting from the job script `render_snowman.sbatch`:
+
+::: instructor
+## Todo: Unify MPI and modules across examples
+
+We should address the various ways to start MPI programs at first use and choose a single way.
+Preparing the software is also cluster-specific (`module load ...`).
+
+In the mid-/long-term this may call for a site-specific implementation of the course, e.g. via the hpc-intro workbench.
+:::
 
 ```bash
 #!/usr/bin/bash
@@ -58,13 +79,14 @@ time mpirun -- ./raytracer -width=800 -height=800 -spp=128 -png "$(date +%Y-%m-%
 
 we can manually run such a scaling study by submitting multiple jobs.
 In OpenMPI versions 4 and 5 the number of Slurm tasks is automatically picked up, so we do not set `-n` or `-np` of `mpirun`.
-We use `--` to separate the arguments of `mpirun` -- none in this case -- from the MPI application `raytracer` and its arguments.
+We use `--` to separate the arguments of `mpirun` (none in this case) from the MPI application `raytracer` and its arguments.
 Otherwise you may experience errors in some versions of OpenMPI 5, where `mpirun` misinterprets the arguments of `raytracer` as its own.
 
 ::: callout
 # Scaling other resources with number of CPU cores
 When scaling the resources outside of the job script, e.g. with `sbatch --ntasks=X ...`, as done above, we make sure to scale other resource requirements with the number of parallel processors.
-In this case, `--mem-per-cpu=200MB` is necessary, since `--mem` results in a fixed memory limit, independent of the number of processes.
+In this case, `--mem-per-cpu=200MB` is necessary to scale the amount of memory with the number of processors.
+`--mem` requests a fixed amount of memory per node.
 
 For example, if each MPI process needs $100\,$MB, requesting $2\,$GB would only be enough for up to 20 MPI processes.
 
@@ -72,18 +94,6 @@ Forgetting a limit like this is a common pitfall in this situation.
 :::
 
 Let's start some measurements with $1$, $2$, $4$, and $8$ tasks:
-
-::: instructor
-## Slurm Reservation and specific Hardware?
-
-You may need to reserve a set of resources for the course, such that enough resources for the following exercises are available.
-This is especially important for `--exclusive` access.
-
-In that case, show how to use `--reservation=reservationname` to submit jobs.
-
-It may be a good idea to point out the particular hardware of your cluster / partition to emphasize how many cores are available on a single node and when the scaling study goes beyond a single node.
-:::
-
 
 ```output
 $ sbatch --ntasks 1 render_snowman.sbatch
@@ -107,7 +117,7 @@ If you don't need a more regular update, it is good practice to keep the interva
 :::
 
 
-Once the jobs are finished, we can use `grep` to get the wall clock time of all four jobs:
+Once the jobs are finished, we can use `grep "real" slurm-*.out` to get the wall clock time of all four jobs:
 
 ```output
 slurm-16142767.out:real       2m7.218s
@@ -116,7 +126,7 @@ slurm-16142769.out:real       0m32.584s
 slurm-16142770.out:real       0m17.480s
 ```
 
-The real-time is decreasing significantly each time we double the number of Slurm tasks.
+The `real`-time is decreasing significantly each time we double the number of Slurm tasks.
 From this, we feel that doubling the number of CPU cores really is a winning strategy!
 
 :::::::::::::::::::::::::: challenge
@@ -196,6 +206,7 @@ It depends on the ratio between calculations, communications and various managem
 
 Many overheads and when they show also depend on the underlying hardware.
 So the sweet spot may very well be different for different clusters, even if the application and configuration stays the same!
+For example, network communication always introduces latencies (short waiting times) for each connection and their bandwidth determines how long a communication takes. Here, clusters using different network architectures and technologies often exhibit different scaling behavior and configuration sweet spots for your applications.
 
 Another common issue lies within our measurements themself.
 We perform a single time measurement on a worker node that is possibly shared with other jobs at the same time.
@@ -215,7 +226,7 @@ In these cases, tools like `seff` show worse resource utilization results, since
 :::
 
 
-Scaling studies can be done with respect to different application and job parameters.
+Scaling studies can also be done with respect to different application and job parameters.
 For example, what is the execution time when we change the *workload*, e.g. a larger number of pixels, samples per pixels, or a more complex scene?
 How much does a communication overhead change, if we change the number of involved nodes while keeping the workload and number of tasks fixed, i.e. changing the *network communication surface*?
 Scaling studies like these can help identify pressure points that affect the applications performance.
@@ -236,12 +247,16 @@ It answers the question
 
 > How much faster is the application with $N$ parallel processes/threads, compared to the serial execution with $1$ process/thread)?
 
-It is defined by the comparison of wall times $T(N)$ of the application with $N$ parallel processes: $$S(N) = \frac{T(1)}{T(N)}$$
+![Sketched speedup for a perfectly and 98% parallelized application. Doubling the number of parallel processors makes the perfectly parallel application twice as fast. The 98% parallelized application does not speed up at the same rate.](fig/sketch_speedup.svg){alt="Sketched speedup for a perfectly and 98% parallelized application. Doubling the number of parallel processors makes the perfectly parallel application twice as fast. The 98% parallelized application does not speed up at the same rate."}
+
+Speedup is defined by the comparison of wall times $T(N)$ of the application with $N$ parallel processes: $$S(N) = \frac{T(1)}{T(N)}$$
 Here, $T(1)$ is the wall time for a sequential execution, and $T(N)$ is the execution with $N$ parallel processes.
-For $2$ processes, we observe a speedup of $S(2) = \frac{127.218}{67.443} \approx 1.89$
+For our raytracer, with $2$ processes, we observe a speedup of $S(2) = \frac{127.218}{67.443} \approx 1.89$
+In reality, our application only got $1.89\times$ faster, for the $2$ parallel processes we have spent on it. Ideally, we would have expected a speedup of $2$, so our application does not seem perfectly efficient in terms of *using* the additional parallel processes to be faster.
 
-*Efficiency* in this context is defined as $$\eta(N) = \frac{S(N)}{N}$$ with speedup $S(N)$ and describes by how much additional parallel processes, $N$, deviate from the theoretical linear optimum.
+We can calculate the *efficiency* with wich each additional parallel process contributes to the applications speedup: $$\eta(N) = \frac{S(N)}{N}$$ 
 
+![Sketched efficiency for a perfectly and 98% parallelized application. For the perfectly scaling case, each additional parallel process contributes well to solving the calculations faster. For the 98% parallelized application, adding more parallel processes has diminishing returns.](fig/sketch_efficiency.svg){alt="Sketched efficiency for a perfectly and 98% parallelized application. For the perfectly scaling case, each additional parallel process contributes well to solving the calculations faster. For the 98% parallelized application, adding more parallel processes has diminishing returns."}
 
 ::: challenge
 ## Exercise: Calculate Speedup and Efficency
@@ -289,8 +304,18 @@ However, it would be difficult to justify additional cores, if their contributio
 :::
 :::::::::::::
 
+:::::::::::::::::::::::::: discussion
+# Discussion: Why does the Speedup Efficiency drop?
+
+Adding more and more resources is not always speeding up our application.
+What may be possible reasons for worse speedup efficiency at larger numbers of parallel processors/threads?
+
+Briefly collect and discuss any reasons you can think of. 
+::::::::::::::::::::::::::
+
+
 ::: spoiler
-# (Optional) plotting our `.csv`s
+# (Optional) plotting our `.csv`
 
 If you have experience with python, you can use our [python script](files/plot_scaling_from_csvs.py) to create the same plots as above, but for your own data.
 It depends on `numpy`, `pandas`, and `matplotlib`, so make sure to prepare a corresponding python environment.
@@ -310,8 +335,15 @@ An application is said to *scale strongly*, if adding more cores significantly r
 
 ::: callout
 # Amdahls Law^[G. M. Amdahl, ‘Validity of the single processor approach to achieving large scale computing capabilities’, in Proceedings of the April 18-20, 1967, spring joint computer conference, in AFIPS ’67 (Spring). New York, NY, USA: Association for Computing Machinery, Apr. 1967, pp. 483–485. doi: 10.1145/1465482.1465560.]
+
+![The model behind Amdahls Law: Assume an application consists of serial sections, e.g. reading from a file, and parallelizable sections, e.g. calculations in a loop. Both fractions add up to the whole program, i.e. $s + p = 1$. Here, Speedup through parallelization is inherently limited by only speeding up the parallel sections.](fig/amdahl_model.drawio.png){alt='The model behind Amdahls Law: Assume an application consists of serial sections, e.g. reading from a file, and parallelizable sections, e.g. calculations in a loop. Both fractions add up to the whole program, i.e. $s + p = 1$. Here, Speedup through parallelization is inherently limited by only speeding up the parallel sections.'}
+
 The speedup of a program through parallelization is limited by the execution time of the serial fraction that is not parallelizable.
-For a given execution time $T(N) = s + \frac{p}{N}$, with $s$ the time for the serial fraction, and $p$, the time for parallel fraction, speedup $S$ is defined as $$S(N) = \frac{s+p}{s+\frac{p}{N}} = \frac{1}{s + \frac{p}{N}} \Rightarrow \lim_{N\rightarrow \infty}  S(N) = \frac{1}{s}$$
+For a given execution time $T(N) = s + \frac{p}{N}$, with $s$ the serial fraction, and $p$, the parallel fraction of the applications execution time, speedup $S$ is defined as $$S(N) = \frac{T(1)}{T(N)} = \frac{1}{s + \frac{p}{N}} \Rightarrow \lim_{N\rightarrow \infty}  S(N) = \frac{1}{s}$$
+
+In other words, increasing the number of parallel processes $N$ for an application that only has a serial part that is taking up $1$% of the execution time, will never exceed a speedup of $\frac{1}{s} = \frac{1}{0.01} = 100$.
+No matter how many processes we will use!
+
 :::::::::::
 
 :::::::::::::::::::::::::: discussion
@@ -324,22 +356,35 @@ What other factors could affect your decision, e.g. available hardware and corre
 ::::::::::::::::::::::::::::
 
 
+:::::::::::::::::::::::::: instructor
+# When should we stop adding CPU cores?
+
+The learners should realize there is a point of diminishing returns.
+Where exactly to draw the line is debatable, but in the previous example $N=32$ seems to be a sweet spot with the best Speedup and an efficiency $>50$%.
+
+There are many reasons why a large number of parallel processes may result in worse speedup. Among others, it may be due to I/O overhead, synchronization between threads, or a limited divisibility of the problem domain, where additional processors could not solve additional work.
+::::::::::::::::::::::::::
+
+
 ## If scaling is limited, why are there larger HPC systems? Weak scaling.
 For a fixed problem size, we observed that adding more parallel processors can only help up to a certain point.
-But what if the project benefits from increasing the workload size?
-Does a higher resolution, more accuracy, or more statistics, etc., improve our insights and results?
-If that is the case, the perspective on the issue changes and adding more parallel processors can become more feasible as well.
+But what if the project benefits from increasing the workload size, i.e. doing *more* calculations?
+For example, does a higher resolution, more accuracy, or more statistics, etc., improve our insights and results?
+In this case, our perspective on efficiency changes and we address a different optimization than before: Doing more calculations with an increasing number of parallel processors.
 For our raytracer example, increasing the workload corresponds to more pixels, more samples per pixel, and/or a more complex scene.
 
 *Weak scaling* refers to the scaling behavior of an application for a fixed workload per parallel processing unit, e.g. increasing the number of pixels by the same amount as the number of parallel processors $N$.
 
+
 ::: callout
-# Gustafsons Law^[J. L. Gustafson, ‘Reevaluating Amdahl’s law’, Commun. ACM, vol. 31, no. 5, pp. 532–533, May 1988, doi: 10.1145/42411.42415.]
-A program scales on $N$ parallel processors, if the problem size also scales with the number of processors.
-The speedup $S$ becomes
-$$\text{S(N)} = \frac{s+pN}{s+p} = s+pN = N+s(1-N)$$
-with $N$ processors, $s$ the time for the serial fraction, and $p$, the time for parallel fraction:
-:::::::::::
+# The difference between strong and weak scaling
+
+In the previous discussion about Amdahls Law we kept the total amount of calculations fixed and increased the number of parallel processors $N$.
+Now, we are transitioning to a different perspective where we increase *both*, the number total amount of calculations and the number of parallel processors $N$,
+
+In the former, we reach an absolute limit for moderate numbers of $N$ and would not benefit from increasing the number of parallel processes $N$.
+In the later case, we may benefit solving more calculations and we hope to be back in the business of Supercomputers with an $N$ in the order of thousands!
+:::
 
 To scale the workload of the snowman raytracer, we can increase the number of calculated pixels with the same factor with which we increase the number of parallel processors.
 For one processor we have $800 \times 800 = 640000$ pixel.
@@ -372,7 +417,9 @@ time mpirun -- ./build/raytracer -width=${pixel[${SLURM_NTASKS}]} -height=${pixe
 ::: spoiler
 # Different ways of scaling workloads: spp
 
-To scale the workload of the snowman raytracer, we can multiply the number of parallel MPI processes, `${SLURM_NTASKS}`, with the samples per pixel (starting from `-spp=128`).
+In each scaling study, it is crucial to identify which application parameters affect the execution time. There are often multiple ways.
+
+For the snowman raytracer, instead of changing the total number of pixels, we can multiply the number of parallel MPI processes (`${SLURM_NTASKS}`) with the samples per pixel (starting from `-spp=128`).
 For a single process, the whole $800 \times 800$ pixel picture is calculated in a single MPI process with 128 per pixel.
 Running with two MPI processes, both have to calculate half the number of pixels, but twice the amount of samples per pixel.
 
@@ -389,21 +436,23 @@ SPP="$[${SLURM_NTASKS}*128]"
 time mpirun -- ./build/raytracer -width=800 -height=800 -spp=${SPP} -threads=1 -png "$(date +%Y-%m-%d_%H%M%S).png"
 ```
 
-![Three snowmen in 800x800 with 128 samples per pixel](fig/spp128.png){alt='Three snowmen in 800x800 with 128 samples per pixel'}
+![Figure 1: Three snowmen in 800x800 with 128 samples per pixel](fig/spp128.png){alt='Three snowmen in 800x800 with 128 samples per pixel'}
 
-![Three snowmen in 800x800 with 8192 samples per pixel](fig/spp8192.png){alt='Three snowmen in 800x800 with 8192 samples per pixel'}
+![Figure 2: Three snowmen in 800x800 with 8192 samples per pixel](fig/spp8192.png){alt='Three snowmen in 800x800 with 8192 samples per pixel'}
 
-In direct comparison, and zooming in really close, you can see more noise in the first image, e.g. in the shadows.
+In direct comparison, and zooming in really close, you can see more noise in Figure 1, e.g. in the shadows, relative to Figure 2.
 One could argue that we passed the point of diminishing returns, though.
 Is a $64\times$ increase in computational cost worth the observed quality improvement?
 For the samples per pixel, we seem to not benefit much from weak scaling.
-Larger resolutions, by increasing the number of pixels, is the more useful dimension to increase in this case.
+Larger resolutions, by increasing the number of pixels, may be a more useful dimension to increase in this case.
+
+The usefulness of any computation can only be determined in the context of your scientific goals.
 :::
 
 Increasing the resolution may be worth the effort, if we have a use for a larger, more detailed picture.
 In practice, there is a cutoff, beyond which no reasonable improvement is to be expected.
 This is a question about accuracy, error margins, and overall quality, which can only be answered in the specific context of each research project.
-If there is no real improvement by increasing the workload, running a weakly scaling application is really just wasting valuable computational time and energy.
+If there is no tangible benefit of increasing the workload, running at a larger number of parallel processes does not serve a purpose, even if the application still exhibits good "weak scaling efficiency".
 
 If we increase the workload at the rate as our number of parallel processes ($N$) our speedup is defined as $$S_{\text{weak}}(N) = \frac{T(1)}{T(N)} \times N$$ since we do $N$ times more work with $N$ processors, compared to our reference $T(N=1)$.
 Efficiency is still defined as $$\eta_{\text{weak}}(N) = \frac{S_{\text{weak}}(N)}{N} = \frac{T(1)}{T(N)}$$
@@ -419,11 +468,11 @@ Repeat the previous scaling study and increase the number of pixels accordingly 
 - Create a `.csv` file and run the plotting script 
 
 ```csv
-ntasks,pixel,time,speedup,efficiency
-1,800,123.162
-2,1131,122.562
-4,1600,124.522
-8,2263,125.606
+ntasks, pixel,    time, speedup, efficiency
+     1,   800, 123.162,     ???,        ???
+     2,  1131, 122.562,     ???,        ???
+     4,  1600,     ???,     ???,        ???
+     8,  2263,     ???,     ???,        ???
 ...
 ```
 
@@ -432,14 +481,14 @@ Do you see a qualitative difference in the resulting `.png` files and is the inc
 
 ::: solution
 ```csv
-ntasks,pixel,time,speedup,efficiency
-1,800,123.162
-2,1131,122.562
-4,1600,124.522
-8,2263,125.606
-16,3200,125.803
-32,4526,130.137
-64,6400,138.636
+ntasks, pixel,    time, speedup, efficiency
+     1,   800, 123.162,    1.00,       1.00
+     2,  1131, 122.562,    2.01,       1.00
+     4,  1600, 124.522,    3.96,       0.99
+     8,  2263, 125.606,    7.84,       0.98
+    16,  3200, 125.803,   15.66,       0.98
+    32,  4526, 130.137,   30.28,       0.95
+    64,  6400, 138.636,   56.86,       0.89
 ```
 
 The scaling behavior is reaching an asymptotic limit, where each additional processor is contributing with the same efficiency to the increased workload.
@@ -455,6 +504,14 @@ However, going way beyond $6400 \times 6400$ pixels is probably not very meaning
 
 :::
 ::::::::::::::::::::::::::::::::::::
+
+::: callout
+# Gustafsons Law^[J. L. Gustafson, ‘Reevaluating Amdahl’s law’, Commun. ACM, vol. 31, no. 5, pp. 532–533, May 1988, doi: 10.1145/42411.42415.]
+A program scales on $N$ parallel processors, if the problem size also scales with the number of processors.
+The speedup $S$ becomes
+$$\text{S(N)} = \frac{s+pN}{s+p} = s+pN = s+(1-s)N$$
+with $N$ processors, $s$ the serial fraction, and $p$ the parallel fraction of the execution time.
+:::::::::::
 
 
 ## Summary
