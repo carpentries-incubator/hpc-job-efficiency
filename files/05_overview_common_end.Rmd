@@ -1,0 +1,74 @@
+## How to identify a bottleneck?
+
+:::::::::::::::::::::::::: instructor
+## Intention: Uncover one or two issues in the application
+
+What we're doing here:
+
+- Where does our system choke?
+- What's a bottleneck?
+- How can we identify a bottleneck?
+- "Online" and "after the fact" workflows of performance measurements (trace, accumulated results, attached to the process (live), or after it ran)
+- Point to additional resources of common performance/bottleneck issues, e.g. on hpc-wiki
+
+Maybe something like this already occurred before in 4. Scaling Study, or 5. Performance Overview
+
+Summary could be:
+- General advice on the workflow 
+- Performance reports may provide an automated summary with recommendations
+- Performance metrics can be categorized by the underlying hardware, e.g. CPU, memory, I/O, accelerators.
+- Bottlenecks can appear by metrics being saturated at the physical limits of the hardware or indirectly by other metrics being far from what the physical limits are.
+- Interpreting bottlenecks is closely related to what the application is supposed to do.
+- Relative measurements (baseline vs. change)
+   - system is quiescent, fixed CPU freq + affinity, warmups, ...
+   - Reproducibility -> link to git course?
+- Scanning results for smoking guns
+- Any best practices etc.
+
+:::::::::::::::::::::::::::::::::::::
+
+:::: challenge
+## Exercise: Match application behavior to hardware
+
+Which parts of the computer hardware may become a point of contention for these application patterns:
+
+1. Calculating matrix multiplications
+2. Reading data from processes on other computers
+3. Calling many different functions from many equally likely if/else branches
+4. Writing very large files (TB)
+5. Comparing strings for matches
+6. Constructing a large simulation model
+7. Reading thousands of small files for each iteration
+
+Maybe not the best questions, also missing something for accelerators.
+
+::: solution
+1. CPU (FLOPS), maybe the cache hierarchy if matrix elements do not align well to cache sizes
+2. I/O (network)
+3. CPU (Front-End), difficult to prepare instructions in time
+4. I/O (disk), bandwidth limited
+5. CPU (Back-End), getting strings through the caches
+6. Memory (capacity)
+7. I/O (disk)
+:::
+::::
+
+
+## Summary
+Dedicated performance measurement tools are helpful to create reports of the general job behavior.
+These tools either trace every event, or sample the application and hardware state at regular intervals.
+Many tools are available, but some may have to be set up by the HPC system administrators, or rely on valid licenses.
+
+The relationship between a job and the execution on physical hardware can become a very deep topic.
+One of these topics is the correct mapping of job processes to the requested number of CPU cores, addressed in the next episode.
+
+::: keypoints
+- Performance tools measure data as regular samples or by tracing every event
+- The data is either processed and visualized in a timeline or aggregated in a final profile
+- Job performance relates closely to contention points in physical hardware
+  - CPU utilization (front-end, ALU, back-end), multithreading, vectorization
+  - Memory utilization (capacity, bandwidth, latency)
+  - Disk I/O
+  - Network I/O
+
+:::
