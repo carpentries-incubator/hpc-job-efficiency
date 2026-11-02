@@ -56,8 +56,9 @@ episodes:
 - 04_scalingstudy.md
 - 05_overview_ClusterCockpit.Rmd
 #- 05_overview_performancereports.Rmd
-- 08_accelerators.md
-- 09_nextsteps.md
+#- 06_bottlenecks.md
+- 07_accelerators.md
+- 08_nextsteps.md
 
 # Information for Learners
 learners:
