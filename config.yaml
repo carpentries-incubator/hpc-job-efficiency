@@ -56,7 +56,6 @@ episodes:
 - 04_scalingstudy.md
 - 05_overview_ClusterCockpit.Rmd
 #- 05_overview_performancereports.Rmd
-- 06_pinning.md
 - 08_accelerators.md
 - 09_nextsteps.md
 
