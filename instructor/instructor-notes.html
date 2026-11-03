@@ -305,7 +305,7 @@
 <div class="accordion accordion-flush" id="accordionFlush7">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading7">
-        <a href="06_pinning.html">6. Pinning</a>
+        <a href="07_accelerators.html">6. Performance of Accelerators</a>
     </div>
 <!--/div.accordion-header-->
 
@@ -317,19 +317,7 @@
 <div class="accordion accordion-flush" id="accordionFlush8">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading8">
-        <a href="08_accelerators.html">7. Performance of Accelerators</a>
-    </div>
-<!--/div.accordion-header-->
-
-  </div>
-<!--/div.accordion-item-->
-</div>
-<!--/div.accordion-flush-->
-
-<div class="accordion accordion-flush" id="accordionFlush9">
-  <div class="accordion-item">
-    <div class="accordion-header" id="flush-heading9">
-        <a href="09_nextsteps.html">8. Next Steps</a>
+        <a href="08_nextsteps.html">7. Next Steps</a>
     </div>
 <!--/div.accordion-header-->
 
@@ -778,32 +766,10 @@ is quiescent, fixed CPU freq + affinity, warmups, … - Reproducibility
 -&gt; link to git course? - Scanning results for smoking guns - Any best
 practices etc.</p>
 <hr>
-<br></section><section id="06_pinning"><h2 class="section-heading"><a href="06_pinning.html">Pinning</a></h2>
+<br></section><section id="07_accelerators"><h2 class="section-heading"><a href="07_accelerators.html">Performance of Accelerators</a></h2>
 <hr class="half-width">
-<h3 id="06_pinning-headingInstructor1">
-<a href="06_pinning.html#headingInstructor1">Intention: Go deeper in performance and hardware relationship</a><a class="anchor" aria-label="anchor" href="#06_pinning-headingInstructor1"></a>
-</h3>
-<p>Narrative:</p>
-<ul>
-<li>We have already seen how to observe resource utilization and
-identify inefficient use of hardware resources.</li>
-<li>One way to improve resource utilization is to control where
-processes and threads are placed.</li>
-<li>How does the mapping of work to CPUs and memory regions affect
-performance?</li>
-</ul>
-<p>What we’re doing here:</p>
-<ul>
-<li>Introduce pinning and slurm affinity options</li>
-<li>Relate to hardware effects</li>
-<li>A few practical tricks to diagnose and understand poor process
-placement.</li>
-</ul>
-<hr>
-<br></section><section id="08_accelerators"><h2 class="section-heading"><a href="08_accelerators.html">Performance of Accelerators</a></h2>
-<hr class="half-width">
-<h3 id="08_accelerators-headingInstructor1">
-<a href="08_accelerators.html#headingInstructor1">Intention: Jump onto accelerator with the example application</a><a class="anchor" aria-label="anchor" href="#08_accelerators-headingInstructor1"></a>
+<h3 id="07_accelerators-headingInstructor1">
+<a href="07_accelerators.html#headingInstructor1">Intention: Jump onto accelerator with the example application</a><a class="anchor" aria-label="anchor" href="#07_accelerators-headingInstructor1"></a>
 </h3>
 <p>Narrative:</p>
 <ul>
@@ -820,23 +786,23 @@ process!</li>
 measurement tools</li>
 </ul>
 <hr>
-<br><h3 id="08_accelerators-headingInstructor2">
-<a href="08_accelerators.html#headingInstructor2">ToDo</a><a class="anchor" aria-label="anchor" href="#08_accelerators-headingInstructor2"></a>
+<br><h3 id="07_accelerators-headingInstructor2">
+<a href="07_accelerators.html#headingInstructor2">ToDo</a><a class="anchor" aria-label="anchor" href="#07_accelerators-headingInstructor2"></a>
 </h3>
 <p>Don’t mention FPGAs too much, maybe just a node what accelerators
 could be, besides GPU. Goal is to keep it simple and accessible, focus
 on what’s common in most HPC systems these days</p>
 <hr>
-<br><h3 id="08_accelerators-headingInstructor3">
-<a href="08_accelerators.html#headingInstructor3">ToDo</a><a class="anchor" aria-label="anchor" href="#08_accelerators-headingInstructor3"></a>
+<br><h3 id="07_accelerators-headingInstructor3">
+<a href="07_accelerators.html#headingInstructor3">ToDo</a><a class="anchor" aria-label="anchor" href="#07_accelerators-headingInstructor3"></a>
 </h3>
 <p>Explain how to decide where to run something. CPU vs. small GPU
 vs. high-end GPUs. Touches on transfer overhead etc.</p>
 <hr>
-<br></section><section id="09_nextsteps"><h2 class="section-heading"><a href="09_nextsteps.html">Next Steps</a></h2>
+<br></section><section id="08_nextsteps"><h2 class="section-heading"><a href="08_nextsteps.html">Next Steps</a></h2>
 <hr class="half-width">
-<h3 id="09_nextsteps-headingInstructor1">
-<a href="09_nextsteps.html#headingInstructor1">Intention: Provide a roadmap learners could follow</a><a class="anchor" aria-label="anchor" href="#09_nextsteps-headingInstructor1"></a>
+<h3 id="08_nextsteps-headingInstructor1">
+<a href="08_nextsteps.html#headingInstructor1">Intention: Provide a roadmap learners could follow</a><a class="anchor" aria-label="anchor" href="#08_nextsteps-headingInstructor1"></a>
 </h3>
 <p><strong>Most important:</strong> enable users to translate from
 example workload to their own code! Guide on how to translate learning
@@ -863,8 +829,8 @@ many levels)</li>
 <li>Deeper application profiling &amp; tools to use</li>
 </ul>
 <hr>
-<br><h3 id="09_nextsteps-headingInstructor2">
-<a href="09_nextsteps.html#headingInstructor2">Instructor Note</a><a class="anchor" aria-label="anchor" href="#09_nextsteps-headingInstructor2"></a>
+<br><h3 id="08_nextsteps-headingInstructor2">
+<a href="08_nextsteps.html#headingInstructor2">Instructor Note</a><a class="anchor" aria-label="anchor" href="#08_nextsteps-headingInstructor2"></a>
 </h3>
 <p>Ask learners: - Can a calculation be fast but scientifically useless?
 - Can a calculation be extremely accurate but unnecessarily

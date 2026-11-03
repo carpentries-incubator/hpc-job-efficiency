@@ -305,7 +305,7 @@
 <div class="accordion accordion-flush" id="accordionFlush7">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading7">
-        <a href="06_pinning.html">6. Pinning</a>
+        <a href="07_accelerators.html">6. Performance of Accelerators</a>
     </div>
 <!--/div.accordion-header-->
 
@@ -317,19 +317,7 @@
 <div class="accordion accordion-flush" id="accordionFlush8">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading8">
-        <a href="08_accelerators.html">7. Performance of Accelerators</a>
-    </div>
-<!--/div.accordion-header-->
-
-  </div>
-<!--/div.accordion-item-->
-</div>
-<!--/div.accordion-flush-->
-
-<div class="accordion accordion-flush" id="accordionFlush9">
-  <div class="accordion-item">
-    <div class="accordion-header" id="flush-heading9">
-        <a href="09_nextsteps.html">8. Next Steps</a>
+        <a href="08_nextsteps.html">7. Next Steps</a>
     </div>
 <!--/div.accordion-header-->
 
@@ -497,57 +485,12 @@ vectorization</li>
 <li>Network I/O</li>
 </ul>
 </li>
-</ul></section><section id="06_pinning"><h2 class="section-heading"><a href="06_pinning.html">Pinning</a></h2>
-<hr class="half-width">
-<ul>
-<li>A Slurm-CPU is a schedulable execution unit visible to the operating
-system.</li>
-<li>A process usually equates a Slurm task and involves <span class="math inline">\(\ge 1\)</span> (Slurm-)CPUs.</li>
-<li>OpenMP threads are software threads created by an application.
-<ul>
-<li>It is common to run one OpenMP-thread per CPU.</li>
-</ul>
-</li>
-<li>Pinning, or binding, is to keep computation and data close together
-in order to improve performance through minimized latencies.
-<ul>
-<li>The CPU- and memory-binding options of <code>srun</code> control
-resource allocation and placement of Slurm jobs.</li>
-<li>
-<code>srun --cpu-bind ...</code> controls where Slurm runs tasks,
-i.e., where computation runs.</li>
-<li>
-<code>srun --mem-bind ...</code> controls where Slurm allocates
-memory, i.e., where data is allocated.</li>
-</ul>
-</li>
-<li>The benefit of CPU and memory placement strongly depends on the
-application, cluster configuration and hardware.</li>
-<li>On NUMA systems, CPU- and memory often go together to keep
-computation and data close to one another.</li>
-<li>Hints provide guidance to Slurm about the expected characteristics
-of an application.
-<ul>
-<li>
-<code>srun --hint=compute_bound ...</code> may be beneficial for
-applications that require many CPU resources.</li>
-<li>
-<code>srun --hint=memory_bound ...</code> may be beneficial for
-applications that are limited by memory bandwidth.</li>
-</ul>
-</li>
-<li>Memory-intensive applications are often more sensitive to NUMA
-locality than compute-intensive applications. The <code>stream</code>
-program is such a case.</li>
-<li>
-<code>numactl</code> provides fine-grained control over CPU and
-memory placement.</li>
-</ul></section><section id="08_accelerators"><h2 class="section-heading"><a href="08_accelerators.html">Performance of Accelerators</a></h2>
+</ul></section><section id="07_accelerators"><h2 class="section-heading"><a href="07_accelerators.html">Performance of Accelerators</a></h2>
 <hr class="half-width">
 <ul>
 <li>Tools to measure GPU/FPGA performance of a job</li>
 <li>Common symptoms of GPU/FPGA problems</li>
-</ul></section><section id="09_nextsteps"><h2 class="section-heading"><a href="09_nextsteps.html">Next Steps</a></h2>
+</ul></section><section id="08_nextsteps"><h2 class="section-heading"><a href="08_nextsteps.html">Next Steps</a></h2>
 <hr class="half-width">
 <ul>
 <li>There are many profilers, some are language-specific, others are
