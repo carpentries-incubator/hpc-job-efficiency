@@ -110,7 +110,7 @@ the way they configure, execute, and optimize their workloads.
 Throughout this lesson, we will build intuition about resource
 utilization and start to approach performance optimization.
 
-## Efficiency as in not wasting your time waiting
+## Getting a feel for the size of your cluster
 
 As stated above an HPC system is a resource that you share with other users.
 How you setup your jobs has an impact on how long you have to wait for your
@@ -342,13 +342,40 @@ Based on the information listed above we have collected the following data
 | Cores    | 8028     | 80            |
 | Memory   | 88308 GB | 883 GB        |
 
-Note that these numbers are averages. Almost no user will use these resources
-sustained over a long period of time. In practice users will run jobs some of
-the time that use more resources. Nevertheless, these average resources are
+Note that these numbers are averages.
+These average resources are
 likely substantially higher than what you have on your desktop, and if you
 ask for your average share then your job should start relatively quickly.
 
 ::::::::::::::::
+
+::::: discussion
+
+Do the per-user limits mean we can never use more than this amount of resources?
+
+::::::::::::::::
+::::::: solution
+
+Users are typically not limited to the average per-user resources that we've calculated here.
+In reality, we observe:
+
+- The average is over a long periods of time. Short term you can usually use much more.
+- Users are in different phases of their projects, some may require computational resources
+  while others are still in preparation and need them later.
+- Many users do not use their full share of resources, which leaves room for others to use more.
+- Not all users are equal. For example, if some research groups have contributed to the funding
+  of the cluster, they should also get more resources than those who did not.
+- The world is not perfectly fair. Especially on larger clusters, HPC resources have to be
+  requested via project proposals. Those who write more / better proposals can use more resources.
+
+In practice it is really difficult to "saturate" your own share of the cluster with calculations
+over a long period of time.
+This is one of the reasons why a large and shared HPC system can be more efficient than
+individual computing resources.
+
+::::::::::::::::
+
+
 
 Above we have established an idea of the resources available to us on
 average. In practice, reality can be quite a bit different from average.
@@ -375,6 +402,7 @@ GPU-big             1180/612/224/2016                       12/4/2/18
 
 ::::::::::: spoiler
 ### Specifying the column width
+
 When running `sinfo` on large clusters the information it provides
 might not fit in the default column width. At that point `sinfo` will
 just truncate the column contents which may render the data useless.
@@ -382,6 +410,7 @@ To avoid this issue you can specify the width of the columns with
 the "\<fieldname\>:\<width\>" notation. In the example shown above the
 width of the `CPUsState` and `NodeAIOT` columns is set to 40
 characters.
+
 :::::::::::::::::::
 
 In the table that `sinfo` produced the states of the CPUs and nodes are
@@ -402,6 +431,8 @@ may request exclusive access to a node in their job script as well
 but that cannot use all the cores). So there is no guarantee that
 you can get the idle cores, but with small jobs you might be able to.
 
+## Efficiency as in not wasting your time waiting
+
 So far, we have looked at the scale of the cluster we are using and
 what resources we should be able to get on average. We have also
 looked at what resources are free right now. If we have a job that we
@@ -411,42 +442,91 @@ Nevertheless, we should be able to get an idea of when a job we have
 submitted will run.
 
 For this purpose create a jobscript. In its simplest case we can write
-something like
+a file `basic001.job` containing something like
 ```bash
 #!/bin/bash
 #SBATCH --job-name=basic001
 #SBATCH --nodes=1
-#SBATCH --tasks-per-node=112
+#SBATCH --partition=<put your partition here>
+#SBATCH --ntasks=112
+#SBATCH --cpus-per-task=1
 #SBATCH --time=01:00:00
-#SBATCH --mem-per-cpu=4gb
-#SBATCH --partition=<partition>
-srun bash -c "sleep 2; hostname"
+#SBATCH --mem=448gb
+
+# Always a good idea to purge modules first to start with a clean module environment
+module purge
+# <put the module load commands for your cluster here>
+
+mpirun -n 112 bash -c "sleep 2; hostname"
 ```
-In addition we create a few more:
+This file is essentially just a `bash` script. The first line contains the
+shebang (`#!`) followed by the name of the bash executable. It ensures that
+the script is executed with a bash shell. The subsequent lines start with
+`#SBATCH` and are read by the `sbatch` command to pass options to the scheduler.
+Line-by-line these options are:
+
+- The name of the job as shown by `squeue` is `basic001`.
+- Run on 1 node...
+- ... from the partition `<put your partition here>`.
+- 112 MPI tasks (we want to fill entire nodes)...
+- ... each of which uses one CPU core.
+- The timelimit is 1 hour.
+- 448 GB of memory per node.
+
+:::::::: spoiler
+# The `#SBATCH` lines must appear together at the top
+
+The `sbatch` command stops reading the `#SBATCH` options at first non-comment,
+non-blank line of code. For that reason it is best to put the scheduler options
+together at the top of the script directly after the shebang.
+::::::::::::::::
+
+:::::::: spoiler
+# The `--mem` directive requests memory per node
+
+The `--mem` directive can be confusing as it does not define the total amount
+of memory of your job, but the total amount of memory *per node*.
+Here, this distinction does not matter as we only use one node, but you should
+keep in mind that changing the number of nodes often implies that you need to
+adapt the `--mem` value as well.
+
+Alternatively, you can also use the `--mem-per-cpu` directive such that the memory
+allocation automatically scales with the number of cores.
+
+However, even in this case you need to verify that the memory consumption of
+your application actually scales linearly with the number of cores for your
+application!
+::::::::::::::::
+
+In addition we create a few more, such as `basic010.job`:
 ```bash
 #!/bin/bash
 #SBATCH --job-name=basic010
 #SBATCH --nodes=10
-#SBATCH --tasks-per-node=112
+#SBATCH --partition=<put your partition here>
+#SBATCH --ntasks=1120
+#SBATCH --cpus-per-task=1
 #SBATCH --time=01:00:00
-#SBATCH --mem-per-cpu=4gb
-#SBATCH --partition=<partition>
-srun bash -c "sleep 2; hostname"
+#SBATCH --mem=448gb
+module purge
+mpirun -n 1120 bash -c "sleep 2; hostname"
 ```
-and
+and `basic100.job`:
 ```bash
 #!/bin/bash
 #SBATCH --job-name=basic100
 #SBATCH --nodes=100
-#SBATCH --tasks-per-node=112
+#SBATCH --partition=<put your partition here>
+#SBATCH --ntasks=11200
+#SBATCH --cpus-per-task=1
 #SBATCH --time=01:00:00
-#SBATCH --mem-per-cpu=4gb
-#SBATCH --partition=<partition>
-srun bash -c "sleep 2; hostname"
+#SBATCH --mem=448gb
+module purge
+mpirun -n 11200 bash -c "sleep 2; hostname"
 ```
-Then we submit these jobs
+Then we submit these jobs using the `sbatch` command
 ```bash
-$ sbatch basic100.sh; sbatch basic010.sh; sbatch basic001.sh
+$ sbatch basic100.job; sbatch basic010.job; sbatch basic001.job
 Submitted batch job 958810
 Submitted batch job 958811
 Submitted batch job 958812
@@ -470,6 +550,7 @@ with the wait getting longer with increasing job size.
 
 :::::::: challenge
 ### Establish the wait on the cluster you're on
+
 The waiting times shown above were established on a cluster that you probably don't
 have access to, at a random time in the past. Can you establish what the current
 waiting times are on the cluster you're on? Remember, you just need to get the
