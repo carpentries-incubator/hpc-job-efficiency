@@ -141,13 +141,29 @@ gpu4090             8                   32                  360448              
 gpuh200             4                   128                 1547843             gpu:h200:8          7-00:00:00
 ```
 
+:::::::: challenge
+# What is does the configuration of the cluster you're on look like?
+
+The table above lists the configuration of the machine on which this course was
+developed. The machine you are currently using is almost certainly different.
+Therefore you should find out what that machine has.
+::::::::::::::::::
+
 :::::::: spoiler
 ### `sinfo` is part of SLURM
 The `sinfo` command is a component of the [SLURM](https://link.springer.com/chapter/10.1007/10968987_3) scheduler.
 The scheduler is a tool that lets you submit jobs, maintains a list of waiting jobs, and allocates resources to
 run jobs. In addition the scheduler keeps a database of jobs that have been submitted or run, what resources
-they have used, and whether they were successful or not. Other useful SLURM commands include `salloc`, `sacct`,
-`sbatch`, `seff`, and `srun`. These commands will be introduced later. As SLURM was specifically designed for
+they have used, and whether they were successful or not. Useful SLURM commands include:
+
+- `sinfo` for retrieving configuration information (including cluster details),
+- `salloc` for allocating resources,
+- `sacct` for accounting data,
+- `sbatch` for adding a job to the batch queue,
+- `seff` for retrieving job efficiency information, and
+- `srun` for executing/running a calculation.
+
+These commands will be introduced later. As SLURM was specifically designed for
 Linux clusters (the "L" in SLURM stands for "Linux") and distributed under the GNU General Public License
 it is often used on HPC systems in the academic community.
 ::::::::::::::::
@@ -184,67 +200,41 @@ you want your job to run on. On other machines the scheduler might select
 a default partition based on the resources you request.
 :::::::::::::::
 
-Whereas the `sinfo` command gives you access to information on a partition
-basis, you can also get information about the particular node you are on.
-Normally that node will be a login node, but when used in a job script these
-commands can give you information on specific nodes.
+::::::::: challenge
+# What are the partitions on your machine suitable for?
 
-```bash
-lscpu | grep "^CPU(s):"
-lscpu | grep "Thread(s) per core:"
-```
-```output
-CPU(s):                               192
-Thread(s) per core:                   1
-```
-
-If `lscpu` is not available on your machine, you can also use
-``` bash
-cat /proc/cpuinfo | grep "core id" | wc -l
-```
-``` output
-192
-```
-
-::::::::: caution
-### lscpu and cpuinfo may report "funny" core counts
-The `lscpu` command lists the "Thread(s) per core" as 1. It also lists the
-number of CPUs as 192 which is correct. With processors that support
-hyperthreading though, you might get that the "Thread(s) per core" is listed
-as 2, and you would notice that the number of CPUs gets reported as twice
-the number of physical cores.
-
-On such systems `/proc/cpuinfo` would also show twice as many cores as there
-are physical cores. In `/proc/cpuinfo` there is no indication that the
-processor supports hyperthreading and the number of cores reported is
-twice the real number of cores. With `/proc/cpuinfo` you simply have to know
-whether the processor you have supports hyperthreading or not.
-
-This means that when you use `lscpu` or `/proc/cpuinfo` you have to be
-careful as they might report something else than what you expect. Therefore
-it is probably better to stick with `sinfo`. In addition `sinfo` reports
-the configuration that the scheduler uses to manage the resources. If you
-want to predict how the scheduler will manage the job you are about to
-submit then going by the information it uses is better anyway.
-:::::::::::::::::
+Above you found out what partitions are configured on the machine you're on.
+Looking at the partitions and the characteristics of the nodes what kind
+of jobs would be suitable to run using which partitions?
+:::::::::::::::::::
 
 Given the number of cores per node (36) and the number of nodes in the system
 (223) you can calculate the number of cores in the cluster. In this case that
 comes to about 8028 cores in total, which is substantially higher than the number of
 cores in your local machine or any of the login nodes on the cluster.
 
-Another key parameter is the memory in the machine. To see how much memory is
-available on the node you are on you can use
+Another key parameter is the memory available on your cluster. The `sinfo` command
+lists the memory size in MB, hence the `95000+` corresponds to 95 GB *or more*.
+To write appropriate job scripts it would be useful to know the actual memory sizes
+available. Unfortunately `sinfo` does not have a good way of summarizing this
+information. Instead the best you can do is list the memory sizes of all nodes.
+Choosing the right options we can conveniently sort the nodes according to their
+memory sizes, running:
 
 ```bash
-cat /proc/meminfo | grep "MemTotal"
-```
-```output
-MemTotal:       395695636 kB
+sinfo -O partition,memory:15,nodehost | awk '{print $1 "\t\t" $2}' | sort -u -k1,1 -k2n
 ```
 
-This amount of memory comes to about 396 GB per node, at 223 nodes in the cluster that
-means that there is about 88308 GB of memory in aggregate. Again this is a huge amount
+::::::: challenge
+# What memory sizes are available on your machine?
+
+Use the results from the command above to get an overview of the memory sizes
+of the nodes in your machine.
+:::::::::::::::::
+
+Making a conservative assessment we know that there are at least 95 GB per node,
+at 223 nodes in the cluster that
+means that there is about 21185 GB of memory in aggregate. Again this is a huge amount
 of memory compared to what you will have on your desktop.
 
 As you have to share these resources with other users on the machine you might want
@@ -536,7 +526,7 @@ We can use the `squeue` command to ask the scheduler when it estimates these job
 will start. To do this we run
 
 ```bash
-squeue --start -j 958810,958811,958812
+squeue --me --start
 ```
 ```output
              JOBID PARTITION     NAME     USER ST          START_TIME  NODES SCHEDNODES           NODELIST(REASON)
@@ -615,7 +605,7 @@ Create a number of jobs with different job lengths.
 For example 10 minutes, 1 hour, 10 hours, 100 hours,
 similarly to what waa done above. Select a small number
 of nodes, 1 or 2 should be fine. Submit all jobs at
-the same time and run `squeue --start -j <jobids>`
+the same time and run `squeue --me --start`
 to get the estimated starting times.
 :::::::::::::::::::::::::
 
@@ -639,7 +629,7 @@ Create a number of jobs with different memory requests.
 For example 1 GB, 2 GB, 4 GB, etc. per core.
 Select a small number
 of nodes, 1 or 2 should be fine. Submit all jobs at
-the same time and run `squeue --start -j <jobids>`
+the same time and run `squeue --me --start`
 to get the estimated starting times.
 :::::::::::::::::::::::::
 
@@ -650,5 +640,5 @@ to get the estimated starting times.
 - `sinfo` gets you information about how large your cluster is.
 - `sreport` can provide information about the number of users actively using the cluster.
 - `sbatch` lets you submit jobs.
-- `squeue --start` provides estimated start times for your jobs.
+- `squeue --me --start` provides estimated start times for your jobs.
 ::::::::::::::::::::
