@@ -421,6 +421,42 @@ may request exclusive access to a node in their job script as well
 but that cannot use all the cores). So there is no guarantee that
 you can get the idle cores, but with small jobs you might be able to.
 
+Alternatively, can get a list of idle nodes with
+```bash
+sinfo -t idle
+```
+```output
+PARTITION  AVAIL  TIMELIMIT  NODES  STATE NODELIST
+STD-l-12h     up   12:00:00      3   plnd ndstd[127,130-131]
+STD-l-12h     up   12:00:00      1  maint ndstd123
+STD-m-48h     up 2-00:00:00      3   plnd ndstd[127,130-131]
+STD-m-48h     up 2-00:00:00      1  maint ndstd123
+STD-s-96h*    up 4-00:00:00      3   plnd ndstd[127,130-131]
+STD-s-96h*    up 4-00:00:00      1  maint ndstd123
+HIM-l-12h     up   12:00:00      0    n/a
+HIM-m-48h     up 2-00:00:00      0    n/a
+HIM-s-96h     up 4-00:00:00      0    n/a
+SHM-l-24h     up 1-00:00:00      0    n/a
+SHM-s-96h     up 4-00:00:00      0    n/a
+GPU-big       up 2-00:00:00      2   idle ndgpu[007,011]
+GPU-small     up 2-00:00:00      1   idle ndgpu010
+GPU-H200      up 2-00:00:00      0    n/a
+STS           up    1:00:00      0    n/a
+FST           up    8:00:00      0    n/a
+STD-o-14d     up 14-00:00:0      3   plnd ndstd[127,130-131]
+STD-o-14d     up 14-00:00:0      1  maint ndstd123
+HIM-o-14d     up 14-00:00:0      0    n/a
+SHM-o-14d     up 14-00:00:0      0    n/a
+```
+Note that this overview also lists nodes that are idle, as
+in they are not doing any compute, but that are not available
+for calculations. The nodes in the states `maint` for
+maintenance, and `plnd` for nodes that are planned for jobs
+that cannot start right now (like jobs that need more nodes
+than are free right now), are examples of nodes not available
+for computation. Only the nodes in the state `idle` are ones
+that are idle and available for computation.
+
 ## Efficiency as in not wasting your time waiting
 
 So far, we have looked at the scale of the cluster we are using and
