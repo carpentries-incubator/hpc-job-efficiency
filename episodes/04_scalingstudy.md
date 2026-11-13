@@ -432,7 +432,7 @@ ntasks,time,speedup,efficiency
 ...
 ```
 
-You may want to use any data visualization tool, such as Python or a spreadsheet
+You may want to use any data visualization tool, such as Python script or a spreadsheet
 application, to visualize the results.
 
 What number of MPI processes would provide a reasonable *working point* for the Raytracer
@@ -728,7 +728,7 @@ substantially.
 
 In this example, increasing the number of MPI processes from $1$ to $64$ also increases
 the number of samples per pixel from $128$ to $8192$. This represents a $64$-fold
-increase in the total number of samples per pixel and consequently, the total numbers
+increase in the number of samples per pixel and, consequently, in the total number
 of samples.
 
 Is this improvement in image quality worth the additional computational effort?
