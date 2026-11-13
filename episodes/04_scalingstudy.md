@@ -92,7 +92,7 @@ from other workloads running on the compute nodes.
 This allows us to investigate how the execution time changes as we make additional
 computational resources available to the application.
 
-![Sketched execution times for a perfectly parallelized application and a 98% parallelizable application. When the number of parallel processes is doubled, execution time is halved in the perfectly parallel case, while the 98% parallelizable application achieves a slightly smaller reduction.](fig/sketch_scaling.svg){alt="Sketched execution times for a perfectly parallelized application and a 98% parallelizable application. When the number of parallel processes is doubled, execution time is halved in the perfectly parallel case, while the 98% parallelizable application achieves a slightly smaller reduction."}
+![Sketched execution times for a perfectly parallelized application and a $98\%$ parallelizable application. When the number of parallel processes is doubled, execution time is halved in the perfectly parallel case, while the $98\%$ parallelizable application achieves a slightly smaller reduction.](fig/sketch_scaling.svg){alt="Sketched execution times for a perfectly parallelized application and a $98\%$ parallelizable application. When the number of parallel processes is doubled, execution time is halved in the perfectly parallel case, while the $98\%$ parallelizable application achieves a slightly smaller reduction."}
 
 We will begin our scaling study using the job script `render_snowman.sbatch`:
 
@@ -385,7 +385,7 @@ Parallel efficiency measures how closely the observed speedup approaches ideal l
 speedup. It is a measure of scaling effectiveness, not a direct measurement of CPU
 utilization.
 
-![Sketched speedup for a perfectly and 98% parallelized application. Doubling the number of parallel processors makes the perfectly parallel application twice as fast. The 98% parallelized application does not speed up at the same rate.](fig/sketch_speedup.svg){alt="Sketched speedup for a perfectly and 98% parallelized application. Doubling the number of parallel processors makes the perfectly parallel application twice as fast. The 98% parallelized application does not speed up at the same rate."}
+![Sketched speedup for a perfectly and $98\%$ parallelized application. Doubling the number of parallel processors makes the perfectly parallel application twice as fast. The $98\%$ parallelized application does not speed up at the same rate.](fig/sketch_speedup.svg){alt="Sketched speedup for a perfectly and $98\%$ parallelized application. Doubling the number of parallel processors makes the perfectly parallel application twice as fast. The $98\%$ parallelized application does not speed up at the same rate."}
 
 Speedup is defined as the ratio of the execution time using a single process to
 the execution time using $N$ parallel processes: $$S(N) = \frac{T(1)}{T(N)}$$
@@ -414,7 +414,7 @@ $$\eta(2) = \frac{\frac{127.218}{67.443}}{2} \approx 0.943 \approx 94.3\%$$
 This means that the application achieves approximately $94\%$ of the ideal linear
 speedup when using two parallel processes.
 
-![Sketched efficiency for a perfectly scaling application and an application with 98% parallelizable work. The perfectly scaling application maintains 100% efficiency as the number of parallel processes increases, while the efficiency of the 98% parallelizable application gradually decreases.](fig/sketch_efficiency.svg){alt="Sketched efficiency for a perfectly scaling application and an application with 98% parallelizable work. The perfectly scaling application maintains 100% efficiency as the number of parallel processes increases, while the efficiency of the 98% parallelizable application gradually decreases."}
+![Sketched efficiency for a perfectly scaling application and an application with $98\%$ parallelizable work. The perfectly scaling application maintains $100\%$ efficiency as the number of parallel processes increases, while the efficiency of the $98\%$ parallelizable application gradually decreases.](fig/sketch_efficiency.svg){alt="Sketched efficiency for a perfectly scaling application and an application with $98\%$ parallelizable work. The perfectly scaling application maintains $100\%$ efficiency as the number of parallel processes increases, while the efficiency of the $98\%$ parallelizable application gradually decreases."}
 
 ::: challenge
 # Exercise: Calculate Speedup and Efficiency
@@ -436,7 +436,7 @@ You may want to use any data visualization tool, such as Python or a spreadsheet
 application, to visualize the results.
 
 What number of MPI processes would provide a reasonable *working point* for the Raytracer
-with an image resolution of $800 \times 800$ pixels and $128 samples per pixel?
+with an image resolution of $800 \times 800$ pixels and $128$ samples per pixel?
 
 ::: callout
 # (Optional) Recommended for using Python plotting scripts
@@ -544,7 +544,7 @@ Amdahl's Law.
 
 ::: callout
 # Amdahl's Law[^AmdahlsLaw]
-![The model behind Amdahl's Law: An application consists of serial sections, such as initialization, and parallelizable sections, such as calculations in a loop. Both fractions add up to the entire program, i.e., s + p = 1. Speedup through parallelization is inherently limited because only the parallelizable fraction can be accelerated.](fig/amdahl_model.drawio.png){alt="The model behind Amdahl's Law: An application consists of serial sections, such as initialization, and parallelizable sections, such as calculations in a loop. Both fractions add up to the entire program, i.e., s + p = 1. Speedup through parallelization is inherently limited because only the parallelizable fraction can be accelerated."}
+![The model behind Amdahl's Law: An application consists of serial sections, such as initialization, and parallelizable sections, such as calculations in a loop. Both fractions add up to the entire program, i.e., $s + p = 1$. Speedup through parallelization is inherently limited because only the parallelizable fraction can be accelerated.](fig/amdahl_model.drawio.png){alt="The model behind Amdahl's Law: An application consists of serial sections, such as initialization, and parallelizable sections, such as calculations in a loop. Both fractions add up to the entire program, i.e., $s + p = 1$. Speedup through parallelization is inherently limited because only the parallelizable fraction can be accelerated."}
 
 The speedup achievable through parallelization is limited by the fraction of the
 execution time that must remain serial. This idealized model assumes that the parallelizable
@@ -717,9 +717,9 @@ SPP=$((SLURM_NTASKS * 128))
 time mpirun -- ./build/raytracer -width=800 -height=800 -spp=${SPP} -threads=1 -png "$(date +%Y-%m-%d_%H%M%S).png"
 ```
 
-![Figure 1: Three snowmen rendered at 800 x 800 with 128 samples per pixel](fig/spp128.png){alt='Three snowmen rendered at 800 x 800 with 128 samples per pixel'}
+![Figure 1: Three snowmen rendered at $800 \times 800$ with $128$ samples per pixel](fig/spp128.png){alt='Three snowmen rendered at $800 \times 800$ with $128$ samples per pixel'}
 
-![Figure 2: Three snowmen rendered at 800 x 800 with 8192 samples per pixel](fig/spp8192.png){alt='Three snowmen rendered at 800 x 800 with 8192 samples per pixel'}
+![Figure 2: Three snowmen rendered at $800 \times 800$ with $8192$ samples per pixel](fig/spp8192.png){alt='Three snowmen rendered at $800 \times 800$ with $8192$ samples per pixel'}
 
 When comparing the two images closely, for example in the shadows, we can observe
 more noise in Figure 1 than in Figure 2. Increasing the number of samples per pixel
@@ -815,8 +815,8 @@ resources. However, the most important question is whether an increased workload
 produces useful results.
 
 Here, we compare the rendered images of
-[three snowmen at 800 x 800 with 128 samples per pixel](fig/pixel800.png)
-and [three snowmen at 6400 x 6400 with 128 samples per pixel](fig/pixel6400.png).
+[three snowmen at $800 \times 800$ with $128$ samples per pixel](fig/pixel800.png)
+and [three snowmen at $6400 \times 6400$ with $128$ samples per pixel](fig/pixel6400.png).
 
 The second image has a much higher resolution, with $64$ times as many pixels as the
 first image.
