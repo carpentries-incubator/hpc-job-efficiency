@@ -1,0 +1,54 @@
+::: questions 
+- Is job wall-time the only way to study job performance?
+- What are commonly used metrics to describe job performance?
+- What are common workflows to evaluate performance?
+- How can I find the bottlenecks in a given job?
+:::
+
+::: objectives
+After completing this episode, participants should be able to …
+
+- Create a comprehensive performance overview through dedicated tools.
+- Explain the difference between sampling and tracing.
+- Measure utilization and the impact of underlying hardware components.
+- Determine if their job is affected by a typical performance bottleneck pattern.
+:::
+
+
+::: instructor
+## Intention: Introduce third party tools for performance reports
+
+Narrative:
+
+- Scaling study, scheduler tools, project proposal is written and handed in
+- Maybe I can squeeze out more from my current system by trying to understand better how it behaves
+- Another colleague told us about performance measurement tools
+- We are learning more about our application
+- Aha, there IS room to optimize! Compile with vectorization
+
+
+What we're doing here:
+
+- Get a complete picture
+- Introduce additional metrics / definitions, and popular representations of data, e.g. Roofline
+- Relate to hardware on the same level of detail
+:::
+
+::: instructor
+## TODO: Discuss requirements in more detail?
+Dependent on the cluster config, some of these may have to be addressed?
+
+```
+cap_perfmon,cap_sys_ptrace,cap_syslog=ep
+kernel.perf_event_paranoid
+```
+:::
+
+::: instructor
+## Prepare a reservation!
+
+We'll have to run a couple of 20 minutes long `--exclusive` jobs here, so make sure enough resources are available for the exercise!
+:::
+
+Wall-time measurements with `time` do not tell us why exactly an application is slower than expected.
+To learn more about the *why*, we have to measure our applications behavior in more detail and capture the utilization of underlying hardware.
