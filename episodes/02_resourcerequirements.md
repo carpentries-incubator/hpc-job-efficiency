@@ -530,6 +530,36 @@ One common example is your everyday computer with multiple programs running at t
 
 :::
 
+::::::::: spoiler
+# Over/under-subscription often happens by mistake
+
+In your jobs there are essentially two parts:
+
+- The lines specifying the job allocation (the `#SBATCH` lines).
+- The lines that run actual command (the `mpirun` or `srun` lines).
+
+When changing job scripts to try out various scenarios a common
+mistake is to change only one of these two parts. If you, for
+example, increase the number of nodes, but forget to ask for more
+tasks on the `mpirun` command, the additional resources simply
+won't be used. Vice versa, if you reduce the number of nodes because
+the calculation doesn't scale that well but do not reduce the number
+of tasks in the `mpirun` command you will be oversubscribing the
+resources by mistake.
+
+You can largely avoid such mistakes by using features of `srun`,
+`mpirun`, and SLURM:
+
+- `srun`: if you don't specify the number of tasks if will automatically
+          use the number specified in the job allocation
+- `mpirun`: if you don't specify the number of tasks it might automatically
+            use the number specified in the job allocation, **but**
+            this is implementation dependent
+- SLURM: sets an environment variable with the number of tasks, so
+         running `mpirun -n $SLURM_NTASKS` will always start as many
+         tasks as the number of cores that have been allocated
+:::::::::::::::::
+
 ## Multi-node jobs
 
 So far, we have only used a single node for our job. The big advantage of MPI as a parallelism scheme is the fact that not all MPI tasks need to run on the same node.
@@ -669,7 +699,7 @@ To end this lesson, we discuss some tips for choosing resource allocations such 
 - Many clusters have activated the so-called *backfill scheduler* option in Slurm. This mechanism tries to squeeze low priority jobs in the gaps between jobs of higher priority (as long as the larger jobs are not delayed by this). In this case, smaller jobs are generally advantageous as they can "skip ahead" in the queue and start early.
 - Using `sinfo -t idle` you can specifically search for partitions that have idle nodes. Consider using these partitions for your job if possible as an idle node will typically start your job immediately.
 - Different partitions might have different *billing weights*, i.e., they might use different factors to determine the "cost" of your calculation, which is subtracted from your compute budget or fairshare score. You can check these weights using `scontrol show partition <partitionname> | grep TRESBillingWeights`. The idea behind different billing weights is to even out the cost of the different resources (i.e., how many hours of memory use correspond to one hour of CPU use) and to ensure that using more expensive hardware carries an appropriate cost for the users.
-- Typically, it takes longer for a large slot to free up than it takes for several small slots to open. Splitting your job across multiple nodes might not be the most computationally efficient way to run it due to the possible communication overhead, but it can be more efficient in terms of scheduling.
+- Typically, it takes longer for one large slot to free up than it takes for several small slots to open. Splitting your job across multiple nodes might not be the most computationally efficient way to run it due to the possible communication overhead, but it can be more efficient in terms of scheduling.
 
 ::: keypoints
 
