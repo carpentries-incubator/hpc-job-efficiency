@@ -189,6 +189,65 @@ Memory Utilized: 367.28 MB
 Memory Efficiency: 35.87% of 1.00 GB
 ```
 
+:::::::: spoiler
+
+# Alternative ways to measure time other than `seff`
+
+The `seff` command gives you the amount of time your entire job took.
+In this episode every job runs only one calculation and therefore
+the time that `seff` reports is all that is needed.
+
+In other cases your job scripts might do more complicated calculations.
+For example, you might do a multi-stage calculation in a single job, that
+involves running two or three calculations after eachother, like calculate
+a field as a function of time, perform an analysis, and generate a video.
+In such a case `seff` would just give you the total time, and not the time
+for each of the parts. There are two commands that can help here:
+
+- `time`
+- `date`
+
+The `time` command is invoked as `time <command>`. It collects time information
+for the `<command>` run under the control of `time`. For example
+```bash
+time mpirun -n 4 ./SnowmanRaytracer/build/raytracer -width=768 -height=768 -spp=256 -threads=1 -alloc_mode=3 -png=snowman.png
+```
+reports
+```output
+real    2m6.202s
+user    8m20.844s
+sys     0m0.640s
+```
+From this output the real time is the most relevant, it corresponds to
+the amount of time passed between the start and finish of the command
+executed under the control of `time`.
+The `sys` and `user` time relate to the time spend in operating system calls, and in
+the user code, but where the separating line is drawn between the two is
+a bit arbitrary. Therefore, this additional timing information is not
+all that informative, although these timing are accumulated across all
+processes in the calculation and therefore let you estimate how evenly
+the compute was distributed over the processes.
+
+The `date` command records a particular point in time. To use it to
+measure how long something took it needs to be run twice. For example
+```bash
+start=$(date +%s.%N)
+mpirun -n 4 ./SnowmanRaytracer/build/raytracer -width=768 -height=768 -spp=256 -threads=1 -alloc_mode=3 -png=snowman.png
+end=$(date +%s.%N)
+echo -n "raytracer took (s): "
+echo "$end - $start" | bc -l
+```
+The `date` command reports the number of seconds (`%s`) and nano-seconds (`%N`) passed
+since a point in time in the past. This reference point in time is called the "Unix epoch" and for
+`date` is `1970-01-01T00:00:00+00:00`. Running the scrips as shown gives:
+```bash
+raytracer took (s): 126.787933465
+```
+A particular advantage of using the `date` command is that the result
+is provided as regular floating point number that can be used in subsequent
+calculations without requiring conversions.
+::::::::::::::::
+
 ::: spoiler
 
 # Measurements are hardware dependent!
