@@ -225,6 +225,22 @@ memory sizes, running:
 sinfo -O partition,memory:15,nodehost | awk '{print $1 "\t\t" $2}' | sort -u -k1,1 -k2n
 ```
 
+We have to use `sinfo` with the `nodehost` field to force it to list the actual
+memory sizes for every node, otherwise it will summarize the memory size with
+the `xxx+` notation which hides the actual memory sizes.
+
+The `awk` command selects the first two fields on every line, and feeding the
+result into `sort` the lines are sorted. The `-u` flag keeps only unique lines
+and the `-k` flags select columns to sort. The `-k1,1` flag selects all columns from
+1 to 1 to be sorted alphabetically, the `-k2n` flag selects columns 2 and onwards
+to be sorted numerically.
+
+If you need to know the actual nodes and their memory sizes you can run
+
+```bash
+sinfo -O partition,memory:15,nodehost | sort -k1,1 -k2,2n
+```
+
 ::::::: challenge
 # What memory sizes are available on your machine?
 
@@ -592,8 +608,8 @@ The answer to the bonus question is that in order for the cluster to run the
 100 node job, there have to be 100 free nodes at the same time. That means
 that the scheduler has to hold other jobs back until 100 nodes are free.
 So when the last node is still running the 99 other nodes will be waiting
-for it to finish what it is doing. This waiting time is going to be orders
-of magnitude larger than the cost of running this job.
+for it to finish what it is doing. This waiting time times the number of waiting nodes
+is going to be orders of magnitude larger than the cost of running this job.
 ::::::::::::::::::
 
 The scheduler can fit jobs in dependent on the job size in terms of nodes.
@@ -651,6 +667,7 @@ a run time of 30 minutes. This means that if a node is partially
 occupied with a job our job could share the node if there is enough
 memory left. Requesting 1, 2, 4, 8, and 16 GB per core we get:
 ```output
+To Do
 ```
 
 ::::::::::::::: challenge
