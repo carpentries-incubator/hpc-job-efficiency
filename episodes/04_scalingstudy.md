@@ -69,7 +69,7 @@ To understand scaling, let us consider the following questions:
 
 - How does our parallel application behave as the number of computational resources
   increases?
-- Does its execution time decrease?
+- Does its execution time decrease with additional computational resources?
 - Does it continue to benefit from additional resources, or do we eventually reach a point
   where adding more resources provides little or no improvement?
 
