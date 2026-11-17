@@ -667,8 +667,51 @@ a run time of 30 minutes. This means that if a node is partially
 occupied with a job our job could share the node if there is enough
 memory left. Requesting 1, 2, 4, 8, and 16 GB per core we get:
 ```output
-To Do
+1g
+           Eligible
+-------------------
+2026-11-17T17:42:49
+              Start
+-------------------
+2026-11-17T17:42:50
+
+2g
+           Eligible
+-------------------
+2026-11-17T17:42:49
+              Start
+-------------------
+2026-11-17T17:42:50
+
+4g
+           Eligible
+-------------------
+2026-11-17T17:42:49
+              Start
+-------------------
+2026-11-17T17:42:50
+
+8g
+           Eligible
+-------------------
+2026-11-17T17:42:49
+              Start
+-------------------
+2026-11-17T17:42:50
+
+16g
+           Eligible
+-------------------
+2026-11-17T17:42:49
+              Start
+-------------------
+2026-11-17T17:42:50
 ```
+In this case the memory requirements did not impose any constraints as all
+jobs were able to start immediately. Note that really fine grained timings
+are not possible with SLURM. The jobs started too quickly for `squeue --start`,
+hence `sacct` was used to report the `Eligible` and `Start` times, but these
+times are truncate to the second.
 
 ::::::::::::::: challenge
 # How does the start time depend on the amount of memory requested on your cluster?
