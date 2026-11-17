@@ -686,6 +686,135 @@ the same time and run `squeue --me --start`
 to get the estimated starting times.
 :::::::::::::::::::::::::
 
+# Why small jobs start sooner: Backfilling
+
+Above a number of examples were shown where smaller jobs start sooner than
+large jobs. The mechanism that makes this possible is illustrated below.
+Imagine we submit 3 jobs as shown in the picture below.
+
+```mermaid
+block-beta
+  %% The following two lines are not supported in block-beta yet (mermaid 11.16.1)
+  %%accTitle: Scheduling jobs in submission order
+  %%accDescr: The schedule of how jobs would run if they were started in the order they were submitted without backfilling.
+
+  columns 9
+
+  %% Header Row (Time Axis)
+  space:1
+  t1["Hr 1"] t2["Hr 2"] t3["Hr 3"] t4["Hr 4"] t5["Hr 5"] t6["Hr 6"] t7["Hr 7"] t8["Hr 8"]
+
+  %% Node 4 (Top Row)
+  n4["Node 4"]
+  j1_4["Job 1 (Running)"]:3
+  j2_4["Job 2 (Queued - Needs 4 Nodes)"]:2
+  idle4["Idle"]:3
+
+  %% Node 3
+  n3["Node 3"]
+  j1_3["Job 1 (Running)"]:3
+  j2_3["Job 2 (Queued - Needs 4 Nodes)"]:2
+  idle3["Idle"]:3
+
+  %% Node 2
+  n2["Node 2"]
+  gap2["Wasted / Idle Gap (Blocked)"]:3
+  j2_2["Job 2 (Queued - Needs 4 Nodes)"]:2
+  j3_2["Job 3 (2 Nodes, 2h)"]:2
+  idle2["Idle"]:1
+
+  %% Node 1 (Bottom Row)
+  n1["Node 1"]
+  gap1["Wasted / Idle Gap (Blocked)"]:3
+  j2_1["Job 2 (Queued - Needs 4 Nodes)"]:2
+  j3_1["Job 3 (2 Nodes, 3h)"]:2
+  idle1["Idle"]:1
+
+  %% Styling
+  classDef running fill:#2b5c8f,stroke:#1a3a5c,color:#fff
+  classDef queued fill:#d97706,stroke:#92400e,color:#fff
+  classDef backfill fill:#15803d,stroke:#14532d,color:#fff
+  classDef wasted fill:#fee2e2,stroke:#ef4444,stroke-dasharray: 4 4,color:#991b1b
+  classDef idle fill:#f3f4f6,stroke:#d1d5db,color:#6b7280
+  classDef header fill:#e5e7eb,stroke:#9ca3af,color:#111827,font-weight:bold
+
+  class t1,t2,t3,t4,t5,t6,t7,t8,n1,n2,n3,n4 header
+  class j1_4,j1_3 running
+  class j2_4,j2_3,j2_2,j2_1 queued
+  class j3_1,j3_2 backfill
+  class gap2,gap1 wasted
+  class idle4,idle3,idle2,idle1 idle
+```
+
+If the jobs are run in the order they were submitted then there will be gaps
+where resources are left unused. In particular nodes 1 and 2 would remain empty
+while job 1 is running on nodes 3 and 4. Due to the resource requirements of job 3
+it could actually run alongside job 1 and fill that gap. Importantly, pulling
+job 3 forward does not delay job 2 in any way. So whoever submitted job 2 is not
+disadvantaged by doing that as job 2 needs to wait for the resources currently used
+by job 1 to become available, as shown below.
+
+```mermaid
+block-beta
+  %% The following two lines are not supported in block-beta yet (mermaid 11.16.1)
+  %%accTitle: "Scheduling jobs as they fit"
+  %%accDescr: "The schedule of how jobs would run if they were started in the order they were submitted but with backfilling allowing jobs to be pulled forward to fill empty resources"
+
+  columns 9
+
+  %% Header Row (Time Axis)
+  space:1
+  t1["Hr 1"] t2["Hr 2"] t3["Hr 3"] t4["Hr 4"] t5["Hr 5"] t6["Hr 6"] t7["Hr 7"] t8["Hr 8"]
+
+  %% Node 4 (Top Row)
+  n4["Node 4"]
+  j1_4["Job 1 (Running)"]:3
+  j2_4["Job 2 (Queued - Starts On Time!)"]:2
+  idle4["Idle"]:3
+
+  %% Node 3
+  n3["Node 3"]
+  j1_3["Job 1 (Running)"]:3
+  j2_3["Job 2 (Queued - Starts On Time!)"]:2
+  idle3["Idle"]:3
+
+  %% Node 2
+  n2["Node 2"]
+  j3_2["Job 3 (Backfilled)"]:2
+  gap2["Idle"]:1
+  j2_2["Job 2 (Queued - Starts On Time!)"]:2
+  idle2["Idle"]:3
+
+  %% Node 1 (Bottom Row)
+  n1["Node 1"]
+  j3_1["Job 3 (Backfilled)"]:2
+  gap1["Idle"]:1
+  j2_1["Job 2 (Queued - Starts On Time!)"]:2
+  idle1["Idle"]:3
+
+  %% Styling
+  classDef running fill:#2b5c8f,stroke:#1a3a5c,color:#fff
+  classDef queued fill:#d97706,stroke:#92400e,color:#fff
+  classDef backfill fill:#15803d,stroke:#14532d,color:#fff
+  classDef idle fill:#f3f4f6,stroke:#d1d5db,color:#6b7280
+  classDef header fill:#e5e7eb,stroke:#9ca3af,color:#111827,font-weight:bold
+
+  class t1,t2,t3,t4,t5,t6,t7,t8,n1,n2,n3,n4 header
+  class j1_4,j1_3 running
+  class j2_4,j2_3,j2_2,j2_1 queued
+  class j3_2,j3_1 backfill
+  class gap2,gap1,idle4,idle3,idle2,idle1 idle
+```
+
+Pulling jobs forward in this way is called **backfilling**,
+which is an important technique for operators of an HPC cluster to maximize the
+cluster usage. Important for you as a user is that your jobs will
+only be considered for backfilling if the resource requirements are
+small enough to fit in the gaps. Which is why right sizing your resource
+request is important. If you had submitted job 3 with a time limit of 1 day
+out of convenience,
+it would not fit next to job 1 and would have to wait until job 2 is finished.
+
 :::::::::: keypoints
 - Your cluster might seem to have an enormous amount of computing resources, but these resources are a shared good.
   - You should only use as much as you need.
