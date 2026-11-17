@@ -686,7 +686,7 @@ the same time and run `squeue --me --start`
 to get the estimated starting times.
 :::::::::::::::::::::::::
 
-# Why small jobs start sooner: Backfilling
+## Why small jobs start sooner: Backfilling
 
 Above a number of examples were shown where smaller jobs start sooner than
 large jobs. The mechanism that makes this possible is illustrated below.
@@ -731,9 +731,9 @@ block-beta
   idle1["Idle"]:1
 
   %% Styling
-  classDef running fill:#2b5c8f,stroke:#1a3a5c,color:#fff
+  classDef running fill:#4691e0,stroke:#1a3a5c,color:#fff
   classDef queued fill:#d97706,stroke:#92400e,color:#fff
-  classDef backfill fill:#15803d,stroke:#14532d,color:#fff
+  classDef backfill fill:#1fbf5b,stroke:#14532d,color:#fff
   classDef wasted fill:#fee2e2,stroke:#ef4444,stroke-dasharray: 4 4,color:#991b1b
   classDef idle fill:#f3f4f6,stroke:#d1d5db,color:#6b7280
   classDef header fill:#e5e7eb,stroke:#9ca3af,color:#111827,font-weight:bold
@@ -793,9 +793,9 @@ block-beta
   idle1["Idle"]:3
 
   %% Styling
-  classDef running fill:#2b5c8f,stroke:#1a3a5c,color:#fff
+  classDef running fill:#4691e0,stroke:#1a3a5c,color:#fff
   classDef queued fill:#d97706,stroke:#92400e,color:#fff
-  classDef backfill fill:#15803d,stroke:#14532d,color:#fff
+  classDef backfill fill:#1fbf5b,stroke:#14532d,color:#fff
   classDef idle fill:#f3f4f6,stroke:#d1d5db,color:#6b7280
   classDef header fill:#e5e7eb,stroke:#9ca3af,color:#111827,font-weight:bold
 
