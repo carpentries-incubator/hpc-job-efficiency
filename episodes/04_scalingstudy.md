@@ -73,6 +73,139 @@ To understand scaling, let us consider the following questions:
 - Does it continue to benefit from additional resources, or do we eventually reach a point
   where adding more resources provides little or no improvement?
 
+## Download Python Script From GitHub
+
+One of the simplest ways to download files from the command line is to use
+either `curl` or `wget`.
+
+```bash
+# Create a directory for plotting scaling results
+mkdir ~/scaling_results && cd ~/scaling_results
+wget -O plot_scaling_from_csvs.py https://raw.githubusercontent.com/carpentries-incubator/hpc-job-efficiency/main/episodes/files/plot_scaling_from_csvs.py
+# Alternatively, use curl
+curl -o plot_scaling_from_csvs.py -L https://raw.githubusercontent.com/carpentries-incubator/hpc-job-efficiency/main/episodes/files/plot_scaling_from_csvs.py
+```
+
+For example, the output from the `wget` command looks like:
+
+```output
+...
+HTTP request sent, awaiting response... 200 OK
+Length: 2512 (2.5K) [text/plain]
+Saving to: ‘plot_scaling_from_csvs.py’
+
+plot_scaling_from_csvs.py       100%[=====================================================>]   2.45K  --.-KB/s    in 0s
+
+2026-11-18 12:25:34 (40.3 MB/s) - ‘plot_scaling_from_csvs.py’ saved [2512/2512]
+```
+
+After downloading the Python script, use `ls` to verify that it exists in your current
+working directory:
+
+```bash
+$ ls -al
+```
+
+```output
+-rw-r--r--  1 <user> <user_grp>   2512 Nov 18 13:08 plot_scaling_from_csvs.py
+```
+
+Use the command `chmod u+x plot_scaling_from_csvs.py` to make the script executable.
+
+```bash
+$ ls -al
+# The output looks like
+-rwxr--r--  1 <user> <user_grp>   2512 Nov 18 13:08 plot_scaling_from_csvs.py
+```
+
+This allows us to execute the script directly from the command line. Alternatively,
+we can invoke it explicitly using the Python interpreter, as demonstrated below.
+
+### Setting up the Virtual Environment
+
+We would like to use the downloaded Python script to generate both the strong-
+and weak-scaling plots. To do so, we will configure a Python virtual environment
+and install the required dependencies.
+
+First, request an interactive shell on a compute node:
+
+```bash
+# Request an interactive shell on a compute node
+$ srun --ntasks=1 --cpus-per-task=1 --pty bash
+```
+
+Once the interactive shell is available, load the required software modules and
+create the virtual environment:
+
+```bash
+# Load the Python module provided by the cluster
+$ module load 2025 GCC/14.3.0 Python/3.13.5
+
+# Create the virtual environment
+$ python3 -m venv ~/venv_scaling_results
+
+# Activate the virtual environment
+$ source ~/venv_scaling_results/bin/activate
+
+# Install the required Python packages
+(venv_scaling_results) [...]$ python3 -m pip install numpy matplotlib pandas
+```
+
+To check that the script can be invoked and to inspect its available command-line
+options, use:
+
+```bash
+(venv_scaling_results) [...]$ python3 ./plot_scaling_from_csvs.py -h
+```
+
+```output
+usage: plot_scaling_from_csvs.py [-h] [-s | -w] [-i INPUT] [-o OUTPUT] [-ls]
+
+Create strong and weak scaling plots.
+
+options:
+  -h, --help           show this help message and exit
+  -s, --strong         Perform strong scaling analysis.
+  -w, --weak           Perform weak scaling analysis.
+  -i, --input INPUT    Input CSV file (default: strong.csv or weak.csv, depending on the selected scaling type).
+  -o, --output OUTPUT  Output PNG file (default: strong.png or weak.png, depending on the selected scaling type).
+  -ls, --logscale      Use base-2 logarithmic scaling for the x-axis.
+```
+
+The script supports both strong- and weak-scaling analysis. Use the `-s` option
+to generate a strong-scaling plot using `strong.csv` as the default input file
+and `strong.png` as the output file. Similarly, the `-w` option uses `weak.csv`
+and generates `weak.png`.
+
+We can also specify custom input and output filenames using the `-i` and `-o` options,
+respectively. By default, the script generates plots with a linear x-axis. To use
+a base-2 logarithmic scale for the x-axis, specify the `-ls` option.
+
+The following are the usage examples for generating plots:
+
+```bash
+# Generate the strong-scaling plot
+$ python3 ./plot_scaling_from_csvs.py -s
+
+# Generate the weak-scaling plot
+$ python3 ./plot_scaling_from_csvs.py -w
+
+# Generate a strong-scaling plot with custom filenames and a logarithmic x-axis
+$ python3 ./plot_scaling_from_csvs.py -s -i results-strong.csv -o results-strong.png -ls
+```
+
+The virtual environment is now ready to use. We can deactivate it when we no longer
+need it:
+
+```bash
+(venv_scaling_results) [...]$ deactivate
+```
+
+We have now installed the Python dependencies in an isolated virtual environment.
+Whenever we want to use the plotting script in a new session, we should load the
+same Python module, activate the virtual environment, and navigate to the directory
+containing the plotting script and its input CSV files.
+
 ## What is Scaling?
 In a scaling study, we investigate how an application's performance changes as we vary
 the computational resources, the problem size, or both.
@@ -92,7 +225,7 @@ from other workloads running on the compute nodes.
 This allows us to investigate how the execution time changes as we make additional
 computational resources available to the application.
 
-![Sketched execution times for a perfectly parallelized application and a 98% parallelizable application. When the number of parallel processes is doubled, execution time is halved in the perfectly parallel case, while the 98% parallelizable application achieves a slightly smaller reduction.](fig/sketch_scaling.svg){alt="Sketched execution times for a perfectly parallelized application and a 98% parallelizable application. When the number of parallel processes is doubled, execution time is halved in the perfectly parallel case, while the 98% parallelizable application achieves a slightly smaller reduction."}
+![Sketched execution times for a perfectly parallelized application and a 98% parallelizable application. When the number of parallel processes is doubled, execution time is halved in the perfectly parallel case, while the 98% parallelizable application achieves a slightly smaller reduction.](fig/scaling-plots/sketch_scaling_linear.svg){alt="Sketched execution times for a perfectly parallelized application and a 98% parallelizable application. When the number of parallel processes is doubled, execution time is halved in the perfectly parallel case, while the 98% parallelizable application achieves a slightly smaller reduction."}
 
 We will begin our scaling study using the job script `render_snowman.sbatch`:
 
@@ -385,7 +518,7 @@ Parallel efficiency measures how closely the observed speedup approaches ideal l
 speedup. It is a measure of scaling effectiveness, not a direct measurement of CPU
 utilization.
 
-![Sketched speedup for a perfectly and 98% parallelized application. Doubling the number of parallel processors makes the perfectly parallel application twice as fast. The 98% parallelized application does not speed up at the same rate.](fig/sketch_speedup.svg){alt="Sketched speedup for a perfectly and 98% parallelized application. Doubling the number of parallel processors makes the perfectly parallel application twice as fast. The 98% parallelized application does not speed up at the same rate."}
+![Sketched speedup for a perfectly and 98% parallelized application. Doubling the number of parallel processors makes the perfectly parallel application twice as fast. The 98% parallelized application does not speed up at the same rate.](fig/scaling-plots/sketch_speedup_linear.svg){alt="Sketched speedup for a perfectly and 98% parallelized application. Doubling the number of parallel processors makes the perfectly parallel application twice as fast. The 98% parallelized application does not speed up at the same rate."}
 
 Speedup is defined as the ratio of the execution time using a single process to
 the execution time using $N$ parallel processes: $$S(N) = \frac{T(1)}{T(N)}$$
@@ -414,34 +547,38 @@ $$\eta(2) = \frac{\frac{127.218}{67.443}}{2} \approx 0.943 \approx 94.3\%$$
 This means that the application achieves approximately $94\%$ of the ideal linear
 speedup when using two parallel processes.
 
-![Sketched efficiency for a perfectly scaling application and an application with 98% parallelizable work. The perfectly scaling application maintains 100% efficiency as the number of parallel processes increases, while the efficiency of the 98% parallelizable application gradually decreases.](fig/sketch_efficiency.svg){alt="Sketched efficiency for a perfectly scaling application and an application with 98% parallelizable work. The perfectly scaling application maintains 100% efficiency as the number of parallel processes increases, while the efficiency of the 98% parallelizable application gradually decreases."}
+![Sketched efficiency for a perfectly scaling application and an application with 98% parallelizable work. The perfectly scaling application maintains 100% efficiency as the number of parallel processes increases, while the efficiency of the 98% parallelizable application gradually decreases.](fig/scaling-plots/sketch_efficiency_linear.svg){alt="Sketched efficiency for a perfectly scaling application and an application with 98% parallelizable work. The perfectly scaling application maintains 100% efficiency as the number of parallel processes increases, while the efficiency of the 98% parallelizable application gradually decreases."}
 
 ::: challenge
-# Exercise: Calculate Speedup and Efficiency
-Extend the `.csv` file containing your measurements from above with `speedup`
-and `efficiency` columns.
+# Exercise: Generate the Plots for Speedup and Efficiency
+Write the data into a `strong.csv` file using command:
 
-It may look like this:
+```bash
+vi strong.csv
+```
+
+The `strong.csv` may look like this:
 
 ```csv
-ntasks,time,speedup,efficiency
-1,127.218,1.00,1.00
-2,67.443,1.89,0.94
-4,32.584,3.90,0.98
-8,17.480,7.28,0.91
+ntasks,time
+1,127.218
+2,67.443
+4,32.584
+8,17.480
 ...
 ```
 
-You may want to use any data visualization tool, such as Python script or a spreadsheet
-application, to visualize the results.
+Use the supplied Python plotting script to visulaize your strong-scaling results.
 
 What number of MPI processes would provide a reasonable *working point* for the Raytracer
 with an image resolution of $800 \times 800$ pixels and $128$ samples per pixel?
 
-::: callout
-# (Optional) Recommended for using Python plotting scripts
-Save your strong-scaling measurements as `strong.csv` and your weak-scaling measurements
-as `weak.csv` so that they can be processed by the supplied plotting script.
+::: hint
+# Using Python plotting scripts
+
+```bash
+$ python3 ./plot_scaling_from_csvs.py -s
+```
 :::
 
 ::: solution
@@ -461,7 +598,7 @@ ntasks,time,speedup,efficiency
 
 Plotting the speedup and efficiency helps us identify a reasonable working point:
 
-![Speedup and parallel efficiency as functions of the number of MPI processes in a strong-scaling study](fig/strong_scaling.png){alt="Speedup and parallel efficiency as functions of the number of MPI processes in a strong-scaling study"}
+![Speedup and parallel efficiency as functions of the number of MPI processes in a strong-scaling study](fig/scaling-plots/strong.png){alt="Speedup and parallel efficiency as functions of the number of MPI processes in a strong-scaling study"}
 
 The configuration with $16$ MPI processes still achieves approximately $78\%$
 parallel efficiency, with a speedup of approximately $12.41$. The corresponding
@@ -506,21 +643,6 @@ Briefly collect and discuss the possible reasons.
 
 ::::::::::::::::::::::::::
 
-
-::: spoiler
-# (Optional) Plotting our `.csv` files
-If you have experience with python, you can use our
-[Python script](files/plot_scaling_from_csvs.py) to create the same plots as above,
-but using your own data.
-
-The script depends on `numpy`, `pandas`, and `matplotlib`, so make sure to prepare
-a corresponding Python environment.
-
-> The script expects your `.csv` files to be named `strong.csv` and `weak.csv` and
-> to be placed in the same directory.
-
-:::
-
 So far, we kept the workload size fixed at $800 \times 800$ pixels and $128$ samples
 per pixel, using the same scene with three snowmen. The diminishing returns we
 observe when adding more parallel processes lead us to a famous observation known
@@ -544,7 +666,7 @@ Amdahl's Law.
 
 ::: callout
 # Amdahl's Law[^AmdahlsLaw]
-![The model behind Amdahl's Law: An application consists of serial sections, such as initialization, and parallelizable sections, such as calculations in a loop. Both fractions add up to the entire program, i.e., s + p = 1. Speedup through parallelization is inherently limited because only the parallelizable fraction can be accelerated.](fig/amdahl_model.drawio.png){alt="The model behind Amdahl's Law: An application consists of serial sections, such as initialization, and parallelizable sections, such as calculations in a loop. Both fractions add up to the entire program, i.e., s + p = 1. Speedup through parallelization is inherently limited because only the parallelizable fraction can be accelerated."}
+![The model behind Amdahl's Law: An application consists of serial sections, such as initialization, and parallelizable sections, such as calculations in a loop. Both fractions add up to the entire program, i.e., s + p = 1. Speedup through parallelization is inherently limited because only the parallelizable fraction can be accelerated.](fig/scaling-plots/amdahl_model.drawio.png){alt="The model behind Amdahl's Law: An application consists of serial sections, such as initialization, and parallelizable sections, such as calculations in a loop. Both fractions add up to the entire program, i.e., s + p = 1. Speedup through parallelization is inherently limited because only the parallelizable fraction can be accelerated."}
 
 The speedup achievable through parallelization is limited by the fraction of the
 execution time that must remain serial. This idealized model assumes that the parallelizable
@@ -717,9 +839,9 @@ SPP=$((SLURM_NTASKS * 128))
 time mpirun -- ./build/raytracer -width=800 -height=800 -spp=${SPP} -threads=1 -png "$(date +%Y-%m-%d_%H%M%S).png"
 ```
 
-![Figure 1: Three snowmen rendered at 800 x 800 with 128 samples per pixel](fig/spp128.png){alt='Three snowmen rendered at 800 x 800 with 128 samples per pixel'}
+![Figure 1: Three snowmen rendered at 800 x 800 with 128 samples per pixel](fig/scaling-plots/spp128.png){alt='Three snowmen rendered at 800 x 800 with 128 samples per pixel'}
 
-![Figure 2: Three snowmen rendered at 800 x 800 with 8192 samples per pixel](fig/spp8192.png){alt='Three snowmen rendered at 800 x 800 with 8192 samples per pixel'}
+![Figure 2: Three snowmen rendered at 800 x 800 with 8192 samples per pixel](fig/scaling-plots/spp8192.png){alt='Three snowmen rendered at 800 x 800 with 8192 samples per pixel'}
 
 When comparing the two images closely, for example in the shadows, we can observe
 more noise in Figure 1 than in Figure 2. Increasing the number of samples per pixel
@@ -773,17 +895,25 @@ to the number of MPI processes, to investigate the Raytracer's weak-scaling beha
 - Run with $1$, $2$, $4$, $8$, $16$, $32$, and $64$ MPI processes on a single node.
 - Record the execution times using `time`. Consider submitting the jobs with `--exclusive`
   to reduce interference from other jobs running on the same node.
-- Create a `.csv` file containing your measurements and use the plotting script
+- Create a `weak.csv` file containing your measurements and use the plotting script
   to visualize the results.
 
 ```csv
-ntasks, pixel,    time, speedup, efficiency
-     1,   800, 123.162,     ???,        ???
-     2,  1131, 122.562,     ???,        ???
-     4,  1600,     ???,     ???,        ???
-     8,  2263,     ???,     ???,        ???
+ntasks, pixel,    time
+     1,   800, 123.162
+     2,  1131, 122.562
+     4,  1600,     ???
+     8,  2263,     ???
 ...
 ```
+
+::: hint
+# Using Python plotting scripts
+
+```bash
+$ python3 ./plot_scaling_from_csvs.py -w
+```
+:::
 
 - How does the execution time change as you increase the number of MPI processes
   and the workload?
@@ -808,15 +938,15 @@ ntasks, pixel,    time, speedup, efficiency
 The application exhibits good weak-scaling behavior, with execution time remaining
 approximately constant as we increase the number of parallel processes and the workload.
 
-![Speedup and efficiency of weak-scaling example](fig/weak_scaling.png){alt="Speedup and efficiency of weak-scaling example"}
+![Speedup and efficiency of weak-scaling example](fig/scaling-plots/weak.png){alt="Speedup and efficiency of weak-scaling example"}
 
 Weak scaling allows applications to make efficient use of large amounts of computational
 resources. However, the most important question is whether an increased workload
 produces useful results.
 
 Here, we compare the rendered images of
-[three snowmen at 800 x 800 with 128 samples per pixel](fig/pixel800.png)
-and [three snowmen at 6400 x 6400 with 128 samples per pixel](fig/pixel6400.png).
+[three snowmen at 800 x 800 with 128 samples per pixel](fig/scaling-plots/pixel800.png)
+and [three snowmen at 6400 x 6400 with 128 samples per pixel](fig/scaling-plots/pixel6400.png).
 
 The second image has a much higher resolution, with $64$ times as many pixels as the
 first image.
