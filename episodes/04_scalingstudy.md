@@ -73,38 +73,6 @@ To understand scaling, let us consider the following questions:
 - Does it continue to benefit from additional resources, or do we eventually reach a point
   where adding more resources provides little or no improvement?
 
-::: callout
-# Linear and Logarithmic Representations
-Scaling results can be visualized using linear or logarithmic axes. The choice of
-representation affects how we interpret differences and trends in the measured data.
-
-In a **linear representation**, equal distances along an axis correspond to equal
-numerical differences. For example, the intervals between $1$, $2$, $3$, and $4$
-are equally spaced.
-
-In a **base-2 logarithmic representation**, equal distances correspond to values
-that differ by a factor of two. For example, $1$, $2$, $4$, $8$, $16$, and $32$ are
-equally spaced. This representation is particularly useful in HPC, where the number
-of processes, threads, and compute nodes often increases in powers of two.
-
-In our scaling plots, the logarithmic representation is applied to the horizontal
-axis, which represents the number of MPI processes. Since our experiments increase
-the number of processes in powers of two, this representation provides equally spaced
-intervals for each doubling of the process count.
-
-For the **speedup plots**, we also use a base-2 logarithmic scale on the vertical
-axis. This allows the ideal linear speedup relationship, $S(N) = N$, to appear as
-a straight line with a slope of $1$.
-
-For the **efficiency plots**, we retain a linear vertical axis. This makes changes
-in parallel efficiency easier to compare and interpret, particularly when the values
-are close to $100\%$.
-
-Neither representation changes the underlying measurements. They provide different
-perspectives on the same data, allowing us to examine absolute differences or proportional
-changes, depending on the aspect of performance we want to investigate.
-:::
-
 ## What is Scaling?
 In a scaling study, we investigate how an application's performance changes as we vary
 the computational resources, the problem size, or both.
@@ -134,6 +102,31 @@ computational resources available to the application.
 
 ![Sketched execution times for a perfectly parallelized application and a 98% parallelizable application. When the number of parallel processes is doubled, execution time is halved in the perfectly parallel case, while the 98% parallelizable application achieves a slightly smaller reduction.](fig/scaling-plots/sketch_scaling_log2.svg){alt="Sketched execution times for a perfectly parallelized application and a 98% parallelizable application. When the number of parallel processes is doubled, execution time is halved in the perfectly parallel case, while the 98% parallelizable application achieves a slightly smaller reduction."}
 
+:::
+
+::: spoiler
+# Linear and Logarithmic Representations
+Scaling results can be visualized using linear or logarithmic axes. The choice of
+representation affects how we interpret differences and trends in the measured data.
+
+In a **linear representation**, equal distances along an axis correspond to equal
+numerical differences. For example, the intervals between $1$, $2$, $3$, and $4$
+are equally spaced.
+
+In a **base-2 logarithmic representation**, equal distances correspond to values
+that differ by a factor of two. For example, $1$, $2$, $4$, $8$, $16$, and $32$ are
+equally spaced. This representation is particularly useful in HPC, where the number
+of processes, threads, and compute nodes often increases in powers of two.
+
+In our scaling plots, the horizontal axis represents the number of MPI processes.
+We use a base-2 logarithmic scale on this axis because our experiments increase the
+number of processes in powers of two. This provides equally spaced intervals for
+each doubling of the process count. The vertical-axis scaling depends on the performance
+metric being displayed, as we will see when we examine speedup and efficiency.
+
+Neither representation changes the underlying measurements. They provide different
+perspectives on the same data, allowing us to examine absolute differences or proportional
+changes, depending on the aspect of performance we want to investigate.
 :::
 
 We will begin our scaling study using the job script `render_snowman.sbatch`:
@@ -439,6 +432,16 @@ utilization.
 
 :::
 
+::: callout
+For the **speedup plots**, we also use a base-2 logarithmic scale on the vertical
+axis. This allows the ideal linear speedup relationship, $S(N) = N$, to appear as
+a straight line with a slope of $1$.
+
+For the **efficiency plots**, we retain a linear vertical axis. This makes changes
+in parallel efficiency easier to compare and interpret, particularly when the values
+are close to $100\%$.
+:::
+
 Speedup is defined as the ratio of the execution time using a single process to
 the execution time using $N$ parallel processes: $$S(N) = \frac{T(1)}{T(N)}$$
 
@@ -597,7 +600,7 @@ $ python3 ./plot_scaling_from_csvs.py -s
 # Generate the weak-scaling plot
 $ python3 ./plot_scaling_from_csvs.py -w
 
-# Generate a strong-scaling plot with custom filenames and a logarithmic x-axis
+# Generate a strong-scaling plot with custom filenames and logarithmic axes
 $ python3 ./plot_scaling_from_csvs.py -s -i results-strong.csv -o results-strong.png -log
 ```
 :::
