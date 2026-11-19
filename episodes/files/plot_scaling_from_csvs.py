@@ -7,6 +7,7 @@ from pathlib import Path
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+from matplotlib.ticker import ScalarFormatter, MultipleLocator
 
 plt.rcParams.update({
                     "font.family": "sans-serif",
@@ -26,8 +27,8 @@ def parse_arguments():
     parser.add_argument("-o", "--output", type=Path,
                         help="Output PNG file (default: strong.png or weak.png,\
                               depending on the selected scaling type).")
-    parser.add_argument("-ls", "--logscale", action="store_true",
-                        help="Use base-2 logarithmic scaling for the x-axis.")
+    parser.add_argument("-log", "--logscale", action="store_true",
+                        help="Use base-2 logarithmic scaling on x- and y-axis.")
     return parser.parse_args()
 
 
@@ -131,13 +132,23 @@ def plot_scaling_graph(df, scaling_type, scale, output):
         if scale:
             print("Using base 2 logarithmic scale")
             # Log scales, base 2
+            # Speedup: logarithmic x- and y-axis
             ax1.set_xscale("log", base=2)
+            ax1.set_yscale("log", base=2)
+            # Efficiency: logarithmic x-axis, linear y-axis
             ax2.set_xscale("log", base=2)
 
         ax1.set_xticks(ntasks)
         ax2.set_xticks(ntasks)
-        ax1.get_xaxis().set_major_formatter(plt.ScalarFormatter())
-        ax2.get_xaxis().set_major_formatter(plt.ScalarFormatter())
+        ax1.xaxis.set_major_formatter(ScalarFormatter())
+        ax1.yaxis.set_major_formatter(ScalarFormatter())
+        ax2.xaxis.set_major_formatter(ScalarFormatter())
+
+        # Efficiency remains in ordinary percentage values
+        ax2.set_ylim(0, max(110.0, (np.ceil(df["efficiency"].max() / 10.0) + 1.0) * 10.0))
+        ax2.yaxis.set_major_locator(MultipleLocator(10))
+        ax2.yaxis.set_major_formatter(ScalarFormatter())
+
         fig.tight_layout()
         # Create output directory if necessary.
         output.parent.mkdir(parents=True, exist_ok=True)

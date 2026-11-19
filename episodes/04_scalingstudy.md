@@ -73,8 +73,8 @@ To understand scaling, let us consider the following questions:
 - Does it continue to benefit from additional resources, or do we eventually reach a point
   where adding more resources provides little or no improvement?
 
-::: instructor
-# Linear and Base-2 Logarithmic Representations
+::: callout
+# Linear and Logarithmic Representations
 Scaling results can be visualized using linear or logarithmic axes. The choice of
 representation affects how we interpret differences and trends in the measured data.
 
@@ -91,6 +91,14 @@ In our scaling plots, the logarithmic representation is applied to the horizonta
 axis, which represents the number of MPI processes. Since our experiments increase
 the number of processes in powers of two, this representation provides equally spaced
 intervals for each doubling of the process count.
+
+For the **speedup plots**, we also use a base-2 logarithmic scale on the vertical
+axis. This allows the ideal linear speedup relationship, $S(N) = N$, to appear as
+a straight line with a slope of $1$.
+
+For the **efficiency plots**, we retain a linear vertical axis. This makes changes
+in parallel efficiency easier to compare and interpret, particularly when the values
+are close to $100\%$.
 
 Neither representation changes the underlying measurements. They provide different
 perspectives on the same data, allowing us to examine absolute differences or proportional
@@ -118,11 +126,11 @@ computational resources available to the application.
 
 ::: group-tab
 
-### Linear x-axis
+### Linear axis
 
 ![Sketched execution times for a perfectly parallelized application and a 98% parallelizable application. When the number of parallel processes is doubled, execution time is halved in the perfectly parallel case, while the 98% parallelizable application achieves a slightly smaller reduction.](fig/scaling-plots/sketch_scaling_linear.svg){alt="Sketched execution times for a perfectly parallelized application and a 98% parallelizable application. When the number of parallel processes is doubled, execution time is halved in the perfectly parallel case, while the 98% parallelizable application achieves a slightly smaller reduction."}
 
-### Base-2 logarithmic x-axis
+### Base-2 logarithmic axis
 
 ![Sketched execution times for a perfectly parallelized application and a 98% parallelizable application. When the number of parallel processes is doubled, execution time is halved in the perfectly parallel case, while the 98% parallelizable application achieves a slightly smaller reduction.](fig/scaling-plots/sketch_scaling_log2.svg){alt="Sketched execution times for a perfectly parallelized application and a 98% parallelizable application. When the number of parallel processes is doubled, execution time is halved in the perfectly parallel case, while the 98% parallelizable application achieves a slightly smaller reduction."}
 
@@ -421,11 +429,11 @@ utilization.
 
 ::: group-tab
 
-### Linear x-axis
+### Linear axis
 
 ![Sketched speedup for a perfectly and 98% parallelized application. Doubling the number of parallel processors makes the perfectly parallel application twice as fast. The 98% parallelized application does not speed up at the same rate.](fig/scaling-plots/sketch_speedup_linear.svg){alt="Sketched speedup for a perfectly and 98% parallelized application. Doubling the number of parallel processors makes the perfectly parallel application twice as fast. The 98% parallelized application does not speed up at the same rate."}
 
-### Base-2 logarithmic x-axis
+### Base-2 logarithmic axis
 
 ![Sketched speedup for a perfectly and 98% parallelized application. Doubling the number of parallel processors makes the perfectly parallel application twice as fast. The 98% parallelized application does not speed up at the same rate.](fig/scaling-plots/sketch_speedup_log2.svg){alt="Sketched speedup for a perfectly and 98% parallelized application. Doubling the number of parallel processors makes the perfectly parallel application twice as fast. The 98% parallelized application does not speed up at the same rate."}
 
@@ -460,11 +468,11 @@ speedup when using two parallel processes.
 
 ::: group-tab
 
-### Linear x-axis
+### Linear axis
 
 ![Sketched efficiency for a perfectly scaling application and an application with 98% parallelizable work. The perfectly scaling application maintains 100% efficiency as the number of parallel processes increases, while the efficiency of the 98% parallelizable application gradually decreases.](fig/scaling-plots/sketch_efficiency_linear.svg){alt="Sketched efficiency for a perfectly scaling application and an application with 98% parallelizable work. The perfectly scaling application maintains 100% efficiency as the number of parallel processes increases, while the efficiency of the 98% parallelizable application gradually decreases."}
 
-### Base-2 logarithmic x-axis
+### Base-2 logarithmic axis
 
 ![Sketched efficiency for a perfectly scaling application and an application with 98% parallelizable work. The perfectly scaling application maintains 100% efficiency as the number of parallel processes increases, while the efficiency of the 98% parallelizable application gradually decreases.](fig/scaling-plots/sketch_efficiency_log2.svg){alt="Sketched efficiency for a perfectly scaling application and an application with 98% parallelizable work. The perfectly scaling application maintains 100% efficiency as the number of parallel processes increases, while the efficiency of the 98% parallelizable application gradually decreases."}
 
@@ -556,7 +564,7 @@ options, use:
 ```
 
 ```output
-usage: plot_scaling_from_csvs.py [-h] [-s | -w] [-i INPUT] [-o OUTPUT] [-ls]
+usage: plot_scaling_from_csvs.py [-h] [-s | -w] [-i INPUT] [-o OUTPUT] [-log]
 
 Create strong and weak scaling plots.
 
@@ -566,7 +574,7 @@ options:
   -w, --weak           Perform weak scaling analysis.
   -i, --input INPUT    Input CSV file (default: strong.csv or weak.csv, depending on the selected scaling type).
   -o, --output OUTPUT  Output PNG file (default: strong.png or weak.png, depending on the selected scaling type).
-  -ls, --logscale      Use base-2 logarithmic scaling for the x-axis.
+  -log, --logscale     Use base-2 logarithmic scaling on x- and y-axis.
 ```
 
 The script supports both strong- and weak-scaling analysis. Use the `-s` option
@@ -576,8 +584,10 @@ and generates `weak.png`.
 
 We can also specify custom input and output filenames using the `-i` and `-o` options,
 respectively. By default, the script generates plots with a linear x-axis. To use
-a base-2 logarithmic scale for the x-axis, specify the `-ls` option.
+a base-2 logarithmic scaling on both axes, specify the `-log` option.
 
+::: instructor
+# Usage of Python script for plotting
 The following are the usage examples for generating plots:
 
 ```bash
@@ -588,8 +598,9 @@ $ python3 ./plot_scaling_from_csvs.py -s
 $ python3 ./plot_scaling_from_csvs.py -w
 
 # Generate a strong-scaling plot with custom filenames and a logarithmic x-axis
-$ python3 ./plot_scaling_from_csvs.py -s -i results-strong.csv -o results-strong.png -ls
+$ python3 ./plot_scaling_from_csvs.py -s -i results-strong.csv -o results-strong.png -log
 ```
+:::
 
 The virtual environment is now ready to use. We can deactivate it when we no longer
 need it:
@@ -627,7 +638,7 @@ Use the supplied Python plotting script to visualize your strong-scaling results
 What number of MPI processes would provide a reasonable *working point* for the Raytracer
 with an image resolution of $800 \times 800$ pixels and $128$ samples per pixel?
 
-::: hint
+::: callout
 # Using Python plotting scripts
 
 ```bash
@@ -639,26 +650,26 @@ $ python3 ./plot_scaling_from_csvs.py -s
 For all our measurements, the speedup and parallel efficiency values are:
 
 ```csv
-ntasks,time,speedup,efficiency
-1,127.218,1.00,1.00
-2,67.443,1.89,0.94
-4,32.584,3.90,0.98
-8,17.480,7.28,0.91
-16,10.251,12.41,0.78
-32,7.257,17.53,0.55
-64,8.044,15.82,0.25
-128,8.575,14.84,0.12
+ ntasks    time   speedup  efficiency
+      1 127.218  1.000000  100.000000
+      2  67.443  1.886304   94.315200
+      4  32.584  3.904309   97.607722
+      8  17.480  7.277918   90.973970
+     16  10.251 12.410301   77.564384
+     32   7.257 17.530384   54.782451
+     64   8.044 15.815266   24.711353
+    128   8.575 14.835918   11.590561
 ```
 
 Plotting the speedup and efficiency helps us identify a reasonable working point:
 
 ::: group-tab
 
-### Linear x-axis
+### Linear axis
 
 ![Speedup and parallel efficiency as functions of the number of MPI processes in a strong-scaling study](fig/scaling-plots/strong.png){alt="Speedup and parallel efficiency as functions of the number of MPI processes in a strong-scaling study"}
 
-### Base-2 logarithmic x-axis
+### Base-2 logarithmic axis
 
 ![Speedup and parallel efficiency as functions of the number of MPI processes in a strong-scaling study](fig/scaling-plots/strong_log2.png){alt="Speedup and parallel efficiency as functions of the number of MPI processes in a strong-scaling study"}
 
@@ -971,7 +982,7 @@ ntasks,pixel,time
 ...
 ```
 
-::: hint
+::: callout
 # Using Python plotting scripts
 
 ```bash
@@ -989,14 +1000,14 @@ $ python3 ./plot_scaling_from_csvs.py -w
 
 ::: solution
 ```csv
-ntasks,pixel,time,speedup,efficiency
-1,800,123.162,1.00,1.00
-2,1131,122.562,2.01,1.00
-4,1600,124.522,3.96,0.99
-8,2263,125.606,7.84,0.98
-16,3200,125.803,15.66,0.98
-32,4525,130.137,30.28,0.95
-64,6400,138.636,56.86,0.89
+ ntasks    time   speedup  efficiency
+      1 123.162  1.000000  100.000000
+      2 122.562  2.009791  100.489548
+      4 124.522  3.956313   98.907824
+      8 125.606  7.844339   98.054233
+     16 125.803 15.664110   97.900686
+     32 130.137 30.284884   94.640264
+     64 138.636 56.856574   88.838397
 ```
 
 The application exhibits good weak-scaling behavior, with execution time remaining
@@ -1004,11 +1015,11 @@ approximately constant as we increase the number of parallel processes and the w
 
 ::: group-tab
 
-### Linear x-axis
+### Linear axis
 
 ![Speedup and efficiency of weak-scaling example](fig/scaling-plots/weak.png){alt="Speedup and efficiency of weak-scaling example"}
 
-### Base-2 logarithmic x-axis
+### Base-2 logarithmic axis
 
 ![Speedup and efficiency of weak-scaling example](fig/scaling-plots/weak_log2.png){alt="Speedup and efficiency of weak-scaling example"}
 
