@@ -83,6 +83,30 @@ processes. This approach is known as *strong scaling*.
 Later, we will increase the problem size alongside the number of processes.
 This approach is known as *weak scaling*.
 
+::: instructor
+# Scaling differences
+Present the figure and ask learners to discuss the fundamental differences between
+strong and weak scaling.
+
+The fundamental distinction is simple:
+
+- Strong scaling increases computational resources while keeping the problem fixed.
+- Weak scaling increases computational resources while increasing the problem proportionally.
+:::
+
+![Understanding Parallel Scaling: Strong vs. Weak Scaling](fig/scaling-plots/scaling_problem_diagram.svg){alt="Understanding Parallel Scaling: Strong Scaling vs. Weak Scaling"}
+
+::: discussion
+# Strong Scaling
+How quickly can we solve the same computational problem if we provide more processes?
+:::
+
+::: discussion
+# Weak Scaling
+How large a computational problem can we solve if we increase the number of processes
+while maintaining approximately the same workload per process?
+:::
+
 In our strong-scaling experiment, we will use wall-clock execution time as the primary
 performance metric. To make the measurements comparable, we should keep the application
 version, input data, problem size, and relevant execution parameters unchanged while
