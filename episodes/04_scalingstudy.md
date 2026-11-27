@@ -747,37 +747,6 @@ For all our measurements, the speedup and parallel efficiency values are:
     128   8.575 14.835918   11.590561
 ```
 
-::: callout
-# Viewing the generated plots
-
-You can view the generated PNG plots on your local machine using either of the following
-approaches:
-
-#### Option 1: Copy the plots to your local machine
-
-From a terminal on your local machine, use `scp` to copy the PNG files from the
-cluster:
-
-```bash
-$ scp <username>@<your-cluster>:<path-to-plots>/*.png .
-```
-
-You can then open the images using your local image viewer.
-
-#### Option 2: Use X11 forwarding
-
-If your local machine has an X server installed and the cluster supports X11 forwarding:
-
-- Connect to the cluster with X11 forwarding enabled:
-    - `ssh -X <username>@<your-cluster>`
-    - Use `ssh -Y <username>@<your-cluster>` only if trusted forwarding is required
-      and the remote host is trusted
-- Launch the image viewer on the cluster:
-    - `display -resize 1024x768 <some>.png`
-
-Note that `display` requires ImageMagick to be available on the cluster.
-:::
-
 Plotting the speedup and efficiency helps us identify a reasonable working point:
 
 ::: group-tab
@@ -816,6 +785,37 @@ retains approximately $78\%$ parallel efficiency while still providing a speedup
 of approximately $12.41$.
 :::
 :::::::::::::
+
+::: callout
+# Viewing the generated plots
+
+You can view the generated PNG plots on your local machine using either of the following
+approaches:
+
+#### Option 1: Copy the plots to your local machine
+
+From a terminal on your local machine, use `scp` to copy the PNG files from the
+cluster:
+
+```bash
+$ scp <username>@<your-cluster>:<path-to-plots>/*.png .
+```
+
+You can then open the images using your local image viewer.
+
+#### Option 2: Use X11 forwarding
+
+If your local machine has an X server installed and the cluster supports X11 forwarding:
+
+- Connect to the cluster with X11 forwarding enabled:
+    - `ssh -X <username>@<your-cluster>`
+    - Use `ssh -Y <username>@<your-cluster>` only if trusted forwarding is required
+      and the remote host is trusted
+- Launch the image viewer on the cluster:
+    - `display -resize 1024x768 <some>.png`
+
+Note that `display` requires ImageMagick to be available on the cluster.
+:::
 
 :::::::::::::::::::::::::: discussion
 # Discussion: Why Does Parallel Efficiency Decrease?
