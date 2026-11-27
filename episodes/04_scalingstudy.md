@@ -4,6 +4,15 @@ teaching: 35
 exercises: 55
 ---
 
+::: instructor
+## Todo: Unify MPI and modules across examples
+We should address the various ways to start MPI programs at first use and choose
+a single way. Preparing the software is also cluster-specific (`module load ...`).
+
+In the mid-/long-term this may call for a site-specific implementation of the course,
+e.g. via the hpc-intro workbench.
+:::
+
 :::::::::::::::::::::::::::::::::::::: questions 
 
 - How does our application behave as we increase computational resources?
@@ -105,8 +114,7 @@ parameters remain unchanged.
 - What happens to the total amount of computational work as we increase the number
   of MPI processes from $1$, $2$, $4$ and $8$?
 - How is this work distributed among the processes?
-- Ideally, what should happen to the execution time change when we double the number
-  of processes?
+- Ideally, how should the execution time change when we double the number of processes?
 - Do you expect the application to become twice as fast every time we double the
   number of processes? Why or why not?
 
@@ -114,7 +122,8 @@ parameters remain unchanged.
 
 ::: solution
 
-- The total computational problem remains unchanged i.e, fixed problem size
+- The total computational workload remains unchanged; only the number of processes
+  sharing that workload increases
 - The workload is distributed across an increasing number of MPI processes
 - Ideally, doubling the number of processes halves the execution time
 
@@ -205,8 +214,6 @@ perspectives on the same data, allowing us to examine absolute differences or pr
 changes, depending on the aspect of performance we want to investigate.
 :::
 
-We will begin our scaling study using the job script `render_snowman.sbatch`:
-
 In this example, we request one Slurm task for each MPI rank. With the default allocation
 of one CPU per task, Slurm allocates one CPU for each requested task, and the MPI
 launcher starts the corresponding number of processes within the allocation.
@@ -216,14 +223,7 @@ In our MPI example, each MPI process has an identifier called its *rank*, which 
 unique within its MPI communicator. We request one Slurm *task* for each MPI process.
 :::
 
-::: instructor
-## Todo: Unify MPI and modules across examples
-We should address the various ways to start MPI programs at first use and choose
-a single way. Preparing the software is also cluster-specific (`module load ...`).
-
-In the mid-/long-term this may call for a site-specific implementation of the course,
-e.g. via the hpc-intro workbench.
-:::
+We will begin our scaling study using the job script `render_snowman.sbatch`:
 
 ```bash
 #!/usr/bin/bash
@@ -798,11 +798,35 @@ Briefly collect and discuss the possible reasons.
 3. What possible factors could explain the slowdown?
 4. What additional measurements would help us identify the cause?
 
-
 ::::::::::::::::::::::::::
 
 ::: solution
-# TODO
+When we increase the number of MPI processes from $32$ to $64$, the total problem
+size remains unchanged, but the workload is distributed across twice as many processes.
+
+However, the execution time increases from $7.257$ seconds to $8.044$ seconds. This
+means that adding more MPI processes does not improve performance for this workload
+and configuration.
+
+1. What changed between these two configurations?
+    - We doubled the number of MPI processes while keeping the image resolution,
+      samples per pixel, and other application parameters unchanged.
+
+2. What does the measurement tell us about application performance?
+    - The application achieves its shortest measured execution time with $32$ processes.
+      Increasing the process count to $64$ makes execution slower, indicating that
+      $32$ processes provide the best execution time among the configurations tested.
+
+3. What possible factors could explain the slowdown?
+    - Possible contributions include communication and synchronization overhead,
+      memory-bandwidth limitations, load imbalance, and contention for shared
+      resources. The measurements alone do not establish which factor is responsible.
+
+4. What additional measurements would help us identify the cause?
+    - We could repeat the measurements to check their variability, inspect CPU utilization
+      and memory-bandwidth behaviour, and investigate process placement and MPI
+      communication overhead.
+
 :::
 
 So far, we kept the workload size fixed at $800 \times 800$ pixels and $128$ samples
@@ -1057,8 +1081,12 @@ to the number of MPI processes, to investigate the Raytracer's weak-scaling beha
 - Run with $1$, $2$, $4$, $8$, $16$, $32$, and $64$ MPI processes on a single node.
 - Record the execution times using `time`. Consider submitting the jobs with `--exclusive`
   to reduce interference from other jobs running on the same node.
-- Create a `weak.csv` file containing your measurements and use the plotting script
-  to visualize the results.
+
+Write the data into a `weak.csv` file using command:
+
+```bash
+nano weak.csv
+```
 
 ```csv
 ntasks,pixel,time
@@ -1068,6 +1096,8 @@ ntasks,pixel,time
 8,2263,???
 ...
 ```
+
+Use the supplied Python plotting script to visualize your weak-scaling results.
 
 ::: callout
 # Using Python plotting scripts
@@ -1099,6 +1129,15 @@ $ python3 ./plot_scaling_from_csvs.py -w
 
 The application exhibits good weak-scaling behavior, with execution time remaining
 approximately constant as we increase the number of parallel processes and the workload.
+
+::: callout
+# Deactivate the Python Virtual Environment
+We can deactivate the environment now:
+
+```bash
+(venv_scaling_results) [...]$ deactivate
+```
+:::
 
 ::: group-tab
 
