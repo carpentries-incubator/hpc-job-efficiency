@@ -28,7 +28,8 @@ def parse_arguments():
                         help="Output PNG file (default: strong.png or weak.png,\
                               depending on the selected scaling type).")
     parser.add_argument("-log", "--logscale", action="store_true",
-                        help="Use base-2 logarithmic scaling on x- and y-axis.")
+                        help="Use base-2 logarithmic scaling on x- and on the speedup\
+                              y-axis.")
     return parser.parse_args()
 
 

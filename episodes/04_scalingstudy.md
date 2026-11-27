@@ -509,13 +509,16 @@ utilization.
 :::
 
 ::: callout
-For the **speedup plots**, we also use a base-2 logarithmic scale on the vertical
-axis. This allows the ideal linear speedup relationship, $S(N) = N$, to appear as
-a straight line with a slope of $1$.
+For the **speedup plots**, we can optionally use a base-2 logarithmic scale on both
+the horizontal and vertical axes. With logarithmic scaling on both axes, the ideal
+linear speedup relationship, $S(N) = N$, appears as a straight line with a slope of $1$.
 
-For the **efficiency plots**, we retain a linear vertical axis. This makes changes
-in parallel efficiency easier to compare and interpret, particularly when the values
-are close to $100\%$.
+This representation makes it easier to compare proportional increases in speedup
+as we double the number of MPI processes.
+
+For the **efficiency plots**, we use a base-2 logarithmic scale on the horizontal
+axis while retaining a linear vertical axis. This makes changes in parallel efficiency
+easier to compare and interpret, particularly when the values are close to $100\%$.
 :::
 
 Speedup is defined as the ratio of the execution time using a single process to
@@ -653,7 +656,7 @@ options:
   -w, --weak           Perform weak scaling analysis.
   -i, --input INPUT    Input CSV file (default: strong.csv or weak.csv, depending on the selected scaling type).
   -o, --output OUTPUT  Output PNG file (default: strong.png or weak.png, depending on the selected scaling type).
-  -log, --logscale     Use base-2 logarithmic scaling on x- and y-axis.
+  -log, --logscale     Use base-2 logarithmic scaling on x- and on the speedup y-axis.
 ```
 
 The script supports both strong- and weak-scaling analysis. Use the `-s` option
@@ -662,8 +665,9 @@ and `strong.png` as the output file. Similarly, the `-w` option uses `weak.csv`
 and generates `weak.png`.
 
 We can also specify custom input and output filenames using the `-i` and `-o` options,
-respectively. By default, the script generates plots with a linear x-axis. To use
-a base-2 logarithmic scaling on both axes, specify the `-log` option.
+respectively. By default, the script generates plots with linear axes. To use
+a base-2 logarithmic scaling on the horizontal axes and the speedup plot's vertical
+axis, specify the `-log` option. The efficiency plot retains a linear vertical axis.
 
 ::: instructor
 # Usage of Python script for plotting
