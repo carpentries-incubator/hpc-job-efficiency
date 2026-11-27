@@ -98,14 +98,66 @@ The fundamental distinction is simple:
 
 ::: discussion
 # Strong Scaling
-How quickly can we solve the same computational problem if we provide more processes?
+Imagine that we want to render the same image using an increasing number of MPI
+processes. The image resolution, number of samples per pixel, and all other application
+parameters remain unchanged.
+
+- What happens to the total amount of computational work as we increase the number
+  of MPI processes from $1$, $2$, $4$ and $8$?
+- How is this work distributed among the processes?
+- Ideally, what should happen to the execution time change when we double the number
+  of processes?
+- Do you expect the application to become twice as fast every time we double the
+  number of processes? Why or why not?
+
+:::
+
+::: solution
+
+- The total computational problem remains unchanged i.e, fixed problem size
+- The workload is distributed across an increasing number of MPI processes
+- Ideally, doubling the number of processes halves the execution time
+
+::: spoiler
+In practice, communication, synchronization, serial portions of the application, and
+other overheads prevent ideal scaling.
+:::
 :::
 
 ::: discussion
 # Weak Scaling
-How large a computational problem can we solve if we increase the number of processes
-while maintaining approximately the same workload per process?
+Now imagine that we want to render increasingly larger images as we increase the
+number of MPI processes.
+
+We increase the total number of pixels in proportion to the number of processes,
+so that each process is responsible for approximately the same amount of computational
+work.
+
+- What happens to the total problem size as we increase the number of MPI processes?
+- If we double the number of processes, how must the total workload change to keep
+  the workload per process approximately constant?
+- What would you expect to happen to the execution time if we double both the problem
+  size and the number of processes?
+- Ideally, should the execution time remain approximately constant?
+  Why might the actual execution time increase?
+
 :::
+
+::: solution
+
+- The total computational workload increases in proportion to the number of MPI
+  processes
+- Doubling the number of processes requires approximately doubling the total workload
+- The workload per process remains approximately constant
+- Ideally, execution time remains approximately constant
+
+::: spoiler
+In practice, communication, synchronization, and other overheads can cause execution
+time to increase.
+:::
+:::
+
+## Strong Scaling
 
 In our strong-scaling experiment, we will use wall-clock execution time as the primary
 performance metric. To make the measurements comparable, we should keep the application
@@ -629,13 +681,16 @@ $ python3 ./plot_scaling_from_csvs.py -s -i results-strong.csv -o results-strong
 ```
 :::
 
-The virtual environment is now ready to use. We can deactivate it when we no longer
-need it:
+The virtual environment is now ready to use.
+
+::: spoiler
+# Deactivate the Python Virtual Environment
+We can deactivate it when we no longer need it:
 
 ```bash
 (venv_scaling_results) [...]$ deactivate
 ```
-
+:::
 We have now installed the Python dependencies in an isolated virtual environment.
 Whenever we want to use the plotting script in a new session, we should load the
 same Python module, activate the virtual environment, and navigate to the directory
@@ -646,7 +701,7 @@ containing the plotting script and its input CSV files.
 Write the data into a `strong.csv` file using command:
 
 ```bash
-vi strong.csv
+nano strong.csv
 ```
 
 The `strong.csv` may look like this:
@@ -743,7 +798,12 @@ Briefly collect and discuss the possible reasons.
 3. What possible factors could explain the slowdown?
 4. What additional measurements would help us identify the cause?
 
+
 ::::::::::::::::::::::::::
+
+::: solution
+# TODO
+:::
 
 So far, we kept the workload size fixed at $800 \times 800$ pixels and $128$ samples
 per pixel, using the same scene with three snowmen. The diminishing returns we
